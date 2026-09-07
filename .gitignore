@@ -5,6 +5,7 @@ raw_data/flood_masks/compact_unusual/*_meta.json
 .venv
 *.pyc
 raw_data
+eda/outputs/
 cache
 .idea
 .git

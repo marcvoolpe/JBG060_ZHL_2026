@@ -1,0 +1,2 @@
+admin_level,feature_index,name,pcode,parent_name,parent_pcode,centroid_latitude,centroid_longitude,min_longitude,min_latitude,max_longitude,max_latitude,area_km2,source_file
+0,0,South Sudan,SS,,,7.280319704377707,30.348354408091634,24.15072456300004,3.487840075000122,35.951923671000145,12.236351879000097,632395.1473353949,ssd_admin0.geojson

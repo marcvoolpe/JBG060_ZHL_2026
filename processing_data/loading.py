@@ -84,9 +84,11 @@ def load_lake_stations() -> dict[int, pd.DataFrame]:
             fname = f'{base_path}/water_level_{name}.txt'
             # hydroweb txt uses JASN* / SEN6A; without them the series stops ~2002
             mission_names = {
-                'TOPEX', 'JASON-1', 'JASON-2', 'JASON-3', 'J1', 'J2', 'J3',
-                'JASN1', 'JASN2', 'JASN3', 'SEN6A', 'S6A',
-                'S3A', 'S3B', 'ENVISAT', 'ERS-1', 'ERS-2',
+                'TOPEX', 'POSDN',
+                'JASON-1', 'JASON-2', 'JASON-3', 'J1', 'J2', 'J3',
+                'JASN1', 'JASN2', 'JASN3',
+                'S3A', 'S3B', 'S6A', 'SEN6A',
+                'ENVISAT', 'ERS-1', 'ERS-2',
             }
 
             # Names for the unnamed columns based on the column descriptions

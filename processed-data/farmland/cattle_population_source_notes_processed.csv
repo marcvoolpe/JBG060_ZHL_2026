@@ -1,0 +1,32 @@
+line_number,text
+1,Resource metadata;
+2,uuid;1232891f-465e-41ff-9665-9fc4d59c7dd3;
+3,title;Cattle Population in the GHA Region;
+4,resource owner;ICPAC;
+5,date;2018-10-31 01:23:00+00:00;
+6,date type;publication;
+7,abstract;This dataset presents the cattle population count at the pixel level. The data is from Harvard dataverse 2010;
+8,edition;None;
+9,purpose;None;
+10,maintenance frequency;None;
+11,ObjectDoesNotExist;
+12,restriction code type;None;
+13,constraints other ;None;
+14,license;Not Specified;
+15,language;eng;
+16,temporal extent;
+17,temporal extent start;None;
+18,temporal extent end;None;
+19,supplemental information;No information provided;
+20,data quality statement;None;
+21,"extent ;21.833333333333314,51.41666666666664,-11.749999999999993,23.16666666666667;"
+22,SRID  ;EPSG:4326;
+23,Thumbnail url;https://geoportal.icpac.net/uploaded/thumbs/layer-1232891f-465e-41ff-9665-9fc4d59c7dd3-thumb-8a63cbfb-0a40-4ed4-8ac7-9a9a1be0a0b3.png;
+24,keywords;;category;Socio-economy;
+25,regions;Global;
+26,attribute data;
+27,attribute name;label;description
+28,GRAY_INDEX;None;None;
+29,Point of Contact;
+30,name;;
+31,e-mail;developer@icpac.net;

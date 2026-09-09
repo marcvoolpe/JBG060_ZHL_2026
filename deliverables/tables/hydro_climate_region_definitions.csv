@@ -1,0 +1,7 @@
+region_id,label,lon_min,lon_max,lat_min,lat_max,notes
+ssd_full,South Sudan full boundary,24.0,36.1,3.4,12.3,Climate cells inside the full South Sudan admin0 polygon.
+ssd_flood_tile_overlap,South Sudan area covered by local flood tiles,24.0,36.1,3.4,10.0,Climate cells inside South Sudan and inside h20v08+h21v08 flood tile latitude coverage.
+victoria_kyoga_albert_upstream,Lake Victoria-Kyoga-Albert upstream corridor,29.5,34.5,-1.5,3.5,Heuristic upstream lake corridor: Victoria -> Kyoga -> Albert -> White Nile.
+bahr_el_jebel_south,Bahr el Jebel southern inflow corridor,29.0,33.0,3.0,7.0,Heuristic corridor from Albert Nile/Bahr el Jebel into southern South Sudan.
+sobat_pibor_east,Sobat-Pibor eastern tributary corridor,31.5,36.5,6.0,10.5,Heuristic eastern tributary corridor including Sobat/Pibor/Akobo influence.
+western_floodplain,Western South Sudan floodplain context,24.0,31.0,6.0,10.5,Heuristic western South Sudan rainfall/runoff context.

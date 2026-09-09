@@ -4,6 +4,8 @@ raw_data/flood_masks/compact_unusual/*_meta.json
 
 .venv
 *.pyc
+__pycache__/
+.DS_Store
 raw_data
 eda/outputs/
 cache

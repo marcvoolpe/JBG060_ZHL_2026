@@ -1,0 +1,18 @@
+dataset,name,country,latitude,longitude,notes
+Dartmouth discharge station,1505,Ethiopia,4.9,36.0,station_nr=217
+Dartmouth discharge station,1541,Sudan,12.4,32.8,station_nr=224
+Dartmouth discharge station,1542,Sudan,13.9,32.4,station_nr=225
+Dartmouth discharge station,1543,Sudan,14.9,32.2,station_nr=226
+Dartmouth discharge station,1544,Sudan,13.1,33.9,station_nr=227
+Dartmouth discharge station,1545,Sudan,13.8,33.6,station_nr=228
+Dartmouth discharge station,1547,Sudan,15.6,32.4,station_nr=229
+Dartmouth discharge station,1548,Sudan,16.6,32.9,station_nr=230
+Dartmouth discharge station,11808,Sudan,18.8,32.0,station_nr=289
+Dartmouth discharge station,11842,Sudan,21.5,31.0,station_nr=290
+Dartmouth discharge station,28546,Sudan,14.9,35.8,station_nr=293
+Dartmouth discharge station,100205,South Sudan; Sudan,9.6,31.6,station_nr=334
+Lake water level point,Albert,Democratic Republic of the Congo,1.6807,30.921,2002-07-10 to 2026-04-25; n=850
+Lake water level point,Kyoga,Uganda,1.484,32.778,1992-09-27 to 2002-07-27; n=156
+Lake water level point,Victoria,Uganda,-0.507,33.488,1992-10-07 to 2002-08-06; n=329
+ERA5 rainfall/runoff grid extent,ERA5 domain,,,,lon 23.00-37.00; lat -3.00-33.00; 145x57 grid
+ET raw grid extent,AgERA5 ET domain,,,,lon 23.10-37.00; lat -3.00-32.90; 360x140 grid

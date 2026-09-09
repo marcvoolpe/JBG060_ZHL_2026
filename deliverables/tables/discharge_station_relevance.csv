@@ -1,0 +1,13 @@
+area_id,station_nr,country,latitude,longitude,date_min,date_max,record_count,hydrological_relevance,use_in_main_eda
+100205,334,South Sudan; Sudan,9.6,31.6,1998-01-01,2026-05-19,10366,primary_white_nile_near_south_sudan,True
+1505,217,Ethiopia,4.9,36.0,1998-01-01,2026-05-19,10366,"Omo to Lake Turkana, not White Nile path",False
+1541,224,Sudan,12.4,32.8,1998-01-01,2026-05-19,10366,downstream_white_nile_context,False
+1542,225,Sudan,13.9,32.4,1998-01-01,2026-05-19,10366,downstream_white_nile_context,False
+1543,226,Sudan,14.9,32.2,1998-01-01,2026-05-19,10366,downstream_white_nile_context,False
+1544,227,Sudan,13.1,33.9,1998-01-01,2026-05-19,10366,"Blue Nile system, not South Sudan upstream",False
+1545,228,Sudan,13.8,33.6,1998-01-01,2026-05-19,10366,"Blue Nile system, not South Sudan upstream",False
+1547,229,Sudan,15.6,32.4,1998-01-01,2026-05-19,10366,downstream_white_nile_context,False
+1548,230,Sudan,16.6,32.9,1998-01-01,2026-05-19,10366,downstream_main_nile_context,False
+11808,289,Sudan,18.8,32.0,1998-01-01,2026-05-19,10366,downstream_main_nile_context,False
+11842,290,Sudan,21.5,31.0,1998-01-01,2026-05-19,10366,downstream_main_nile_context,False
+28546,293,Sudan,14.9,35.8,1998-01-01,2026-05-19,10366,"Atbara system, not South Sudan upstream",False

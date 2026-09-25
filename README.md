@@ -24,6 +24,7 @@ JBG060-2026/
 |-- processing_data/
 |   |-- loading.py                 # Hydrometeorological data loaders
 |   `-- loading_impact_data.py     # Exposure and impact data loaders
+|-- prediction/                    # Flood forecasting pipeline (Stage 1 + 2); see prediction/README.md
 |-- literature/                    # Supporting papers and data documentation
 |-- raw_data/                      # External download; ignored by Git
 |-- requirements.txt               # Pinned Python dependencies

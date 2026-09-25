@@ -27,8 +27,8 @@
 | admin2 counties | yes | yes 2022-2024 | `admin_ipc.ipynb` |
 | admin3 payams | yes | yes 2022-2024 | `admin3_payams.ipynb` |
 | adminlines / adminpoints | yes | no (drawing helpers only) | skip |
-| ERA5 rain (tp) | yes | yes | `drivers_leadtime.ipynb` |
-| ERA5 runoff (ro) | yes | yes | `extra_datasets.ipynb` |
+| ERA5 rain (tp) | yes | yes | `drivers_leadtime.ipynb`; model input in `prediction/04_era5_basin_features.py` |
+| ERA5 runoff (ro) | yes | yes | `extra_datasets.ipynb`; model input in `prediction/04_era5_basin_features.py` |
 | lakes Victoria/Kyoga | yes | yes | `drivers_leadtime.ipynb` |
 | lake Albert | yes | yes | `extra_datasets.ipynb` |
 | Dartmouth discharge | yes | yes | `extra_datasets.ipynb` |

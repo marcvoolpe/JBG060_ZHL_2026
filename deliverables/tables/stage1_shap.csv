@@ -1,0 +1,64 @@
+lead,family,mean_abs_shap,share,kind,detail
+1,ERA5 rain & runoff,0.9564927156162923,0.339221809212667,family,
+1,Indian Ocean Dipole,0.06333508938908355,0.02246189987486503,family,
+1,current flood extent,0.5086331595444123,0.18038763682067263,family,
+1,lake levels,1.0761231397968818,0.38164894772074315,family,
+1,season,0.21508341006317794,0.07627970637105225,family,
+3,ERA5 rain & runoff,1.2317014868353937,0.32745009690805527,family,
+3,Indian Ocean Dipole,0.11253950572218983,0.02991883378284866,family,
+3,current flood extent,0.735418568662167,0.19551237385864456,family,
+3,lake levels,1.0742272016678318,0.2855852696834567,family,
+3,season,0.6076069684190337,0.16153342576699486,family,
+6,ERA5 rain & runoff,1.0358788629568072,0.2337860239773966,family,
+6,Indian Ocean Dipole,0.11100203537312825,0.02505189113445985,family,
+6,current flood extent,0.9149221991263462,0.20648748693632063,family,
+6,lake levels,1.1945538688702737,0.2695971598772185,family,
+6,season,1.1745275037261118,0.26507743807460427,family,
+9,ERA5 rain & runoff,0.9908960339076833,0.20957701560119876,family,
+9,Indian Ocean Dipole,0.11442347750613002,0.024200854690957185,family,
+9,current flood extent,0.7659491246970356,0.162000175763455,family,
+9,lake levels,1.1857027049044169,0.25077911887907267,family,
+9,season,1.6711045458617848,0.3534428350653164,family,
+18,ERA5 rain & runoff,1.0059638341364923,0.198106704178497,family,
+18,Indian Ocean Dipole,0.09778555605684651,0.01925712790988376,family,
+18,current flood extent,1.1169050736743318,0.21995461021299612,family,
+18,lake levels,1.3185181331274638,0.2596587202140163,family,
+18,season,1.5387163028681652,0.30302283748460673,family,
+27,ERA5 rain & runoff,0.9607652590728719,0.19229236789249218,family,
+27,Indian Ocean Dipole,0.10590089638641312,0.02119553547110126,family,
+27,current flood extent,1.313341994512093,0.26285884048418096,family,
+27,lake levels,1.532569819124513,0.306736194608457,family,
+27,season,1.0837995242117038,0.2169170615437686,family,
+36,ERA5 rain & runoff,1.1440086209748184,0.28281761711229086,family,
+36,Indian Ocean Dipole,0.12807116980998678,0.031661285065824094,family,
+36,current flood extent,0.813970115477078,0.20122670777050958,family,
+36,lake levels,1.7699013142184876,0.4375485140878172,family,
+36,season,0.18908894588450348,0.04674587596355826,family,
+1,"lake levels, by lag",0.36550871053704914,,lake_lag,0-1 month
+1,"lake levels, by lag",0.2384798421688336,,lake_lag,2-4 months
+1,"lake levels, by lag",0.1732537264730519,,lake_lag,6-9 months
+1,"lake levels, by lag",0.2988808606179472,,lake_lag,10-18 months
+3,"lake levels, by lag",0.3058731295889447,,lake_lag,0-1 month
+3,"lake levels, by lag",0.24554614498522684,,lake_lag,2-4 months
+3,"lake levels, by lag",0.13872000094865294,,lake_lag,6-9 months
+3,"lake levels, by lag",0.3840879261450073,,lake_lag,10-18 months
+6,"lake levels, by lag",0.31749731615620425,,lake_lag,0-1 month
+6,"lake levels, by lag",0.3114267976382813,,lake_lag,2-4 months
+6,"lake levels, by lag",0.17548828312368972,,lake_lag,6-9 months
+6,"lake levels, by lag",0.3901414719520984,,lake_lag,10-18 months
+9,"lake levels, by lag",0.37289802561078833,,lake_lag,0-1 month
+9,"lake levels, by lag",0.23975156661505284,,lake_lag,2-4 months
+9,"lake levels, by lag",0.18177195883454256,,lake_lag,6-9 months
+9,"lake levels, by lag",0.3912811538440332,,lake_lag,10-18 months
+18,"lake levels, by lag",0.3865918671863844,,lake_lag,0-1 month
+18,"lake levels, by lag",0.29913397286676563,,lake_lag,2-4 months
+18,"lake levels, by lag",0.11241886914739317,,lake_lag,6-9 months
+18,"lake levels, by lag",0.5203734239269205,,lake_lag,10-18 months
+27,"lake levels, by lag",0.4503658155409124,,lake_lag,0-1 month
+27,"lake levels, by lag",0.15765587667419073,,lake_lag,2-4 months
+27,"lake levels, by lag",0.1688809097707354,,lake_lag,6-9 months
+27,"lake levels, by lag",0.7556672171386745,,lake_lag,10-18 months
+36,"lake levels, by lag",0.5451526733187692,,lake_lag,0-1 month
+36,"lake levels, by lag",0.22368542674258451,,lake_lag,2-4 months
+36,"lake levels, by lag",0.23322084279821154,,lake_lag,6-9 months
+36,"lake levels, by lag",0.7678423713589224,,lake_lag,10-18 months

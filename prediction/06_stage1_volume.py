@@ -48,10 +48,10 @@ Outputs (raw_data/prediction/stage1/, suffix _target-<name> for anomaly and leve
   walkforward.csv      out-of-sample predictions used by Stage 2
   shap_by_feature.csv  mean |SHAP| per feature, lead and fold
 
-Run:  /usr/bin/python3 prediction/06_stage1_volume.py              leads 1-36, ~5 min
-      /usr/bin/python3 prediction/06_stage1_volume.py --leads 3
-      /usr/bin/python3 prediction/06_stage1_volume.py --target anomaly
-      /usr/bin/python3 prediction/06_stage1_volume.py --transformer  adds the transformer, ~1 h on CPU
+Run:  python prediction/06_stage1_volume.py              leads 1-36, ~5 min
+      python prediction/06_stage1_volume.py --leads 3
+      python prediction/06_stage1_volume.py --target anomaly
+      python prediction/06_stage1_volume.py --transformer  adds the transformer, ~1 h on CPU
 """
 
 import argparse

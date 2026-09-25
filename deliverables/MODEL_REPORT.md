@@ -125,7 +125,7 @@ header-includes: |
 ---
 
 <div class="status">
-**Status.** All runs in this report are complete: Stage 1 at seven leads (10 days to 12 months), Stage 2 at leads of 3 and 6 dekads (~1 and ~2 months) on folds 5-8, plus two Stage 2 ablations. The next planned step is calibrating Stage 2's probabilities (section 7.4).
+**Status.** All runs in this report are complete: Stage 1 at seven leads (10 days to 12 months), Stage 2 at leads of 3 and 6 dekads (~1 and ~2 months) on folds 5-8, plus two Stage 2 ablations and the calibration of Stage 2's probabilities (section 5.4).
 </div>
 
 # Summary
@@ -134,7 +134,7 @@ header-includes: |
 - **Approach.** A two-stage design adapted from INFLOW-AI v2.1 and retrained from scratch on our own data. Stage 1 forecasts *how much* of the corridor floods; Stage 2 forecasts *which pixels* (~232 m).
 - **Evaluation.** Every model is compared with two free forecasts: **persistence** ("same as now") and **climatology** ("same as usual for this time of year"). All tests use eight rolling-origin folds: the model only ever trains on years before the ones it is tested on.
 - **Stage 1 result.** Across leads from 10 days to 12 months, no model beats the better free forecast consistently. The best case is gradient boosting at ~3 months, roughly level with it. In the fold trained only on 2000-2019 and tested on the 2020-21 floods, however, it beats both free forecasts at 1-3 months (+6% to +16%).
-- **Stage 2 result.** At ~1 month ahead, the ConvLSTM matches persistence on F1 and is clearly better at **ranking pixels by risk** (PR-AUC 0.18-0.74 against 0.08-0.55, better in all four test periods). At ~2 months ahead the gap widens: it beats persistence on F1 in all four periods (0.16-0.70 against 0.15-0.65) and on PR-AUC by 0.13-0.23 in the three flood-heavy periods. Its probabilities are not yet well calibrated.
+- **Stage 2 result.** At ~1 month ahead, the ConvLSTM matches persistence on F1 and is clearly better at **ranking pixels by risk** (PR-AUC 0.18-0.74 against 0.08-0.55, better in all four test periods). At ~2 months ahead the gap widens: it beats persistence on F1 in all four periods (0.16-0.70 against 0.15-0.65) and on PR-AUC by 0.13-0.23 in the three flood-heavy periods. After a two-number calibration step its probabilities also beat both free forecasts on the Brier score in all eight lead-fold combinations.
 - **What drives the model.** Lake levels are the input the model relies on most, and within the lakes, levels from **10-18 months earlier** carry the most weight at leads of a month or more. That matches the ~9-17 months Lake Victoria water needs to reach the Sudd.
 - **Where next.** Two routes, described in section 7: a **seasonal outlook** (will next season's flood peak be above normal?), and a **short-range, impact-based warning** (which payams have the most people at risk in the next 10-30 days?).
 
@@ -252,7 +252,7 @@ Climatology scores F1 0.04-0.15 in every period and is far behind both.
 
 - On **F1** (a yes/no forecast at one threshold) the ConvLSTM is level with persistence.
 - On **PR-AUC** it is better in all four periods, by 0.09 to 0.19. It is good at telling *which* pixels are more at risk than others, which persistence cannot do. For planning, that is what allows areas to be ranked by priority.
-- On the **Brier score** (quality of the probability itself) it is worse: a "60%" from the model does not yet mean 60%. This can be corrected with a calibration step fitted on the validation years, without retraining. It is the next planned step.
+- On the **Brier score** (quality of the probability itself) it is worse: a "60%" from the model does not yet mean 60%. This can be corrected with a calibration step fitted on the validation years, without retraining. Section 5.4 does this.
 - Results are almost the same on unusual pixels. On the few recurring pixels, the ConvLSTM is better on PR-AUC and Brier.
 
 Lead 6 (~2 months), all flood-domain pixels:
@@ -266,7 +266,7 @@ Lead 6 (~2 months), all flood-domain pixels:
 
 - Two months ahead, persistence weakens faster than the ConvLSTM. The model now wins on **F1 in all four periods** (by 0.01 to 0.05) and on **PR-AUC** by 0.13 to 0.23 in the three periods with large floods.
 - 2018-19 is the exception on PR-AUC: flooding was small, and climatology (0.073) ranks pixels slightly better than the model (0.065).
-- The Brier score is still worse than persistence, for the same reason as at lead 3: the probabilities need calibrating.
+- The Brier score is still worse than persistence, for the same reason as at lead 3: the raw probabilities are too high (section 5.4 fixes this).
 - On unusual pixels the pattern is the same (F1 0.09 / 0.26 / 0.65 / 0.70 against 0.08 / 0.22 / 0.63 / 0.65). On recurring pixels the ConvLSTM also beats persistence on Brier in every period.
 
 **Do the extra inputs help?** Two ablations, lead 3, tested on 2024-25 (one fold, one seed each):
@@ -281,6 +281,30 @@ Lead 6 (~2 months), all flood-domain pixels:
 - **ERA5 rainfall and runoff help a little.** Without them all three scores get worse, and F1 drops almost to persistence.
 - **Stage 1's forecast does not help Stage 2 at this lead.** Removing it leaves F1 unchanged and PR-AUC slightly higher. This is consistent with Stage 1 not beating the free forecasts (section 5.1): the flood maps Stage 2 already reads contain what Stage 1 knows about volume.
 - Both differences are small and come from one test period and one seed, so they point in a direction rather than settle the question.
+
+## 5.4 Stage 2 calibration: making "60%" mean 60%
+
+The raw ConvLSTM's probabilities are too high on purpose: training uses a focal loss (which rewards ranking pixels, not honest percentages) and batches that are half flooded patches, far more water than the real 0.1-4% base rate. So we added a **calibration** step (`prediction/11_calibrate_stage2.py`), without retraining. For each run it fits two numbers on the validation years (Platt scaling: a logistic curve on the model's own output) and applies them to the test years. The curve only rises, so the order of pixels, and therefore F1, is unchanged. Only the probability values move.
+
+![Reliability of Stage 2 before and after calibration, folds 5-8 pooled. On the dotted diagonal, a forecast of p floods a share p of the time.](figures/stage2_reliability.png)
+
+Brier score, all flood-domain pixels (lower is better). Skill = 1 - Brier / Brier of the better free forecast:
+
+| lead | test years | raw | calibrated | persistence | climatology | skill |
+|---|---|---|---|---|---|---|
+| 3 | 2018-19 | 0.032 | **0.0025** | 0.0039 | 0.0028 | +0.10 |
+| 3 | 2020-21 | 0.040 | **0.013** | 0.016 | 0.015 | +0.14 |
+| 3 | 2022-23 | 0.072 | **0.024** | 0.026 | 0.049 | +0.08 |
+| 3 | 2024-25 | 0.050 | **0.018** | 0.024 | 0.044 | +0.26 |
+| 6 | 2018-19 | 0.027 | **0.0027** | 0.0045 | 0.0028 | +0.05 |
+| 6 | 2020-21 | 0.049 | **0.015** | 0.022 | 0.015 | +0.01 |
+| 6 | 2022-23 | 0.085 | **0.032** | 0.036 | 0.049 | +0.11 |
+| 6 | 2024-25 | 0.077 | **0.022** | 0.031 | 0.044 | +0.31 |
+
+- After calibration the ConvLSTM **beats both free forecasts on Brier in all eight** lead-fold combinations. Brier was the only score it lost before, so Stage 2 now beats persistence on every score at ~2 months, and on PR-AUC and Brier at ~1 month.
+- The gain is smallest in the crisis fold (2020-21, +0.01 at lead 6) and largest in 2024-25 (+0.26 / +0.31).
+- The reliability curves are much closer to the diagonal, but the calibrated model still **under-forecasts in the 10-50% range**: pixels given 20-35% flooded 45-70% of the time. The two validation years are drier than most test years, and a calibrator can only be as right as the years it learnt from. Read mid-range probabilities as a lower bound.
+- PR-AUC after calibration differs from the raw value by up to 0.03 (0.034 in 2020-21 at lead 6). This comes from how it is computed (a 200-bin probability histogram; calibration squeezes most pixels into the lowest bins), not from a change in ranking. F1 is identical, which confirms the order is kept. PR-AUC in section 5.3 is from the raw probabilities.
 
 # 6. What the data tell us
 
@@ -310,7 +334,7 @@ This is the format of East African seasonal outlooks (ICPAC's GHACOF) and of ant
 
 At leads of 1-3 dekads, Stage 2 is already competitive and ranks pixels well, and at ~2 months it beats persistence outright. The step that would make it useful on the ground is to turn pixel probabilities into **people and places**:
 
-1. **Calibrate** Stage 2's probabilities on the validation years, so that its percentages can be used as probabilities.
+1. **Calibrated** probabilities (section 5.4, done): Stage 2's percentages can now be used as probabilities, with the caveat that they run low in the 10-50% range.
 2. **Add forecast rainfall.** Today the model only knows past rainfall. Adding the ECMWF 15-day ensemble forecast, or GloFAS river-flow forecasts, gives it information about the coming weeks.
 3. **Aggregate to exposure.** Combine the probability map with WorldPop population and the payam (admin-3) boundaries already in this repository, giving *expected people in flooded pixels per payam*, with uncertainty.
 4. **Output:** a ranked list and map of the payams most at risk in the next 10-30 days, updated every dekad. Scored on whether the top-ranked payams are the ones that flood (hit rate in the top 10), which is what matters to a team deciding where to preposition supplies.
@@ -332,7 +356,7 @@ GloFAS and GSWE were ruled out earlier as *model backbones*. Here they would onl
 
 ## 7.4 Planned steps
 
-1. Calibrate Stage 2's probabilities on the validation years (no retraining needed). The lead-6 runs and ablations are done (section 5.3).
+1. Done: Stage 2 lead-6 runs, ablations (section 5.3) and calibration (section 5.4).
 2. Agree the question for the next round (Route A, Route B, or both) and **write down the targets, thresholds and scores before running it**, so that results cannot steer the method.
 3. Download the new data for the chosen route.
 4. Build the seasonal model (A) and/or the payam ranking (B).
@@ -352,10 +376,11 @@ All code is in `prediction/`, with a step-by-step guide and glossary in `predict
 | 7-8 | `07_dense_arrays.py`, `08_train_stage2.py` | patches and Stage 2 training |
 | 9 | `09_baselines.py` | persistence and climatology per pixel |
 | 10 | `10_evaluate.py` | the tables and figures in this report |
+| 11 | `11_calibrate_stage2.py` | calibrated Stage 2 probabilities (then step 10 again) |
 
-- Run with `/usr/bin/python3` after `pip install -r requirements.txt`. `prediction/test_pipeline.py` checks the pipeline in a few seconds.
+- Runs on Windows, macOS and Linux with Python 3.12 or 3.13 after `pip install -r requirements.txt` (TensorFlow has no Python 3.14 build yet, and none for Intel Macs). `prediction/test_pipeline.py` checks the pipeline in a few seconds. Setup and two ways to reproduce (quick from shared intermediate files, or full rebuild) are in `prediction/README.md`. A fresh clone with a clean environment reproduced the Stage 1 results exactly.
 - Data and intermediate files (~3.6 GB) live in `raw_data/` and are not tracked by git.
-- Result tables are in `deliverables/tables/` (`stage1_skill.csv`, `stage2_skill.csv`, `stage1_shap.csv`, `skill_summary.csv`).
+- Result tables are in `deliverables/tables/` (`stage1_skill.csv`, `stage2_skill.csv`, `stage2_calibration.csv`, `stage1_shap.csv`, `skill_summary.csv`).
 - This page is built from `deliverables/MODEL_REPORT.md` with pandoc (command at the end of `prediction/README.md`).
 
 # 9. Limitations

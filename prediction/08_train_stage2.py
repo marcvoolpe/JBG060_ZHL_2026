@@ -43,7 +43,7 @@ Evaluation always uses every test pair, unweighted.
 
 Outputs (raw_data/prediction/stage2/): model .keras, metrics CSV, training log JSON.
 
-Run:  /usr/bin/python3 prediction/08_train_stage2.py --lead 3 --fold 8
+Run:  python prediction/08_train_stage2.py --lead 3 --fold 8
       ... --no-stage1   (ablation: drop the Stage 1 channel)
       ... --no-era5     (ablation: drop the rain and runoff channels)
 

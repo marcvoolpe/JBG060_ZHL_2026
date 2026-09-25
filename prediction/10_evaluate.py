@@ -17,9 +17,10 @@ model improves on it: 1 = perfect, 0 = no better than the best free
 forecast, negative = worse. Beating only the weaker baseline is not skill -
 climatology is easy to beat at short leads, persistence at long ones.
 
-Run: /usr/bin/python3 prediction/10_evaluate.py
+Run: python prediction/10_evaluate.py
 """
 
+import json
 import sys
 from importlib import import_module
 from pathlib import Path
@@ -46,7 +47,7 @@ BASELINE_STYLE = {"persistence": "--", "climatology": ":"}
 BASELINES = ("persistence", "climatology", "seasonal_persistence")
 LABELS = {"elasticnet": "ElasticNet", "gbt": "Gradient boosting", "transformer": "Transformer (INFLOW-style)",
           "convlstm": "ConvLSTM", "convlstm_no-stage1": "ConvLSTM, no Stage 1 input",
-          "convlstm_no-era5": "ConvLSTM, no ERA5 input",
+          "convlstm_no-era5": "ConvLSTM, no ERA5 input", "convlstm-calibrated": "ConvLSTM, calibrated",
           "persistence": "Persistence", "climatology": "Climatology"}
 
 
@@ -246,7 +247,9 @@ def stage2_summary(m):
 def stage2_figure(m):
     a = m[m["group"] == "all"]
     fig, axes = plt.subplots(1, 2, figsize=(11, 4.2), facecolor=SURFACE)
-    runs = sorted(set(a["model"]) - {"persistence", "climatology"})
+    # calibration (step 11) keeps the order of pixels, so F1 and PR-AUC match the
+    # raw ConvLSTM; it is shown in the Brier table and reliability figure instead
+    runs = sorted(set(a["model"]) - {"persistence", "climatology", "convlstm-calibrated"})
     for ax, metric, name in zip(axes, ("f1", "pr_auc"), ("F1 (at the threshold tuned on validation)", "PR-AUC")):
         folds = sorted(set(a.loc[a["model"].isin(runs), "fold"])) or sorted(set(a["fold"]))
         sub = a[a["fold"].isin(folds)]
@@ -268,6 +271,61 @@ def stage2_figure(m):
     plt.close(fig)
 
 
+def stage2_calibration(m):
+    """Brier score (quality of the probabilities) before and after step 11,
+    against both free forecasts, per lead and fold. Lower is better."""
+    a = m[m["group"] == "all"]
+    cal = a[a["model"] == "convlstm-calibrated"]
+    rows = []
+    for _, r in cal.iterrows():
+        here = a[(a["lead"] == r["lead"]) & (a["fold"] == r["fold"])].set_index("model")["brier"]
+        best = here[["persistence", "climatology"]].min()
+        rows.append({"lead": r["lead"], "fold": r["fold"], "test_years": r["test_years"],
+                     "brier_raw": here["convlstm"], "brier_calibrated": here["convlstm-calibrated"],
+                     "brier_persistence": here["persistence"], "brier_climatology": here["climatology"],
+                     # Brier skill score: 1 - Brier / Brier of the better free forecast; > 0 means better
+                     "bss_vs_best_baseline": 1 - here["convlstm-calibrated"] / best})
+    t = pd.DataFrame(rows)
+    t.to_csv(C.TABLES / "stage2_calibration.csv", index=False)
+    return t
+
+
+def reliability_figure():
+    """Reliability diagram: when the model says p, how often does the pixel flood?
+    Built from the probability histograms step 11 stores (all folds pooled per lead)."""
+    files = sorted((C.OUT / "stage2").glob("calib_L*_f*.json"))
+    if not files:
+        return
+    logs = [json.loads(f.read_text()) for f in files]
+    leads = sorted({int(f.stem.split("_")[1][1:]) for f in files})
+    fig, axes = plt.subplots(1, len(leads), figsize=(5.2 * len(leads), 4.4), facecolor=SURFACE, squeeze=False)
+    edges = np.linspace(0, 1, 11)
+    for ax, lead in zip(axes[0], leads):
+        mine = [g for g, f in zip(logs, files) if f.stem.startswith(f"calib_L{lead}_")]
+        n_bins = mine[0]["bins"]
+        centre = (np.arange(n_bins) + 0.5) / n_bins
+        ax.plot([0, 1], [0, 1], color=GREY, linewidth=1, linestyle=":")
+        for kind, colour, name in (("raw", "#eb6834", "ConvLSTM, raw"), ("cal", "#2a78d6", "ConvLSTM, calibrated")):
+            pos = np.sum([g[f"{kind}_pos"] for g in mine], axis=0)
+            neg = np.sum([g[f"{kind}_neg"] for g in mine], axis=0)
+            idx = np.digitize(centre, edges[1:-1])          # merge the 200 fine bins into 10
+            p_sum = np.bincount(idx, (pos + neg) * centre, 10)
+            n = np.bincount(idx, pos + neg, 10)
+            hit = np.bincount(idx, pos, 10)
+            ok = n > 1000                                   # skip nearly empty bins
+            ax.plot(p_sum[ok] / n[ok], hit[ok] / n[ok], color=colour, linewidth=2, marker="o",
+                    markersize=6, markeredgecolor=SURFACE, label=name)
+        ax.set(xlim=(0, 1), ylim=(0, 1), xlabel="forecast probability", ylabel="observed share flooded")
+        ax.set_title(f"lead {lead} dekads (~{lead * 10} days), folds pooled", loc="left", fontsize=11, color=INK)
+        ax.spines[["top", "right"]].set_visible(False)
+        ax.legend(frameon=False, fontsize=9, loc="upper left")
+    fig.suptitle("Stage 2 reliability: on the diagonal, \"60%\" means flooded 60% of the time",
+                 x=0.01, ha="left", fontsize=12, color=INK)
+    fig.tight_layout()
+    fig.savefig(C.FIGURES / "stage2_reliability.png", dpi=160, facecolor=SURFACE)
+    plt.close(fig)
+
+
 # --------------------------------------------------------------------------
 
 def main() -> None:
@@ -284,6 +342,9 @@ def main() -> None:
         stage2_figure(m2)
         if (m2["model"].str.startswith("convlstm")).any():
             summaries.append(stage2_summary(m2))
+        if (m2["model"] == "convlstm-calibrated").any():
+            cal = stage2_calibration(m2)
+            reliability_figure()
 
     summary = pd.concat(summaries, ignore_index=True)
     summary.to_csv(C.TABLES / "skill_summary.csv", index=False)
@@ -297,6 +358,9 @@ def main() -> None:
         print("\n=== Stage 2 binary F1 by lead, all pixels, median over folds ===")
         a = m2[m2["group"] == "all"]
         print(a.pivot_table(index="lead", columns="model", values="f1", aggfunc="median").round(3).to_string())
+    if m2 is not None and (m2["model"] == "convlstm-calibrated").any():
+        print("\n=== Stage 2 Brier score (lower is better), raw vs calibrated vs free forecasts ===")
+        print(cal.round(4).to_string(index=False))
     print("\nwrote tables to", C.TABLES.relative_to(C.REPO), "and figures to", C.FIGURES.relative_to(C.REPO))
 
 

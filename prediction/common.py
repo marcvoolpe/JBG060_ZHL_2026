@@ -3,7 +3,7 @@ Shared settings and helpers for the prediction scripts: paths, the dekad
 time index, the train/test folds, seeding and scoring. Every script imports
 these, so all of them use the same definitions.
 
-Run the scripts with /usr/bin/python3.
+Run the scripts with the Python from requirements.txt (3.12 or 3.13), from the repo root.
 
 Terms (more in README.md):
   dekad       10-day period; 3 per month (1-10, 11-20, 21-end), 36 per year

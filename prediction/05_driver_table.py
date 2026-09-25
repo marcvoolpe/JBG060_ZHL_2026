@@ -35,7 +35,7 @@ Lake Albert's record only starts in July 2002, so its early rows are empty.
 Output: raw_data/prediction/driver_table.csv
 ~1 min.
 
-Run: /usr/bin/python3 prediction/05_driver_table.py
+Run: python prediction/05_driver_table.py
 """
 
 import contextlib

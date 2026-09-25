@@ -35,7 +35,7 @@ Two outputs:
 
 ~10-15 min.
 
-Run: /usr/bin/python3 prediction/04_era5_basin_features.py
+Run: python prediction/04_era5_basin_features.py
 """
 
 import sys

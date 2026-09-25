@@ -29,7 +29,7 @@ Outputs (in raw_data/prediction/):
 
 ~5 min.
 
-Run: /usr/bin/python3 prediction/07_dense_arrays.py
+Run: python prediction/07_dense_arrays.py
 """
 
 import sys

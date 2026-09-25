@@ -21,7 +21,7 @@ Outputs (in raw_data/prediction/):
 
 Slow (~1 h: reads every flood mask 2000-2025).
 
-Run: /usr/bin/python3 prediction/01_domain_mask.py
+Run: python prediction/01_domain_mask.py
 """
 
 import sys

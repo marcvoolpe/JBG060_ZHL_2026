@@ -13,12 +13,40 @@ Stage 1's forecast is one of Stage 2's inputs.
 
 ## Setup
 
-- Python: run everything with `/usr/bin/python3`, after `pip install -r requirements.txt`. On the dev laptop the pyenv `python3` lacks tensorflow and xarray.
-- GPU (step 8): `export LD_LIBRARY_PATH=~/.local/share/nvidia-cu12-shim/lib:$LD_LIBRARY_PATH`. Without it step 8 runs on CPU, about 10x slower.
-- Data: everything is read from and written to `raw_data/` (not tracked by git):
-  - inputs: the shared data download, plus `raw_data/DMI/dmi.had.long.data` from [NOAA PSL](https://psl.noaa.gov/gcos_wgsp/Timeseries/Data/dmi.had.long.data)
-  - intermediate files: `raw_data/prediction/` (about 3.6 GB)
-- Checks: `/usr/bin/python3 prediction/test_pipeline.py` (a few seconds).
+Works on Windows, macOS and Linux. Commands below are run from the repository root with the virtual environment from the main `README.md` active, so `python` is that environment's Python (3.12 or 3.13).
+
+1. **Install:** `python -m pip install -r requirements.txt` (main `README.md`, step 2).
+2. **Shared data:** unzip the SURFdrive download into `raw_data/` (main `README.md`). The pipeline uses `flood_masks/`, `rainfall and runoff/`, `Water levels lakes/` and `Administrative boundaries/`.
+3. **One extra file:** save the NOAA Indian Ocean Dipole series as `raw_data/DMI/dmi.had.long.data`. Download it from [NOAA PSL](https://psl.noaa.gov/gcos_wgsp/Timeseries/Data/dmi.had.long.data) (right-click, save as; keep the file name exactly).
+4. **Check:** `python prediction/test_pipeline.py`. Tests that need files you have not built yet are reported as `skip`, not as failures.
+
+Everything the scripts write goes to `raw_data/prediction/` (about 3.6 GB, not tracked by git) and to `deliverables/tables/` and `deliverables/figures/`.
+
+### Two ways to reproduce the results
+
+**A. Quick check (minutes).** Ask Matteo for his `raw_data/prediction/` folder (it contains the intermediate files and the trained Stage 2 models), put it in your `raw_data/`, then:
+
+```
+python prediction/test_pipeline.py
+python prediction/10_evaluate.py
+```
+
+Step 10 rebuilds every table and figure in the report from the saved results, so they should match the repository exactly. To also rerun a model from scratch, Stage 1 (`python prediction/06_stage1_volume.py`) takes about 5 minutes on any laptop.
+
+**B. Full rebuild (a day on a laptop CPU).** Run steps 1 to 11 below in order. Steps 1-7 and 9-10 run on any machine; steps 1 and 2 take about an hour each. Steps 8 and 11 use TensorFlow:
+
+| your machine | steps 8 and 11 |
+|---|---|
+| Linux with NVIDIA GPU | GPU, ~15 min per Stage 2 run |
+| Windows | CPU only (TensorFlow dropped native Windows GPU support), roughly 10x slower, i.e. a few hours per run. GPU is possible through WSL2. |
+| Mac with Apple silicon (M1-M4) | CPU, roughly 10x slower. |
+| Mac with Intel processor | TensorFlow does not install; skip 8 and 11, use route A for Stage 2. |
+
+Stage 2 numbers from a retrain on another machine will be close but not identical: GPU and CPU arithmetic differ in the last digits, and that changes which training pairs are drawn. Everything else (steps 1-7, 9, 10, and Stage 1) is deterministic.
+
+About 16 GB RAM is comfortable; steps 1-2 are the heaviest.
+
+*Matteo's laptop only:* the system Python is `/usr/bin/python3`, and the GPU needs `LD_LIBRARY_PATH=~/.local/share/nvidia-cu12-shim/lib`.
 
 ## Steps
 
@@ -34,8 +62,11 @@ Stage 1's forecast is one of Stage 2's inputs.
 | 8 | `08_train_stage2.py --lead 3 6 --fold 5 6 7 8` | Stage 2 models, one per lead and fold | ~15 min each |
 | 9 | `09_baselines.py` | persistence and climatology per pixel | ~5 min |
 | 10 | `10_evaluate.py` | tables in `deliverables/tables/`, figures in `deliverables/figures/` | seconds |
+| 11 | `11_calibrate_stage2.py --lead 3 6 --fold 5 6 7 8` | calibrated Stage 2 probabilities (no retraining); then run step 10 again | ~8 min each |
 
 Step 8 skips runs that already have results, so it can be restarted after an interruption. Ablations: add `--no-stage1` or `--no-era5`.
+
+Step 11 was added after the sweep, so it runs after step 8 and before a final run of step 10, which then also writes `tables/stage2_calibration.csv` and `figures/stage2_reliability.png`. It refuses to run if the reloaded model does not pick the same decision threshold as in training (a check that the inputs are rebuilt exactly).
 
 Each script starts with a short description. `common.py` holds the shared definitions (paths, time index, folds, scores).
 
@@ -76,6 +107,8 @@ Each script starts with a short description. `common.py` holds the shared defini
 **Scores**: precision (share of forecast floods that happened), recall (share of floods that were forecast), F1 (combines the two), CSI (hits / (hits + misses + false alarms)), PR-AUC (quality across all thresholds), Brier (squared error of the probability; lower is better).
 
 **SHAP**: how much each input moved each forecast up or down. Exact for tree models (TreeSHAP); summed per driver and per lag.
+
+**Calibration**: making the probabilities honest, so that of all pixels given "60%", about 60% flood. Step 11 fits two numbers (Platt scaling) on the validation years; it changes the probability values but not their order, so F1 and PR-AUC stay the same and the Brier score moves. A **reliability diagram** plots forecast probability against how often the pixel actually flooded; perfect is the diagonal.
 
 ## Limitations
 

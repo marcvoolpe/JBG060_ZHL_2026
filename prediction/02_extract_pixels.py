@@ -17,7 +17,7 @@ Outputs: raw_data/prediction/pixels_by_year/corridor_pixels_{year}.parquet
 
 Slow (~1 h).
 
-Run: /usr/bin/python3 prediction/02_extract_pixels.py
+Run: python prediction/02_extract_pixels.py
 """
 
 import sys

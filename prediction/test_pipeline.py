@@ -1,7 +1,7 @@
 """
 Quick checks on the pipeline (a few seconds):
 
-    /usr/bin/python3 prediction/test_pipeline.py
+    python prediction/test_pipeline.py
 
 Checks that test data never reaches training, that the forecast target is
 really L dekads after the last input, that Stage 1 features use training

@@ -38,7 +38,8 @@ Both that generated directory and `raw_data/` are excluded from Git.
 ## Requirements and installation
 
 - Git
-- Python 3.12 or newer
+- Python **3.12 or 3.13**. Not 3.14 yet: TensorFlow (used by `prediction/`) has no 3.14 build, so `pip install -r requirements.txt` fails on it.
+  On an Intel Mac TensorFlow cannot be installed at all; everything except `prediction/` steps 8 and 11 still works (see `prediction/README.md`).
 
 All Python dependencies and their versions are listed in [`requirements.txt`](requirements.txt).
 
@@ -60,7 +61,7 @@ cd JBG060_ZHL_2026
 Windows PowerShell:
 
 ```powershell
-py -m venv .venv
+py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
@@ -69,7 +70,7 @@ python -m pip install -r requirements.txt
 macOS or Linux:
 
 ```bash
-python3 -m venv .venv
+python3.12 -m venv .venv   # or python3.13
 source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
@@ -78,7 +79,7 @@ python -m pip install -r requirements.txt
 Conda can be used instead:
 
 ```bash
-conda create -n jbg060 "python>=3.12"
+conda create -n jbg060 "python=3.12"
 conda activate jbg060
 python -m pip install -r requirements.txt
 ```
@@ -88,6 +89,8 @@ python -m pip install -r requirements.txt
 The data is deliberately **not stored in this Git repository**. Download it separately from SURFdrive. The SURFdrive link and Password is shared in the description of the assignment on Canvas.
 
 Put the downloaded data in the `raw_data` folder.
+
+For the flood forecasting pipeline (`prediction/`) you also need one small file that is not in the SURFdrive download, the NOAA Indian Ocean Dipole series, saved as `raw_data/DMI/dmi.had.long.data`. See **Setup** in [`prediction/README.md`](prediction/README.md), which also explains how to reproduce the results quickly (with Matteo's intermediate files) or fully (from scratch).
 
 The administrative-boundary loader expects the level 1 and level 2 GeoJSON files at:
 

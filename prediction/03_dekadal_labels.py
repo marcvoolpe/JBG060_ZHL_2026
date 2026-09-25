@@ -20,7 +20,7 @@ Dry pixel-dekads are not stored: absent means dry. That keeps the file at
 Output: raw_data/prediction/dekadal_labels.parquet (gx, gy, year, dekad, label)
 ~5 min.
 
-Run: /usr/bin/python3 prediction/03_dekadal_labels.py
+Run: python prediction/03_dekadal_labels.py
 """
 
 import sys

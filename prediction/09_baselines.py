@@ -22,7 +22,7 @@ curve has a complete baseline even where Stage 2 was not run.
 Output: raw_data/prediction/stage2/metrics_baselines.csv
 ~5-10 min.
 
-Run: /usr/bin/python3 prediction/09_baselines.py
+Run: python prediction/09_baselines.py
 """
 
 import sys

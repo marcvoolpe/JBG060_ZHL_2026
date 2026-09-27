@@ -348,7 +348,7 @@ This route builds on work already done (Stage 2, WorldPop and payam analyses in 
 | Seasonal rainfall forecasts (C3S / ECMWF SEAS5) | information about future rainfall, the missing piece for Route A | ~1 day |
 | GloFAS river-flow reanalysis and forecasts | White Nile inflow upstream of the Sudd (e.g. Mongalla) and the Sobat, which we do not measure now | ~0.5 day |
 | ERA5-Land soil moisture | how saturated the ground already is (INFLOW uses it) | ~0.5 day |
-| JRC Global Surface Water, monthly 1984-2021 | 16 more years of flood history, i.e. more unusual years to learn from | 1-2 days |
+| JRC Global Surface Water, monthly 1984-2021 | 16 more years of flood history, i.e. more unusual years to learn from | downloaded (`raw_data/JRC_GSW/`) |
 | ECMWF 15-day ensemble | forecast rainfall for Route B | ~1 day |
 | Sentinel-1 radar | sees through clouds, for better labels | later |
 
@@ -361,6 +361,14 @@ GloFAS and GSWE were ruled out earlier as *model backbones*. Here they would onl
 3. Download the new data for the chosen route.
 4. Build the seasonal model (A) and/or the payam ranking (B).
 5. Report both the results above and the new ones.
+
+**Training on the post-2020 regime.** Since 2020 the corridor floods on a different scale, so a model trained on 2000-2025 averages over two different states. Training only on 2020-2025 would leave about 216 dekads, 5-6 flood seasons and one test fold. It would also drop the only example of a regime starting: the Stage 1 result in the 2020-21 fold came from a model trained on 2000-2019 alone. The planned alternative is **recency weighting**:
+
+- Keep all years in training, but weight each year so that the weight halves every *N* years, with *N* chosen on the validation years only.
+- Try it on Stage 1 first (minutes on a CPU). Fine-tune Stage 2 on 2020 onwards only if Stage 1 improves.
+- Add a third reference forecast, **recent climatology** (mean of the last 5 years at the same dekad), and report the 2020-2025 test years separately. A model that leans on recent years has to beat a reference that does the same.
+
+Synthetic flood years are not planned: generated from the same few crisis years, they add no information. Real extra history (JRC Global Surface Water back to 1984, and the 1961-64 Lake Victoria rise as a second regime change) is the better way to widen the record.
 
 A possible outcome is that beyond one to two months nothing beats climatology except in years when Lake Victoria is very high. For this project that is still a useful result: it states what an early-action trigger can and cannot rely on.
 

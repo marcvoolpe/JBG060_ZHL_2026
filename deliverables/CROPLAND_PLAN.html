@@ -253,11 +253,11 @@ footer{padding-block:30px 50px; border-top:1px solid var(--line); color:var(--mu
         <tr><th>Counties</th><td>North, East, South, West, Centre</td></tr>
         <tr><th>Area</th><td class="num">≈ 3 million ha</td></tr>
         <tr><th>River</th><td>Lol (floods Jul–Oct)</td></tr>
-        <tr><th>Season</th><td>one rainy season, roughly May–Oct</td></tr>
+        <tr><th>Season</th><td>one rainy season; sowing done by late May, sorghum harvest Sep–Oct (FEWS NET)</td></tr>
         <tr><th>Crops</th><td>sorghum, groundnut, sesame, maize, rice scheme</td></tr>
         <tr><th>Satellite tiles</th><td>MODIS h20v08 · Sentinel-2 35PQ/35PR (check)</td></tr>
       </table></div>
-      <p class="small muted">Crop calendar and tiles are to confirm in week 1 (FEWS NET seasonal calendar, Sentinel-2 tile grid).</p>
+      <p class="small muted">Area from our county boundaries: 3.09 M ha (Aweil counties), 1.40 M ha (Bor South). Crop calendar: FEWS NET price bulletins and livelihood-zone report. Sentinel-2 tiles still to confirm.</p>
     </div>
   </div>
 </div></section>
@@ -371,9 +371,9 @@ footer{padding-block:30px 50px; border-top:1px solid var(--line); color:var(--mu
   <div class="tbl"><table>
     <thead><tr><th>What the labeller sees</th><th>What the computer measures</th><th>Source</th></tr></thead>
     <tbody>
-      <tr><td>Bare or tilled soil before sowing</td><td>lowest NDVI and highest bare-soil index in May–June</td><td>Sentinel-2</td></tr>
+      <tr><td>Bare or tilled soil before sowing</td><td>lowest NDVI and highest bare-soil index in April–May</td><td>Sentinel-2</td></tr>
       <tr><td>Green-up</td><td>NDVI rise July–August</td><td>Sentinel-2, Sentinel-1 VH in cloudy months</td></tr>
-      <tr><td>Harvest while the grass stays green</td><td>NDVI drop Sept–Nov compared with the surrounding 500 m</td><td>Sentinel-2</td></tr>
+      <tr><td>Harvest while the grass stays green</td><td>NDVI drop Sept–Oct compared with the surrounding 500 m</td><td>Sentinel-2</td></tr>
       <tr><td>Regular plots with edges</td><td>local texture / edge density at 10 m</td><td>Sentinel-2</td></tr>
       <tr><td>Homesteads nearby</td><td>distance to buildings</td><td>Google Open Buildings</td></tr>
       <tr><td>Trees, water, burn scars (not crop)</td><td>high dry-season NDVI; permanent water; burned area</td><td>Sentinel-2; JRC Global Surface Water; MODIS MCD64A1</td></tr>
@@ -390,8 +390,8 @@ footer{padding-block:30px 50px; border-top:1px solid var(--line); color:var(--mu
   <pre><span class="c"># rules.json, illustrative. Thresholds t1..t3 are set on the calibration points.</span>
 not crop  if  permanent_water_share &gt; 0.5
 not crop  if  ndvi_dry_season_p10  &gt; 0.45            <span class="c"># trees and evergreen shrubs</span>
-not crop  if  burned_nov_feb and not bare_may_jun
-crop      if  bare_soil_may_jun   &gt; t1
+not crop  if  burned_nov_feb and not bare_apr_may
+crop      if  bare_soil_apr_may   &gt; t1
           and ndvi_rise_jul_aug   &gt; t2
           and harvest_drop_vs_500m &gt; t3
           and dist_to_buildings    &lt; 2000 m           <span class="c"># optional, test with and without</span>
@@ -445,7 +445,7 @@ otherwise not crop</pre>
   <div class="tbl"><table class="wide">
     <thead><tr><th>Problem</th><th>Why it matters</th><th>What we do</th></tr></thead>
     <tbody>
-      <tr><td><b>Clouds, June–September</b></td><td>Optical images are missing exactly in the growing and flood season.</td><td>Mask clouds with Cloud Score+; build monthly medians; fill empty months from neighbours. Put the key features in clearer months (bare soil May–June, harvest Oct–Nov). Use Sentinel-1 radar for July–September. Record the number of clear images per month.</td></tr>
+      <tr><td><b>Clouds, June–September</b></td><td>Optical images are missing exactly in the growing and flood season.</td><td>Mask clouds with Cloud Score+; build monthly medians; fill empty months from neighbours. Put the key features in clearer months (bare soil April–May, harvest September–October, at the edge of the cloudy season). Use Sentinel-1 radar for July–September. Record the number of clear images per month.</td></tr>
       <tr><td><b>Burning</b> (Nov–Feb)</td><td>Burned grass looks like bare, tilled soil.</td><td>Burn-scar layer + a "burn scar" cue for labellers; a rule that bare soil after a burn is not tillage.</td></tr>
       <tr><td><b>Small fields, mixed pixels</b></td><td>A 10 m pixel can be half field, half grass.</td><td>Label the 10 m box around the point; allow a "partly crop" flag; report how often it happens.</td></tr>
       <tr><td><b>Fallow and shifting cultivation</b></td><td>Changes the answer a lot: GLAD counts fallow, WorldCover doesn't.</td><td>Decide the definition in week 1 (proposal: crop grown in 2022; fallow is not crop). Compare maps with that in mind.</td></tr>
@@ -523,9 +523,9 @@ aoi: south_sudan            <span class="c"># map extent</span>
 check_areas: [aweil_5_counties, bor_south]
 rules: rules_2022-10-11.json
 season:
-  bare:    [May, Jun]
-  greenup: [Jul, Aug]
-  harvest: [Sep, Nov]
+  bare:    [Apr, May]
+  greenup: [Jun, Aug]
+  harvest: [Sep, Oct]
 cloud_score_min: 0.6
 export_scale_m: 10
 seed: 42</pre>
@@ -611,7 +611,7 @@ seed: 42</pre>
   <h2>Four weeks</h2>
   <div class="gantt"><div class="gt">
     <div class="h">Work</div><div class="h">Wk 1 · 28 Sep–4 Oct</div><div class="h">Wk 2 · 5–11 Oct</div><div class="h">Wk 3 · 12–18 Oct</div><div class="h">Wk 4 · 19–25 Oct</div>
-    <div class="lane">Checks &amp; accounts</div><div class="span"><i>6 checks, Earth Engine, definition</i></div><div></div><div></div><div></div>
+    <div class="lane">Checks &amp; accounts</div><div class="span"><i>pilot labels (Twic), Earth Engine, definition</i></div><div></div><div></div><div></div>
     <div class="lane">Sample &amp; labels</div><div class="span"><i class="c">agreement map, sample, pilot 60</i></div><div class="span"><i class="c">label 450 × 2</i></div><div></div><div></div>
     <div class="lane">Rules</div><div></div><div class="span"><i>cue sheet → rules, freeze</i></div><div></div><div></div>
     <div class="lane">Map &amp; comparison</div><div></div><div></div><div class="span"><i>national map, score 8 maps, area ± CI</i></div><div></div>
@@ -648,11 +648,11 @@ seed: 42</pre>
   <p class="prose">Ordered by risk. The first one decides whether the design holds. Ticks are saved in this browser only.</p>
   <ul class="check" id="checks">
     <li><input type="checkbox" id="c1"><label for="c1"><b>Can a person tell crop from grass in Aweil and Bor South?</b> One of us labels 30 random points from Sentinel-2 2022, Google Earth history and Wayback, and times it. If fewer than ~70% are confident, switch to bigger units or "share of crop per 100 m cell".</label><span class="tag risk risk">decides design</span></li>
-    <li><input type="checkbox" id="c2"><label for="c2"><b>Enough clear Sentinel-2 images in 2022</b>, especially May–June and Sept–Nov.</label><span class="tag risk">rules depend on it</span></li>
-    <li><input type="checkbox" id="c3"><label for="c3"><b>Crop calendars</b> for Aweil and Bor South (FEWS NET / FAO GIEWS): sowing and harvest months; any flood-recession farming.</label><span class="tag">sets the months</span></li>
+    <li><input type="checkbox" id="c2"><label for="c2"><b>Enough clear Sentinel-2 images in 2022</b>, especially April–May and September–October.</label><span class="tag risk">rules depend on it</span></li>
+    <li><input type="checkbox" id="c3"><label for="c3"><b>Crop calendar</b> for Bor South (Aweil done: sowing by late May, sorghum harvest Sep–Oct, FEWS NET) (FEWS NET / FAO GIEWS): sowing and harvest months; any flood-recession farming.</label><span class="tag">sets the months</span></li>
     <li><input type="checkbox" id="c4"><label for="c4"><b>Existing ground truth:</b> ask ZOA for field GPS points or photos; check WorldCereal reference data for South Sudan.</label><span class="tag ok">big win if yes</span></li>
     <li><input type="checkbox" id="c5"><label for="c5"><b>All 7 maps load in Earth Engine</b> over the whole country; note each one's year and crop class.</label><span class="tag">routine</span></li>
-    <li><input type="checkbox" id="c6"><label for="c6"><b>The NASA flood masks for 2022</b> cover Aweil and Bor South (tiles h20v08, h21v08); note what is missing north of 10° N.</label><span class="tag">week 4</span></li>
+    <li><input type="checkbox" id="c6"><label for="c6"><b>Done:</b> the NASA flood masks for 2022 cover all five Aweil counties (h20v08) and Bor South (h21v08). Missing: the far north, above 10° N.</label><span class="tag">week 4</span></li>
   </ul>
 </div></section>
 

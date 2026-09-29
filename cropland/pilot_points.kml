@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>Cropland pilot, Twic county</name>
+<Placemark><name>P01</name><Point><coordinates>28.611514,9.111294,0</coordinates></Point></Placemark>
+<Placemark><name>P02</name><Point><coordinates>28.320919,9.149362,0</coordinates></Point></Placemark>
+<Placemark><name>P03</name><Point><coordinates>28.545093,9.013854,0</coordinates></Point></Placemark>
+<Placemark><name>P04</name><Point><coordinates>28.600399,8.964092,0</coordinates></Point></Placemark>
+<Placemark><name>P05</name><Point><coordinates>28.330899,9.113347,0</coordinates></Point></Placemark>
+<Placemark><name>P06</name><Point><coordinates>28.744037,9.308744,0</coordinates></Point></Placemark>
+<Placemark><name>P07</name><Point><coordinates>28.498693,9.109536,0</coordinates></Point></Placemark>
+<Placemark><name>P08</name><Point><coordinates>28.324853,9.115241,0</coordinates></Point></Placemark>
+<Placemark><name>P09</name><Point><coordinates>28.421265,9.328105,0</coordinates></Point></Placemark>
+<Placemark><name>P10</name><Point><coordinates>27.995649,9.052355,0</coordinates></Point></Placemark>
+<Placemark><name>P11</name><Point><coordinates>28.658063,9.226304,0</coordinates></Point></Placemark>
+<Placemark><name>P12</name><Point><coordinates>28.488112,8.821004,0</coordinates></Point></Placemark>
+<Placemark><name>P13</name><Point><coordinates>28.597752,9.054877,0</coordinates></Point></Placemark>
+<Placemark><name>P14</name><Point><coordinates>28.247765,9.057221,0</coordinates></Point></Placemark>
+<Placemark><name>P15</name><Point><coordinates>28.782137,9.316101,0</coordinates></Point></Placemark>
+<Placemark><name>P16</name><Point><coordinates>28.714859,9.104132,0</coordinates></Point></Placemark>
+<Placemark><name>P17</name><Point><coordinates>28.615353,9.047252,0</coordinates></Point></Placemark>
+<Placemark><name>P18</name><Point><coordinates>28.345065,8.965081,0</coordinates></Point></Placemark>
+<Placemark><name>P19</name><Point><coordinates>27.978292,9.074571,0</coordinates></Point></Placemark>
+<Placemark><name>P20</name><Point><coordinates>28.586195,9.251523,0</coordinates></Point></Placemark>
+<Placemark><name>P21</name><Point><coordinates>28.779372,9.291977,0</coordinates></Point></Placemark>
+<Placemark><name>P22</name><Point><coordinates>28.261583,9.093888,0</coordinates></Point></Placemark>
+<Placemark><name>P23</name><Point><coordinates>28.104622,9.162328,0</coordinates></Point></Placemark>
+<Placemark><name>P24</name><Point><coordinates>28.352857,9.154907,0</coordinates></Point></Placemark>
+<Placemark><name>P25</name><Point><coordinates>28.13709,9.19403,0</coordinates></Point></Placemark>
+<Placemark><name>P26</name><Point><coordinates>28.521197,9.218147,0</coordinates></Point></Placemark>
+<Placemark><name>P27</name><Point><coordinates>28.66244,9.303471,0</coordinates></Point></Placemark>
+<Placemark><name>P28</name><Point><coordinates>28.547606,8.906397,0</coordinates></Point></Placemark>
+<Placemark><name>P29</name><Point><coordinates>28.662077,9.094361,0</coordinates></Point></Placemark>
+<Placemark><name>P30</name><Point><coordinates>28.276343,9.253548,0</coordinates></Point></Placemark>
+</Document></kml>

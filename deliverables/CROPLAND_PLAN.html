@@ -205,10 +205,10 @@ footer{padding-block:30px 50px; border-top:1px solid var(--line); color:var(--mu
 
 <header class="hero">
   <div class="wrap">
-    <span class="eyebrow">JBG060 · Group 1 · plan for sprints 3–4 · 28 Sep 2026</span>
+    <span class="eyebrow">JBG060 · Group 1 · plan for sprints 3–4 · updated 30 Sep 2026</span>
     <h1>How much of South Sudan is <em>cropland</em>, really?</h1>
-    <p class="lede">Seven public maps disagree on how much farmland South Sudan has, and ZOA's flood trigger depends on that number. We will build our own rule-based cropland map for the whole country for 2022 and compare it with WorldCover, GLAD and the others. In ZOA's areas, the five Aweil counties and Bor South, we check every map against points we label ourselves and estimate the cropland area with a confidence interval. We end with a flooded-cropland check.</p>
-    <div class="meta"><span>Owners: the whole group</span><span>Deadline: 25 Oct 2026</span><span>Status: plan, nothing built yet</span></div>
+    <p class="lede">Seven public maps disagree on how much farmland South Sudan has, and ZOA's flood trigger depends on that number. We will build our own rule-based cropland map of the whole country for the 2025 season and compare it with WorldCover, GLAD and the others. In ZOA's areas, the five Aweil counties and Bor South, we check every map against points we label ourselves and estimate the cropland area with a confidence interval. We end with a flooded-cropland check.</p>
+    <div class="meta"><span>Owners: the whole group</span><span>Poster: 21 Oct 2026</span><span>Report: 25 Oct 2026</span><span>Status: methodology fixed, code written and tested, labelling next</span></div>
     <div class="facts">
       <div class="fact crop"><b class="num">0.1–1.9%</b><span>crop share the public maps give for the Aweil counties</span></div>
       <div class="fact"><b class="num">5.4%</b><span>the FAO/WFP crop assessment (CFSAM 2022), a modelled figure</span></div>
@@ -223,13 +223,13 @@ footer{padding-block:30px 50px; border-top:1px solid var(--line); color:var(--mu
   <h2>The plan in eight lines</h2>
   <div class="prose">
     <ol>
-      <li><b>Question:</b> how much cropland does South Sudan have in 2022, and how wrong are the public maps that ZOA's trigger would use? We answer the second part with checked numbers in ZOA's areas.</li>
+      <li><b>Question:</b> how much cropland does South Sudan have in the 2025 season, and how wrong are the public maps that ZOA's trigger would use? We answer the second part with checked numbers in ZOA's areas.</li>
       <li><b>Main result:</b> the cropland area of ZOA's areas (Aweil counties + Bor South) in hectares with a 95% confidence interval, from about 450 randomly placed points that two of us label by eye. This number does not depend on any map.</li>
-      <li><b>Second result:</b> our own cropland map of the whole country for 2022, built from written if-then rules on Sentinel-2 and Sentinel-1. The rules come from what the labellers look at. It is checked only in ZOA's areas, and the page says so wherever it is shown.</li>
+      <li><b>Second result:</b> our own cropland map of the whole country for 2025, built from written if-then rules on Sentinel-2 and Sentinel-1. The rules come from what the labellers look at. It is checked only in ZOA's areas, and the page says so wherever it is shown.</li>
       <li><b>Comparison:</b> nationally, cropland area per map and per state next to the FAO/WFP estimate (CFSAM). In ZOA's areas, our map and seven public maps (WorldCover, GLAD, Digital Earth Africa, WorldCereal, ASAP, Esri, Dynamic World) scored on the same held-out points.</li>
-      <li><b>Flood piece:</b> the 2022 flood extent over each cropland map, nationally and in ZOA's areas, to show how the choice of map changes whether a "flood inundating cropland" trigger would fire.</li>
+      <li><b>Flood piece:</b> the 2025 flood extent over each cropland map, nationally and in ZOA's areas, to show how the choice of map changes whether a "flood inundating cropland" trigger would fire.</li>
       <li><b>Reusable:</b> the map is a pipeline. Set a year and an area in a config file, run it, and get a new map. Each new year needs a small check sample.</li>
-      <li><b>Why ours might win:</b> it's local, for the right year, uses ZOA's definition, and handles the local confusions (burned grass, wild grass that greens up with the crops). It might lose, and that is still a result.</li>
+      <li><b>Why ours might win:</b> it's local, for the most recent complete season, uses ZOA's definition, and handles the local confusions (burned grass, wild grass that greens up with the crops). It might lose, and that is still a result.</li>
       <li><b>Labelling is done by people, about 4–5 hours each.</b> LLMs help with code and drafts, never with labels.</li>
     </ol>
   </div>
@@ -312,7 +312,7 @@ footer{padding-block:30px 50px; border-top:1px solid var(--line); color:var(--mu
       <tr><td><b>ESA WorldCereal</b></td><td>2021</td><td>10 m</td><td>Sentinel-1/2 + weather</td><td>CatBoost per zone and season</td><td>Temporary crops</td><td>Not in Kerner; unknown here.</td></tr>
       <tr><td><b>ASAP</b> (course data)</td><td>2017–23</td><td>500 m–1 km</td><td>Merge of older maps (GlobCover in most of Africa)</td><td>Expert combination, crop fraction per cell</td><td>Arable + permanent crops</td><td>Among the worst in Kerner.</td></tr>
       <tr><td><b>Esri, Dynamic World</b></td><td>2017–, near real time</td><td>10 m</td><td>Single Sentinel-2 images</td><td>Deep neural networks, one global model, no time series</td><td>Planted crops</td><td>Low for crops in Kerner.</td></tr>
-      <tr class="ours"><td><b>Ours</b></td><td>2022 (any year)</td><td>10 m</td><td>Sentinel-2 monthly, Sentinel-1, burn scars, buildings</td><td>Written if-then rules; thresholds set on our own labelled points</td><td>Crop grown in the 2022 season (to fix in week 1)</td><td>Measured on our held-out points in Aweil.</td></tr>
+      <tr class="ours"><td><b>Ours</b></td><td>2025 (any year)</td><td>10 m</td><td>Sentinel-2 monthly, Sentinel-1, burn scars, buildings</td><td>Written if-then rules; thresholds set on our own labelled points</td><td>Cropped in 2025 or fallow; cropped-only reported too</td><td>Measured on our held-out points in Aweil.</td></tr>
     </tbody>
   </table></div>
   <p class="small muted">WorldCover figures: product validation report (v100, Africa). GLAD figures: Potapov et al. 2022, Table 1. Others: Kerner et al. 2024.</p>
@@ -329,9 +329,9 @@ footer{padding-block:30px 50px; border-top:1px solid var(--line); color:var(--mu
     <div class="step"><span class="k">week 1</span><b>Draw the sample</b><p>3 groups: 0 / 1–2 / 3+ maps say crop · fixed seed</p></div>
     <div class="step hum"><span class="k">week 1–2 · people</span><b>Label by eye</b><p>crop / not / unsure + which cues were seen</p></div>
     <div class="step"><span class="k">week 2</span><b>Write the rules</b><p>on the 150 calibration points only, then freeze</p></div>
-    <div class="step"><span class="k">week 3</span><b>Run the map</b><p>rules over the whole country, 2022</p></div>
+    <div class="step"><span class="k">week 3</span><b>Run the map</b><p>rules over the whole country, 2025</p></div>
     <div class="step"><span class="k">week 3</span><b>Score &amp; estimate</b><p>ZOA areas: 8 maps on 300 test points, area ± CI · national: area per map vs CFSAM</p></div>
-    <div class="step"><span class="k">week 4</span><b>Flood overlay</b><p>2022 flood × each map</p></div>
+    <div class="step"><span class="k">week 4</span><b>Flood overlay</b><p>2025 flood × each map</p></div>
   </div>
   <div class="two">
     <div class="card"><h3>Why the sample comes first</h3><p>Rules need thresholds, and thresholds need labelled points. A map is judged only on points it never saw. And the area estimate from a probability sample is valid with or without a good map. GLAD uses the same idea for its own area figures.</p></div>
@@ -343,7 +343,7 @@ footer{padding-block:30px 50px; border-top:1px solid var(--line); color:var(--mu
     <div class="card"><span class="tag ok">for</span>
       <ul>
         <li>Tuned on points in Aweil, not trained elsewhere.</li>
-        <li>The right year (2022). Others are 2019, 2016–19, 2020–21.</li>
+        <li>The most recent complete season (2025). Most others are 2019–2021; only Esri and Dynamic World have 2025.</li>
         <li>ZOA's definition: crop actually grown this season.</li>
         <li>Explicit rules for the local traps: burned grass, wet-season grass, flood-recession plots, homestead gardens.</li>
       </ul></div>
@@ -355,7 +355,7 @@ footer{padding-block:30px 50px; border-top:1px solid var(--line); color:var(--mu
         <li>Fairness: our rules are tuned locally and theirs aren't. That is the point of the test, and the report says so.</li>
       </ul></div>
   </div>
-  <div class="note"><p><b>What we can claim:</b> "better or worse than map X in ZOA's areas in 2022, on our test points", with error bars. Nationally we can only say how much each map, ours included, calls crop, not which is right. Not "a better cropland map" in general. If the rules lose, the area estimate still stands, and "local rules don't beat global models here" is a finding.</p></div>
+  <div class="note"><p><b>What we can claim:</b> "better or worse than map X in ZOA's areas in 2025, on our test points", with error bars. Nationally we can only say how much each map, ours included, calls crop, not which is right. Not "a better cropland map" in general. If the rules lose, the area estimate still stands, and "local rules don't beat global models here" is a finding.</p></div>
 </div></section>
 
 <section id="algorithm"><div class="wrap">
@@ -380,14 +380,13 @@ footer{padding-block:30px 50px; border-top:1px solid var(--line); color:var(--mu
     </tbody>
   </table></div>
 
-  <h3>Three versions, one test</h3>
+  <h3>Rule 1 and a benchmark</h3>
   <div class="two">
-    <div class="card"><span class="tag">1 · baseline</span><h3>Hand rules</h3><p>Written from the cue sheet, thresholds chosen by looking at the 150 calibration points. Anyone can read them.</p></div>
-    <div class="card" style="border-color:var(--crop)"><span class="tag ok">2 · main candidate</span><h3>Small decision tree</h3><p>3–4 levels, trained on the same features and calibration points. It's still deterministic and prints as if-then rules, but the data sets the thresholds instead of our guesses.</p></div>
-    <div class="card"><span class="tag">3 · benchmark only</span><h3>Black box</h3><p>A random forest, or Google's Satellite Embedding dataset with a simple classifier. It shows what we give up for readable rules. If it wins by a lot, we report it.</p></div>
+    <div class="card" style="border-color:var(--crop)"><span class="tag ok">Rule 1 · our map</span><h3>Small decision tree</h3><p>2–4 levels (picked by cross-validation), trained on the calibration points. It is deterministic and prints as if-then rules; the data sets the thresholds. It maps land <b>cropped in 2025</b>. Fallow looks like grass in a single year, so fallow enters the cropland area through the labelled sample, not the map.</p></div>
+    <div class="card"><span class="tag">benchmark only</span><h3>Black box</h3><p>A random forest on the same features, and one on Google's Satellite Embedding. It shows what we give up for readable rules. If it wins by a lot, we report it.</p></div>
   </div>
-  <p class="prose">We keep whichever of 1 and 2 is simpler at similar accuracy, and freeze it in a dated file before touching the test points.</p>
-  <pre><span class="c"># rules.json, illustrative. Thresholds t1..t3 are set on the calibration points.</span>
+  <p class="prose">Rule 1 is frozen in a dated file before anyone looks at the test points.</p>
+  <pre><span class="c"># What a printed Rule 1 could look like (made up; the real one comes from the tree).</span>
 not crop  if  permanent_water_share &gt; 0.5
 not crop  if  ndvi_dry_season_p10  &gt; 0.45            <span class="c"># trees and evergreen shrubs</span>
 not crop  if  burned_nov_feb and not bare_apr_may
@@ -404,7 +403,7 @@ otherwise not crop</pre>
   <div class="tbl"><table class="wide">
     <thead><tr><th>Data</th><th>For</th><th>Access</th><th>Earth Engine ID (confirm in catalogue)</th></tr></thead>
     <tbody>
-      <tr><td>Sentinel-2 surface reflectance, 2022</td><td>features, labelling</td><td>free</td><td><code>COPERNICUS/S2_SR_HARMONIZED</code></td></tr>
+      <tr><td>Sentinel-2 surface reflectance, 2025</td><td>features, labelling</td><td>free</td><td><code>COPERNICUS/S2_SR_HARMONIZED</code></td></tr>
       <tr><td>Cloud Score+ for Sentinel-2</td><td>cloud masking</td><td>free</td><td><code>GOOGLE/CLOUD_SCORE_PLUS/V1/S2_HARMONIZED</code></td></tr>
       <tr><td>Sentinel-1 radar (VV, VH)</td><td>wet-season features, flooding</td><td>free</td><td><code>COPERNICUS/S1_GRD</code></td></tr>
       <tr><td>WorldCover 2020 / 2021</td><td>comparison</td><td>free</td><td><code>ESA/WorldCover/v100</code>, <code>v200</code></td></tr>
@@ -415,9 +414,9 @@ otherwise not crop</pre>
       <tr><td>Google Open Buildings</td><td>distance to homesteads</td><td>free</td><td><code>GOOGLE/Research/open-buildings/v3/polygons</code></td></tr>
       <tr><td>MODIS burned area</td><td>burn scars</td><td>free</td><td><code>MODIS/061/MCD64A1</code></td></tr>
       <tr><td>JRC Global Surface Water</td><td>permanent water</td><td>free; also in <code>raw_data/JRC_GSW</code></td><td><code>JRC/GSW1_4/GlobalSurfaceWater</code></td></tr>
-      <tr><td>NASA MCDWD flood masks 2022</td><td>flood overlay</td><td>in <code>raw_data/flood_masks</code></td><td>—</td></tr>
+      <tr><td>NASA MCDWD flood masks 2025</td><td>flood overlay</td><td>in <code>raw_data/flood_masks</code></td><td>—</td></tr>
       <tr><td>County boundaries</td><td>study area</td><td>in <code>raw_data/Administrative boundaries</code></td><td>—</td></tr>
-      <tr><td>CFSAM 2022 county figures</td><td>context</td><td>FAO/WFP report</td><td>—</td></tr>
+      <tr><td>CFSAM 2022 county figures (2025 edition if published)</td><td>context</td><td>FAO/WFP report</td><td>—</td></tr>
     </tbody>
   </table></div>
 
@@ -425,7 +424,7 @@ otherwise not crop</pre>
   <div class="two">
     <div class="card"><h3>What we'll use</h3>
       <ul>
-        <li><b>Sentinel-2 2022, monthly true colour and NDVI chart</b> for each point. Good for timing (bare, green, harvested); weak for tiny plots.</li>
+        <li><b>Sentinel-2 2025, monthly true colour and false colour, and the NDVI curve</b> for each point, in our labelling tool. Good for timing (bare, green, harvested); weak for tiny plots.</li>
         <li><b>Google Earth Pro historical imagery</b> (free desktop app). Sub-metre images on some dates, for field shapes.</li>
         <li><b>Esri World Imagery Wayback</b>: older versions of Esri's high-resolution basemap.</li>
         <li><b>Sentinel-1</b> for cloudy months.</li>
@@ -448,14 +447,14 @@ otherwise not crop</pre>
       <tr><td><b>Clouds, June–September</b></td><td>Optical images are missing exactly in the growing and flood season.</td><td>Mask clouds with Cloud Score+; build monthly medians; fill empty months from neighbours. Put the key features in clearer months (bare soil April–May, harvest September–October, at the edge of the cloudy season). Use Sentinel-1 radar for July–September. Record the number of clear images per month.</td></tr>
       <tr><td><b>Burning</b> (Nov–Feb)</td><td>Burned grass looks like bare, tilled soil.</td><td>Burn-scar layer + a "burn scar" cue for labellers; a rule that bare soil after a burn is not tillage.</td></tr>
       <tr><td><b>Small fields, mixed pixels</b></td><td>A 10 m pixel can be half field, half grass.</td><td>Label the 10 m box around the point; allow a "partly crop" flag; report how often it happens.</td></tr>
-      <tr><td><b>Fallow and shifting cultivation</b></td><td>Changes the answer a lot: GLAD counts fallow, WorldCover doesn't.</td><td>Decide the definition in week 1 (proposal: crop grown in 2022; fallow is not crop). Compare maps with that in mind.</td></tr>
+      <tr><td><b>Fallow and shifting cultivation</b></td><td>Changes the answer a lot: GLAD counts fallow, WorldCover doesn't.</td><td>Decided: fallow counts as cropland; each label says crop or fallow, so the cropped-only area is reported too. Compare maps with that in mind.</td></tr>
       <tr><td><b>Homestead gardens</b></td><td>Crops right next to huts are easy to miss or to mix with settlement.</td><td>Explicit label rule; distance to buildings as a feature.</td></tr>
       <tr><td><b>Rice scheme, flood-recession plots</b></td><td>Flooded fields look like water or wetland.</td><td>Look at them separately in the pilot; Sentinel-1 helps.</td></tr>
       <tr><td><b>Labellers disagree</b></td><td>Kerner dropped those points, which makes maps look better than they are.</td><td>Keep them. Settle by discussion, flag them, report agreement (Cohen's kappa).</td></tr>
       <tr><td><b>Test points leak into the rules</b></td><td>The comparison would be rigged.</td><td>Split before writing rules; freeze the rules file with a date; test labels untouched until then.</td></tr>
       <tr><td><b>Different map years</b></td><td>Unfair to older maps.</td><td>Show each map's year next to its score. Kerner found the year matters only weakly.</td></tr>
       <tr><td><b>Pixel area on a lat/lon grid</b></td><td>Pixel counts are not hectares.</td><td>Use <code>ee.Image.pixelArea()</code> for all areas.</td></tr>
-      <tr><td><b>Sentinel-2 processing change in 2022</b></td><td>Reflectance values shifted by an offset from January 2022.</td><td>Use the <code>HARMONIZED</code> collection.</td></tr>
+      <tr><td><b>Sentinel-2 processing change (Jan 2022)</b></td><td>Reflectance values shifted by an offset from January 2022.</td><td>Use the <code>HARMONIZED</code> collection.</td></tr>
       <tr><td><b>Rules outside ZOA's areas</b></td><td>Rules tuned in Aweil and Bor South may fail in other landscapes (wet south, eastern plains), and we have no points there to show it.</td><td>Label the national map "checked only in ZOA's areas". If week 3 has time, spot-check 50 points in one other zone and report it.</td></tr>
       <tr><td><b>National export size</b></td><td>A 10 m map of 64 M ha is ~6 billion pixels.</td><td>Export nationally at 30 m for the overview; 10 m only for ZOA's areas. National areas are computed inside Earth Engine without exporting.</td></tr>
       <tr><td><b>Flood masks stop at 10° N</b></td><td>The NASA tiles we have do not cover the far north (northern Upper Nile, around Renk).</td><td>Report national flooded cropland for the covered part only, and say so. Aweil and Bor South are fully covered.</td></tr>
@@ -518,7 +517,7 @@ otherwise not crop</pre>
   </div>
   <div class="two">
     <pre><span class="c"># cropland/config.yaml</span>
-year: 2022
+year: 2025
 aoi: south_sudan            <span class="c"># map extent</span>
 check_areas: [aweil_5_counties, bor_south]
 rules: rules_2022-10-11.json
@@ -556,7 +555,7 @@ seed: 42</pre>
   01_agreement_map.py         <span class="c"># 7 maps -&gt; count of "crop" per 10 m pixel, strata areas</span>
   02_draw_sample.py           <span class="c"># stratified points, fixed seed -&gt; sample.csv + CEO upload</span>
   03_features_at_points.py    <span class="c"># Sentinel-2/1 features at each point</span>
-  04_fit_rules.py             <span class="c"># calibration points -&gt; hand rules + small tree -&gt; rules.json</span>
+  07_fit_rules.py             <span class="c"># calibration points -&gt; decision tree -&gt; rule1_&lt;date&gt;.json; benchmarks</span>
   05_run_map.py               <span class="c"># rules.json -&gt; 10 m map in Earth Engine, export</span>
   06_accuracy_and_area.py     <span class="c"># all maps on test points, area ± CI</span>
   07_flood_overlay.py         <span class="c"># 2022 flood × each cropland map</span>
@@ -571,12 +570,12 @@ seed: 42</pre>
   <div class="two">
     <div class="card"><h3>Deliverables</h3>
       <ol>
-        <li><b>The number:</b> cropland in ZOA's areas (Aweil counties, Bor South), 2022, ha ± 95% CI.</li>
+        <li><b>The number:</b> cropland in ZOA's areas (Aweil counties, Bor South), 2025, ha ± 95% CI.</li>
         <li><b>The scorecard:</b> 7 public maps + ours on the same test points in ZOA's areas: precision, recall, F1, area, with error bars.</li>
         <li><b>The national picture:</b> cropland area per map and per state, next to CFSAM, with our map marked "not checked here" outside ZOA's areas.</li>
-        <li><b>Our national map</b> for 2022 (and 2020, 2024 if cheap) + the rerunnable pipeline.</li>
+        <li><b>Our national map</b> for 2025 + the rerunnable pipeline (2026 once that season has closed).</li>
         <li><b>Where each map fails:</b> grassland, fallow, burn scars, homesteads.</li>
-        <li><b>Flooded cropland 2022</b> under each map, nationally and in ZOA's areas: would the trigger have fired?</li>
+        <li><b>Flooded cropland 2025</b> under each map, nationally and in ZOA's areas: would the trigger have fired?</li>
         <li><b>SLE essay material:</b> readable rules against black boxes; whose farmland is seen.</li>
       </ol></div>
     <div class="card"><h3>Dashboard</h3>
@@ -584,7 +583,7 @@ seed: 42</pre>
   </div>
 
   <div class="dash" aria-label="Dashboard mock-up">
-    <div class="dash-top"><b>South Sudan cropland 2022</b><span class="tag mock">mock-up · made-up numbers</span></div>
+    <div class="dash-top"><b>South Sudan cropland 2025</b><span class="tag mock">mock-up · made-up numbers</span></div>
     <div class="dgrid">
       <div class="panel"><h4>Cropland, Aweil counties (checked)</h4><div class="kpi num" style="color:var(--crop)">≈ 120,000 ha</div><div class="num small">± 60,000 ha (95%) · 4.0% of land</div><p class="small muted" style="margin-bottom:0">from 450 labelled points</p></div>
       <div class="panel"><h4>Map vs estimate</h4>
@@ -601,7 +600,7 @@ seed: 42</pre>
           <tr><td>GLAD</td><td class="num">0.63</td><td class="num">0.30</td><td class="num">0.41</td></tr>
           <tr><td>DE Africa</td><td class="num">0.31</td><td class="num">0.55</td><td class="num">0.40</td></tr>
         </table></div></div>
-      <div class="panel"><h4>Flooded cropland, 2022</h4><p class="small" style="margin:0">Under WorldCover: <b class="num">900 ha</b><br>Under GLAD: <b class="num">2,100 ha</b><br>Under ours: <b class="num">6,500 ha</b></p><p class="small muted">Trigger at 5,000 ha: fires only with our map.</p></div>
+      <div class="panel"><h4>Flooded cropland, 2025</h4><p class="small" style="margin:0">Under WorldCover: <b class="num">900 ha</b><br>Under GLAD: <b class="num">2,100 ha</b><br>Under ours: <b class="num">6,500 ha</b></p><p class="small muted">Trigger at 5,000 ha: fires only with our map.</p></div>
     </div>
   </div>
 </div></section>
@@ -611,9 +610,9 @@ seed: 42</pre>
   <h2>Four weeks</h2>
   <div class="gantt"><div class="gt">
     <div class="h">Work</div><div class="h">Wk 1 · 28 Sep–4 Oct</div><div class="h">Wk 2 · 5–11 Oct</div><div class="h">Wk 3 · 12–18 Oct</div><div class="h">Wk 4 · 19–25 Oct</div>
-    <div class="lane">Checks &amp; accounts</div><div class="span"><i>pilot labels (Twic), Earth Engine, definition</i></div><div></div><div></div><div></div>
-    <div class="lane">Sample &amp; labels</div><div class="span"><i class="c">agreement map, sample, pilot 60</i></div><div class="span"><i class="c">label 450 × 2</i></div><div></div><div></div>
-    <div class="lane">Rules</div><div></div><div class="span"><i>cue sheet → rules, freeze</i></div><div></div><div></div>
+    <div class="lane">Checks &amp; accounts</div><div class="span"><i>pilot, sample, tool · by 3 Oct</i></div><div></div><div></div><div></div>
+    <div class="lane">Sample &amp; labels</div><div class="span"><i class="c">agreement map, sample, pilot 60</i></div><div class="span"><i class="c">label 450 × 2 · by 9 Oct</i></div><div></div><div></div>
+    <div class="lane">Rules</div><div></div><div class="span"><i>tree + benchmark, freeze · by 12 Oct</i></div><div></div><div></div>
     <div class="lane">Map &amp; comparison</div><div></div><div></div><div class="span"><i>national map, score 8 maps, area ± CI</i></div><div></div>
     <div class="lane">Flood overlay</div><div></div><div></div><div></div><div class="span"><i class="r">2022 flood × maps, national + ZOA</i></div>
     <div class="lane">Report, SLE, dashboard</div><div></div><div></div><div class="span"><i>app, figures</i></div><div class="span"><i>write-up</i></div>
@@ -621,10 +620,11 @@ seed: 42</pre>
   <div class="tbl"><table>
     <thead><tr><th>Week</th><th>Done when</th></tr></thead>
     <tbody>
-      <tr><td>1</td><td>sample file frozen · protocol v2 written · labeller agreement from the pilot reported</td></tr>
-      <tr><td>2</td><td>450 points labelled twice · rules file frozen with a date · calibration scores</td></tr>
-      <tr><td>3</td><td>national map · one table (area + accuracy per map in ZOA's areas) · national area per map vs CFSAM · the app</td></tr>
-      <tr><td>4</td><td>flooded cropland per map · report and poster sections</td></tr>
+      <tr><td>by 3 Oct</td><td>methodology frozen · pilot agreement reported · sample drawn · labelling tool ready</td></tr>
+      <tr><td>by 9 Oct</td><td>450 points labelled twice · disagreements settled</td></tr>
+      <tr><td>by 12 Oct</td><td>Rule 1 (decision tree) frozen · random-forest benchmarks · national map</td></tr>
+      <tr><td>by 15 Oct</td><td>scores and area · flood overlay (Aweil vs Bor South) · dashboard</td></tr>
+      <tr><td>21 Oct / 25 Oct</td><td>poster · methodological + SLE report</td></tr>
     </tbody>
   </table></div>
   <h3>Roles (fill in)</h3>
@@ -647,12 +647,12 @@ seed: 42</pre>
   <h2>Six checks before we commit</h2>
   <p class="prose">Ordered by risk. The first one decides whether the design holds. Ticks are saved in this browser only.</p>
   <ul class="check" id="checks">
-    <li><input type="checkbox" id="c1"><label for="c1"><b>Can a person tell crop from grass in Aweil and Bor South?</b> One of us labels 30 random points from Sentinel-2 2022, Google Earth history and Wayback, and times it. If fewer than ~70% are confident, switch to bigger units or "share of crop per 100 m cell".</label><span class="tag risk risk">decides design</span></li>
-    <li><input type="checkbox" id="c2"><label for="c2"><b>Enough clear Sentinel-2 images in 2022</b>, especially April–May and September–October.</label><span class="tag risk">rules depend on it</span></li>
+    <li><input type="checkbox" id="c1"><label for="c1"><b>Can a person tell crop from grass?</b> At least two of us label the 30 pilot points (Twic county) in the labelling tool, and <code>01_compare_pilot.py</code> reports agreement. If fewer than ~70% are confident, switch to bigger units or "share of crop per 100 m cell".</label><span class="tag risk risk">decides design</span></li>
+    <li><input type="checkbox" id="c2"><label for="c2"><b>Done:</b> 2025 has clear Sentinel-2 images every month over both areas (median 2–9 per month; thinnest August in Aweil, October in Bor South).</label><span class="tag risk">rules depend on it</span></li>
     <li><input type="checkbox" id="c3"><label for="c3"><b>Crop calendar</b> for Bor South (Aweil done: sowing by late May, sorghum harvest Sep–Oct, FEWS NET) (FEWS NET / FAO GIEWS): sowing and harvest months; any flood-recession farming.</label><span class="tag">sets the months</span></li>
     <li><input type="checkbox" id="c4"><label for="c4"><b>Existing ground truth:</b> ask ZOA for field GPS points or photos; check WorldCereal reference data for South Sudan.</label><span class="tag ok">big win if yes</span></li>
     <li><input type="checkbox" id="c5"><label for="c5"><b>All 7 maps load in Earth Engine</b> over the whole country; note each one's year and crop class.</label><span class="tag">routine</span></li>
-    <li><input type="checkbox" id="c6"><label for="c6"><b>Done:</b> the NASA flood masks for 2022 cover all five Aweil counties (h20v08) and Bor South (h21v08). Missing: the far north, above 10° N.</label><span class="tag">week 4</span></li>
+    <li><input type="checkbox" id="c6"><label for="c6"><b>Done:</b> the NASA flood masks for 2025 cover both areas. In 2025 Aweil flooded very little (~2,000 flooded pixel-days in Aweil East and South); Bor South flooded widely (69,000).</label><span class="tag">week 4</span></li>
   </ul>
 </div></section>
 
@@ -662,7 +662,7 @@ seed: 42</pre>
   <div class="two">
     <div class="card"><h3>This week</h3>
       <ul>
-        <li><b>Does fallow count as cropland?</b> Proposal: no, since ZOA's trigger is about crops in the ground.</li>
+        <li><b>Fallow:</b> decided, it counts as cropland; the cropped-only area is reported next to it.</li>
         <li><b>Who labels?</b> All five, or two or three people doing more?</li>
         <li><b>Spot-check elsewhere:</b> 50 points in one other zone if week 3 has time?</li>
         <li><b>Homestead gardens:</b> in or out of "cropland"?</li>
@@ -671,7 +671,7 @@ seed: 42</pre>
       <ul>
         <li>Agreement between maps is not accuracy: maps trained on similar data make the same errors.</li>
         <li>The CFSAM figure is modelled from household and population statistics. It's context, not the truth.</li>
-        <li>A single season (2022), checked in two areas: say so in every conclusion about the national map.</li>
+        <li>A single season (2025), checked in two areas: say so in every conclusion about the national map.</li>
         <li>Hectares are not hunger: flooded cropland is one factor among many for IDPs, hosts and pastoralists.</li>
       </ul></div>
   </div>
@@ -686,8 +686,8 @@ seed: 42</pre>
     <details><summary>Why not just train a big model?</summary><p>150 labelled points can't train a big model well, and ZOA can't check a black box. We still run one as a benchmark, to show what readable rules cost in accuracy.</p></details>
     <details><summary>Can an LLM do the labelling?</summary><p>No. The labels are the ground truth everything is scored against. LLMs write code and drafts; people label.</p></details>
     <details><summary>Is 450 points enough?</summary><p>For each of ZOA's areas, yes: about ±2 percentage points in the Aweil counties, wider in Bor South. For ranking two similar maps, maybe not. If their error bars overlap, we don't rank them.</p></details>
-    <details><summary>Why 2022?</summary><p>It is the season on the Sprint 2 slides, it had flooding, and CFSAM has figures for it. The pipeline can run other years.</p></details>
-    <details><summary>What happened to the flood forecast model?</summary><p>It's documented and reproducible in <code>prediction/</code> and <code>MODEL_REPORT.html</code>, but it's not part of this plan. Week 4 uses the observed 2022 flood extent, not a forecast.</p></details>
+    <details><summary>Why 2025?</summary><p>It is the most recent complete season. 2026 is still being harvested and has no flood masks yet. The Sprint 2 slides used 2022; those numbers stay as the motivation. The pipeline can run 2026 once the season closes.</p></details>
+    <details><summary>What happened to the flood forecast model?</summary><p>It's documented and reproducible in <code>prediction/</code> and <code>MODEL_REPORT.html</code>, but it's not part of this plan. The flood piece uses the observed 2025 flood extent, not a forecast.</p></details>
     <details><summary>Why keep points where labellers disagree?</summary><p>Those are the hard cases: field edges, fallow, crops mixed into grass. Dropping them, as Kerner et al. did, makes every map look better than it is.</p></details>
   </div>
 </div></section>
@@ -720,7 +720,7 @@ seed: 42</pre>
 </div></section>
 
 <footer><div class="wrap">
-  Group 1 · JBG060 Capstone · plan dated 28 Sep 2026, scope updated same day (whole country mapped, checked in ZOA's areas) · source file <code>deliverables/CROPLAND_PLAN.html</code>. Dashboard numbers are a mock-up; all other figures come from the Sprint 2 analysis and the cited papers.
+  Group 1 · JBG060 Capstone · plan dated 28 Sep 2026; scope and year updated 30 Sep (2025, whole country mapped, checked in ZOA's areas). Declared methodology: <code>cropland/METHODOLOGY.md</code> · source file <code>deliverables/CROPLAND_PLAN.html</code>. Dashboard numbers are a mock-up; all other figures come from the Sprint 2 analysis and the cited papers.
 </div></footer>
 
 <script>

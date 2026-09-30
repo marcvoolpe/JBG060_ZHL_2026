@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cropland Labelling</title>
+<style>
+:root{--bg:#f3f5f1;--card:#fff;--ink:#18211b;--ink2:#4f5c54;--line:#d5dcd4;--crop:#b98200;--crop-soft:#f6e6b8;--fallow:#7a5c2e;--fallow-soft:#eadfcc;--no:#1d6f8c;--no-soft:#d6eaf1;--warn:#a3470f;--warn-soft:#f7e0d0;
+  font:15px/1.45 "Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+*{box-sizing:border-box} body{margin:0}
+header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:8px 16px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+header b{font-size:1.02rem;margin-right:6px}
+select,button,textarea{font:inherit}
+select,textarea{padding:3px 8px;border:1px solid var(--line);border-radius:6px;background:#fff}
+button{padding:4px 11px;border:1px solid var(--line);border-radius:6px;background:#fff;cursor:pointer}
+button.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+button:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--no);outline-offset:1px}
+.prog{margin-left:auto;color:var(--ink2);font-variant-numeric:tabular-nums;font-size:.9rem}
+.keys{padding:5px 16px;background:var(--ink);color:#e6ede7;font-size:.8rem;display:flex;flex-wrap:wrap;gap:4px 16px}
+kbd{font:600 .78rem ui-monospace,monospace;background:#fff;color:var(--ink);border-radius:3px;padding:0 4px}
+.keys kbd{background:#e6ede7}
+main{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:14px;padding:14px 16px;max-width:1520px;margin:0 auto}
+@media (max-width:1000px){main{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.card h3{margin:0 0 6px;font-size:.9rem}
+.strip img{display:block;width:100%;height:auto;border-radius:4px}
+.strip .y24 img{opacity:.92}
+.yr{font-size:.8rem;color:var(--ink2);margin:8px 0 3px}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:14px}
+@media (max-width:700px){.row2{grid-template-columns:1fr}}
+.hires img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;background:#ddd}
+.links a{margin-right:10px;color:var(--no)}
+.q{padding:7px 0;border-bottom:1px solid var(--line)}
+.q:last-of-type{border-bottom:0}
+.q p{margin:0 0 4px;font-size:.88rem}
+.q.next{background:linear-gradient(90deg,var(--crop-soft),transparent 70%);margin:0 -12px;padding-inline:12px}
+.q.off{opacity:.4}
+.opts{display:flex;gap:5px;flex-wrap:wrap}
+.opts label{display:flex;gap:4px;align-items:center;padding:2px 9px;border:1px solid var(--line);border-radius:99px;cursor:pointer;font-size:.86rem;background:#fff}
+.opts input{margin:0}
+.opts label:has(input:checked){background:var(--ink);color:#fff;border-color:var(--ink)}
+.opts label:has(input:disabled){cursor:default}
+.opts kbd{font-size:.7rem;padding:0 3px}
+.sugg{margin:8px 0;padding:7px 10px;border-radius:8px;background:var(--bg);font-size:.88rem}
+.sugg.crop{background:var(--crop-soft)} .sugg.fallow{background:var(--fallow-soft)} .sugg.no{background:var(--no-soft)} .sugg.unsure{background:var(--warn-soft)}
+.final .opts label{font-size:.93rem;padding:4px 12px}
+.nav{display:flex;gap:8px;margin-top:8px}
+.muted{color:var(--ink2);font-size:.82rem}
+svg text{font-size:11px;fill:var(--ink2)}
+.list{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}
+.list button{padding:1px 6px;font-size:.75rem;font-variant-numeric:tabular-nums}
+.list button.done{background:#dcebd9;border-color:#b6d3b1}
+.list button.cur{outline:2px solid var(--ink)}
+.empty{padding:40px;text-align:center}
+.banner{margin:10px 16px 0;padding:8px 12px;border-radius:8px;background:var(--warn-soft);color:var(--warn);font-size:.9rem}
+dialog{border:0;border-radius:12px;max-width:min(1100px,95vw);padding:16px 18px}
+dialog::backdrop{background:rgba(0,0,0,.4)}
+.ex{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:start;padding:8px 0;border-bottom:1px solid var(--line)}
+.ex img{width:100%;border-radius:4px}
+</style>
+</head>
+<body>
+<header>
+  <b>Cropland labelling · 2025</b>
+  <label>Set <select id="set"></select></label>
+  <label>Labeller <select id="who"><option value="">choose…</option><option>Matteo</option><option>Marc</option><option>Yassin</option><option>Wei</option><option>Matei</option></select></label>
+  <button id="examples">Examples &amp; guide</button>
+  <button id="export" class="primary">Export CSV</button>
+  <span class="prog" id="prog"></span>
+</header>
+<div class="keys">
+  <span>Cover: <kbd>W</kbd> water <kbd>B</kbd> buildings <kbd>T</kbd> trees <kbd>O</kbd> open land</span>
+  <span>Next cue: <kbd>Y</kbd> yes <kbd>N</kbd> no <kbd>K</kbd> can't tell</span>
+  <span>Change label: <kbd>C</kbd> crop <kbd>F</kbd> fallow <kbd>X</kbd> not crop <kbd>U</kbd> unsure · confidence <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd></span>
+  <span><kbd>Enter</kbd> save &amp; next · <kbd>←</kbd><kbd>→</kbd> move · <kbd>V</kbd> true/false colour · <kbd>R</kbd> reset point</span>
+</div>
+<div id="banner"></div>
+<div id="app"></div>
+<dialog id="exdlg"><div id="exbody"></div><p><button id="exclose">Close</button></p></dialog>
+
+<script src="data_pilot.js"></script>
+<script src="data_sample.js"></script>
+<script src="examples.js"></script>
+<script>
+(function(){
+const SETS = {pilot: window.POINTS_PILOT || [], sample: window.POINTS_SAMPLE || []};
+const EXAMPLES = window.EXAMPLES || [];
+const MONTHS = "JFMAMJJASOND".split("");
+const $ = id => document.getElementById(id);
+const setSel = $("set"), whoSel = $("who"), app = $("app");
+Object.keys(SETS).forEach(k => { if (SETS[k].length) setSel.add(new Option(`${k} (${SETS[k].length})`, k)); });
+
+const safe = {get(k,d){ try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch(e){ return d; } },
+              set(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch(e){ return false; } }};
+const last = safe.get("cropland-last", {});
+if (last.set && SETS[last.set]?.length) setSel.value = last.set;
+if (last.who) whoSel.value = last.who;
+
+const key = () => `cropland-labels-${setSel.value}-${whoSel.value}`;
+let labels = {}, idx = 0, started = Date.now(), view = "tc", ans = {}, sinceExport = 0;
+
+// The labelling key of METHODOLOGY.md section 4
+const COVER = [["water","water","W"],["settlement","buildings / road","B"],["trees","trees / shrub","T"],["open","open land (field or grass)","O"]];
+const CUES = [
+  ["cue_a_bare","a. Bare, tilled soil in Apr–May (light, even, not a dark burn)?"],
+  ["cue_b_greenup","b. Green-up between Jun and Aug?"],
+  ["cue_c_harvest","c. Browns or is cleared Aug–Nov earlier than the grass around?"],
+  ["cue_d_shape","d. Field shape: straight edges, rectangles, patchwork?"],
+  ["cue_e_crop2024","e. Looks cropped in 2024 (bare in spring, early harvest)?"]
+];
+const LABELS = [["crop","C"],["fallow","F"],["not crop","X"],["unsure","U"]];
+
+function suggest(a){
+  if (!a.cover) return null;
+  if (a.cover === "water") return ["not crop","water","3"];
+  if (a.cover === "settlement") return ["not crop","settlement","3"];
+  if (a.cover === "trees") return ["not crop","trees/shrub","3"];
+  // cues a-d decide crop; cue e (2024) is only needed when a-d do not say crop
+  if (CUES.slice(0,4).some(([k]) => !a[k])) return null;
+  const y = k => a[k] === "yes", unk = CUES.slice(0,4).filter(([k]) => a[k] === "can't tell").length;
+  if (unk >= 3) return ["unsure","","1"];
+  if (y("cue_d_shape") && (y("cue_a_bare") || y("cue_c_harvest"))) return ["crop","","3"];
+  if (y("cue_a_bare") && y("cue_c_harvest")) return ["crop","","2"];
+  if (!a.cue_e_crop2024) return null;
+  if ((y("cue_d_shape") || y("cue_e_crop2024")) && !y("cue_a_bare") && !y("cue_c_harvest")) return ["fallow","","2"];
+  return ["not crop","grass/bush","2"];
+}
+
+function points(){
+  const all = SETS[setSel.value] || [];
+  return setSel.value === "pilot" ? all : all.filter(p => (p.labellers||[]).includes(whoSel.value));
+}
+
+function chart(p){
+  const W=360,H=150,L=30,R=8,T=10,B=24, x=i=>L+(W-L-R)*i/11, y=v=>T+(H-T-B)*(1-(v+0.1)/0.9);
+  const line = (arr, col, dash, w) => { if (!arr) return ""; let d="", pen=false; arr.forEach((v,i)=>{ if(v==null){pen=false;return;} d+=(pen?"L":"M")+x(i).toFixed(1)+","+y(v).toFixed(1); pen=true; }); return `<path d="${d}" fill="none" stroke="${col}" stroke-width="${w||2.2}" ${dash?`stroke-dasharray="${dash}"`:''}/>`; };
+  let g = [0,0.2,0.4,0.6,0.8].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e4e3df"/><text x="${L-4}" y="${y(v)+4}" text-anchor="end">${v.toFixed(1)}</text>`).join("");
+  g += MONTHS.map((m,i)=>`<text x="${x(i)}" y="${H-8}" text-anchor="middle">${m}</text>`).join("");
+  const dots = p.ndvi.map((v,i)=> v==null?"":`<circle cx="${x(i)}" cy="${y(v)}" r="2.6" fill="#b98200"/>`).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="NDVI through the year">${g}${line(p.ndvi_2024,"#9aa39c","2 3",1.6)}${line(p.ndvi_500m,"#1d6f8c","5 3")}${line(p.ndvi,"#b98200")}${dots}</svg>
+    <div class="muted"><span style="color:#b98200">●</span> this pixel, 2025 · <span style="color:#1d6f8c">- -</span> ~500 m square, 2025 · <span style="color:#9aa39c">···</span> this pixel, 2024 · gaps = no clear image</div>`;
+}
+
+function radios(name, values, cur, disabled){
+  return `<div class="opts">${values.map(([v,t,k])=>`<label><input type="radio" name="${name}" value="${v}" ${cur===v?"checked":""} ${disabled?"disabled":""}>${t||v}${k?` <kbd>${k}</kbd>`:""}</label>`).join("")}</div>`;
+}
+
+function preload(p){
+  if (!p) return;
+  ["2025_tc","2025_fc","2024_tc","2024_fc"].forEach(s => { new Image().src = `img/${p.id}_${s}.png`; });
+  new Image().src = p.esri;
+}
+
+function nextCue(){
+  if (ans.cover !== "open") return -1;
+  const i = CUES.findIndex(([k]) => !ans[k]);
+  return (i === 4 && suggest(ans)?.[0] === "crop") ? -1 : i;       // 2024 cue not needed once a-d say crop
+}
+
+function applyKey(){
+  // pre-fill label, reason and confidence from the key, unless the labeller changed them by hand
+  const s = suggest(ans);
+  if (s && !ans._manual){ ans.label = s[0]; ans.reason = s[1]; ans.confidence = s[2]; }
+  ans.key_suggestion = s ? s[0] : "";
+}
+
+function render(){
+  safe.set("cropland-last", {set:setSel.value, who:whoSel.value});
+  const pts = points();
+  if (!whoSel.value){ app.innerHTML = `<div class="empty">Choose your name at the top to start.</div>`; prog(); return; }
+  if (!pts.length){ app.innerHTML = `<div class="empty">No points assigned to ${whoSel.value} in this set.</div>`; prog(); return; }
+  idx = Math.max(0, Math.min(idx, pts.length-1));
+  const p = pts[idx], s = suggest(ans), nc = nextCue(), gated = ans.cover && ans.cover !== "open";
+  app.innerHTML = `
+  <main>
+    <div>
+      <div class="card strip">
+        <h3>${p.id} · yellow square = the 10 m pixel you label, outer box ≈ 110 m · ${view==="tc"?"true colour":"false colour (vegetation = red)"} <kbd>V</kbd></h3>
+        <div class="yr"><b>2025</b>, the year you label</div>
+        <img src="img/${p.id}_2025_${view}.png" alt="Monthly Sentinel-2 images, 2025">
+        <div class="y24"><div class="yr">2024, only to recognise fallow (cue e)</div>
+        <img src="img/${p.id}_2024_${view}.png" alt="Monthly Sentinel-2 images, 2024"></div>
+      </div>
+      <div class="row2">
+        <div class="card"><h3>Greenness (NDVI)</h3>${chart(p)}</div>
+        <div class="card hires"><h3>High-resolution image (date unknown)</h3>
+          <img src="${p.esri}" alt="Esri World Imagery around the point">
+          <p class="links muted"><a href="${p.wayback}" target="_blank" rel="noopener">Wayback (dates)</a><a href="${p.google}" target="_blank" rel="noopener">Google Maps</a><a href="${p.eo}" target="_blank" rel="noopener">EO Browser</a></p>
+          <p class="muted">The point is the centre. Check the date in Wayback: fields move between years.</p></div>
+      </div>
+      <div class="card" style="margin-top:14px"><h3>All points (${pts.length})</h3><div class="list">${pts.map((q,i)=>`<button data-i="${i}" class="${labels[q.id]?.label?"done":""} ${i===idx?"cur":""}">${q.id}</button>`).join("")}</div></div>
+    </div>
+    <form class="card" id="form">
+      <h3>Labelling key · ${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}</h3>
+      <div class="q ${!ans.cover?"next":""}"><p>1. What covers most of the 10 m pixel?</p>${radios("cover", COVER, ans.cover)}</div>
+      ${CUES.map(([k,t],i)=>`<div class="q ${gated?"off":""} ${i===nc?"next":""}"><p>${t}</p>${radios(k,[["yes"],["no"],["can't tell"]],ans[k],gated)}</div>`).join("")}
+      <div class="sugg ${s? (s[0]==="crop"?"crop":s[0]==="fallow"?"fallow":s[0]==="unsure"?"unsure":"no") : ""}">${s ? `Key says <b>${s[0]}</b>${s[1]?` (${s[1]})`:""}, confidence ${s[2]}.${ans._manual&&ans.label!==s[0]?" <b>You changed it</b>: say why in the notes.":""}` : "Answer the questions; the label fills in by itself."}</div>
+      <div class="q final"><p><b>Label</b></p>${radios("label", LABELS.map(([v,k])=>[v,v,k]), ans.label)}</div>
+      <div class="q"><p>If not crop, why</p>${radios("reason",[["water"],["settlement"],["trees/shrub"],["grass/bush"],["other"]],ans.reason)}</div>
+      <div class="q"><p>Confidence</p>${radios("confidence",[["1","1 guess","1"],["2","2 fairly sure","2"],["3","3 sure","3"]],ans.confidence)}</div>
+      <div class="q"><p>Notes (why, if you changed the label or are unsure)</p><textarea id="notes" rows="2" style="width:100%">${ans.notes||""}</textarea></div>
+      <div class="nav"><button type="button" id="prev">← Back</button><button type="submit" class="primary">Save &amp; next ⏎</button></div>
+      <p class="muted" id="msg"></p>
+    </form>
+  </main>`;
+  const form = $("form");
+  form.addEventListener("change", e => {
+    const n = e.target.name, v = e.target.value;
+    if (!n) return;
+    setAnswer(n, v, true);
+  });
+  $("notes").addEventListener("input", e => { ans.notes = e.target.value; });
+  form.addEventListener("submit", e => { e.preventDefault(); save(); });
+  $("prev").onclick = () => move(-1);
+  app.querySelectorAll(".list button").forEach(b => b.onclick = () => { idx = +b.dataset.i; load(); });
+  preload(pts[idx+1]);
+  prog();
+}
+
+function setAnswer(n, v, fromClick){
+  if (n === "cover"){
+    ans.cover = v;
+    if (v !== "open") CUES.forEach(([k]) => ans[k] = "no");          // exclusive: other cover -> cues are no
+    else if (CUES.every(([k]) => ans[k] === "no")) CUES.forEach(([k]) => delete ans[k]);
+  } else if (["label","reason","confidence"].includes(n)){
+    ans[n] = v; ans._manual = true;
+  } else ans[n] = v;
+  applyKey(); render();
+}
+
+function load(){
+  labels = safe.get(key(), {});
+  const pts = points(); idx = Math.max(0, Math.min(idx, pts.length-1));
+  ans = pts.length ? Object.assign({}, labels[pts[idx].id] || {}) : {};
+  started = Date.now(); render();
+}
+
+function save(){
+  const p = points()[idx];
+  if (!ans.label){ $("msg").textContent = "Answer the key (or choose a label) first."; return; }
+  const rec = Object.assign({}, ans);
+  rec.overridden = (rec.key_suggestion && rec.label !== rec.key_suggestion) ? 1 : 0;
+  rec.minutes = ((+(labels[p.id]?.minutes || 0)) + (Date.now()-started)/60000).toFixed(2);
+  rec.saved_at = new Date().toISOString();
+  labels[p.id] = rec;
+  if (!safe.set(key(), labels)) banner("This browser can't save. Export now and after every point.");
+  sinceExport++;
+  if (sinceExport >= 20) banner(`You have ${sinceExport} labels since your last export. Press Export CSV to keep a copy.`);
+  move(1);
+}
+
+function move(d){
+  const n = points().length;
+  if (idx + d < 0 || idx + d >= n){ if (d > 0) banner("That was the last point. Export your CSV."); return; }
+  idx += d; load();
+}
+
+function banner(t){ $("banner").innerHTML = t ? `<div class="banner">${t}</div>` : ""; }
+
+function prog(){
+  const pts = points(), done = pts.filter(p => labels[p.id]?.label).length;
+  $("prog").textContent = whoSel.value ? `${done} / ${pts.length} labelled · saved in this browser` : "";
+}
+
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "TEXTAREA" || e.ctrlKey || e.metaKey || e.altKey) return;
+  if ($("exdlg").open) return;
+  const k = e.key.toLowerCase();
+  const cover = {w:"water", b:"settlement", t:"trees", o:"open"}[k];
+  const lab = {c:"crop", f:"fallow", x:"not crop", u:"unsure"}[k];
+  if (cover){ setAnswer("cover", cover); }
+  else if ("ynk".includes(k) && k.length === 1){
+    const i = nextCue(); if (i >= 0) setAnswer(CUES[i][0], {y:"yes", n:"no", k:"can't tell"}[k]);
+  }
+  else if (lab){ setAnswer("label", lab); }
+  else if ("123".includes(k) && k.length === 1){ setAnswer("confidence", k); }
+  else if (k === "enter"){ save(); }
+  else if (k === "arrowleft" || k === "backspace"){ move(-1); }
+  else if (k === "arrowright"){ move(1); }
+  else if (k === "v"){ view = view === "tc" ? "fc" : "tc"; render(); }
+  else if (k === "r"){ ans = {}; render(); }
+  else return;
+  e.preventDefault();
+});
+
+$("export").onclick = () => {
+  if (!whoSel.value) return;
+  const cols = ["id","lat","lon","labeller","label","reason","confidence","cover",...CUES.map(c=>c[0]),"key_suggestion","overridden","minutes","notes","saved_at"];
+  const esc = v => { v = v==null ? "" : String(v); return /[",\n]/.test(v) ? `"${v.replace(/"/g,'""')}"` : v; };
+  const rows = points().map(p => { const a = labels[p.id] || {}; return cols.map(c => esc(c==="id"?p.id : c==="lat"?p.lat : c==="lon"?p.lon : c==="labeller"?whoSel.value : a[c])).join(","); });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(new Blob([cols.join(",")+"\n"+rows.join("\n")+"\n"], {type:"text/csv"}));
+  link.download = `${setSel.value}_labels_${whoSel.value}.csv`;
+  link.click();
+  sinceExport = 0; banner("");
+};
+
+$("examples").onclick = () => {
+  const guide = `<h3>What each label means</h3>
+    <p><b>crop</b>: sown and grown in 2025. Usually bare in Apr–May, green by Jul, brown or cleared in Sep–Oct before the grass around, often with edges.<br>
+    <b>fallow</b>: a field (edges, plots, or cropped in 2024) that looks like grass all of 2025: no spring bare soil, no early harvest.<br>
+    <b>not crop</b>: grass, bush, trees, water, settlement.<br>
+    <b>unsure</b>: images missing or unreadable. Write why.</p>
+    <p class="muted">Traps: a dark, irregular burn (Nov–Feb) is not tilled soil. Wild grass also greens up in Jul; the harvest drop is the difference.</p>`;
+  const ex = EXAMPLES.length ? EXAMPLES.map(x => `<div class="ex"><div><b>${x.label}</b><br><span class="muted">${x.id}</span></div><div><img src="img/${x.id}_2025_tc.png" alt="${x.label} example, 2025"><p class="muted">${x.note||""}</p></div></div>`).join("")
+    : `<p class="muted">Example points are added after the pilot: we pick one clear pilot point per label (crop, fallow, grass, trees, water) that everyone agreed on, and list them in <code>examples.js</code>.</p>`;
+  $("exbody").innerHTML = guide + "<h3>Examples</h3>" + ex;
+  $("exdlg").showModal();
+};
+$("exclose").onclick = () => $("exdlg").close();
+
+setSel.onchange = () => { idx = 0; load(); };
+whoSel.onchange = () => { idx = 0; load(); };
+load();
+})();
+</script>
+</body>
+</html>

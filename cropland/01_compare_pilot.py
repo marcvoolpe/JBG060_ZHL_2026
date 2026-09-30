@@ -8,9 +8,9 @@ for each pair of labellers:
   - the share of points each person marked confidence 3 (sure);
   - median minutes per point.
 
-The go / no-go rule for the plan: if fewer than ~70% of points get a confident
-(2 or 3) crop / not-crop label, a 10 m point-by-point label is too hard here and
-we switch to "share of crop per 100 m cell" instead.
+The go / no-go rule (METHODOLOGY.md section 4): if fewer than 70% of points
+get a confident (2 or 3) crop / fallow / not-crop label from both people, a
+10 m point label is too hard here and we switch to "share of crop in a 30 m cell".
 
 Run from group_repo: python cropland/01_compare_pilot.py
 """
@@ -22,7 +22,8 @@ import pandas as pd
 from sklearn.metrics import cohen_kappa_score
 
 HERE = Path(__file__).resolve().parent
-LABELS = ("crop", "not crop", "unsure")
+LABELS = ("crop", "fallow", "not crop", "unsure")
+CROPLAND = {"crop": "cropland", "fallow": "cropland", "not crop": "not cropland", "unsure": "unsure"}
 
 
 def load() -> dict[str, pd.DataFrame]:
@@ -46,13 +47,16 @@ def main() -> None:
         return
     for name, df in sheets.items():
         done = df["label"].notna()
-        confident = done & df["label"].isin(["crop", "not crop"]) & (pd.to_numeric(df["confidence"], errors="coerce") >= 2)
+        confident = done & df["label"].isin(["crop", "fallow", "not crop"]) & (pd.to_numeric(df["confidence"], errors="coerce") >= 2)
         print(f"{name}: {done.sum()} labelled, {df.label.eq('crop').sum()} crop, "
               f"{confident.mean():.0%} confident crop/not-crop, median {pd.to_numeric(df['minutes'], errors='coerce').median()} min/point")
     for a, b in combinations(sheets, 2):
         both = sheets[a]["label"].dropna().index.intersection(sheets[b]["label"].dropna().index)
         la, lb = sheets[a].loc[both, "label"], sheets[b].loc[both, "label"]
-        print(f"\n{a} vs {b}: {len(both)} points, agreement {(la == lb).mean():.0%}, kappa {cohen_kappa_score(la, lb):.2f}")
+        ca, cb = la.map(CROPLAND), lb.map(CROPLAND)
+        print(f"\n{a} vs {b}: {len(both)} points")
+        print(f"  cropland vs not (what the estimates use): agreement {(ca == cb).mean():.0%}, kappa {cohen_kappa_score(ca, cb):.2f}")
+        print(f"  all four labels: agreement {(la == lb).mean():.0%}, kappa {cohen_kappa_score(la, lb):.2f}")
         print(pd.crosstab(la.rename(a), lb.rename(b)))
 
 

@@ -1,46 +1,44 @@
-# Labelling guide: pilot (Twic county)
+# Labelling guide
 
-**Goal:** find out if we can tell crop from grass by eye at a 10 m point in this region. Each of us labels the same 30 points on our own; `01_compare_pilot.py` then says how often we agree.
+The full rules are in `METHODOLOGY.md` section 4. This page is the short version for labellers.
 
-**Time:** about 45 minutes for 30 points.
+## Start
 
-## Before you start
+1. Open `cropland/label_tool/index.html` in Firefox or Chrome (double-click it; no internet needed except for the high-resolution image).
+2. Choose the set (`pilot` first, then `sample`) and your name.
+3. **Never open a cropland map** (WorldCover, GLAD, ASAP...) while labelling, and don't look at anyone else's labels.
+4. Press **Export CSV** at the end of every session, and send the file (`pilot_labels_<name>.csv` or `sample_labels_<name>.csv`) or put it in `cropland/`. Labels are otherwise stored only in your browser.
 
-1. Copy `pilot_labels_TEMPLATE.csv` to `pilot_labels_<yourname>.csv`.
-2. **Do not open any cropland map** (WorldCover, GLAD, ASAP...) while labelling, and do not look at anyone else's sheet.
-3. Open the points in **Google Earth Pro** (free desktop app): *File → Open → `pilot_points.kml`*. Turn on the clock icon (historical imagery) to see older, sharper images.
-4. For the time series, use the `eo_browser` link in `pilot_points.csv`. It opens Sentinel-2 at the point for May–Nov 2022. No account is needed to view.
+## Per point (about 1 minute)
 
-## For each point
+You label the **10 m pixel in the yellow square, for 2025**. 2024 is shown only to recognise fallow.
 
-Look at the **10 m square around the point** (about one Sentinel-2 pixel). What covers most of it in the **2022** season?
+1. **What covers most of the pixel?** `W` water · `B` buildings/road · `T` trees/shrub · `O` open land.
+   Water, buildings and trees end the point: the label fills in as "not crop". Press `Enter`.
+2. **Open land:** answer the cues with `Y` yes, `N` no, `K` can't tell. The highlighted question is the next one.
+   - a. bare, tilled soil in Apr–May
+   - b. green-up Jun–Aug
+   - c. browns or is cleared Aug–Nov earlier than the grass around
+   - d. field shape (edges, rectangles, patchwork)
+   - e. cropped in 2024 (only asked if a–d don't already say crop)
+3. The **label fills in by itself**. If you disagree, press `C` crop, `F` fallow, `X` not crop or `U` unsure, and write why in the notes. `1` `2` `3` set confidence.
+4. `Enter` saves and moves on. `←` `→` move between points, `V` switches true/false colour, `R` resets the point.
 
-| field | fill in |
+## The labels
+
+| label | means |
 |---|---|
-| `label` | `crop`, `not crop` or `unsure` |
-| `confidence` | 1 = guess, 2 = fairly sure, 3 = sure |
-| `bare_soil_apr_jun` | y / n: bare or tilled soil before the rains (Apr–May) |
-| `green_up_month` | month it turns green (e.g. `jul`) |
-| `early_harvest_drop` | y / n: goes brown in Sep–Oct while the grass around stays green |
-| `regular_plots` | y / n: straight edges, small rectangles, a patchwork |
-| `homesteads_300m` | y / n: huts or compounds within ~300 m |
-| `burn_scar` | y / n: dark burned patch (usually Nov–Feb) |
-| `standing_water` | y / n |
-| `imagery_used` | e.g. `GE 2021-11`, `S2 2022-10-03` |
-| `imagery_date` | date of the image you relied on most |
-| `minutes` | time spent on this point |
-| `notes` | anything odd |
+| crop | sown and grown in 2025 (sorghum, groundnut, sesame, maize, rice, home gardens) |
+| fallow | a field (edges, or cropped in 2024) that looks like grass all of 2025 |
+| not crop | grass, bush, trees, water, settlement |
+| unsure | images missing or unreadable; say why |
 
-## What counts as crop
-
-- **Crop:** land sown and grown in 2022 (sorghum, groundnut, sesame, maize, rice), including small plots next to homesteads.
-- **Not crop:** grassland, bush, trees, water, settlement, and **fallow** (not sown this year).
-- Crop season in Northern Bahr el Ghazal (FEWS NET): sowing done by late May; groundnuts and sesame harvested from August; short-cycle sorghum in **September–October**.
+Crop season in Northern Bahr el Ghazal (FEWS NET): sowing done by late May; groundnuts and sesame harvested from August; short-cycle sorghum in September–October.
 
 ## Traps
 
-- **Burned grass** looks like bare, tilled soil. Burns are dark and irregular, and happen in the dry season; tilled fields are lighter and have edges.
-- **Wild grass** greens up at the same time as crops. The difference is the early brown-down at harvest and the regular shapes.
-- **One sharp Google Earth image may be from another year.** Always check its date; fields move.
+- **Burned grass** looks like bare soil. Burns are dark and irregular, in the dry season (Nov–Feb); tilled fields are lighter and have edges.
+- **Wild grass** greens up with the crops. The difference is the early brown-down at harvest, and the shapes.
+- **The high-resolution image has an unknown date.** Check it in Wayback before trusting a field shape.
 
 When unsure, say `unsure`. That is useful information, not a failure.

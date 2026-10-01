@@ -61,7 +61,7 @@ dialog::backdrop{background:rgba(0,0,0,.4)}
 </head>
 <body>
 <header>
-  <b>Cropland labelling · 2025</b>
+  <b>Cropland labelling · 2025</b><span id="mode" class="muted"></span>
   <label>Set <select id="set"></select></label>
   <label>Labeller <select id="who"><option value="">choose…</option><option>Matteo</option><option>Marc</option><option>Yassin</option><option>Wei</option><option>Matei</option></select></label>
   <button id="examples">Examples &amp; guide</button>
@@ -108,6 +108,11 @@ const CUES = [
   ["cue_d_shape","d. Field shape: straight edges, rectangles, patchwork?"],
   ["cue_e_crop2024","e. Looks cropped in 2024 (bare in spring, early harvest)?"]
 ];
+const AREA_NOTE = {
+  aweil: "<b>Aweil</b> (Northern Bahr el Ghazal): rain-fed sorghum, groundnut, sesame near homesteads; sowing done by late May, sorghum harvest Sep–Oct; rice scheme near Aweil town.",
+  bor_south: "<b>Bor South</b> (Jonglei, Nile floodplain): sorghum and maize on higher ground, flood-recession plots near the river; harvest Sep–Oct, recession crops after the water drops (Nov–Feb).",
+  pilot: "<b>Pilot</b>, Twic county (Warrap): similar to Aweil; rain-fed sorghum, harvest Sep–Oct."
+};
 const LABELS = [["crop","C"],["fallow","F"],["not crop","X"],["unsure","U"]];
 
 function suggest(a){
@@ -147,7 +152,7 @@ function radios(name, values, cur, disabled){
 
 function preload(p){
   if (!p) return;
-  ["2025_tc","2025_fc","2024_tc","2024_fc"].forEach(s => { new Image().src = `img/${p.id}_${s}.png`; });
+  ["2025_tc","2025_fc","2024_tc","2024_fc"].forEach(s => { new Image().src = `img/${p.id}_${s}.webp`; });
   new Image().src = p.esri;
 }
 
@@ -177,9 +182,9 @@ function render(){
       <div class="card strip">
         <h3>${p.id} · yellow square = the 10 m pixel you label, outer box ≈ 110 m · ${view==="tc"?"true colour":"false colour (vegetation = red)"} <kbd>V</kbd></h3>
         <div class="yr"><b>2025</b>, the year you label</div>
-        <img src="img/${p.id}_2025_${view}.png" alt="Monthly Sentinel-2 images, 2025">
+        <img src="img/${p.id}_2025_${view}.webp" alt="Monthly Sentinel-2 images, 2025">
         <div class="y24"><div class="yr">2024, only to recognise fallow (cue e)</div>
-        <img src="img/${p.id}_2024_${view}.png" alt="Monthly Sentinel-2 images, 2024"></div>
+        <img src="img/${p.id}_2024_${view}.webp" alt="Monthly Sentinel-2 images, 2024"></div>
       </div>
       <div class="row2">
         <div class="card"><h3>Greenness (NDVI)</h3>${chart(p)}</div>
@@ -192,6 +197,7 @@ function render(){
     </div>
     <form class="card" id="form">
       <h3>Labelling key · ${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}</h3>
+      <p class="muted" style="margin:0 0 4px">${AREA_NOTE[p.area] || AREA_NOTE.pilot}</p>
       <div class="q ${!ans.cover?"next":""}"><p>1. What covers most of the 10 m pixel?</p>${radios("cover", COVER, ans.cover)}</div>
       ${CUES.map(([k,t],i)=>`<div class="q ${gated?"off":""} ${i===nc?"next":""}"><p>${t}</p>${radios(k,[["yes"],["no"],["can't tell"]],ans[k],gated)}</div>`).join("")}
       <div class="sugg ${s? (s[0]==="crop"?"crop":s[0]==="fallow"?"fallow":s[0]==="unsure"?"unsure":"no") : ""}">${s ? `Key says <b>${s[0]}</b>${s[1]?` (${s[1]})`:""}, confidence ${s[2]}.${ans._manual&&ans.label!==s[0]?" <b>You changed it</b>: say why in the notes.":""}` : "Answer the questions; the label fills in by itself."}</div>
@@ -228,8 +234,27 @@ function setAnswer(n, v, fromClick){
   applyKey(); render();
 }
 
-function load(){
+const SERVER = location.protocol.startsWith("http");     // opened via label_server.py
+const COLS = ["id","lat","lon","area","labeller","label","reason","confidence","cover","cue_a_bare","cue_b_greenup","cue_c_harvest","cue_d_shape","cue_e_crop2024","key_suggestion","overridden","minutes","notes","saved_at"];
+async function fromServer(){
+  if (!SERVER || !whoSel.value) return null;
+  try { const r = await fetch(`/api/labels?set=${setSel.value}&who=${encodeURIComponent(whoSel.value)}`); return r.ok ? await r.json() : null; }
+  catch(e){ return null; }
+}
+async function toServer(){
+  const rows = points().filter(p => labels[p.id]?.label).map(p => Object.assign({}, labels[p.id], {id:p.id, lat:p.lat, lon:p.lon, area:p.area||"", labeller:whoSel.value}));
+  try {
+    const r = await fetch("/api/labels", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({set:setSel.value, who:whoSel.value, rows})});
+    if (!r.ok) throw new Error(await r.text());
+    status(`Saved to labels/${setSel.value}_labels_${whoSel.value}.csv`);
+  } catch(e){ banner("Could not reach the label server. Your labels are kept in this browser; restart label_server.py, then save again."); }
+}
+function status(t){ const m = $("msg"); if (m) m.textContent = t; }
+
+async function load(){
   labels = safe.get(key(), {});
+  const disk = await fromServer();
+  if (disk) labels = Object.assign({}, labels, disk);          // the file on disk wins
   const pts = points(); idx = Math.max(0, Math.min(idx, pts.length-1));
   ans = pts.length ? Object.assign({}, labels[pts[idx].id] || {}) : {};
   started = Date.now(); render();
@@ -243,9 +268,9 @@ function save(){
   rec.minutes = ((+(labels[p.id]?.minutes || 0)) + (Date.now()-started)/60000).toFixed(2);
   rec.saved_at = new Date().toISOString();
   labels[p.id] = rec;
-  if (!safe.set(key(), labels)) banner("This browser can't save. Export now and after every point.");
-  sinceExport++;
-  if (sinceExport >= 20) banner(`You have ${sinceExport} labels since your last export. Press Export CSV to keep a copy.`);
+  if (!safe.set(key(), labels) && !SERVER) banner("This browser can't save. Export now and after every point.");
+  if (SERVER) toServer();
+  else { sinceExport++; if (sinceExport >= 20) banner(`You have ${sinceExport} labels since your last export. Press Export CSV, or run label_server.py to save automatically.`); }
   move(1);
 }
 
@@ -259,7 +284,7 @@ function banner(t){ $("banner").innerHTML = t ? `<div class="banner">${t}</div>`
 
 function prog(){
   const pts = points(), done = pts.filter(p => labels[p.id]?.label).length;
-  $("prog").textContent = whoSel.value ? `${done} / ${pts.length} labelled · saved in this browser` : "";
+  $("prog").textContent = whoSel.value ? `${done} / ${pts.length} labelled` : "";
 }
 
 document.addEventListener("keydown", e => {
@@ -285,9 +310,9 @@ document.addEventListener("keydown", e => {
 
 $("export").onclick = () => {
   if (!whoSel.value) return;
-  const cols = ["id","lat","lon","labeller","label","reason","confidence","cover",...CUES.map(c=>c[0]),"key_suggestion","overridden","minutes","notes","saved_at"];
+  const cols = COLS;
   const esc = v => { v = v==null ? "" : String(v); return /[",\n]/.test(v) ? `"${v.replace(/"/g,'""')}"` : v; };
-  const rows = points().map(p => { const a = labels[p.id] || {}; return cols.map(c => esc(c==="id"?p.id : c==="lat"?p.lat : c==="lon"?p.lon : c==="labeller"?whoSel.value : a[c])).join(","); });
+  const rows = points().map(p => { const a = labels[p.id] || {}; return cols.map(c => esc(c==="id"?p.id : c==="lat"?p.lat : c==="lon"?p.lon : c==="labeller"?whoSel.value : c==="area"?(p.area||"") : a[c])).join(","); });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(new Blob([cols.join(",")+"\n"+rows.join("\n")+"\n"], {type:"text/csv"}));
   link.download = `${setSel.value}_labels_${whoSel.value}.csv`;
@@ -302,13 +327,14 @@ $("examples").onclick = () => {
     <b>not crop</b>: grass, bush, trees, water, settlement.<br>
     <b>unsure</b>: images missing or unreadable. Write why.</p>
     <p class="muted">Traps: a dark, irregular burn (Nov–Feb) is not tilled soil. Wild grass also greens up in Jul; the harvest drop is the difference.</p>`;
-  const ex = EXAMPLES.length ? EXAMPLES.map(x => `<div class="ex"><div><b>${x.label}</b><br><span class="muted">${x.id}</span></div><div><img src="img/${x.id}_2025_tc.png" alt="${x.label} example, 2025"><p class="muted">${x.note||""}</p></div></div>`).join("")
+  const ex = EXAMPLES.length ? EXAMPLES.map(x => `<div class="ex"><div><b>${x.label}</b><br><span class="muted">${x.id}</span></div><div><img src="img/${x.id}_2025_tc.webp" alt="${x.label} example, 2025"><p class="muted">${x.note||""}</p></div></div>`).join("")
     : `<p class="muted">Example points are added after the pilot: we pick one clear pilot point per label (crop, fallow, grass, trees, water) that everyone agreed on, and list them in <code>examples.js</code>.</p>`;
   $("exbody").innerHTML = guide + "<h3>Examples</h3>" + ex;
   $("exdlg").showModal();
 };
 $("exclose").onclick = () => $("exdlg").close();
 
+$("mode").textContent = SERVER ? " · auto-saving to disk" : " · offline: saved in this browser, export at the end";
 setSel.onchange = () => { idx = 0; load(); };
 whoSel.onchange = () => { idx = 0; load(); };
 load();

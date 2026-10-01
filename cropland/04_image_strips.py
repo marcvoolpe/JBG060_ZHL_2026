@@ -13,7 +13,7 @@ Each point is one Earth Engine request (a 51 x 51 pixel, 10 m grid for all 12
 months), so a few hundred points take a few minutes. Months with no clear
 image are drawn grey with "no clear image".
 
-Outputs: cropland/label_tool/img/<id>_<year>_tc.png, <id>_<year>_fc.png and
+Outputs: cropland/label_tool/img/<id>_<year>_tc.webp, <id>_<year>_fc.webp and
          cropland/label_tool/data_<set>.js (points, NDVI, links) for the tool.
 
 Run from group_repo:
@@ -101,11 +101,11 @@ def one(ee, row):
     curves = {}
     for year in YEARS:
         data = fetch(ee, row.lat, row.lon, year)
-        strip(data, "tc").save(IMG / f"{row.id}_{year}_tc.png", optimize=True)
-        strip(data, "fc").save(IMG / f"{row.id}_{year}_fc.png", optimize=True)
+        strip(data, "tc").save(IMG / f"{row.id}_{year}_tc.webp", quality=90, method=6)   # WebP: ~4x smaller than PNG, fits in git
+        strip(data, "fc").save(IMG / f"{row.id}_{year}_fc.webp", quality=90, method=6)
         curves[year] = ndvi(data)
     d = 0.003
-    return {"id": row.id, "lat": row.lat, "lon": row.lon,
+    return {"id": row.id, "lat": row.lat, "lon": row.lon, "area": getattr(row, "area", "pilot"),
             "ndvi": curves[2025][0], "ndvi_500m": curves[2025][1], "ndvi_2024": curves[2024][0],
             "labellers": [getattr(row, "labeller_1", ""), getattr(row, "labeller_2", "")],
             "esri": ("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export"

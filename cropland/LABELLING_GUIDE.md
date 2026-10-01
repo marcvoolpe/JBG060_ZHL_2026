@@ -4,10 +4,17 @@ The full rules are in `METHODOLOGY.md` section 4. This page is the short version
 
 ## Start
 
-1. Open `cropland/label_tool/index.html` in Firefox or Chrome (double-click it; no internet needed except for the high-resolution image).
-2. Choose the set (`pilot` first, then `sample`) and your name.
+1. `git pull`. Once: unzip `cropland_images.zip` (from Matteo) inside `cropland/label_tool/`, so the images end up in `cropland/label_tool/img/`. Then from `group_repo` run **`python cropland/label_server.py`** and open **http://localhost:8765**. (Python only, no extra packages.)
+2. Choose the set (`pilot` first, then `sample`) and your name. The header says "auto-saving to disk".
 3. **Never open a cropland map** (WorldCover, GLAD, ASAP...) while labelling, and don't look at anyone else's labels.
-4. Press **Export CSV** at the end of every session, and send the file (`pilot_labels_<name>.csv` or `sample_labels_<name>.csv`) or put it in `cropland/`. Labels are otherwise stored only in your browser.
+4. Every saved point is written straight to `cropland/labels/<set>_labels_<name>.csv`. Close the browser any time; it picks up where you left off. At the end of a session, commit **only your own file**:
+   `git add cropland/labels/*_<name>.csv && git commit -m "labels: <name>" && git pull --rebase && git push`
+
+Without the server (double-clicking `index.html`) the tool still works, but labels stay in the browser until you press **Export CSV**.
+
+## Where the point is matters
+
+The box under the coordinates says which area the point is in and what farming looks like there. **Aweil** is rain-fed sorghum near homesteads, harvested Sep–Oct. **Bor South** is the Nile floodplain: crops on higher ground, plus **flood-recession plots** that are planted when the water drops (Nov–Feb). A field that is under water in Aug–Oct and green in Dec–Feb can be crop there.
 
 ## Per point (about 1 minute)
 

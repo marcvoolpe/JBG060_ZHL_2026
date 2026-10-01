@@ -40,7 +40,7 @@ def classify(l1, l2):
 
 def main() -> None:
     sample = pd.read_csv(C.HERE / "sample.csv")
-    sheets = [pd.read_csv(f) for f in sorted(C.HERE.glob("sample_labels_*.csv"))]
+    sheets = [pd.read_csv(f) for f in sorted([*C.HERE.glob("sample_labels_*.csv"), *(C.HERE / "labels").glob("sample_labels_*.csv")])]
     if not sheets:
         print("No sample_labels_<name>.csv yet (export them from the labelling tool).")
         return

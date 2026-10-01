@@ -97,6 +97,17 @@ A pixel is cropland if **more than half** of it is cropped or fallow field.
 
 **Pilot:** 30 points in Twic county (Warrap, outside the study areas), labelled by at least two people. **Go on** if at least 70% of pilot points get a confident (2 or 3) crop / not-crop label from both people. Otherwise, change the unit to "share of crop in a 30 m cell" before the real sample, and log the change.
 
+## 4b. Regional differences
+
+The two areas farm differently, so the key and the scoring take the place into account.
+
+- **Aweil** (Northern Bahr el Ghazal): rain-fed sorghum, groundnut and sesame near homesteads; harvest September-October; an irrigated rice scheme near Aweil town.
+- **Bor South** (Jonglei, White Nile floodplain): crops on higher ground, plus flood-recession plots planted when the water falls (November-February). For cue c ("harvest earlier than the grass") and the water question, recession plots look different: flooded in August-October, green in December-February. Labellers are told this in the tool for every Bor South point; these plots count as crop.
+- **Order:** points reach each labeller in random order, mixing both areas, so tiredness or learning over the session does not line up with one area.
+- **One Rule 1 for both areas:** the tree is trained on both areas together; area is not a feature, because the national map has no area to give it. Accuracy is reported **per area**. If Rule 1 is clearly worse in one area, we report it and say that one set of rules does not fit both landscapes. We do not re-tune it on test points.
+- **National map:** outside the two areas the landscape changes (the wet south, the eastern plains). The national map is marked "not checked" there.
+- **Pilot coverage:** the pilot (Twic county) resembles Aweil, not Bor South. The pilot therefore tests the tool and the key, not the floodplain case.
+
 ## 5. Machine features (what the computer measures)
 
 All are computed per 10 m pixel for 2025 in Earth Engine. Sentinel-2 is Level-2A surface reflectance (`COPERNICUS/S2_SR_HARMONIZED`), with clouds masked by Cloud Score+ `cs_cdf ≥ 0.6` and summarised as monthly medians. Missing months are filled from the neighbouring months.
@@ -163,3 +174,4 @@ The **same JSON file** is read by both the Python scoring and the Earth Engine m
 - 30 Sep 2026, later: fallow counts as cropland (group decision); labels become crop / fallow / not crop / unsure, and the cropped-only area is also reported. Hand rules dropped for time: only Rule 1 (decision tree) and the random-forest benchmarks. Deadlines moved two days earlier: 3, 9, 12 and 15 Oct. Strata use 7 maps (GFSAD 2015 in, ASAP scored only, because ASAP is not in Earth Engine). Esri and Dynamic World are the 2025 versions.
 - 30 Sep 2026, evening: labelling key starts with one exclusive cover question (water / buildings / trees / open land); cue e "cropped in 2024" added, with 2024 images shown for context only; the tool pre-fills the label from the key. Rule 1 and the map target "cropped in 2025" (option b); cropland area (crop + fallow) comes from the sample. Features fixed: texture band (was ASM, now contrast), distance to buildings in metres (was wrong: masked-image distance), Sentinel-1 descending only.
 - 30 Sep 2026, sample drawn (seed 42): Aweil strata A 2,929,918 ha (95.0%), B 145,327 ha (4.7%), C 9,934 ha (0.3%), 150/90/90 points. Bor South: C was 0.0036% of the area, merged into B by the 0.1% rule, so A 1,264,445 ha (90.6%) and B 131,838 ha (9.4%), 60/60 points. 450 points, 150 calibration / 300 test, 180 per labeller.
+- 1 Oct 2026: section 4b (regional differences) added. Labels now saved automatically by label_server.py into cropland/labels/, one file per labeller.

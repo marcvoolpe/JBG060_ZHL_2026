@@ -28,7 +28,7 @@ CROPLAND = {"crop": "cropland", "fallow": "cropland", "not crop": "not cropland"
 
 def load() -> dict[str, pd.DataFrame]:
     sheets = {}
-    for f in sorted(HERE.glob("pilot_labels_*.csv")):
+    for f in sorted([*HERE.glob("pilot_labels_*.csv"), *(HERE / "labels").glob("pilot_labels_*.csv")]):
         if f.stem.endswith("TEMPLATE"):
             continue
         df = pd.read_csv(f).set_index("id")
@@ -43,7 +43,7 @@ def load() -> dict[str, pd.DataFrame]:
 def main() -> None:
     sheets = load()
     if not sheets:
-        print("No filled pilot_labels_<name>.csv yet. Copy pilot_labels_TEMPLATE.csv and fill it in.")
+        print("No pilot labels yet. Label the pilot set in the tool (python cropland/label_server.py).")
         return
     for name, df in sheets.items():
         done = df["label"].notna()

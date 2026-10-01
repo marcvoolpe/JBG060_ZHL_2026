@@ -13,4 +13,5 @@ cache
 .git
 talk/
 data-JBG060-2026/
-*.png
+*.pngcropland/labels/*.tmp
+cropland/label_tool/img/

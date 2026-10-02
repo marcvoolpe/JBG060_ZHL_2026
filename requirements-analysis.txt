@@ -1,0 +1,5 @@
+# Panel analysis phase (Stages 10–14). Install: pip install -r requirements-analysis.txt
+scipy>=1.11
+statsmodels>=0.14
+xarray>=2024.1
+netCDF4>=1.6

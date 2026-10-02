@@ -1,0 +1,91 @@
+aoi,adm2_pcode,adm2_name,map_set,n_maps_crop,cells,area_ha,share_of_county_pct
+aweil,SS0501,Aweil Centre,4 primary maps,0,12357308,1112158,99.7625
+aweil,SS0501,Aweil Centre,4 primary maps,1,29048,2614,0.2345
+aweil,SS0501,Aweil Centre,4 primary maps,2,359,32,0.0029
+aweil,SS0501,Aweil Centre,4 primary maps,3,6,1,0.0
+aweil,SS0501,Aweil Centre,4 primary maps,4,0,0,0.0
+aweil,SS0501,Aweil Centre,4 primary maps,no data in >= 1 map,0,0,
+aweil,SS0501,Aweil Centre,all 7 maps,0,12290042,1106104,99.2387
+aweil,SS0501,Aweil Centre,all 7 maps,1,81143,7303,0.6552
+aweil,SS0501,Aweil Centre,all 7 maps,2,11945,1075,0.0965
+aweil,SS0501,Aweil Centre,all 7 maps,3,1126,101,0.0091
+aweil,SS0501,Aweil Centre,all 7 maps,4,62,6,0.0005
+aweil,SS0501,Aweil Centre,all 7 maps,5,2,0,0.0
+aweil,SS0501,Aweil Centre,all 7 maps,6,0,0,0.0
+aweil,SS0501,Aweil Centre,all 7 maps,7,0,0,0.0
+aweil,SS0501,Aweil Centre,all 7 maps,no data in >= 1 map,2401,216,
+aweil,SS0502,Aweil East,4 primary maps,0,6759407,608347,95.6034
+aweil,SS0502,Aweil East,4 primary maps,1,265007,23851,3.7482
+aweil,SS0502,Aweil East,4 primary maps,2,42788,3851,0.6052
+aweil,SS0502,Aweil East,4 primary maps,3,3044,274,0.0431
+aweil,SS0502,Aweil East,4 primary maps,4,12,1,0.0002
+aweil,SS0502,Aweil East,4 primary maps,no data in >= 1 map,0,0,
+aweil,SS0502,Aweil East,all 7 maps,0,6302427,567218,89.3499
+aweil,SS0502,Aweil East,all 7 maps,1,540364,48633,7.6608
+aweil,SS0502,Aweil East,all 7 maps,2,147610,13285,2.0927
+aweil,SS0502,Aweil East,all 7 maps,3,49319,4439,0.6992
+aweil,SS0502,Aweil East,all 7 maps,4,12238,1101,0.1735
+aweil,SS0502,Aweil East,all 7 maps,5,1552,140,0.022
+aweil,SS0502,Aweil East,all 7 maps,6,139,13,0.002
+aweil,SS0502,Aweil East,all 7 maps,7,2,0,0.0
+aweil,SS0502,Aweil East,all 7 maps,no data in >= 1 map,16607,1495,
+aweil,SS0503,Aweil North,4 primary maps,0,6968756,627188,98.9544
+aweil,SS0503,Aweil North,4 primary maps,1,60208,5419,0.8549
+aweil,SS0503,Aweil North,4 primary maps,2,12966,1167,0.1841
+aweil,SS0503,Aweil North,4 primary maps,3,459,41,0.0065
+aweil,SS0503,Aweil North,4 primary maps,4,3,0,0.0
+aweil,SS0503,Aweil North,4 primary maps,no data in >= 1 map,0,0,
+aweil,SS0503,Aweil North,all 7 maps,0,6766500,608985,96.2125
+aweil,SS0503,Aweil North,all 7 maps,1,206921,18623,2.9422
+aweil,SS0503,Aweil North,all 7 maps,2,43815,3943,0.623
+aweil,SS0503,Aweil North,all 7 maps,3,12517,1127,0.178
+aweil,SS0503,Aweil North,all 7 maps,4,2806,253,0.0399
+aweil,SS0503,Aweil North,all 7 maps,5,296,27,0.0042
+aweil,SS0503,Aweil North,all 7 maps,6,12,1,0.0002
+aweil,SS0503,Aweil North,all 7 maps,7,0,0,0.0
+aweil,SS0503,Aweil North,all 7 maps,no data in >= 1 map,9525,857,
+aweil,SS0504,Aweil South,4 primary maps,0,2144524,193007,97.691
+aweil,SS0504,Aweil South,4 primary maps,1,40220,3620,1.8322
+aweil,SS0504,Aweil South,4 primary maps,2,10310,928,0.4697
+aweil,SS0504,Aweil South,4 primary maps,3,158,14,0.0072
+aweil,SS0504,Aweil South,4 primary maps,4,0,0,0.0
+aweil,SS0504,Aweil South,4 primary maps,no data in >= 1 map,0,0,
+aweil,SS0504,Aweil South,all 7 maps,0,2019584,181763,92.0627
+aweil,SS0504,Aweil South,all 7 maps,1,129821,11684,5.9179
+aweil,SS0504,Aweil South,all 7 maps,2,30145,2713,1.3742
+aweil,SS0504,Aweil South,all 7 maps,3,10808,973,0.4927
+aweil,SS0504,Aweil South,all 7 maps,4,2871,258,0.1309
+aweil,SS0504,Aweil South,all 7 maps,5,472,42,0.0215
+aweil,SS0504,Aweil South,all 7 maps,6,4,0,0.0002
+aweil,SS0504,Aweil South,all 7 maps,7,0,0,0.0
+aweil,SS0504,Aweil South,all 7 maps,no data in >= 1 map,1507,136,
+aweil,SS0505,Aweil West,4 primary maps,0,5501343,495121,98.9442
+aweil,SS0505,Aweil West,4 primary maps,1,48715,4384,0.8762
+aweil,SS0505,Aweil West,4 primary maps,2,9490,854,0.1707
+aweil,SS0505,Aweil West,4 primary maps,3,494,44,0.0089
+aweil,SS0505,Aweil West,4 primary maps,4,5,0,0.0001
+aweil,SS0505,Aweil West,4 primary maps,no data in >= 1 map,0,0,
+aweil,SS0505,Aweil West,all 7 maps,0,5270487,474344,95.1934
+aweil,SS0505,Aweil West,all 7 maps,1,209722,18875,3.7879
+aweil,SS0505,Aweil West,all 7 maps,2,45232,4071,0.817
+aweil,SS0505,Aweil West,all 7 maps,3,8948,805,0.1616
+aweil,SS0505,Aweil West,all 7 maps,4,2051,185,0.037
+aweil,SS0505,Aweil West,all 7 maps,5,159,14,0.0029
+aweil,SS0505,Aweil West,all 7 maps,6,10,1,0.0002
+aweil,SS0505,Aweil West,all 7 maps,7,0,0,0.0
+aweil,SS0505,Aweil West,all 7 maps,no data in >= 1 map,23438,2109,
+borsouth,SS0303,Bor South,4 primary maps,0,11892272,1070304,76.6902
+borsouth,SS0303,Bor South,4 primary maps,1,3610834,324975,23.2853
+borsouth,SS0303,Bor South,4 primary maps,2,3798,342,0.0245
+borsouth,SS0303,Bor South,4 primary maps,3,0,0,0.0
+borsouth,SS0303,Bor South,4 primary maps,4,0,0,0.0
+borsouth,SS0303,Bor South,4 primary maps,no data in >= 1 map,0,0,
+borsouth,SS0303,Bor South,all 7 maps,0,11689907,1052092,76.1362
+borsouth,SS0303,Bor South,all 7 maps,1,3650738,328566,23.7772
+borsouth,SS0303,Bor South,all 7 maps,2,12515,1126,0.0815
+borsouth,SS0303,Bor South,all 7 maps,3,775,70,0.005
+borsouth,SS0303,Bor South,all 7 maps,4,12,1,0.0001
+borsouth,SS0303,Bor South,all 7 maps,5,0,0,0.0
+borsouth,SS0303,Bor South,all 7 maps,6,0,0,0.0
+borsouth,SS0303,Bor South,all 7 maps,7,0,0,0.0
+borsouth,SS0303,Bor South,all 7 maps,no data in >= 1 map,152957,13766,

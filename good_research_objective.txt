@@ -1,0 +1,24 @@
+A Research Objective states what your approach will produce or evaluate. It should make your intended contribution clear and explain how you will determine whether the approach has succeeded. You may add supporting objectives, provided that each contributes directly to the main objective and does not introduce a separate approach, outcome or stakeholder need.
+
+ 
+
+A good Research Objective usually specifies:
+
+Action: What will you develop, compare, evaluate, or investigate?
+Outcome: What exactly will be predicted, measured, or explained?
+Scope: For which location, population, period, or spatial unit?
+Inputs or approach: Which relevant data or method will be used?
+Evaluation: Which baseline and metrics will be used?
+Purpose: Which stakeholder problem or decision could the result support?
+Your RO will be evolving with your progress, understanding, decisions, etc. you can start with a provisional RO which will become more robust (final RO).
+
+Provisional research objective
+
+Used while defining and testing the project direction:
+The objective of this project is to [develop/evaluate/compare] a [method or analytical approach] for [one defined outcome] in [scope], using [relevant information or predictor groups], to provide [defined output] that could support [stakeholder decision or need].
+
+
+Final research objective
+Completed once the methodology and evaluation design are established:
+
+The objective of this project is to [develop/evaluate/compare] a [model, method or analytical framework] for [specific outcome] in [geographic and temporal scope], using [data or predictor groups]. The proposed approach will be compared with [baseline or alternative method] and evaluated using [performance metrics]. The results are intended to support [specific stakeholder or decision context] by providing [defined output, insight or lead time].

@@ -24,3 +24,18 @@ data/cropland/**/*.gpkg-*
 data/cropland/**/raw_downloads/
 data/cropland/logs/
 data/cropland/**/*.part
+
+# External data is shared via SURFdrive, never committed (README "External data setup").
+# Keep only the cropland metadata (README, MANIFEST, CHECKS, small CSVs, demo figures).
+*.zip
+data/*
+!data/cropland/
+data/cropland/docs/*.pdf
+
+# Course material from Canvas, personal drafts, and a cloned third-party repo
+Data_overview.xlsx
+global_streamflow_model_paper/
+archive/__pycache__/
+
+# Personal AI-assistant handoff note (local only)
+HANDOFF.md

@@ -29,15 +29,6 @@ re-running the full EDA workflow.
 The `tables/` folder contains compact CSVs used by the figures and summary
 checks. Large intermediate EDA tables are intentionally not committed.
 
-## Research design note
-
-- `SLE_DRIVER_TIMELINE_AND_PREDICTION_FRAMEWORK.md`: links the SLE early-driver
-  timeline to an INFLOW-AI–inspired multi-lead ablation design, with explicit
-  data limits and inference boundaries.
-- `INFLOW_NEW_FEATURES_AND_TIMELINE.md`: short note on new INFLOW-inspired
-  predictors (teleconnections, soil moisture, cumulative rainfall) and where
-  they sit on the early-to-late timeline.
-
 ## Road access × flood exposure (27 Sep 2026) — archived
 
 Not viable as a flood outcome; moved with its figures and tables to `archive/roads_flood/`

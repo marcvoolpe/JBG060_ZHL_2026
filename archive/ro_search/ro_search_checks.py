@@ -1,5 +1,5 @@
 """
-Exploratory checks behind the independent RO search (external_deep_research/superior_ro_search_report.md).
+Exploratory checks behind the independent RO search (archive/external_reviews/superior_ro_search_report.md).
 
 Five checks, none of which joins flood severity to displacement (the Session E association stays blinded):
 

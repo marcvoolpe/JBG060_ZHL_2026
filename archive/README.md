@@ -19,7 +19,8 @@ from the new location.
 | | Session B (19–22): cropland vs rangeland exposure + calendar | Context only | Unusual inundation ≈ 87% rangeland / 13% cropland |
 | | Sessions C–D (23–30): conflict seasonality, AA decision framework (cost–loss, routing) | Rejected | Assumed cost–loss; climatology ≈ oracle; conflict too sparse; `CAPSTONE_AA_SYNTHESIS.md` is over-optimistic |
 | | Session E (31–34): within-county flood-impact RO | NO-GO at Stage 34 | Power 0.70 at the highest reachable ρ. Still blinded (`UNBLINDED=False`); Stage 35 never written |
-| `ro_search/` | C1-R flooded-cropland audit (900 points), the 27 Sep RO search | Superseded | Replaced by the Aweil audit plan, then by the own-map RO. Report: `external_deep_research/superior_ro_search_report.md` |
+| `ro_search/` | C1-R flooded-cropland audit (900 points), the 27 Sep RO search | Superseded | Replaced by the Aweil audit plan, then by the own-map RO. Report: `external_reviews/superior_ro_search_report.md` |
+| `external_reviews/` | All of the above: AI deep-research reviews and their prompts (`prompts/`), 22–27 Sep | Reference only | They judged the candidate ROs; their verdicts are summarised in `HANDOFF.md` §5 |
 | `roads_flood/` | Road closure (Logistics Cluster) as a flood outcome | Not viable (27 Sep) | Within-corridor effect −4 pts (CI −12 to +3); road statuses are sticky |
 
 Facts from this work that still hold are listed in `HANDOFF.md` §5 ("Other facts that still hold").
@@ -41,7 +42,7 @@ python -m archive.roads_flood.roads_flood_figures
 
 ## Old path → new path
 
-Older documents (e.g. `external_deep_research/superior_ro_search_report.md`, the gate files) cite the old paths.
+Older documents (e.g. `external_reviews/superior_ro_search_report.md`, the gate files) cite the old paths.
 
 | Old | New |
 |---|---|
@@ -54,4 +55,5 @@ Older documents (e.g. `external_deep_research/superior_ro_search_report.md`, the
 | `eda/CAPSTONE_AA_SYNTHESIS.md`, `eda/DEFERRED_DATASETS.md` | `archive/impact_eda/` |
 | `eda/ro_search_checks.py` | `archive/ro_search/` |
 | `eda/roads_flood_*.py`, `eda/ROADS_FLOOD_EDA.md` | `archive/roads_flood/` |
+| `external_deep_research/` | `archive/external_reviews/` |
 | `deliverables/figures/roads_p*.png`, `deliverables/tables/roads_*.csv` | `archive/roads_flood/figures/`, `archive/roads_flood/tables/` |

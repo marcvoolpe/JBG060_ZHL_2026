@@ -38,3 +38,18 @@
 | GDP | yes | minimal (national series) | `extra_datasets.ipynb` |
 
 OSM: downloaded once into `raw_data/OSM/Malakal, South Sudan/`. Useful later for Petricola-style access, not national flood totals.
+
+## External `data/` (cropland / conflict impact EDA, archived)
+
+| Family | Stage 1 inventory? | Where |
+|--------|-------------------|--------|
+| IOM DTM mobility | yes | `python -m archive.impact_eda.impact_inventory` → `eda/outputs/impact_eda/` |
+| IOM DTM flow | yes | same |
+| OCHA flood | yes | same |
+| FEWS crop | yes | same |
+| ACLED aggregated | yes | same |
+| UCDP GED + Non-State | yes | same |
+| GeoEPR | yes | same |
+
+The Stage 1–34 impact EDA that used these datasets is archived in `archive/impact_eda/`
+(commands and artefacts: `archive/impact_eda/README.md`; why it was dropped: `archive/README.md`).

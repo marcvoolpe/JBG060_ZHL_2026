@@ -1,0 +1,31 @@
+id,lat,lon,area,labeller,label,reason,confidence,cover,cue_a_bare,cue_b_greenup,cue_c_harvest,cue_d_shape,cue_e_crop2024,key_suggestion,overridden,minutes,notes,saved_at
+P01,9.111294,28.611514,pilot,Marc,crop,,2,open,yes,yes,yes,no,,crop,0,5.08,,2026-10-02T09:57:04.609Z
+P02,9.149362,28.320919,pilot,Marc,crop,,2,open,yes,yes,yes,no,no,crop,0,10.29,,2026-10-02T10:07:22.620Z
+P03,9.013854,28.545093,pilot,Marc,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.39,,2026-10-02T10:07:46.110Z
+P04,8.964092,28.600399,pilot,Marc,not crop,water,3,water,no,no,no,no,no,not crop,0,0.19,,2026-10-02T10:07:57.722Z
+P05,9.113347,28.330899,pilot,Marc,not crop,grass/bush,2,open,can't tell,yes,yes,no,no,not crop,0,1.94,,2026-10-02T10:09:54.470Z
+P06,9.308744,28.744037,pilot,Marc,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.58,,2026-10-02T10:10:29.555Z
+P07,9.109536,28.498693,pilot,Marc,crop,,3,open,yes,yes,yes,yes,,crop,0,0.58,,2026-10-02T10:11:04.905Z
+P08,9.115241,28.324853,pilot,Marc,crop,,3,open,yes,yes,yes,yes,,crop,0,2.97,,2026-10-02T10:14:03.477Z
+P09,9.328105,28.421265,pilot,Marc,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,2.75,,2026-10-02T10:16:49.024Z
+P10,9.052355,27.995649,pilot,Marc,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.12,,2026-10-02T10:16:56.584Z
+P11,9.226304,28.658063,pilot,Marc,not crop,grass/bush,2,open,can't tell,no,no,no,no,not crop,0,0.77,,2026-10-02T10:17:42.904Z
+P12,8.821004,28.488112,pilot,Marc,crop,,3,open,yes,yes,yes,yes,,crop,0,0.46,,2026-10-02T10:18:11.114Z
+P13,9.054877,28.597752,pilot,Marc,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.11,,2026-10-02T10:18:17.876Z
+P14,9.057221,28.247765,pilot,Marc,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,3.39,,2026-10-02T10:21:41.481Z
+P15,9.316101,28.782137,pilot,Marc,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.62,,2026-10-02T10:22:18.711Z
+P16,9.104132,28.714859,pilot,Marc,not crop,grass/bush,3,open,no,no,yes,no,no,not crop,0,0.51,,2026-10-02T10:22:49.891Z
+P17,9.047252,28.615353,pilot,Marc,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,2.16,,2026-10-02T10:24:59.888Z
+P18,8.965081,28.345065,pilot,Marc,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,1.62,,2026-10-02T10:26:37.198Z
+P19,9.074571,27.978292,pilot,Marc,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,1.01,,2026-10-02T10:27:38.358Z
+P20,9.251523,28.586195,pilot,Marc,crop,,2,open,yes,yes,yes,can't tell,,crop,0,2.75,,2026-10-02T10:30:23.708Z
+P21,9.291977,28.779372,pilot,Marc,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.16,,2026-10-02T10:30:33.448Z
+P22,9.093888,28.261583,pilot,Marc,crop,,3,open,yes,yes,can't tell,yes,,crop,0,3.70,,2026-10-02T10:34:16.026Z
+P23,9.162328,28.104622,pilot,Marc,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.10,,2026-10-02T10:34:22.244Z
+P24,9.154907,28.352857,pilot,Marc,crop,,3,open,yes,yes,yes,yes,,crop,0,0.37,,2026-10-02T10:34:45.050Z
+P25,9.19403,28.13709,pilot,Marc,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.12,,2026-10-02T10:34:52.721Z
+P26,9.218147,28.521197,pilot,Marc,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,2.88,,2026-10-02T10:37:46.081Z
+P27,9.303471,28.66244,pilot,Marc,unsure,grass/bush,2,open,can't tell,yes,can't tell,no,can't tell,not crop,1,3.36,it could just be grass but it's not as clear as other images,2026-10-02T10:41:08.253Z
+P28,8.906397,28.547606,pilot,Marc,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.51,,2026-10-02T10:41:39.205Z
+P29,9.094361,28.662077,pilot,Marc,not crop,grass/bush,2,open,can't tell,yes,no,no,no,not crop,0,1.93,,2026-10-02T10:43:35.113Z
+P30,9.253548,28.276343,pilot,Marc,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,6.75,,2026-10-02T10:44:44.271Z

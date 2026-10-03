@@ -15,3 +15,9 @@ talk/
 data-JBG060-2026/
 *.pngcropland/labels/*.tmp
 cropland/label_tool/img/
+data/
+*.xlsx
+*.zip
+
+#MARC
+HANDOFF.md

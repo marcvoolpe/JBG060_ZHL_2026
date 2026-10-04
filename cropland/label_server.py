@@ -19,6 +19,7 @@ import json
 import os
 import re
 import tempfile
+import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -56,7 +57,18 @@ def write(which, who, rows: list[dict]):
         w = csv.DictWriter(f, fieldnames=COLUMNS, extrasaction="ignore")
         w.writeheader()
         w.writerows(rows)
-    os.replace(tmp, p)
+    # On Windows, OneDrive or an open Excel window can lock the CSV for a moment: retry, then write directly.
+    for _ in range(10):
+        try:
+            os.replace(tmp, p)
+            return
+        except PermissionError:
+            time.sleep(0.2)
+    with p.open("w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=COLUMNS, extrasaction="ignore")
+        w.writeheader()
+        w.writerows(rows)
+    os.remove(tmp)
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -92,6 +104,9 @@ class Handler(SimpleHTTPRequestHandler):
             self._json(200, {"saved": len(data["rows"])})
         except (KeyError, ValueError, TypeError) as e:
             self._json(400, {"error": str(e)})
+        except OSError as e:
+            print(f"could not write the label file: {e}")
+            self._json(500, {"error": f"could not write the label file: {e}"})
 
     def log_message(self, fmt, *args):
         if "/api/labels" in (args[0] if args else "") and "POST" in (args[0] if args else ""):

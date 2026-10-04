@@ -1,0 +1,31 @@
+id,lat,lon,area,labeller,label,reason,confidence,cover,cue_a_bare,cue_b_greenup,cue_c_harvest,cue_d_shape,cue_e_crop2024,key_suggestion,overridden,minutes,notes,saved_at
+P01,9.111294,28.611514,pilot,Matteo,not crop,grass/bush,2,open,yes,yes,no,,no,,0,6.66,,2026-10-02T15:58:22.248Z
+P02,9.149362,28.320919,pilot,Matteo,crop,,3,open,yes,yes,yes,can't tell,yes,crop,0,254.20,,2026-10-02T20:12:34.288Z
+P03,9.013854,28.545093,pilot,Matteo,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,91.48,,2026-10-02T21:44:03.055Z
+P04,8.964092,28.600399,pilot,Matteo,not crop,water,3,water,no,no,no,no,no,not crop,0,0.40,,2026-10-02T21:44:27.201Z
+P05,9.113347,28.330899,pilot,Matteo,not crop,other,2,open,yes,yes,no,no,no,not crop,0,5.22,bare ground,2026-10-02T21:49:40.655Z
+P06,9.308744,28.744037,pilot,Matteo,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,7.05,,2026-10-02T21:56:43.547Z
+P07,9.109536,28.498693,pilot,Matteo,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,9.32,,2026-10-02T22:06:02.676Z
+P08,9.115241,28.324853,pilot,Matteo,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,0.21,,2026-10-02T22:07:04.725Z
+P09,9.328105,28.421265,pilot,Matteo,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,0.31,,2026-10-02T22:07:23.616Z
+P10,9.052355,27.995649,pilot,Matteo,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,1.15,,2026-10-02T22:08:32.652Z
+P11,9.226304,28.658063,pilot,Matteo,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,1.12,,2026-10-03T08:47:10.545Z
+P12,8.821004,28.488112,pilot,Matteo,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,1.09,,2026-10-03T08:48:16.223Z
+P13,9.054877,28.597752,pilot,Matteo,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,1.05,,2026-10-03T08:49:19.481Z
+P14,9.057221,28.247765,pilot,Matteo,not crop,grass/bush,2,open,no,yes,no,no,no,not crop,0,1.50,,2026-10-03T08:50:49.357Z
+P15,9.316101,28.782137,pilot,Matteo,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,2.64,,2026-10-03T08:53:27.673Z
+P16,9.104132,28.714859,pilot,Matteo,crop,other,2,open,no,no,yes,no,no,not crop,1,3.66,"possible flood-recession crop; flooded Sep-Oct, strong green recovery",2026-10-03T08:57:07.072Z
+P17,9.047252,28.615353,pilot,Matteo,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,1.43,,2026-10-03T08:58:32.835Z
+P18,8.965081,28.345065,pilot,Matteo,not crop,grass/bush,2,open,no,yes,no,no,no,not crop,0,1.14,,2026-10-03T08:59:41.068Z
+P19,9.074571,27.978292,pilot,Matteo,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,1.28,,2026-10-03T09:00:57.996Z
+P20,9.251523,28.586195,pilot,Matteo,crop,,3,open,yes,yes,yes,yes,,crop,0,2.86,,2026-10-03T09:03:49.527Z
+P21,9.291977,28.779372,pilot,Matteo,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,17.54,,2026-10-03T09:21:21.886Z
+P22,9.093888,28.261583,pilot,Matteo,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,0.99,,2026-10-03T09:22:21.106Z
+P23,9.162328,28.104622,pilot,Matteo,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,1.61,,2026-10-03T09:23:57.798Z
+P24,9.154907,28.352857,pilot,Matteo,crop,,3,open,yes,yes,yes,yes,,crop,0,2.46,,2026-10-03T09:26:25.337Z
+P25,9.19403,28.13709,pilot,Matteo,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,1.41,,2026-10-03T09:27:49.906Z
+P26,9.218147,28.521197,pilot,Matteo,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,2.49,,2026-10-03T09:30:19.036Z
+P27,9.303471,28.66244,pilot,Matteo,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,1.30,,2026-10-03T09:31:37.281Z
+P28,8.906397,28.547606,pilot,Matteo,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.95,,2026-10-03T09:32:34.534Z
+P29,9.094361,28.662077,pilot,Matteo,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,1.10,,2026-10-03T09:33:40.356Z
+P30,9.253548,28.276343,pilot,Matteo,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.91,,2026-10-03T09:34:34.749Z

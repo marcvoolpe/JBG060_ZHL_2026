@@ -8,9 +8,10 @@ contrasting cases.
     1 June and 31 December 2025, from raw_data/flood_masks (recurring + unusual).
   - Per map: the crop fraction inside every flood cell (Earth Engine, 10 m,
     sent in chunks of cell boxes), times the cell's area. ASAP is read locally.
-  - From the sample, independent of any map: the share of points that are
-    cropland (or cropped) AND in a flood cell, times the study area, with a
-    95% interval.
+  - From the sample, independent of any map: the labelled share of each box
+    that is cropland (or cropped) for points in a flood cell, 0 elsewhere,
+    averaged with the stratum weights and times the study area, with a 95%
+    interval. Also the upper bound: boxes that hold any cropland.
 
 Output: cropland/results/flooded_cropland.csv
 Run from group_repo: python cropland/10_flood.py cropland/rule1_<date>.json
@@ -93,10 +94,13 @@ def main() -> None:
         w = W[W.area == area].set_index("stratum").share.to_dict()
         total = W[W.area == area].ha.sum()
         for name, pos in (("reference: cropland", {"crop", "fallow"}), ("reference: cropped 2025", {"crop"})):
-            y = (pts.final.isin(pos).to_numpy() & near).astype(float)
-            est, se = E.area(y, pts.stratum.to_numpy(), w)
-            rows.append({"area": area, "map": name, "flooded_crop_ha": est * total,
-                         "ci_low_ha": max(0, est - 1.96 * se) * total, "ci_high_ha": (est + 1.96 * se) * total})
+            has = pts.final.isin(pos).to_numpy()
+            ok = pts.crop_share.notna().to_numpy()
+            for label, y, keep in ((f"{name} (share of box)", np.where(has, pts.crop_share, 0.0) * near, ok),
+                                   (f"{name}, upper bound (box holds it)", (has & near).astype(float), np.ones(len(pts), bool))):
+                est, se = E.area(np.asarray(y, float)[keep], pts.stratum.to_numpy()[keep], w)
+                rows.append({"area": area, "map": label, "flooded_crop_ha": est * total,
+                             "ci_low_ha": max(0, est - 1.96 * se) * total, "ci_high_ha": (est + 1.96 * se) * total})
         rows.append({"area": area, "map": "all flooded land", "flooded_crop_ha": cells.ha.sum()})
     out = pd.DataFrame(rows)
     (C.HERE / "results").mkdir(exist_ok=True)

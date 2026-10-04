@@ -13,7 +13,8 @@ cache
 .git
 talk/
 data-JBG060-2026/
-*.pngcropland/labels/*.tmp
+*.png
+cropland/labels/*.tmp
 cropland/label_tool/img/
 data/
 *.xlsx

@@ -30,7 +30,9 @@ LABELS = HERE / "labels"
 PORT = 8765
 COLUMNS = ["id", "lat", "lon", "area", "labeller", "label", "reason", "confidence", "cover",
            "cue_a_bare", "cue_b_greenup", "cue_c_harvest", "cue_d_shape", "cue_e_crop2024",
-           "key_suggestion", "overridden", "minutes", "notes", "saved_at"]
+           "key_suggestion", "overridden", "minutes", "notes", "saved_at", "unit",
+           "box_west", "box_south", "box_east", "box_north",                  # corners of the labelled box, degrees
+           "crop_share"]                                                       # 0, <10, 10-25, 25-50, >50 (% of the box)
 SAFE = re.compile(r"^[A-Za-z0-9_-]{1,40}$")
 
 
@@ -58,17 +60,23 @@ def write(which, who, rows: list[dict]):
         w.writeheader()
         w.writerows(rows)
     # On Windows, OneDrive or an open Excel window can lock the CSV for a moment: retry, then write directly.
-    for _ in range(10):
-        try:
-            os.replace(tmp, p)
-            return
-        except PermissionError:
-            time.sleep(0.2)
-    with p.open("w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=COLUMNS, extrasaction="ignore")
-        w.writeheader()
-        w.writerows(rows)
-    os.remove(tmp)
+    try:
+        for _ in range(10):
+            try:
+                os.replace(tmp, p)
+                return
+            except PermissionError:
+                time.sleep(0.2)
+        with p.open("w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=COLUMNS, extrasaction="ignore")
+            w.writeheader()
+            w.writerows(rows)
+    finally:
+        if os.path.exists(tmp):                   # never leave tmp*.tmp files behind in labels/
+            try:
+                os.remove(tmp)
+            except OSError:
+                pass
 
 
 class Handler(SimpleHTTPRequestHandler):

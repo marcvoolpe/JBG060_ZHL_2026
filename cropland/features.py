@@ -5,6 +5,17 @@ Each feature measures one cue of the labelling key, so the rules the decision
 tree learns can be read in the same terms as the key. 06_fit_rules.py and
 07_run_map.py both use this function, so the map uses exactly the features the
 rules were fitted on.
+
+Labellers judge the 210 m box around a point (common.BOX_M), and a box is crop
+when there is cropland ANYWHERE in it. So every feature is first computed per
+10 m pixel (pixel_features) and then summarised over the 21 x 21 pixel box
+around each pixel (feature_image) by the most crop-like part of the box: the
+10th percentile where crop is low (bare soil in spring, near buildings), the
+90th percentile where crop is high (bare-soil index, green-up, harvest drop,
+texture, edges), and the mean for the rest (trees, water, radar). One field
+covering a tenth of the box then still moves the box's features. A pixel's
+features describe the same box a labeller looked at, at the sample points and
+in the map.
 """
 
 import common as C
@@ -34,8 +45,28 @@ def _fill(months):
     return out
 
 
+# how each feature is summarised over the box: the end that points to crop
+BOX_LOW = ["ndvi_min_am", "dist_buildings_m"]                                   # 10th percentile
+BOX_HIGH = ["bsi_max_am", "greenup", "drop_son", "drop_vs_500m", "texture_jja", "edge_density"]   # 90th
+BOX_MEAN = [f for f in FEATURES if f not in BOX_LOW + BOX_HIGH]
+
+
 def feature_image(ee, geom, year: int = C.YEAR):
-    """All features for one year. Sentinel-2 is Level-2A (surface reflectance)."""
+    """All features for one year, each summarised over the 210 m box around the pixel.
+
+    The kernel is 100 m each side of the centre pixel: 21 x 21 pixels at 10 m.
+    At the 30 m national scale Earth Engine rounds it to whole 30 m pixels.
+    """
+    px = pixel_features(ee, geom, year)
+    box = ee.Kernel.square((C.BOX_M - 10) / 2, "meters")
+    parts = [px.select(BOX_LOW).reduceNeighborhood(ee.Reducer.percentile([10]), box).rename(BOX_LOW),
+             px.select(BOX_HIGH).reduceNeighborhood(ee.Reducer.percentile([90]), box).rename(BOX_HIGH),
+             px.select(BOX_MEAN).reduceNeighborhood(ee.Reducer.mean(), box).rename(BOX_MEAN)]
+    return ee.Image.cat(parts).select(FEATURES).float()
+
+
+def pixel_features(ee, geom, year: int = C.YEAR):
+    """All features for one year at each 10 m pixel. Sentinel-2 is Level-2A (surface reflectance)."""
     s2 = C.s2_monthly(ee, geom, year)
     ndvi = _fill([m.normalizedDifference(["B8", "B4"]) for m in s2])
     bsi = _fill([m.expression("((b('B11') + b('B4')) - (b('B8') + b('B2'))) / ((b('B11') + b('B4')) + (b('B8') + b('B2')))")
@@ -80,7 +111,7 @@ def feature_image(ee, geom, year: int = C.YEAR):
 
 
 def sample_points(ee, df, geom_buffer_m: int = 2000, chunk: int = 100):
-    """Feature values at the points of a DataFrame with id, lat, lon (10 m scale)."""
+    """Feature values (box summaries) at the points of a DataFrame with id, lat, lon."""
     import pandas as pd
     rows = []
     for i in range(0, len(df), chunk):

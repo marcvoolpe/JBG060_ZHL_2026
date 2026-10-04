@@ -10,15 +10,18 @@ import pandas as pd
 
 
 def area(ref, strata, W):
-    """Share of the area that is crop, its standard error, from reference labels only."""
+    """Share of the area that is crop, its standard error, from reference values only.
+
+    ref is 0/1 (the box holds crop) or a fraction (the share of the box that is
+    crop). The variance s^2 / n per stratum equals p (1 - p) / (n - 1) for 0/1.
+    """
     est, var = 0.0, 0.0
     for h, w in W.items():
         y = ref[strata == h]
         if len(y) < 2:
             continue
-        p = y.mean()
-        est += w * p
-        var += w ** 2 * p * (1 - p) / (len(y) - 1)
+        est += w * y.mean()
+        var += w ** 2 * y.var(ddof=1) / len(y)
     return est, np.sqrt(var)
 
 

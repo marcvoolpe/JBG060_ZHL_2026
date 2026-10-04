@@ -41,9 +41,11 @@ git push
 
 How to label a point, the shortcuts and the traps: `LABELLING_GUIDE.md`. The short version:
 
-- `W` / `B` / `T` / `O` for what covers the pixel (water / buildings / trees / open land).
+- Label the **210 m yellow box**: crop if there is cropland anywhere in it.
+- `O` if there is open land anywhere in the box; otherwise `W` / `B` / `T` for what the box mostly is (water / buildings / trees).
 - Then `Y` / `N` / `K` for each cue.
 - The label fills itself in. `C` / `F` / `X` / `U` change it.
+- For crop or fallow: how much of the box is cropland, `6` <10% · `7` 10–25% · `8` 25–50% · `9` >50%.
 - `Enter` saves.
 
 **Deadlines:**
@@ -63,7 +65,7 @@ How to label a point, the shortcuts and the traps: `LABELLING_GUIDE.md`. The sho
 
 ## 2. The method, in short
 
-1. **Definition.** For each 10 m pixel in 2025:
+1. **Definition.** For the 210 m × 210 m box around each point (21 × 21 Sentinel-2 pixels), in 2025:
    - **crop:** sown and grown in 2025;
    - **fallow:** a field not sown in 2025;
    - **not crop:** grass, bush, trees, water, settlement.
@@ -82,7 +84,7 @@ How to label a point, the shortcuts and the traps: `LABELLING_GUIDE.md`. The sho
    The maps only decide **where** points go; they are never the truth. The area estimate weights each group by its real share of the land, so extra points in a group do not bias it.
 
 3. **Truth from people.** Each point is labelled by **two** of us independently, from monthly Sentinel-2 images of 2025 (2024 alongside, only to recognise fallow), the greenness (NDVI) curve, and a high-resolution image. The labelling key asks:
-   - **first:** what covers the pixel (water / buildings / trees / open land);
+   - **first:** is there open land anywhere in the box (if not: water / buildings / trees);
    - **then, for open land:**
      - a. bare soil in April-May;
      - b. green-up in June-August;
@@ -94,10 +96,10 @@ How to label a point, the shortcuts and the traps: `LABELLING_GUIDE.md`. The sho
 
 4. **Calibration vs test.** The 450 points were split before labelling: **150 calibration** (to build the rules) and **300 test** (to score them). The test points are never used to build anything.
 
-5. **Rule 1, our map.** Earth Engine measures, at every pixel, the same things the labellers look at. For example: lowest greenness in April-May, the green-up, the September-October drop compared with the surroundings, texture, distance to buildings, water, burn scars, and radar in the cloudy months. A **decision tree** (2-4 levels) learns thresholds from the calibration points and prints them as if-then rules ("crop if the harvest drop is above X and..."). It maps **cropped in 2025**, because a fallow field looks like grass in a single year. Fallow enters the area through the sample only. The rules are frozen in `rule1_<date>.json` and the same file drives the Earth Engine map, so the map and the scores can't drift apart. A random forest on the same features (and one on Google's Satellite Embedding) is run as a black-box **benchmark** only.
+5. **Rule 1, our map.** Earth Engine measures, over the 210 m box around every pixel, the same things the labellers look at. For example: lowest greenness in April-May, the green-up, the September-October drop compared with the surroundings, texture, distance to buildings, water, burn scars, and radar in the cloudy months. A **decision tree** (2-4 levels) learns thresholds from the calibration points and prints them as if-then rules ("crop if the harvest drop is above X and..."). It maps **cropped in 2025**, because a fallow field looks like grass in a single year. Fallow enters the area through the sample only. The rules are frozen in `rule1_<date>.json` and the same file drives the Earth Engine map, so the map and the scores can't drift apart. A random forest on the same features (and one on Google's Satellite Embedding) is run as a black-box **benchmark** only.
 
 6. **Results.**
-   - **Area:** cropland area per study area, in ha with a **95% confidence interval**, from all labelled points. It does not depend on any map.
+   - **Area:** cropland area per study area, in ha with a **95% confidence interval**, from the labelled share of cropland in each box at all points. It does not depend on any map. The area of land whose box holds any cropland is reported next to it as an upper bound.
    - **Accuracy:** for each map (our Rule 1, the 7 public maps, ASAP, the benchmarks), on the test points: user's accuracy (precision), producer's accuracy (recall) and F1 with error bars, per area and for both definitions. Maps whose intervals overlap are not ranked.
    - **National:** cropland area per map and per state. Our map is marked "not checked" outside the two areas.
    - **Flood:** flooded cropland in 2025 per map. Aweil barely flooded in 2025 and Bor South flooded widely, so we see both cases.
@@ -115,6 +117,7 @@ How to label a point, the shortcuts and the traps: `LABELLING_GUIDE.md`. The sho
 Setup:
 - `pip install -r requirements.txt earthengine-api`
 - `earthengine authenticate` once, with a Google account added to the Cloud project `grand-loop-457810-a1`.
+- Or use your own Earth Engine project: `set CROPLAND_EE_PROJECT=<project-id>` (Windows; `export` on macOS/Linux) before running. Steps 4 and 5 only need public data; steps 3, 8 and 10 read our assets in `grand-loop-457810-a1`, so they need access there.
 - Run every script from `group_repo`.
 
 | step | command | what it does | output |
@@ -123,8 +126,8 @@ Setup:
 | 1 | `python cropland/01_compare_pilot.py` | pilot agreement (Cohen's kappa), share of confident labels; **go if ≥ 70%** | printed |
 | 2 | `python cropland/02_strata_from_asap.py` | first look: ASAP crop share per county | `asap_crop_share_by_county.csv` |
 | 3 | `... 03_agreement_and_sample.py export`, then `... sample` | strata map (Earth Engine asset), stratum areas, 450-point sample, split, two labellers per point | `strata_areas.csv`, `sample.csv` |
-| 4 | `python cropland/04_image_strips.py sample` | image strips 2025 + 2024 and NDVI for the tool | `label_tool/img/` (zip it), `label_tool/data_*.js` |
-| 5 | `python cropland/05_features.py sample` | the 18 features + Satellite Embedding at each point | `features_sample.csv`, `embedding_sample.csv` |
+| 4 | `python cropland/04_image_strips.py sample` | image strips 2025 + 2024 with the 210 m box; the box's NDVI and radar; Esri image date | `label_tool/img/` (zip it), `label_tool/data_*.js` |
+| 5 | `python cropland/05_features.py sample` | the 18 features + Satellite Embedding, over each point's 210 m box | `features_sample.csv`, `embedding_sample.csv` |
 | – | `python cropland/label_server.py` | the labelling tool, saving to disk | `labels/*.csv` |
 | 6 | `python cropland/06_merge_labels.py` | pairs the two labels; disagreements go to `adjudication.csv` for a third person; run again after | `labels_final.csv` |
 | 7 | `python cropland/07_fit_rules.py` | Rule 1 + benchmarks on calibration points; **freezes the rules** | `rule1_<date>.json` |

@@ -2,7 +2,8 @@
 Checks for the cropland pipeline.
 
 Fast (no Earth Engine):
-  - the area estimator returns the true share when every stratum has it;
+  - the area estimator returns the true share when every stratum has it, also
+    for box shares (fractions);
   - accuracy in one stratum equals the plain confusion-matrix values;
   - a decision tree turned into rules predicts exactly like the tree.
 Slow (needs Earth Engine, run with --ee):
@@ -31,6 +32,17 @@ def test_area():
     ref = np.array([1] * 10 + [0] * 40 + [1] * 10 + [0] * 40, float)       # 20% in both strata
     est, se = E.area(ref, strata, {"A": 0.9, "B": 0.1})
     assert abs(est - 0.2) < 1e-12 and se > 0
+
+
+def test_area_share():
+    """Box shares (fractions): the mean share per stratum, weighted; 0/1 values give the old formula."""
+    strata = np.array(list("A" * 4 + "B" * 4))
+    ref = np.array([0, .05, .175, .375, 0, 0, .75, .75])
+    est, se = E.area(ref, strata, {"A": 0.5, "B": 0.5})
+    assert abs(est - (0.15 * 0.5 + 0.375 * 0.5)) < 1e-12 and se > 0
+    y = np.array([1, 0, 0, 1, 1], float)
+    est, se = E.area(y, np.array(["A"] * 5), {"A": 1.0})
+    assert abs(se - np.sqrt(0.4 * 0.6 / 4)) < 1e-12                        # p (1 - p) / (n - 1)
 
 
 def test_accuracy_one_stratum():
@@ -74,13 +86,13 @@ def test_building_distance():
     pt = ee.Geometry.Point(float(p.lon), float(p.lat))
     ob = ee.FeatureCollection("GOOGLE/Research/open-buildings/v3/polygons").filterBounds(pt.buffer(2500))
     true = ob.map(lambda f: f.set("d", f.geometry().distance(pt))).aggregate_min("d").getInfo()
-    img = F.feature_image(ee, pt.buffer(2000)).select("dist_buildings_m")
+    img = F.pixel_features(ee, pt.buffer(2000)).select("dist_buildings_m")    # before the box mean
     got = img.reduceRegion(ee.Reducer.first(), pt, 10).getInfo()["dist_buildings_m"]
     assert abs(got - true) <= 15, f"feature {got:.0f} m, nearest building {true:.0f} m"
 
 
 if __name__ == "__main__":
-    tests = [test_area, test_accuracy_one_stratum, test_tree_equals_rules]
+    tests = [test_area, test_area_share, test_accuracy_one_stratum, test_tree_equals_rules]
     if "--ee" in sys.argv:
         tests += [test_ee_equals_python, test_building_distance]
     for t in tests:

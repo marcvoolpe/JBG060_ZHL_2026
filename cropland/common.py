@@ -6,6 +6,7 @@ changes all of them.
 """
 
 import json
+import os
 from pathlib import Path
 
 import geopandas as gpd
@@ -14,13 +15,16 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parent
 RAW = REPO / "raw_data"
 OUT = RAW / "cropland"                      # large outputs, not in git
-OUT.mkdir(exist_ok=True)
+OUT.mkdir(parents=True, exist_ok=True)
 ADMIN2 = RAW / "Administrative boundaries" / "ssd_admin2.geojson"
 
-EE_PROJECT = "grand-loop-457810-a1"         # Google Cloud project registered for Earth Engine
-ASSETS = f"projects/{EE_PROJECT}/assets/sample-points"   # folder made in the Code Editor
+GROUP_PROJECT = "grand-loop-457810-a1"      # Google Cloud project registered for Earth Engine; holds our assets
+# Run on your own Earth Engine project with: set CROPLAND_EE_PROJECT=<your-project-id> (steps 04 and 05 only need public data)
+EE_PROJECT = os.environ.get("CROPLAND_EE_PROJECT", GROUP_PROJECT)
+ASSETS = f"projects/{GROUP_PROJECT}/assets/sample-points"   # folder made in the Code Editor
 YEAR = 2025
 SEED = 42
+BOX_M = 210                                  # the labelled unit: the outer yellow box, 210 m x 210 m (21 x 21 Sentinel-2 pixels) centred on a point
 
 AREAS = {                                    # study areas: sampled, labelled and scored
     "aweil": ["Aweil North", "Aweil East", "Aweil South", "Aweil West", "Aweil Centre"],
@@ -45,6 +49,11 @@ def area_geometry(ee, area: str, simplify_deg: float = 0.0):
     if simplify_deg:
         geom = geom.simplify(simplify_deg)
     return ee.Geometry(json.loads(gpd.GeoSeries([geom], crs=4326).to_json())["features"][0]["geometry"])
+
+
+def box(ee, lon: float, lat: float):
+    """The BOX_M square centred on a point: the unit labellers label."""
+    return ee.Geometry.Point(lon, lat).buffer(BOX_M / 2).bounds()
 
 
 def country_geometry(ee):

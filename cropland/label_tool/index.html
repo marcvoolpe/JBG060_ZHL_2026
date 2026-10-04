@@ -23,12 +23,15 @@ main{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:14px;padding:14p
 @media (max-width:1000px){main{grid-template-columns:1fr}}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
 .card h3{margin:0 0 6px;font-size:.9rem}
-.strip img{display:block;width:100%;height:auto;border-radius:4px}
+.strip img{display:block;width:100%;height:auto;border-radius:4px;cursor:zoom-in}
 .strip .y24 img{opacity:.92}
 .yr{font-size:.8rem;color:var(--ink2);margin:8px 0 3px}
 .row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:14px}
 @media (max-width:700px){.row2{grid-template-columns:1fr}}
 .hires img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;background:#ddd}
+.hires .frame{position:relative;aspect-ratio:1}
+.hires .frame img{height:100%}
+.hires .boxmark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border:2px solid #ffe600;box-shadow:0 0 0 1px rgba(0,0,0,.45);pointer-events:none}
 .links a{margin-right:10px;color:var(--no)}
 .q{padding:7px 0;border-bottom:1px solid var(--line)}
 .q:last-of-type{border-bottom:0}
@@ -51,6 +54,15 @@ svg text{font-size:11px;fill:var(--ink2)}
 .list button{padding:1px 6px;font-size:.75rem;font-variant-numeric:tabular-nums}
 .list button.done{background:#dcebd9;border-color:#b6d3b1}
 .list button.cur{outline:2px solid var(--ink)}
+.list button.later{background:var(--warn-soft);border-color:#e5b892}
+.zoomgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.zoomgrid canvas{width:100%;aspect-ratio:1;image-rendering:pixelated;border-radius:4px;background:#ddd}
+.olddate{color:var(--warn)}
+.seasondate{color:#2f7d4a}
+.ndvi{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:8px;align-items:start}
+.ndvi .pmap{font-size:.72rem;color:var(--ink2);text-align:center}
+.ndvi .pmap svg{width:92px;height:92px;display:block}
+.plegend span{white-space:nowrap}
 .empty{padding:40px;text-align:center}
 .banner{margin:10px 16px 0;padding:8px 12px;border-radius:8px;background:var(--warn-soft);color:var(--warn);font-size:.9rem}
 dialog{border:0;border-radius:12px;max-width:min(1100px,95vw);padding:16px 18px}
@@ -72,11 +84,13 @@ dialog::backdrop{background:rgba(0,0,0,.4)}
   <span>Cover: <kbd>W</kbd> water <kbd>B</kbd> buildings <kbd>T</kbd> trees <kbd>O</kbd> open land</span>
   <span>Next cue: <kbd>Y</kbd> yes <kbd>N</kbd> no <kbd>K</kbd> can't tell</span>
   <span>Change label: <kbd>C</kbd> crop <kbd>F</kbd> fallow <kbd>X</kbd> not crop <kbd>U</kbd> unsure · confidence <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd></span>
-  <span><kbd>Enter</kbd> save &amp; next · <kbd>←</kbd><kbd>→</kbd> move · <kbd>V</kbd> true/false colour · <kbd>R</kbd> reset point</span>
+  <span>Cropland share of box: <kbd>0</kbd> none <kbd>6</kbd> &lt;10% <kbd>7</kbd> 10–25% <kbd>8</kbd> 25–50% <kbd>9</kbd> &gt;50%</span>
+  <span><kbd>Enter</kbd> save &amp; next · <kbd>←</kbd><kbd>→</kbd> move · <kbd>V</kbd> true/false colour · <kbd>R</kbd> reset point · <kbd>L</kbd> come back later · click a month to enlarge it</span>
 </div>
 <div id="banner"></div>
 <div id="app"></div>
 <dialog id="exdlg"><div id="exbody"></div><p><button id="exclose">Close</button></p></dialog>
+<dialog id="zoomdlg"><div id="zoombody"></div><p class="nav"><button id="zprev">← month</button><button id="znext">month →</button><button id="zclose">Close (Esc)</button></p></dialog>
 
 <script src="data_pilot.js"></script>
 <script src="data_sample.js"></script>
@@ -100,13 +114,15 @@ const key = () => `cropland-labels-${setSel.value}-${whoSel.value}`;
 let labels = {}, idx = 0, started = Date.now(), view = "tc", ans = {}, sinceExport = 0;
 
 // The labelling key of METHODOLOGY.md section 4
-const COVER = [["water","water","W"],["settlement","buildings / road","B"],["trees","trees / shrub","T"],["open","open land (field or grass)","O"]];
+// The box is crop when there is cropland ANYWHERE in it: the cues are about the most field-like patch in the box.
+const BOX_M = 210;      // the labelled unit, as in common.BOX_M: the outer yellow box, 21 x 21 pixels
+const COVER = [["water","no open land: mostly water","W"],["settlement","no open land: mostly buildings / road","B"],["trees","no open land: mostly trees / shrub","T"],["open","some open land (field or grass)","O"]];
 const CUES = [
-  ["cue_a_bare","a. Bare, tilled soil in Apr–May (light, even, not a dark burn)?"],
-  ["cue_b_greenup","b. Green-up between Jun and Aug?"],
-  ["cue_c_harvest","c. Browns or is cleared Aug–Nov earlier than the grass around?"],
-  ["cue_d_shape","d. Field shape: straight edges, rectangles, patchwork?"],
-  ["cue_e_crop2024","e. Looks cropped in 2024 (bare in spring, early harvest)?"]
+  ["cue_a_bare","a. Is any patch in the box bare, tilled soil in Apr–May (light, even, not a dark burn)?"],
+  ["cue_b_greenup","b. Does that patch green up between Jun and Aug?"],
+  ["cue_c_harvest","c. Does it brown or get cleared Aug–Nov earlier than the grass around it?"],
+  ["cue_d_shape","d. Field shape anywhere in the box: straight edges, rectangles, patchwork?"],
+  ["cue_e_crop2024","e. Was any patch in the box cropped in 2024 (bare in spring, early harvest)?"]
 ];
 const AREA_NOTE = {
   aweil: "<b>Aweil</b> (Northern Bahr el Ghazal): rain-fed sorghum, groundnut, sesame near homesteads; sowing done by late May, sorghum harvest Sep–Oct; rice scheme near Aweil town.",
@@ -114,6 +130,9 @@ const AREA_NOTE = {
   pilot: "<b>Pilot</b>, Twic county (Warrap): similar to Aweil; rain-fed sorghum, harvest Sep–Oct."
 };
 const LABELS = [["crop","C"],["fallow","F"],["not crop","X"],["unsure","U"]];
+// how much of the box is cropland (crop + fallow fields): gives the area estimate without the "any crop" inflation
+const SHARES = [["0","none","0"],["<10","under 10%","6"],["10-25","10–25%","7"],["25-50","25–50%","8"],[">50","over 50%","9"]];
+const SHARE_KEY = {"0":"0","6":"<10","7":"10-25","8":"25-50","9":">50"};
 
 function suggest(a){
   if (!a.cover) return null;
@@ -136,14 +155,72 @@ function points(){
   return setSel.value === "pilot" ? all : all.filter(p => (p.labellers||[]).includes(whoSel.value));
 }
 
-function chart(p){
+// the box split into patches with different curves (04_image_strips.py): a field gets its own line
+const PATCH_COL = ["#b98200", "#b4332e", "#2f7d4a"], PATCH_NAME = "ABC";
+let show24 = safe.get("cropland-show24", false);
+function patchChart(p){
   const W=360,H=150,L=30,R=8,T=10,B=24, x=i=>L+(W-L-R)*i/11, y=v=>T+(H-T-B)*(1-(v+0.1)/0.9);
   const line = (arr, col, dash, w) => { if (!arr) return ""; let d="", pen=false; arr.forEach((v,i)=>{ if(v==null){pen=false;return;} d+=(pen?"L":"M")+x(i).toFixed(1)+","+y(v).toFixed(1); pen=true; }); return `<path d="${d}" fill="none" stroke="${col}" stroke-width="${w||2.2}" ${dash?`stroke-dasharray="${dash}"`:''}/>`; };
   let g = [0,0.2,0.4,0.6,0.8].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e4e3df"/><text x="${L-4}" y="${y(v)+4}" text-anchor="end">${v.toFixed(1)}</text>`).join("");
   g += MONTHS.map((m,i)=>`<text x="${x(i)}" y="${H-8}" text-anchor="middle">${m}</text>`).join("");
+  const ps = p.patches;
+  let lines = line(p.ndvi_500m, "#1d6f8c", "5 3", 1.8);
+  if (show24) ps.forEach((q,j) => { lines += line(q.ndvi_2024, PATCH_COL[j], "2 3", 1.4); });
+  ps.forEach((q,j) => { lines += line(q.ndvi, PATCH_COL[j], "", j ? 2.6 : 2.2)
+    + q.ndvi.map((v,i)=> v==null?"":`<circle cx="${x(i)}" cy="${y(v)}" r="2.4" fill="${PATCH_COL[j]}"/>`).join(""); });
+  // map of the patches: 21 x 21 box pixels, north up, same orientation as the images
+  const n = Math.round(Math.sqrt(p.patch_map.length)), c = 92 / n;
+  let cells = ""; [...p.patch_map].forEach((k,i) => { cells += `<rect x="${(i % n) * c}" y="${Math.floor(i / n) * c}" width="${c + .2}" height="${c + .2}" fill="${PATCH_COL[+k]}"/>`; });
+  const legend = ps.map((q,j) => `<span><span style="color:${PATCH_COL[j]}">●</span> patch ${PATCH_NAME[j]}, ${Math.round(q.share * 100)}% of the box</span>`).join(" · ");
+  return `<div class="ndvi"><svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="NDVI of each patch through the year">${g}${lines}</svg>
+      <div class="pmap"><svg viewBox="0 0 92 92" role="img" aria-label="Where each patch is in the box">${cells}<rect x="1" y="1" width="90" height="90" fill="none" stroke="#ffe600" stroke-width="2"/></svg>where the patches are</div></div>
+    <div class="muted plegend">${ps.length > 1 ? legend : `<span style="color:${PATCH_COL[0]}">●</span> the whole box: no part of it has a different curve`} · <span style="color:#1d6f8c">- -</span> ~500 m square, 2025 · gaps = box mostly cloudy</div>
+    <label class="muted"><input type="checkbox" id="show24" ${show24?"checked":""}> show 2024 for the same patches (dotted)</label>
+    ${ps.length > 1 ? `<div class="muted">A field is usually a small patch that is bare in Apr–May and drops before the others in Sep–Oct.</div>` : ""}`;
+}
+
+function chart(p){
+  if (p.patches && p.patch_map) return patchChart(p);
+  const W=360,H=150,L=30,R=8,T=10,B=24, x=i=>L+(W-L-R)*i/11, y=v=>T+(H-T-B)*(1-(v+0.1)/0.9);
+  const line = (arr, col, dash, w) => { if (!arr) return ""; let d="", pen=false; arr.forEach((v,i)=>{ if(v==null){pen=false;return;} d+=(pen?"L":"M")+x(i).toFixed(1)+","+y(v).toFixed(1); pen=true; }); return `<path d="${d}" fill="none" stroke="${col}" stroke-width="${w||2.2}" ${dash?`stroke-dasharray="${dash}"`:''}/>`; };
+  let g = [0,0.2,0.4,0.6,0.8].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e4e3df"/><text x="${L-4}" y="${y(v)+4}" text-anchor="end">${v.toFixed(1)}</text>`).join("");
+  g += MONTHS.map((m,i)=>`<text x="${x(i)}" y="${H-8}" text-anchor="middle">${m}</text>`).join("");
+  // spread inside the box (10th-90th percentile): the top edge is the greenest patch, the bottom the barest
+  const band = (lo, hi) => { if (!lo || !hi) return ""; let out = "", run = [];
+    const flush = () => { if (run.length > 1) out += `<path d="M${run.map(i=>x(i).toFixed(1)+","+y(hi[i]).toFixed(1)).join("L")}L${run.slice().reverse().map(i=>x(i).toFixed(1)+","+y(lo[i]).toFixed(1)).join("L")}Z" fill="#b98200" fill-opacity=".16"/>`; run = []; };
+    lo.forEach((v,i) => { if (v==null || hi[i]==null) flush(); else run.push(i); }); flush(); return out; };
   const dots = p.ndvi.map((v,i)=> v==null?"":`<circle cx="${x(i)}" cy="${y(v)}" r="2.6" fill="#b98200"/>`).join("");
-  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="NDVI through the year">${g}${line(p.ndvi_2024,"#9aa39c","2 3",1.6)}${line(p.ndvi_500m,"#1d6f8c","5 3")}${line(p.ndvi,"#b98200")}${dots}</svg>
-    <div class="muted"><span style="color:#b98200">●</span> this pixel, 2025 · <span style="color:#1d6f8c">- -</span> ~500 m square, 2025 · <span style="color:#9aa39c">···</span> this pixel, 2024 · gaps = no clear image</div>`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="NDVI through the year">${g}${band(p.ndvi_p10,p.ndvi_p90)}${line(p.ndvi_2024,"#9aa39c","2 3",1.6)}${line(p.ndvi_500m,"#1d6f8c","5 3")}${line(p.ndvi,"#b98200")}${dots}</svg>
+    <div class="muted"><span style="color:#b98200">●</span> the ${BOX_M} m box, 2025 (median)${p.ndvi_p10?` · <span style="color:#b98200;opacity:.5">▮</span> 10–90% of the box's pixels: a field in a box of grass shows as the top or bottom edge`:""} · <span style="color:#1d6f8c">- -</span> ~500 m square, 2025 · <span style="color:#9aa39c">···</span> the box, 2024 · gaps = box mostly cloudy</div>`;
+}
+
+function radarChart(p){
+  // Sentinel-1 VH sees through clouds: rises as a crop grows, falls at harvest; very low = standing water
+  if (!p.vh || p.vh.every(v => v == null)) return `<p class="muted">No radar curve yet (rerun step 4).</p>`;
+  const W=360,H=110,L=30,R=8,T=8,B=22, lo=-30, hi=-5, x=i=>L+(W-L-R)*i/11, y=v=>T+(H-T-B)*(1-(Math.min(hi,Math.max(lo,v))-lo)/(hi-lo));
+  let g = [-30,-25,-20,-15,-10,-5].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e4e3df"/><text x="${L-4}" y="${y(v)+4}" text-anchor="end">${v}</text>`).join("");
+  g += MONTHS.map((m,i)=>`<text x="${x(i)}" y="${H-6}" text-anchor="middle">${m}</text>`).join("");
+  let d="", pen=false; p.vh.forEach((v,i)=>{ if(v==null){pen=false;return;} d+=(pen?"L":"M")+x(i).toFixed(1)+","+y(v).toFixed(1); pen=true; });
+  const dots = p.vh.map((v,i)=> v==null?"":`<circle cx="${x(i)}" cy="${y(v)}" r="2.4" fill="#5b4a8b"/>`).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Radar backscatter through the year">${g}<path d="${d}" fill="none" stroke="#5b4a8b" stroke-width="2"/>${dots}</svg>
+    <div class="muted"><span style="color:#5b4a8b">●</span> radar VH (dB), the box, 2025: sees through clouds; rises as a crop grows, drops at harvest; very low = standing water · gaps = no radar pass that month (Aweil has none Jan–Apr 2025)</div>`;
+}
+
+function esriTitle(p){
+  const e = p.esri_date;
+  if (!e) return "High-resolution image (date unknown: check Wayback)";
+  // 2025 = the season we label; Jan-Mar 2026 = just after its harvest, 2025 fields still visible
+  const when = e.date < "2025-01-01" ? ["olddate", "before 2025: field shapes only"]
+    : e.date < "2026-01-01" ? ["seasondate", "taken in 2025: shows this season"]
+    : e.date < "2026-04-01" ? ["seasondate", "just after the 2025 harvest: shows 2025 fields"]
+    : ["olddate", "after 2025: field shapes only"];
+  return `High-resolution image, <span class="${when[0]}">${e.date}</span>${e.source?` · ${e.source}`:""}${e.res_m?` · ${e.res_m} m`:""} <span class="${when[0]}">(${when[1]})</span>`;
+}
+
+function boxPct(p){
+  // share of the high-res image width taken by the box; the image spans 2 * esri_half_deg degrees
+  const half = p.esri_half_deg || 0.003;
+  return (100 * BOX_M / (2 * half * 111320 * Math.cos(p.lat * Math.PI / 180))).toFixed(1);
 }
 
 function radios(name, values, cur, disabled){
@@ -166,6 +243,9 @@ function applyKey(){
   // pre-fill label, reason and confidence from the key, unless the labeller changed them by hand
   const s = suggest(ans);
   if (s && !ans._manual){ ans.label = s[0]; ans.reason = s[1]; ans.confidence = s[2]; }
+  // no field in the box -> no cropland; a share filled in that way is cleared again if the label becomes crop/fallow
+  if (ans.label === "not crop"){ ans.crop_share = "0"; ans._share_auto = true; }
+  else if (ans._share_auto){ delete ans.crop_share; delete ans._share_auto; }
   ans.key_suggestion = s ? s[0] : "";
 }
 
@@ -180,29 +260,31 @@ function render(){
   <main>
     <div>
       <div class="card strip">
-        <h3>${p.id} · yellow square = the 10 m pixel you label, outer box ≈ 110 m · ${view==="tc"?"true colour":"false colour (vegetation = red)"} <kbd>V</kbd></h3>
+        <h3>${p.id} · yellow square = the ${BOX_M} m × ${BOX_M} m box you label: crop if there is cropland anywhere in it · ${view==="tc"?"true colour":"false colour (vegetation = red)"} <kbd>V</kbd></h3>
+        ${p.box_m === BOX_M ? "" : `<div class="banner" style="margin:4px 0">The greenness curve here is still the old one (centre pixel only) and the radar curve is missing. Don't label this set until step 4 is rerun: <code>python cropland/04_image_strips.py ${setSel.value}</code>.</div>`}
         <div class="yr"><b>2025</b>, the year you label</div>
-        <img src="img/${p.id}_2025_${view}.webp" alt="Monthly Sentinel-2 images, 2025">
+        <img class="mstrip" src="img/${p.id}_2025_${view}.webp" alt="Monthly Sentinel-2 images, 2025">
         <div class="y24"><div class="yr">2024, only to recognise fallow (cue e)</div>
-        <img src="img/${p.id}_2024_${view}.webp" alt="Monthly Sentinel-2 images, 2024"></div>
+        <img class="mstrip" src="img/${p.id}_2024_${view}.webp" alt="Monthly Sentinel-2 images, 2024"></div>
       </div>
       <div class="row2">
-        <div class="card"><h3>Greenness (NDVI)</h3>${chart(p)}</div>
-        <div class="card hires"><h3>High-resolution image (date unknown)</h3>
-          <img src="${p.esri}" alt="Esri World Imagery around the point">
+        <div class="card"><h3>Greenness (NDVI)</h3>${chart(p)}<h3 style="margin-top:10px">Radar (through clouds)</h3>${radarChart(p)}</div>
+        <div class="card hires"><h3>${esriTitle(p)}</h3>
+          <div class="frame"><img src="${p.esri}" alt="Esri World Imagery around the point"><div class="boxmark" style="width:${boxPct(p)}%;height:${boxPct(p)}%"></div></div>
           <p class="links muted"><a href="${p.wayback}" target="_blank" rel="noopener">Wayback (dates)</a><a href="${p.google}" target="_blank" rel="noopener">Google Maps</a><a href="${p.eo}" target="_blank" rel="noopener">EO Browser</a></p>
-          <p class="muted">The point is the centre. Check the date in Wayback: fields move between years.</p></div>
+          <p class="muted">The yellow square is the ${BOX_M} m box. Fields move between years: trust shapes, not what grew.</p></div>
       </div>
-      <div class="card" style="margin-top:14px"><h3>All points (${pts.length})</h3><div class="list">${pts.map((q,i)=>`<button data-i="${i}" class="${labels[q.id]?.label?"done":""} ${i===idx?"cur":""}">${q.id}</button>`).join("")}</div></div>
+      <div class="card" style="margin-top:14px"><h3>All points (${pts.length})${later().size?` · <span style="color:var(--warn)">${later().size} to come back to</span>`:""}</h3><div class="list">${pts.map((q,i)=>`<button data-i="${i}" class="${labels[q.id]?.label?"done":""} ${later().has(q.id)?"later":""} ${i===idx?"cur":""}">${q.id}</button>`).join("")}</div></div>
     </div>
     <form class="card" id="form">
       <h3>Labelling key · ${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}</h3>
       <p class="muted" style="margin:0 0 4px">${AREA_NOTE[p.area] || AREA_NOTE.pilot}</p>
-      <div class="q ${!ans.cover?"next":""}"><p>1. What covers most of the 10 m pixel?</p>${radios("cover", COVER, ans.cover)}</div>
+      <div class="q ${!ans.cover?"next":""}"><p>1. Is there open land (field or grass) anywhere in the ${BOX_M} m box?</p>${radios("cover", COVER, ans.cover)}</div>
       ${CUES.map(([k,t],i)=>`<div class="q ${gated?"off":""} ${i===nc?"next":""}"><p>${t}</p>${radios(k,[["yes"],["no"],["can't tell"]],ans[k],gated)}</div>`).join("")}
       <div class="sugg ${s? (s[0]==="crop"?"crop":s[0]==="fallow"?"fallow":s[0]==="unsure"?"unsure":"no") : ""}">${s ? `Key says <b>${s[0]}</b>${s[1]?` (${s[1]})`:""}, confidence ${s[2]}.${ans._manual&&ans.label!==s[0]?" <b>You changed it</b>: say why in the notes.":""}` : "Answer the questions; the label fills in by itself."}</div>
       <div class="q final"><p><b>Label</b></p>${radios("label", LABELS.map(([v,k])=>[v,v,k]), ans.label)}</div>
-      <div class="q"><p>If not crop, why</p>${radios("reason",[["water"],["settlement"],["trees/shrub"],["grass/bush"],["other"]],ans.reason)}</div>
+      <div class="q ${(ans.label==="crop"||ans.label==="fallow") && !ans.crop_share ? "next" : ""}"><p><b>About how much of the box is cropland</b> (crop + fallow fields together)?</p>${radios("crop_share", SHARES, ans.crop_share)}</div>
+      <div class="q"><p>If not crop, what is the box mostly</p>${radios("reason",[["water"],["settlement"],["trees/shrub"],["grass/bush"],["other"]],ans.reason)}</div>
       <div class="q"><p>Confidence</p>${radios("confidence",[["1","1 guess","1"],["2","2 fairly sure","2"],["3","3 sure","3"]],ans.confidence)}</div>
       <div class="q"><p>Notes (why, if you changed the label or are unsure)</p><textarea id="notes" rows="2" style="width:100%">${ans.notes||""}</textarea></div>
       <div class="nav"><button type="button" id="prev">← Back</button><button type="submit" class="primary">Save &amp; next ⏎</button></div>
@@ -219,6 +301,13 @@ function render(){
   form.addEventListener("submit", e => { e.preventDefault(); save(); });
   $("prev").onclick = () => move(-1);
   app.querySelectorAll(".list button").forEach(b => b.onclick = () => { idx = +b.dataset.i; load(); });
+  if ($("show24")) $("show24").onchange = e => { show24 = e.target.checked; safe.set("cropland-show24", show24); render(); };
+  app.querySelectorAll("img.mstrip").forEach(im => im.onclick = e => {
+    // which month tile was clicked: 6 x 2 tiles of 153 px with 4 px gaps in a 938 x 310 image
+    const r = im.getBoundingClientRect(), sx = im.naturalWidth / r.width;
+    const col = Math.min(5, Math.floor((e.clientX - r.left) * sx / 157)), row = Math.min(1, Math.floor((e.clientY - r.top) * sx / 157));
+    zoom(row * 6 + col);
+  });
   preload(pts[idx+1]);
   prog();
 }
@@ -230,19 +319,26 @@ function setAnswer(n, v, fromClick){
     else if (CUES.every(([k]) => ans[k] === "no")) CUES.forEach(([k]) => delete ans[k]);
   } else if (["label","reason","confidence"].includes(n)){
     ans[n] = v; ans._manual = true;
+  } else if (n === "crop_share"){
+    ans.crop_share = v; delete ans._share_auto;
   } else ans[n] = v;
   applyKey(); render();
 }
 
 const SERVER = location.protocol.startsWith("http");     // opened via label_server.py
-const COLS = ["id","lat","lon","area","labeller","label","reason","confidence","cover","cue_a_bare","cue_b_greenup","cue_c_harvest","cue_d_shape","cue_e_crop2024","key_suggestion","overridden","minutes","notes","saved_at"];
+const COLS = ["id","lat","lon","area","labeller","label","reason","confidence","cover","cue_a_bare","cue_b_greenup","cue_c_harvest","cue_d_shape","cue_e_crop2024","key_suggestion","overridden","minutes","notes","saved_at","unit","box_west","box_south","box_east","box_north","crop_share"];
+// corners of the labelled box in degrees (WGS84): BOX_M/2 each way from the point, the same 10 m grid as 04_image_strips.py
+function boxCorners(p){
+  const hx = BOX_M / 2 / (111320 * Math.cos(p.lat * Math.PI / 180)), hy = BOX_M / 2 / 110540, f = v => +v.toFixed(6);
+  return {box_west: f(p.lon - hx), box_south: f(p.lat - hy), box_east: f(p.lon + hx), box_north: f(p.lat + hy)};
+}
 async function fromServer(){
   if (!SERVER || !whoSel.value) return null;
   try { const r = await fetch(`/api/labels?set=${setSel.value}&who=${encodeURIComponent(whoSel.value)}`); return r.ok ? await r.json() : null; }
   catch(e){ return null; }
 }
 async function toServer(){
-  const rows = points().filter(p => labels[p.id]?.label).map(p => Object.assign({}, labels[p.id], {id:p.id, lat:p.lat, lon:p.lon, area:p.area||"", labeller:whoSel.value}));
+  const rows = points().filter(p => labels[p.id]?.label).map(p => Object.assign({}, labels[p.id], {id:p.id, lat:p.lat, lon:p.lon, area:p.area||"", labeller:whoSel.value}, boxCorners(p)));
   try {
     const r = await fetch("/api/labels", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({set:setSel.value, who:whoSel.value, rows})});
     if (!r.ok) throw new Error(await r.text());
@@ -263,11 +359,16 @@ async function load(){
 function save(){
   const p = points()[idx];
   if (!ans.label){ $("msg").textContent = "Answer the key (or choose a label) first."; return; }
+  if ((ans.label === "crop" || ans.label === "fallow") && (!ans.crop_share || ans.crop_share === "0")){
+    $("msg").textContent = "Say about how much of the box is cropland (keys 6–9): a crop or fallow box has some."; return; }
   const rec = Object.assign({}, ans);
+  delete rec._share_auto;
   rec.overridden = (rec.key_suggestion && rec.label !== rec.key_suggestion) ? 1 : 0;
   rec.minutes = ((+(labels[p.id]?.minutes || 0)) + (Date.now()-started)/60000).toFixed(2);
   rec.saved_at = new Date().toISOString();
+  rec.unit = `${BOX_M}m`;
   labels[p.id] = rec;
+  const fl = later(); if (fl.delete(p.id)) setLater(fl);
   if (!safe.set(key(), labels) && !SERVER) banner("This browser can't save. Export now and after every point.");
   if (SERVER) toServer();
   else { sinceExport++; if (sinceExport >= 20) banner(`You have ${sinceExport} labels since your last export. Press Export CSV, or run label_server.py to save automatically.`); }
@@ -276,21 +377,61 @@ function save(){
 
 function move(d){
   const n = points().length;
-  if (idx + d < 0 || idx + d >= n){ if (d > 0) banner("That was the last point. Export your CSV."); return; }
+  if (idx + d < 0 || idx + d >= n){
+    if (d > 0){ const fl = [...later()]; banner(fl.length ? `That was the last point. You marked ${fl.length} to come back to (orange in the list): ${fl.join(", ")}.` : "That was the last point. Export your CSV."); }
+    return;
+  }
   idx += d; load();
 }
+
+// "come back later": per labeller, kept in this browser only (a convenience, not a label)
+const laterKey = () => `cropland-later-${setSel.value}-${whoSel.value}`;
+function later(){ return new Set(safe.get(laterKey(), [])); }
+function setLater(s){ safe.set(laterKey(), [...s]); }
+function toggleLater(){
+  const p = points()[idx]; if (!p) return;
+  const fl = later();
+  if (fl.has(p.id)){ fl.delete(p.id); setLater(fl); render(); return; }
+  fl.add(p.id); setLater(fl); move(1);
+}
+
+// enlarged month: 2025 and 2024 side by side, pixels kept sharp
+let zm = 0;
+function zoom(m){
+  zm = (m + 12) % 12;
+  const p = points()[idx], names = "January February March April May June July August September October November December".split(" ");
+  $("zoombody").innerHTML = `<h3>${p.id} · ${names[zm]} · ${view==="tc"?"true colour":"false colour"} <kbd>V</kbd> · <kbd>←</kbd><kbd>→</kbd> month · yellow square = the ${BOX_M} m box</h3>
+    <div class="zoomgrid"><div><div class="yr"><b>2025</b></div><canvas id="z25" width="459" height="459"></canvas></div><div><div class="yr">2024</div><canvas id="z24" width="459" height="459"></canvas></div></div>`;
+  [["z25","2025"],["z24","2024"]].forEach(([cid, yr]) => {
+    const img = new Image();
+    img.onload = () => { const c = $(cid).getContext("2d"); c.imageSmoothingEnabled = false;
+      c.drawImage(img, (zm % 6) * 157, Math.floor(zm / 6) * 157, 153, 153, 0, 0, 459, 459); };
+    img.src = `img/${p.id}_${yr}_${view}.webp`;
+  });
+  if (!$("zoomdlg").open) $("zoomdlg").showModal();
+}
+$("zprev").onclick = () => zoom(zm - 1);
+$("znext").onclick = () => zoom(zm + 1);
+$("zclose").onclick = () => $("zoomdlg").close();
 
 function banner(t){ $("banner").innerHTML = t ? `<div class="banner">${t}</div>` : ""; }
 
 function prog(){
-  const pts = points(), done = pts.filter(p => labels[p.id]?.label).length;
-  $("prog").textContent = whoSel.value ? `${done} / ${pts.length} labelled` : "";
+  const pts = points(), done = pts.filter(p => labels[p.id]?.label).length, fl = later().size;
+  $("prog").textContent = whoSel.value ? `${done} / ${pts.length} labelled${fl ? ` · ${fl} to come back to` : ""}` : "";
 }
 
 document.addEventListener("keydown", e => {
   if (e.target.tagName === "TEXTAREA" || e.ctrlKey || e.metaKey || e.altKey) return;
   if ($("exdlg").open) return;
   const k = e.key.toLowerCase();
+  if ($("zoomdlg").open){
+    if (k === "arrowleft") zoom(zm - 1);
+    else if (k === "arrowright") zoom(zm + 1);
+    else if (k === "v"){ view = view === "tc" ? "fc" : "tc"; render(); zoom(zm); }
+    else return;                                  // Esc closes the dialog by itself
+    e.preventDefault(); return;
+  }
   const cover = {w:"water", b:"settlement", t:"trees", o:"open"}[k];
   const lab = {c:"crop", f:"fallow", x:"not crop", u:"unsure"}[k];
   if (cover){ setAnswer("cover", cover); }
@@ -299,11 +440,13 @@ document.addEventListener("keydown", e => {
   }
   else if (lab){ setAnswer("label", lab); }
   else if ("123".includes(k) && k.length === 1){ setAnswer("confidence", k); }
+  else if (SHARE_KEY[k] !== undefined){ setAnswer("crop_share", SHARE_KEY[k]); }
   else if (k === "enter"){ save(); }
   else if (k === "arrowleft" || k === "backspace"){ move(-1); }
   else if (k === "arrowright"){ move(1); }
   else if (k === "v"){ view = view === "tc" ? "fc" : "tc"; render(); }
   else if (k === "r"){ ans = {}; render(); }
+  else if (k === "l"){ toggleLater(); }
   else return;
   e.preventDefault();
 });
@@ -312,7 +455,7 @@ $("export").onclick = () => {
   if (!whoSel.value) return;
   const cols = COLS;
   const esc = v => { v = v==null ? "" : String(v); return /[",\n]/.test(v) ? `"${v.replace(/"/g,'""')}"` : v; };
-  const rows = points().map(p => { const a = labels[p.id] || {}; return cols.map(c => esc(c==="id"?p.id : c==="lat"?p.lat : c==="lon"?p.lon : c==="labeller"?whoSel.value : c==="area"?(p.area||"") : a[c])).join(","); });
+  const rows = points().map(p => { const a = Object.assign({}, labels[p.id] || {}, boxCorners(p)); return cols.map(c => esc(c==="id"?p.id : c==="lat"?p.lat : c==="lon"?p.lon : c==="labeller"?whoSel.value : c==="area"?(p.area||"") : a[c])).join(","); });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(new Blob([cols.join(",")+"\n"+rows.join("\n")+"\n"], {type:"text/csv"}));
   link.download = `${setSel.value}_labels_${whoSel.value}.csv`;
@@ -322,13 +465,16 @@ $("export").onclick = () => {
 
 $("examples").onclick = () => {
   const guide = `<h3>What each label means</h3>
-    <p><b>crop</b>: sown and grown in 2025. Usually bare in Apr–May, green by Jul, brown or cleared in Sep–Oct before the grass around, often with edges.<br>
-    <b>fallow</b>: a field (edges, plots, or cropped in 2024) that looks like grass all of 2025: no spring bare soil, no early harvest.<br>
-    <b>not crop</b>: grass, bush, trees, water, settlement.<br>
+    <p>You label the <b>${BOX_M} m × ${BOX_M} m yellow box</b>, not the centre pixel. The box counts as crop if there is cropland <b>anywhere</b> in it, even one small field.</p>
+    <p><b>crop</b>: at least one field in the box was sown and grown in 2025. Usually bare in Apr–May, green by Jul, brown or cleared in Sep–Oct before the grass around, often with edges. Home gardens count.<br>
+    <b>fallow</b>: the box has a field (edges, plots, or cropped in 2024) but none of it was cropped in 2025: no spring bare soil, no early harvest.<br>
+    <b>not crop</b>: no field anywhere in the box: only grass, bush, trees, water, settlement. Say what the box mostly is.<br>
     <b>unsure</b>: images missing or unreadable. Write why.</p>
+    <p>Then say <b>about how much of the box is cropland</b> (crop and fallow fields together): under 10%, 10–25%, 25–50% or over 50%. A rough guess is fine: this is what makes the area estimate right, because "any crop in the box" alone counts the whole box. The patch shares in the greenness chart help.</p>
+    <p class="muted">Use the greenness chart: the box is split into patches whose curves differ, and the small map shows where each one is. A field in a box of grass gets its own line (bare in spring, early drop at harvest). Click a month to see it large.</p>
     <p class="muted">Traps: a dark, irregular burn (Nov–Feb) is not tilled soil. Wild grass also greens up in Jul; the harvest drop is the difference.</p>`;
   const ex = EXAMPLES.length ? EXAMPLES.map(x => `<div class="ex"><div><b>${x.label}</b><br><span class="muted">${x.id}</span></div><div><img src="img/${x.id}_2025_tc.webp" alt="${x.label} example, 2025"><p class="muted">${x.note||""}</p></div></div>`).join("")
-    : `<p class="muted">Example points are added after the pilot: we pick one clear pilot point per label (crop, fallow, grass, trees, water) that everyone agreed on, and list them in <code>examples.js</code>.</p>`;
+    : `<p class="muted">No examples yet: see <code>examples.js</code>.</p>`;
   $("exbody").innerHTML = guide + "<h3>Examples</h3>" + ex;
   $("exdlg").showModal();
 };

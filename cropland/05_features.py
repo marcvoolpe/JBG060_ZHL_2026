@@ -4,7 +4,9 @@ Step 5 - Machine features at the labelled points (METHODOLOGY.md section 5).
 Writes cropland/features_<set>.csv with one row per point and one column per
 feature in features.FEATURES. Also writes the 64-band Google Satellite
 Embedding for 2025 at the same points (embedding_<set>.csv), used only for the
-black-box benchmark.
+black-box benchmark. Both describe the 210 m box around the point (the unit
+labellers label): features are box summaries (features.py), the embedding is
+the mean over the box.
 
 Run from group_repo: python cropland/05_features.py pilot   (or: sample)
 """
@@ -20,8 +22,8 @@ import features as F
 def embedding(ee, df):
     emb = (ee.ImageCollection("GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL")
            .filterDate(f"{C.YEAR}-01-01", f"{C.YEAR + 1}-01-01").mosaic())
-    fc = ee.FeatureCollection([ee.Feature(ee.Geometry.Point(r.lon, r.lat), {"id": r.id}) for r in df.itertuples()])
-    got = emb.reduceRegions(fc, ee.Reducer.first(), scale=10).getInfo()
+    fc = ee.FeatureCollection([ee.Feature(C.box(ee, r.lon, r.lat), {"id": r.id}) for r in df.itertuples()])
+    got = emb.reduceRegions(fc, ee.Reducer.mean(), scale=10).getInfo()
     return pd.DataFrame([f["properties"] for f in got["features"]])
 
 

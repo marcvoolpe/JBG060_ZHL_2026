@@ -6,8 +6,19 @@ For every point in a points file (pilot_points.csv or sample.csv) and for
 cropped in 2024 and left in 2025) this makes:
   - a strip of 12 monthly Sentinel-2 L2A images, true colour;
   - the same strip in false colour (near-infrared as red, so vegetation is red);
-  - the monthly NDVI of the point's 10 m pixel and the median of the ~500 m
-    square around it (for the "harvested earlier than the grass" cue).
+  - the monthly NDVI of the box we label (median of its 21 x 21 pixels, with
+    the 10th-90th percentile band) and the median of the ~500 m square around
+    it (for the "harvested earlier than the grass" cue);
+  - the box split into up to 3 patches whose NDVI curves differ (k-means on the
+    2025 curves of its pixels), with each patch's 2025 and 2024 curve, its
+    share of the box and a map of where it is. A field in a box of grass gets
+    its own curve instead of vanishing into the box median;
+  - the monthly Sentinel-1 VH radar backscatter of the box (dB), which sees
+    through the clouds of the rainy season;
+  - the capture date of the Esri high-resolution image at the point, from
+    Esri's imagery metadata (needs internet; empty if Esri does not answer).
+The yellow square on every image is the box we label: 210 m x 210 m
+(common.BOX_M), drawn in the same place as the "outer box" of the first version.
 
 Each point is one Earth Engine request (a 51 x 51 pixel, 10 m grid for all 12
 months), so a few hundred points take a few minutes. Months with no clear
@@ -22,20 +33,33 @@ Run from group_repo:
 """
 
 import json
+import os
 import sys
+from itertools import combinations
+import urllib.parse
+import urllib.request
+import warnings
 from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
 import pandas as pd
 from PIL import Image, ImageDraw
+os.environ.setdefault("LOKY_MAX_CPU_COUNT", "4")      # avoids a harmless core-count warning on Windows
+from sklearn.cluster import KMeans  # noqa: E402
 
 import common as C
 
 BOX = 51                       # pixels per side, 10 m each (~510 m)
+HALF = C.BOX_M // 20           # the box reaches 10 pixels each side of the centre pixel: 21 x 21 = 210 m
+MIN_CLEAR = 0.5                # a month's box value needs at least half the box free of cloud
+PATCH_GAP = 0.08               # patches are kept apart only if their curves differ by this much NDVI in some month
+PATCH_MIN = 0.05               # and each covers at least 5% of the box
+ESRI_HALF_DEG = 0.003          # high-resolution image: ~660 m square, the box is about a third of it
 SCALE = 3                      # thumbnail upscaling, nearest neighbour
 YEARS = (2025, 2024)
 MONTHS = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
 TOOL = C.HERE / "label_tool"
+ESRI_META = "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/{}/query"
 IMG = TOOL / "img"
 
 
@@ -68,7 +92,7 @@ def strip(data, kind):
         b2, b3, b4, b8 = data[m]
         if np.isnan(b4).all():
             tile = Image.new("RGB", (size, size), (190, 190, 190))
-            ImageDraw.Draw(tile).text((8, size // 2 - 6), "no clear image", fill=(60, 60, 60))
+            ImageDraw.Draw(tile).text((8, size - 16), "no clear image", fill=(60, 60, 60))
         else:
             rgb = [stretch(b4, .3), stretch(b3, .3), stretch(b2, .3)] if kind == "tc" \
                 else [stretch(b8, .5), stretch(b4, .3), stretch(b3, .3)]
@@ -76,9 +100,8 @@ def strip(data, kind):
             arr[np.isnan(b4)] = 190                            # cloud-masked pixels grey, like empty months
             tile = Image.fromarray(arr.astype(np.uint8)).resize((size, size), Image.NEAREST)
         d = ImageDraw.Draw(tile)
-        c0, c1 = (BOX // 2) * SCALE - 1, (BOX // 2 + 1) * SCALE     # the point's own 10 m pixel
+        c0, c1 = (BOX // 2 - HALF) * SCALE - 1, (BOX // 2 + HALF + 1) * SCALE   # the 210 m box, lines just outside it
         d.rectangle([c0, c0, c1, c1], outline=(255, 230, 0), width=1)
-        d.rectangle([c0 - 30, c0 - 30, c1 + 30, c1 + 30], outline=(255, 230, 0))   # ~110 m guide box
         d.rectangle([0, 0, 30, 13], fill=(0, 0, 0)); d.text((3, 1), MONTHS[m], fill=(255, 255, 255))
         tiles.append(tile)
     out = Image.new("RGB", (size * 6 + 5 * 4, size * 2 + 4), (255, 255, 255))
@@ -87,14 +110,95 @@ def strip(data, kind):
     return out
 
 
+def _r(a, ok=True):
+    """12 monthly values as a JSON list; None where missing or not clear enough."""
+    return [None if (np.isnan(x) or not k) else round(float(x), 3) for x, k in zip(a, np.broadcast_to(ok, 12))]
+
+
 def ndvi(data):
+    """Box median, 10th and 90th percentile, 500 m median, plus the raw box pixels (12 x 441) for the patches."""
     b4, b8 = data[:, 2], data[:, 3]
     with np.errstate(invalid="ignore", divide="ignore"):
         v = (b8 - b4) / (b8 + b4)
-    centre = v[:, BOX // 2, BOX // 2]
-    hood = np.nanmedian(v.reshape(12, -1), axis=1)
-    r = lambda a: [None if np.isnan(x) else round(float(x), 3) for x in a]
-    return r(centre), r(hood)
+    c = BOX // 2
+    box = v[:, c - HALF:c + HALF + 1, c - HALF:c + HALF + 1].reshape(12, -1)
+    clear = np.isfinite(box).mean(axis=1) >= MIN_CLEAR
+    with np.errstate(invalid="ignore"), warnings.catch_warnings():
+        warnings.simplefilter("ignore", RuntimeWarning)             # all-NaN months
+        lo, med, hi = np.nanpercentile(box, [10, 50, 90], axis=1)
+        hood = np.nanmedian(v.reshape(12, -1), axis=1)
+    return _r(med, clear), _r(lo, clear), _r(hi, clear), _r(hood), box, clear
+
+
+def patches(box25, clear25, box24, clear24):
+    """Split the box into up to 3 patches with different 2025 NDVI curves.
+
+    k-means on each pixel's clear 2025 months (gaps filled with that month's box
+    median). k = 2 or 3 is kept only if every patch covers PATCH_MIN of the box
+    and every two patch curves differ by PATCH_GAP in some month; otherwise the
+    box is one patch. Patches are ordered largest first. Returns the patches
+    (share, 2025 curve, 2024 curve of the same pixels) and the patch of every
+    box pixel, row by row from the north-west corner.
+    """
+    lab = np.zeros(box25.shape[1], int)
+    if clear25.sum() >= 3:
+        X = box25[clear25].T
+        X = np.where(np.isnan(X), np.nanmedian(X, axis=0), X)
+        for k in (2, 3):
+            got = KMeans(k, n_init=10, random_state=C.SEED).fit_predict(X)
+            shares = np.bincount(got, minlength=k) / len(got)
+            curves = [np.median(X[got == j], axis=0) for j in range(k)]
+            if shares.min() >= PATCH_MIN and min(np.abs(a - b).max() for a, b in combinations(curves, 2)) >= PATCH_GAP:
+                lab = got
+    order = np.argsort(-np.bincount(lab))
+    lab = np.argsort(order)[lab]                                     # relabel: 0 = largest patch
+    out = []
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", RuntimeWarning)
+        for j in range(lab.max() + 1):
+            m = lab == j
+            out.append({"share": round(float(m.mean()), 3),
+                        "ndvi": _r(np.nanmedian(box25[:, m], axis=1), clear25),
+                        "ndvi_2024": _r(np.nanmedian(box24[:, m], axis=1), clear24)})
+    return out, "".join(map(str, lab))
+
+
+def radar(ee, lat, lon, year: int = C.YEAR):
+    """Monthly Sentinel-1 VH backscatter (dB), mean over the box; None for a month without a pass."""
+    box = C.box(ee, lon, lat)
+    s1 = (ee.ImageCollection("COPERNICUS/S1_GRD").filterBounds(box)
+          .filter(ee.Filter.eq("instrumentMode", "IW"))
+          .filter(ee.Filter.eq("orbitProperties_pass", "DESCENDING"))      # as in features.py
+          .filter(ee.Filter.listContains("transmitterReceiverPolarisation", "VH")).select("VH"))
+    months = []
+    for m in range(1, 13):
+        col = s1.filterDate(ee.Date.fromYMD(year, m, 1), ee.Date.fromYMD(year, m, 1).advance(1, "month"))
+        empty = ee.Image.constant(0).updateMask(0)
+        months.append(ee.Image(ee.Algorithms.If(col.size().gt(0), col.mean(), empty)).rename(f"m{m:02d}"))
+    got = ee.Image.cat(months).reduceRegion(ee.Reducer.mean(), box, 10).getInfo()
+    return [None if got.get(f"m{m:02d}") is None else round(got[f"m{m:02d}"], 2) for m in range(1, 13)]
+
+
+def esri_date(lat, lon):
+    """Capture date, resolution and provider of the Esri image at a point (metadata layers, finest first)."""
+    q = urllib.parse.urlencode({"geometry": f"{lon},{lat}", "geometryType": "esriGeometryPoint", "inSR": 4326,
+                                "spatialRel": "esriSpatialRelIntersects", "outFields": "SRC_DATE,SRC_RES,NICE_DESC",
+                                "returnGeometry": "false", "f": "json"})
+    for layer in range(9, 14):                     # 30 cm, 60 cm, 1.2 m, 2.4 m, 4.8 m metadata
+        feats = None
+        for _ in range(3):                         # the service sometimes times out
+            try:
+                with urllib.request.urlopen(ESRI_META.format(layer) + "?" + q, timeout=30) as r:
+                    feats = json.load(r).get("features", [])
+                break
+            except (OSError, ValueError):
+                pass
+        if feats:
+            a = feats[0]["attributes"]
+            d = str(a.get("SRC_DATE") or "")
+            if len(d) == 8:
+                return {"date": f"{d[:4]}-{d[4:6]}-{d[6:]}", "res_m": a.get("SRC_RES"), "source": a.get("NICE_DESC")}
+    return None
 
 
 def one(ee, row):
@@ -104,10 +208,15 @@ def one(ee, row):
         strip(data, "tc").save(IMG / f"{row.id}_{year}_tc.webp", quality=90, method=6)   # WebP: ~4x smaller than PNG, fits in git
         strip(data, "fc").save(IMG / f"{row.id}_{year}_fc.webp", quality=90, method=6)
         curves[year] = ndvi(data)
-    d = 0.003
+    parts, where = patches(curves[2025][4], curves[2025][5], curves[2024][4], curves[2024][5])
+    d = ESRI_HALF_DEG
     return {"id": row.id, "lat": row.lat, "lon": row.lon, "area": getattr(row, "area", "pilot"),
-            "ndvi": curves[2025][0], "ndvi_500m": curves[2025][1], "ndvi_2024": curves[2024][0],
+            "box_m": C.BOX_M, "esri_half_deg": d,
+            "ndvi": curves[2025][0], "ndvi_p10": curves[2025][1], "ndvi_p90": curves[2025][2],
+            "ndvi_500m": curves[2025][3], "ndvi_2024": curves[2024][0], "vh": radar(ee, row.lat, row.lon),
+            "patches": parts, "patch_map": where,
             "labellers": [getattr(row, "labeller_1", ""), getattr(row, "labeller_2", "")],
+            "esri_date": esri_date(row.lat, row.lon),
             "esri": ("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export"
                      f"?bbox={row.lon - d},{row.lat - d},{row.lon + d},{row.lat + d}&bboxSR=4326&imageSR=3857"
                      "&size=400,400&format=jpg&f=image"),

@@ -3,7 +3,9 @@ Step 9 - Scores and the area estimate (METHODOLOGY.md section 7).
 
   1. Map values at every sample point: the 7 public maps (Earth Engine), ASAP
      (local file, crop if the cell is 5% crop or more, as in Kerner et al. 2024),
-     our Rule 1 (from the frozen JSON file) and the two random-forest benchmarks.
+     our Rule 1 (from the frozen JSON file), the two random-forest benchmarks,
+     and every other model's results/predictions_<name>.csv (id, prediction
+     1/0 for all 450 points, e.g. Wei and Matei's tree), scored the same way.
      The reference label says whether there is cropland ANYWHERE in the 210 m
      box around the point, so a public map says crop there when it calls at
      least one pixel of that box crop (its share of the box is kept as
@@ -11,17 +13,20 @@ Step 9 - Scores and the area estimate (METHODOLOGY.md section 7).
      ASAP cells (~1 km) are larger than the box and are read at the point.
   Two reference definitions throughout: cropland (crop + fallow) and
   cropped in 2025 (crop only), because the maps define cropland differently.
-  2. Accuracy of each map on the TEST points only: user's accuracy
-     (precision), producer's accuracy (recall), overall accuracy and F1 with
-     standard errors, per study area.
+  2. Accuracy of each map on the TEST points only, where both labellers agree
+     on that definition: user's accuracy (precision), producer's accuracy
+     (recall), overall accuracy and F1 with standard errors, per study area.
   3. Cropland area per study area from the reference labels of ALL points,
-     with a 95% interval, two ways:
+     with a 95% interval. Each point's value is the mean of its two labellers
+     (disagreements are not settled: a point one person calls cropland and the
+     other not counts half), two ways:
        measure "share of box" (main): the labellers' share of each box that is
        cropland; its mean over random boxes is the cropland share of the land.
        For cropped_2025 the share counts in boxes labelled crop only.
        measure "box holds it" (upper bound): 1 if there is any cropland in the
        box. Larger than the cropland area, the more so the more scattered the
-       fields are; plus the sensitivity check (all disagreed points crop / not).
+       fields are; plus the sensitivity check (points the two labellers
+       split on all counted as cropland / all as not).
   4. For the public maps, their share of each box against the labelled share
      on the test points (cropland only): mean of each and mean absolute gap.
 
@@ -42,6 +47,8 @@ import features as F
 import rules as R
 
 RES = C.HERE / "results"
+DEFS = {"cropland": ("cropland", "cropland_avg", "share_avg"),        # definition: agreed, mean, share columns
+        "cropped_2025": ("crop", "crop_avg", "share_crop_avg")}
 
 
 def public_values(ee, s):
@@ -81,37 +88,39 @@ def main() -> None:
     emb = pd.read_csv(C.HERE / "embedding_sample.csv").set_index("id").loc[d.id, bm["embedding_cols"]]
     d["rf_embedding"] = bm["rf_embedding"].predict(emb.to_numpy())
     years |= {"rf_features": "2025 (benchmark)", "rf_embedding": "2025 (benchmark)"}
+    for f in sorted(RES.glob("predictions_*.csv")):                   # other models (model_data.py)
+        name = f.stem.removeprefix("predictions_")
+        d = d.merge(pd.read_csv(f)[["id", "prediction"]].rename(columns={"prediction": name}), on="id", how="left")
+        years[name] = "2025 (model)"
     d = d.merge(lab, on="id", how="left")
     d.to_csv(RES / "map_values.csv", index=False)
 
     W = pd.read_csv(C.HERE / "strata_areas.csv")
     maps = list(years)
-    refs = {"cropland": {"crop", "fallow"}, "cropped_2025": {"crop"}}   # the two definitions we report
     acc, areas = [], []
     for area in C.AREAS:
         w = W[W.area == area].set_index("stratum").share.to_dict()
         ha = W[W.area == area].ha.sum()
-        a = d[(d.area == area) & d.final.isin(["crop", "fallow", "not crop"])]
-        dis = (a.disagreed == 1).to_numpy()
-        for ref_name, pos in refs.items():
-            unsure = int((d[d.area == area].final == "unsure").sum())
+        for ref_name, (agreed, avg, share) in DEFS.items():
+            a = d[(d.area == area) & d[avg].notna()]                      # labelled (not both unsure)
+            left_out = int((d.area == area).sum() - len(a))
             row = lambda measure, est, se, n, **extra: {
-                "area": area, "definition": ref_name, "measure": measure, "points": n, "unsure_left_out": unsure,
+                "area": area, "definition": ref_name, "measure": measure, "points": n, "left_out": left_out,
                 "share": est, "ci_low": est - 1.96 * se, "ci_high": est + 1.96 * se,
                 "ha": est * ha, "ci_low_ha": (est - 1.96 * se) * ha, "ci_high_ha": (est + 1.96 * se) * ha, **extra}
             # main: the share of each box that is cropland
-            s_ok = a[a.crop_share.notna()]
-            y = np.where(s_ok.final.isin(pos), s_ok.crop_share, 0.0)
-            est, se = E.area(y.astype(float), s_ok.stratum.to_numpy(), w)
+            s_ok = a[a[share].notna()]
+            est, se = E.area(s_ok[share].to_numpy(float), s_ok.stratum.to_numpy(), w)
             areas.append(row("share of box", est, se, len(s_ok), no_share_left_out=len(a) - len(s_ok)))
-            # upper bound: the box holds cropland
-            ref_all = a.final.isin(pos).to_numpy()
-            est, se = E.area(ref_all.astype(float), a.stratum.to_numpy(), w)
-            sens = [E.area(np.where(dis, v, ref_all).astype(float), a.stratum.to_numpy(), w)[0] for v in (1, 0)]
-            areas.append(row("box holds it (upper bound)", est, se, len(a),
-                             share_if_disagreed_all_cropland=sens[0], share_if_disagreed_all_not=sens[1]))
-            t = a[a.split == "test"]
-            ref = t.final.isin(pos).astype(int).to_numpy()
+            # upper bound: the box holds cropland; disagreed points count half, or all one way (sensitivity)
+            ref_all = a[avg].to_numpy(float)
+            split = (ref_all > 0) & (ref_all < 1)
+            est, se = E.area(ref_all, a.stratum.to_numpy(), w)
+            sens = [E.area(np.where(split, v, ref_all), a.stratum.to_numpy(), w)[0] for v in (1.0, 0.0)]
+            areas.append(row("box holds it (upper bound)", est, se, len(a), points_split=int(split.sum()),
+                             share_if_split_all_yes=sens[0], share_if_split_all_no=sens[1]))
+            t = d[(d.area == area) & (d.split == "test") & d[agreed].notna()]   # both agree
+            ref = t[agreed].astype(int).to_numpy()
             ts = t[t.crop_share.notna()]
             for m in maps:
                 r = E.accuracy(t[m].to_numpy(), ref, t.stratum.to_numpy(), w)

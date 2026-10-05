@@ -28,7 +28,7 @@ cd group_repo
 python cropland/label_server.py
 ```
 
-Open **http://localhost:8765**, choose the set and your name, and label. Every point is saved to `cropland/labels/<set>_labels_<name>.csv` when you press Enter. You can close the browser any time. If the server prints a WARNING about images, the zip is in the wrong place.
+Open **http://localhost:8765**, choose the set and your name, and label. In `sample` you see only **your 180 points**. Each of them is also labelled by one other person (every pair of us shares 45 points), and you never see their label. Every point is saved to `cropland/labels/<set>_labels_<name>.csv` when you press Enter. You can close the browser any time. If the server prints a WARNING about images, the zip is in the wrong place.
 
 **At the end of each session**, commit only your own file:
 
@@ -92,7 +92,7 @@ How to label a point, the shortcuts and the traps: `LABELLING_GUIDE.md`. The sho
      - d. field shapes;
      - e. cropped in 2024.
 
-   When the two labels differ, a third person decides. **Disagreements are kept and reported**, not dropped.
+   Every pair of us shares 45 points, and everyone gets the same mix of areas, strata and calibration/test points. When the two labels differ, **nobody settles it**: both labels are kept and the disagreement is reported. The area counts such a point as half cropland (the mean of the two labels), and the models are trained and scored only on points where both agree.
 
 4. **Calibration vs test.** The 450 points were split before labelling: **150 calibration** (to build the rules) and **300 test** (to score them). The test points are never used to build anything.
 
@@ -125,12 +125,13 @@ Setup:
 | 0 | `python cropland/00_pilot_points.py` | 30 pilot points in Twic county (outside the study areas) | `pilot_points.csv` |
 | 1 | `python cropland/01_compare_pilot.py` | pilot agreement (Cohen's kappa), share of confident labels; **go if ≥ 70%** | printed |
 | 2 | `python cropland/02_strata_from_asap.py` | first look: ASAP crop share per county | `asap_crop_share_by_county.csv` |
-| 3 | `... 03_agreement_and_sample.py export`, then `... sample` | strata map (Earth Engine asset), stratum areas, 450-point sample, split, two labellers per point | `strata_areas.csv`, `sample.csv` |
+| 3 | `... 03_agreement_and_sample.py export`, then `... sample` | strata map (Earth Engine asset), stratum areas, 450-point sample, split, two labellers per point (balanced per area × stratum × split). `... labellers` redoes only the pairs, on the existing sample, before anyone labels | `strata_areas.csv`, `sample.csv` |
 | 4 | `python cropland/04_image_strips.py sample` | image strips 2025 + 2024 with the 210 m box; the box's NDVI and radar; Esri image date | `label_tool/img/` (zip it), `label_tool/data_*.js` |
 | 5 | `python cropland/05_features.py sample` | the 18 features + Satellite Embedding, over each point's 210 m box | `features_sample.csv`, `embedding_sample.csv` |
 | – | `python cropland/label_server.py` | the labelling tool, saving to disk | `labels/*.csv` |
-| 6 | `python cropland/06_merge_labels.py` | pairs the two labels; disagreements go to `adjudication.csv` for a third person; run again after | `labels_final.csv` |
+| 6 | `python cropland/06_merge_labels.py` | matches the two labels per point; agreement per pair; lists disagreements (not settled); builds the one table all models use | `labels_final.csv`, `disagreements.csv`, `model_table.csv` |
 | 7 | `python cropland/07_fit_rules.py` | Rule 1 + benchmarks on calibration points; **freezes the rules** | `rule1_<date>.json` |
+| 7b | your own model (Wei, Matei), see below | trained on `model_data.load("calibration")` | `results/predictions_<name>.csv` |
 | 8 | `python cropland/08_run_map.py cropland/rule1_<date>.json` | checks map = rules, exports our map (10 m areas, 30 m country) | Earth Engine assets |
 | 9 | `python cropland/09_score.py cropland/rule1_<date>.json` | accuracy and area ± 95% CI | `results/accuracy.csv`, `results/area.csv` |
 | 10 | `python cropland/10_flood.py cropland/rule1_<date>.json` | flooded cropland 2025, Aweil vs Bor South | `results/flooded_cropland.csv` |
@@ -140,7 +141,38 @@ Shared code:
 - `features.py`: the 18 features.
 - `rules.py`: the rules in Python and in Earth Engine.
 - `estimators.py`: the stratified estimators.
+- `model_data.py`: the one table every model reads (`model_table.csv`).
 
 Checks: `python cropland/test_cropland.py`, with `--ee` to also check that Earth Engine and Python agree, and the building-distance feature.
+
+### Building another model (Wei, Matei)
+
+Everything a model needs is in **`model_table.csv`**, one row per sample point (written by step 6):
+
+| columns | what |
+|---|---|
+| `id`, `area`, `stratum`, `split`, `lat`, `lon` | the point; `split` is calibration or test |
+| `ha_per_point` | hectares of the study area this point stands for: sum it per group for area numbers in a dashboard |
+| `crop`, `cropland`, `crop_share` | targets, filled only where both labellers agree (crop = cropped in 2025; cropland = crop + fallow; share = 0-1 of the box) |
+| `cropland_avg`, `crop_avg`, `share_avg`, `share_crop_avg` | mean of the two labellers, filled for every point labelled twice |
+| `final`, `disagreed`, `crop_fallow_only`, `confidence` | label status (`final` = agreed label, `crop/fallow`, `disagreed` or `unsure`) |
+| `ndvi_min_am` … `vh_range` | the 18 features, each a summary of the 210 m box (`features.FEATURES`, METHODOLOGY section 5) |
+| `A00` … `A63` | Google Satellite Embedding 2025, mean over the box |
+
+```python
+import model_data as M
+from sklearn.tree import DecisionTreeClassifier
+
+X, y, info = M.load("calibration", target="crop")        # Aweil only: X[info.area == "aweil"]
+fill = M.fill_values(X)                                    # vh_jun is missing at 4 points
+tree = DecisionTreeClassifier(max_depth=3, min_samples_leaf=5, class_weight="balanced").fit(X.fillna(fill), y)
+```
+
+Rules:
+- **Inputs:** only the features or the embedding. Never the labellers' cues, share or confidence: they *are* the labels.
+- **Small data:** about 150 calibration points, maybe 20-40 crop. Keep trees shallow (depth 2-4) and choose the depth by cross-validation on the calibration points, as `07_fit_rules.py` does.
+- **Test points are for scoring only, after you freeze the model.** Never tune on them.
+- **To be scored:** write `results/predictions_<name>.csv` with `id,prediction` (1/0) for all 450 points, and `09_score.py` adds the model to `results/accuracy.csv` next to Rule 1 and the public maps, per area and definition.
+- **For a map:** save the tree with `rules.save(rules.from_tree(tree, F.FEATURES, fill, "<name>"), C.HERE)`. Then `08_run_map.py cropland/<name>_<date>.json` maps it in Earth Engine exactly as it scores. For one tree per area, save one file per area.
 
 **What's in git:** code, points, features, labels, rules, results. **Not in git:** the images (`label_tool/img/`, shared as a zip) and large outputs in `raw_data/cropland/`.

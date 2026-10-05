@@ -117,8 +117,9 @@ class Handler(SimpleHTTPRequestHandler):
             self._json(500, {"error": f"could not write the label file: {e}"})
 
     def log_message(self, fmt, *args):
-        if "/api/labels" in (args[0] if args else "") and "POST" in (args[0] if args else ""):
-            print(f"saved  {self.address_string()}  {args[0]}")
+        msg = str(args[0]) if args else ""          # args[0] is a status code when logging an error
+        if "/api/labels" in msg and "POST" in msg:
+            print(f"saved  {self.address_string()}  {msg}")
 
 
 def main() -> None:

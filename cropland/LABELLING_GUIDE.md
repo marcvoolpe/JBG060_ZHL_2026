@@ -5,7 +5,7 @@ The full rules are in `METHODOLOGY.md` section 4. This page is the short version
 ## Start
 
 1. `git pull`. Once: unzip `cropland_images.zip` (from Matteo) inside `cropland/label_tool/`, so the images end up in `cropland/label_tool/img/`. Then from `group_repo` run **`python cropland/label_server.py`** and open **http://localhost:8765**. (Python only, no extra packages.)
-2. Choose the set (`pilot` first, then `sample`) and your name. The header says "auto-saving to disk".
+2. Choose the set **`sample`** and your name (the `pilot` set holds the old 10 m pilot: don't label there). The header says "auto-saving to disk". You see only your 180 points. One other person labels each of them too, and you never see each other's labels, so don't discuss points before both of you are done. When you two disagree, nobody overrules anyone: both labels are kept and reported. So label what **you** see, and use `unsure` honestly.
 3. **Never open a cropland map** (WorldCover, GLAD, ASAP...) while labelling, and don't look at anyone else's labels.
 4. Every saved point is written straight to `cropland/labels/<set>_labels_<name>.csv`. Close the browser any time; it picks up where you left off. At the end of a session, commit **only your own file**:
    `git add cropland/labels/*_<name>.csv && git commit -m "labels: <name>" && git pull --rebase && git push`

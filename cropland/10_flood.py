@@ -9,7 +9,8 @@ contrasting cases.
   - Per map: the crop fraction inside every flood cell (Earth Engine, 10 m,
     sent in chunks of cell boxes), times the cell's area. ASAP is read locally.
   - From the sample, independent of any map: the labelled share of each box
-    that is cropland (or cropped) for points in a flood cell, 0 elsewhere,
+    that is cropland (or cropped; mean of the two labellers) for points in a
+    flood cell, 0 elsewhere,
     averaged with the stratum weights and times the study area, with a 95%
     interval. Also the upper bound: boxes that hold any cropland.
 
@@ -88,16 +89,16 @@ def main() -> None:
 
         # reference estimate, independent of any map
         pts = s[s.area == area].merge(lab, on="id")
-        pts = pts[pts.final.isin(["crop", "fallow", "not crop"])]
+        pts = pts[pts.cropland_avg.notna()]                              # labelled (mean of the two labellers)
         near = np.array([((abs(cells.lat - r.lat) <= CELL / 2) & (abs(cells.lon - r.lon) <= CELL / 2)).any()
                          for r in pts.itertuples()])
         w = W[W.area == area].set_index("stratum").share.to_dict()
         total = W[W.area == area].ha.sum()
-        for name, pos in (("reference: cropland", {"crop", "fallow"}), ("reference: cropped 2025", {"crop"})):
-            has = pts.final.isin(pos).to_numpy()
-            ok = pts.crop_share.notna().to_numpy()
-            for label, y, keep in ((f"{name} (share of box)", np.where(has, pts.crop_share, 0.0) * near, ok),
-                                   (f"{name}, upper bound (box holds it)", (has & near).astype(float), np.ones(len(pts), bool))):
+        for name, avg, share in (("reference: cropland", "cropland_avg", "share_avg"),
+                                 ("reference: cropped 2025", "crop_avg", "share_crop_avg")):
+            ok = pts[share].notna().to_numpy()
+            for label, y, keep in ((f"{name} (share of box)", pts[share].fillna(0).to_numpy() * near, ok),
+                                   (f"{name}, upper bound (box holds it)", pts[avg].to_numpy() * near, np.ones(len(pts), bool))):
                 est, se = E.area(np.asarray(y, float)[keep], pts.stratum.to_numpy()[keep], w)
                 rows.append({"area": area, "map": label, "flooded_crop_ha": est * total,
                              "ci_low_ha": max(0, est - 1.96 * se) * total, "ci_high_ha": (est + 1.96 * se) * total})

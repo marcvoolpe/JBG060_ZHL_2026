@@ -8,8 +8,10 @@ For each study area:
   3. draws the allocated number of random points per stratum (seed 42),
      keeps them at least 100 m apart, and splits each stratum one third
      calibration / two thirds test;
-  4. assigns every point to two of the five labellers, so each pair of
-     people shares roughly the same number of points.
+  4. assigns every point to two of the five labellers: within each
+     area x stratum x split group the points go round all 10 pairs in turn,
+     so every pair shares the same number of points (45) and every labeller
+     gets the same mix of areas, strata and calibration/test (180 each).
 
 Outputs (in cropland/, small, kept in git):
   strata_areas.csv   area, stratum, hectares, share
@@ -22,9 +24,14 @@ Two runs, because the agreement map is too heavy to compute on the fly
       ~30-60 min; follow it at https://code.earthengine.google.com/tasks)
   python cropland/03_agreement_and_sample.py sample   when the tasks are done:
       stratum areas, the sample and the split, from the saved assets.
+  python cropland/03_agreement_and_sample.py labellers   only redoes step 4 on
+      the existing sample.csv (no Earth Engine; ids, points and split stay),
+      and copies the new pairs into label_tool/data_sample.js. Only before
+      anyone has labelled the sample.
 The labeller names are set in LABELLERS below.
 """
 
+import json
 import sys
 from itertools import combinations
 
@@ -122,16 +129,48 @@ def draw(ee, area, geom, codes, alloc):
 
 
 def assign_labellers(df):
-    """Two labellers per point, cycling through all 10 pairs so each pair shares ~45 points."""
-    pairs = list(combinations(LABELLERS, 2))
+    """Shuffle the points (the ids follow this order), then give each two labellers."""
     order = np.random.default_rng(C.SEED).permutation(len(df))
-    df = df.iloc[order].reset_index(drop=True)
-    df["labeller_1"] = [pairs[i % len(pairs)][0] for i in range(len(df))]
-    df["labeller_2"] = [pairs[i % len(pairs)][1] for i in range(len(df))]
+    return pair_up(df.iloc[order].reset_index(drop=True))
+
+
+def pair_up(df):
+    """Two labellers per point: inside each area x stratum x split group (in the
+    shuffled order) the points go round all 10 pairs in turn, continuing from one
+    group to the next. Every group here is a multiple of 10 points, so each pair
+    gets exactly 1/10 of every group."""
+    pairs = list(combinations(LABELLERS, 2))
+    turn = df.sort_values(["area", "stratum", "split"], kind="stable").index
+    k = pd.Series(np.arange(len(df)), index=turn).sort_index()
+    df["labeller_1"] = [pairs[i % len(pairs)][0] for i in k]
+    df["labeller_2"] = [pairs[i % len(pairs)][1] for i in k]
     return df
 
 
+def relabel_existing():
+    """New pairs for the existing sample.csv (same ids, points and split), also in the tool's data file."""
+    sample = pair_up(pd.read_csv(C.HERE / "sample.csv"))
+    sample.to_csv(C.HERE / "sample.csv", index=False)
+    js = C.HERE / "label_tool" / "data_sample.js"
+    head, body = js.read_text().split(" = ", 1)
+    recs = json.loads(body.rstrip().rstrip(";"))
+    who = sample.set_index("id")[["labeller_1", "labeller_2"]]
+    for r in recs:
+        r["labellers"] = list(who.loc[r["id"]])
+    js.write_text(f"{head} = " + json.dumps(recs) + ";\n")
+    return sample
+
+
+def report(sample):
+    both = pd.concat([sample.assign(who=sample.labeller_1), sample.assign(who=sample.labeller_2)], ignore_index=True)
+    print((sample.labeller_1 + " & " + sample.labeller_2).value_counts().to_string())
+    print(pd.crosstab(both.who, [both.area, both.stratum, both.split]).to_string())
+
+
 def main() -> None:
+    if sys.argv[1:] == ["labellers"]:
+        report(relabel_existing())
+        return
     ee = C.ee_init()
     if sys.argv[1:] == ["export"]:
         export(ee)
@@ -151,7 +190,7 @@ def main() -> None:
     sample = sample.round({"lat": 6, "lon": 6})
     sample.to_csv(C.HERE / "sample.csv", index=False)
     print(sample.groupby(["area", "stratum", "split"]).size().unstack())
-    print(pd.concat([sample.labeller_1, sample.labeller_2]).value_counts())
+    report(sample)
 
 
 if __name__ == "__main__":

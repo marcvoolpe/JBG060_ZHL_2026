@@ -65,7 +65,7 @@ For "cropped in 2025" the share counts only in boxes labelled crop; when such a 
 
 ## 4. Labelling (response design)
 
-**Who:** all five group members. Each point is labelled by **2 people**, independently. Points are assigned in pairs so that every pair of people shares about 45 points, and each person labels about 180. The assignment is stored in the sample file.
+**Who:** all five group members. Each point is labelled by **2 people**, independently: neither sees the other's label. Within each area × stratum × split group the points go round all 10 pairs of people in turn, so every pair shares exactly 45 points, everyone labels 180, and everyone gets the same mix: 20 + 40 Aweil A, 12 + 24 Aweil B, 12 + 24 Aweil C, 8 + 16 Bor South A, 8 + 16 Bor South B (calibration + test). A person who labels more or less generously therefore weighs the same on every stratum and on both splits. The assignment is stored in the sample file (`labeller_1`, `labeller_2`).
 
 **Blind:** labellers never see any cropland map or anyone else's labels.
 
@@ -106,7 +106,12 @@ For "cropped in 2025" the share counts only in boxes labelled crop; when such a 
    Labels are therefore **crop / fallow / not crop / unsure**, plus the **cropland share of the box** (section 2), which the tool requires for crop and fallow and sets to 0 for not crop. The tool pre-fills label, reason and confidence from the key; the labeller may overrule them and says why in the notes. Overrules are recorded (`overridden = 1`).
 4. The tool records the time spent, the unit (`unit = 210m`) and the box corners in degrees (`box_west`, `box_south`, `box_east`, `box_north`, WGS84; the same 10 m grid as the images) with every label. A labeller can mark a hard point "come back later" (`L`); this is kept in the browser only and is not a label.
 
-**Disagreements:** points where the two labels differ on cropland vs not cropland, or one is unsure, are settled by a third person looking at both sets of answers. They are **kept** and flagged `disagreed = 1`, not dropped as in Kerner et al. Crop vs fallow differences don't count as disagreement for the main estimate, but they are reported. We report agreement as raw agreement and Cohen's kappa.
+**Disagreements are not settled.** Nobody overrules either labeller and there is no third person: both labels are kept and the disagreement is reported (group decision, 5 Oct 2026). Per point (`06_merge_labels.py`):
+- **agreed:** both give the same label → that label.
+- **disagreed:** cropland vs not cropland, or one unsure → flagged `disagreed = 1`, not dropped as in Kerner et al.
+- **crop vs fallow:** both say cropland, one crop and one fallow → cropland for sure, cropped-in-2025 not agreed.
+
+Each point also gets the **mean of its two labellers** for each definition (cropland 0 / 0.5 / 1, cropped 0 / 0.5 / 1, and the box share; an "unsure" is left out of the mean). The area estimates use these means, so a disagreed point counts half and no tiebreaker is needed (section 7). Fitting and accuracy use only the points both agree on for that definition. We report raw agreement and Cohen's kappa, overall and per pair of labellers, and list every disagreement with both people's answers (`disagreements.csv`).
 
 **Pilot:** 30 points in Twic county (Warrap, outside the study areas), labelled by at least two people. **Go on** if at least 70% of pilot points get a confident (2 or 3) crop / not-crop label from both people. Otherwise, change the unit to "share of crop in a 30 m cell" before the real sample, and log the change. The pilot was labelled on the 10 m pixel and is kept as it was; the sample is labelled on the 210 m box (change log, 4 Oct 2026).
 
@@ -139,24 +144,26 @@ All are computed per 10 m pixel for 2025 in Earth Engine and then **summarised o
 
 ## 6. Rules and models (classifier)
 
-1. **Training data:** the calibration points only (≈150), with their adjudicated labels. Target: **cropped in 2025** (crop = 1; fallow and not crop = 0). Unsure points are left out of training. Fallow is left out of the map on purpose: in 2025 a fallow field looks like grass to the satellite, so a map can't find it reliably. Fallow enters the **cropland area** through the labelled sample only (section 7).
+1. **Training data:** the calibration points only (≈150) where both labellers agree on the target, read from `model_table.csv` with `model_data.load()`, so every model trains on exactly the same points, features and targets. Target: **cropped in 2025** (crop = 1; fallow and not crop = 0). Disagreed, crop-vs-fallow and unsure points are left out of training; their number is reported. Fallow is left out of the map on purpose: in 2025 a fallow field looks like grass to the satellite, so a map can't find it reliably. Fallow enters the **cropland area** through the labelled sample only (section 7).
 2. **Rule 1 (main):** a decision tree (scikit-learn `DecisionTreeClassifier`), using `class_weight="balanced"` and `min_samples_leaf=5`. The depth is chosen from **2, 3 or 4** by 5-fold cross-validation on the calibration points (F1), picking the smallest depth within 0.02 of the best. The tree is printed as if-then rules, saved as `rules_<date>.json` and then **frozen**.
 3. **Benchmark (black box):** a random forest (500 trees) on the same features, and a random forest on Google's Satellite Embedding 2025. They show what readable rules cost in accuracy. They are never used for the map.
 4. **Our map:** Rule 1 applied to every pixel in Earth Engine, on the box features: a pixel is crop when the 210 m box around it holds land **cropped in 2025**. Output is 10 m in the study areas and 30 m nationally (at 30 m the box is rounded to whole 30 m pixels).
 
 The **same JSON file** is read by both the Python scoring and the Earth Engine map, so the map and the scores cannot drift apart. A test checks that both give identical labels at the calibration points.
 
+5. **Other models (Wei, Matei):** further decision trees on the 210 m box, e.g. one per study area, follow the same rules: train on `model_data.load("calibration", ...)` only, inputs = the 18 features (or the embedding), never the labellers' answers, share or confidence; choose settings by cross-validation on the calibration points; freeze before looking at the test points. A model is scored by writing `results/predictions_<name>.csv` (id, prediction 1/0 for all 450 points); `09_score.py` scores it exactly like Rule 1 and the public maps. A tree saved through `rules.from_tree` can also be mapped by `08_run_map.py`.
+
 ## 7. Scoring
 
-- **Test points only** (≈300) for map accuracy. The calibration points are never used to score anything.
+- **Test points only** (≈300) for map accuracy, and only those where both labellers agree on the definition scored (cropland or cropped in 2025); the number left out is in the table. The calibration points are never used to score anything.
 - **Maps compared:**
   - Rule 1 and the two random forest benchmarks;
   - WorldCover 2021, GLAD 2019, Digital Earth Africa 2019, WorldCereal 2021, Esri 2025, Dynamic World 2025, GFSAD 2015, ASAP v04 (crop if the cell is 5% crop or more).
 
   **Map value at a point:** a map says crop when it calls **any** pixel of the point's 210 m box crop, the same presence rule as the labels. (Before, the map was read at the point's own pixel only.) This favours maps that call many scattered pixels crop, so each public map is also compared on **share**: its share of each test box against the labelled share (mean of each, with the stratum weights, and the mean absolute gap). ASAP cells (~1 km) are larger than the box and are read at the point. Each map's year is shown next to its score. Maps from before 2025 are expected to miss changes; that is a caveat, not a flaw in the test. The maps also define cropland differently: GLAD counts fallow up to 4 years, as we do, while WorldCover, WorldCereal and Dynamic World count only active crops. So each map is also scored against the cropped-only labels, and both scores are reported.
 - **Estimators:** stratified estimators for strata that are not the map classes (Stehman 2014) give UA, PA, OA and F1, with standard errors. Maps whose 95% intervals overlap are **not ranked**.
-- **Area:** from the adjudicated reference labels of **all** labelled points (calibration + test), for both definitions: **cropland** (crop + fallow, the main number) and **cropped in 2025** (crop only), each as **share of box** (main) and **box holds it** (upper bound). The estimate is Σ W_h ȳ_h per study area, with the stratified standard error (Olofsson et al. 2014; s²/n per stratum, which equals p(1-p)/(n-1) for 0/1 values), and a 95% interval of ±1.96 SE. Unsure points and points without a share are left out and their number is reported.
-- **Sensitivity check:** the upper-bound estimate is repeated counting all disagreed points as crop and then all as not crop, to show how much disagreement moves the result.
+- **Area:** from the **mean of the two labellers** at **all** labelled points (calibration + test), for both definitions: **cropland** (crop + fallow, the main number) and **cropped in 2025** (crop only), each as **share of box** (main) and **box holds it** (upper bound). The estimate is Σ W_h ȳ_h per study area, with the stratified standard error (Olofsson et al. 2014; s²/n per stratum, which equals p(1-p)/(n-1) for 0/1 values), and a 95% interval of ±1.96 SE. Points both labellers called unsure, and points without a share, are left out and their number is reported.
+- **Sensitivity check:** the upper-bound estimate is repeated counting every point the two labellers split on as cropland and then as not cropland, to show how much disagreement moves the result.
 
 ## 8. Flood overlay
 
@@ -175,7 +182,7 @@ The **same JSON file** is read by both the Python scoring and the Earth Engine m
 | date | milestone |
 |---|---|
 | 3 Oct | methodology frozen, pilot done, sample drawn, labelling tool ready |
-| 9 Oct | 450 points labelled twice, disagreements settled |
+| 9 Oct | 450 points labelled twice; disagreements listed, not settled |
 | 12 Oct | Rule 1 frozen; benchmarks; national map |
 | 15 Oct | scores, area, flood overlay, dashboard |
 | **21 Oct** | **poster presentation** |
@@ -196,3 +203,7 @@ The **same JSON file** is read by both the Python scoring and the Earth Engine m
   - 5 Oct 2026: **cropland share of the box added** (0 / <10 / 10-25 / 25-50 / >50%, `crop_share`), because the presence rule alone inflated the area 2.6-9× (section 2, checked on Esri and Dynamic World 2025). The share gives the main area estimate; presence stays the label, the map target and the upper bound. Public maps are also compared on box share. The high-resolution image's date is marked green when it shows the 2025 season (taken in 2025, or January-March 2026 just after the harvest: 336 of the 450 sample points) and orange otherwise. No two sample boxes overlap (section 3). 06, 09, 10 and estimators.py updated; `test_area_share` added.
   - 5 Oct 2026: the tool's greenness chart shows the box split into patches (section 4) instead of only the box median, because box and 500 m medians were nearly the same. Sample: 61 boxes stay one patch, 72 split in 2, 317 in 3 (Aweil mostly 3: scattered trees, grass, bare soil). Step 04 rerun; features unchanged.
   - Steps 04 and 05 rerun on 4 Oct 2026 for pilot (30) and sample (450), on Earth Engine project `southsudan-509222` (Yassin; same public data). The new images have the box at the same pixels as before (checked on P01). All 480 points got an Esri capture date. Radar: Aweil has no descending Sentinel-1 pass in January-April 2025 (Bor South has all months), so the tool's radar curve starts in May there; the radar features (June-September) miss only 4 points in June. `test_cropland.py --ee` passes: the Earth Engine map gives the same label as the Python rules on the new box features.
+- 5 Oct 2026 (later), before any sample point was labelled (group decision):
+  - **No adjudication.** Disagreements are kept and reported, never settled by a third person. Areas use the mean of the two labellers (a split point counts half); fitting and accuracy use the points both agree on. `adjudication.csv` replaced by `disagreements.csv` (report only). Sections 4, 6 and 7 updated.
+  - **Labeller pairs rebalanced** inside each area × stratum × split group (`03_agreement_and_sample.py labellers`). Before, pairs were balanced only overall (each person 46-68 Aweil A points, 56-65 calibration points); now every pair has 45 points and every person the same mix (section 4). Points, ids, strata, split, images and features unchanged; only `labeller_1`/`labeller_2` in `sample.csv` and `data_sample.js` changed (410 of 450 points got a different pair).
+  - **Model data in one place:** `06_merge_labels.py` also writes `model_table.csv` (one row per point: area, stratum, split, hectares per point, labels, two-labeller means, the 18 features, the embedding), read by `model_data.load()` for Rule 1, the benchmarks and Wei and Matei's trees. Other models are scored from `results/predictions_<name>.csv` (section 6.5).

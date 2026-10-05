@@ -13,6 +13,11 @@ cropped in 2024 and left in 2025) this makes:
     2025 curves of its pixels), with each patch's 2025 and 2024 curve, its
     share of the box and a map of where it is. A field in a box of grass gets
     its own curve instead of vanishing into the box median;
+  - up to 3 small spots (30 m) of the box that differ most from the 500 m
+    square the way a field does (barer in Apr-May, browner in Sep-Nov; trees
+    and never-green spots left out), each with its 2025 and 2024 curve and a
+    map of where it is. The patches are large and mostly follow the 500 m
+    curve; a small field shows up better as a spot;
   - the monthly Sentinel-1 VH radar backscatter of the box (dB), which sees
     through the clouds of the rainy season;
   - the capture date of the Esri high-resolution image at the point, from
@@ -54,7 +59,12 @@ HALF = C.BOX_M // 20           # the box reaches 10 pixels each side of the cent
 MIN_CLEAR = 0.5                # a month's box value needs at least half the box free of cloud
 PATCH_GAP = 0.08               # patches are kept apart only if their curves differ by this much NDVI in some month
 PATCH_MIN = 0.05               # and each covers at least 5% of the box
-ESRI_HALF_DEG = 0.003          # high-resolution image: ~660 m square, the box is about a third of it
+SPOT_PX = 3                    # spots: 3 x 3 pixels (30 m), 7 x 7 of them tile the 21 x 21 box
+SPOT_N = 3                     # at most this many spots are shown
+SPOT_MIN = 0.08                # a spot is shown only if it is barer (Apr-May) plus browner (Sep-Nov) than the 500 m square by this much NDVI
+SPOT_TREE = 0.05               # spots greener than the 500 m square in Jan-Mar by this much are trees / shrub, not fields
+SPOT_GREEN = 0.35              # spots that never reach this NDVI in Jun-Aug never grew anything
+ESRI_HALF_DEG = 0.003         # high-resolution image: ~660 m square, the box is about a third of it
 SCALE = 3                      # thumbnail upscaling, nearest neighbour
 YEARS = (2025, 2024)
 MONTHS = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
@@ -163,6 +173,48 @@ def patches(box25, clear25, box24, clear24):
     return out, "".join(map(str, lab))
 
 
+def spots(box25, box24, hood25):
+    """The up to SPOT_N small spots (3 x 3 pixels, 30 m) of the box that differ most from the 500 m square
+    the way a field does: barer in Apr-May and browner in Sep-Nov (cues a and c).
+
+    The box is cut into 7 x 7 non-overlapping spots. A spot's month counts when at least 5 of its 9 pixels
+    are clear. Left out: spots greener than the 500 m square in Jan-Mar by SPOT_TREE (trees / shrub) and spots
+    that never reach SPOT_GREEN in Jun-Aug (bare ground, water, roofs). Score = how much barer in Apr-May plus
+    how much browner in Sep-Nov than the 500 m square; a spot is shown only if both are > 0 and the score is
+    at least SPOT_MIN, and no two shown spots touch. Returns the spots (score, 2025 and 2024 curve, best first)
+    and, for every box pixel, the spot it belongs to ("." for none), row by row from the north-west corner.
+    """
+    n, s = 2 * HALF + 1, SPOT_PX
+    k = n // s
+    h = np.array([np.nan if v is None else v for v in hood25])
+    grid25, grid24 = box25.reshape(12, n, n), box24.reshape(12, n, n)
+    cand = []
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", RuntimeWarning)
+        for r in range(k):
+            for c in range(k):
+                w25 = grid25[:, r * s:(r + 1) * s, c * s:(c + 1) * s].reshape(12, -1)
+                w24 = grid24[:, r * s:(r + 1) * s, c * s:(c + 1) * s].reshape(12, -1)
+                ok25, ok24 = np.isfinite(w25).sum(axis=1) >= 5, np.isfinite(w24).sum(axis=1) >= 5
+                c25 = np.where(ok25, np.nanmedian(w25, axis=1), np.nan)
+                if np.nanmean(c25[0:3] - h[0:3]) > SPOT_TREE or not np.nanmax(c25[5:8]) >= SPOT_GREEN:
+                    continue
+                bare, brown = np.nanmean(h[3:5] - c25[3:5]), np.nanmean(h[8:11] - c25[8:11])
+                if not (bare > 0 and brown > 0 and bare + brown >= SPOT_MIN):
+                    continue
+                cand.append((bare + brown, r, c, c25, np.where(ok24, np.nanmedian(w24, axis=1), np.nan)))
+    cand.sort(key=lambda t: -t[0])
+    out, where = [], np.full((n, n), ".")
+    for score, r, c, c25, c24 in cand:
+        if len(out) == SPOT_N:
+            break
+        if any(max(abs(r - q["row"]), abs(c - q["col"])) <= 1 for q in out):
+            continue                                                  # touches a spot already shown
+        where[r * s:(r + 1) * s, c * s:(c + 1) * s] = str(len(out))
+        out.append({"score": round(float(score), 3), "row": r, "col": c, "ndvi": _r(c25), "ndvi_2024": _r(c24)})
+    return out, "".join(where.ravel())
+
+
 def radar(ee, lat, lon, year: int = C.YEAR):
     """Monthly Sentinel-1 VH backscatter (dB), mean over the box; None for a month without a pass."""
     box = C.box(ee, lon, lat)
@@ -209,12 +261,13 @@ def one(ee, row):
         strip(data, "fc").save(IMG / f"{row.id}_{year}_fc.webp", quality=90, method=6)
         curves[year] = ndvi(data)
     parts, where = patches(curves[2025][4], curves[2025][5], curves[2024][4], curves[2024][5])
+    sp, sp_where = spots(curves[2025][4], curves[2024][4], curves[2025][3])
     d = ESRI_HALF_DEG
     return {"id": row.id, "lat": row.lat, "lon": row.lon, "area": getattr(row, "area", "pilot"),
             "box_m": C.BOX_M, "esri_half_deg": d,
             "ndvi": curves[2025][0], "ndvi_p10": curves[2025][1], "ndvi_p90": curves[2025][2],
             "ndvi_500m": curves[2025][3], "ndvi_2024": curves[2024][0], "vh": radar(ee, row.lat, row.lon),
-            "patches": parts, "patch_map": where,
+            "patches": parts, "patch_map": where, "spots": sp, "spot_map": sp_where,
             "labellers": [getattr(row, "labeller_1", ""), getattr(row, "labeller_2", "")],
             "esri_date": esri_date(row.lat, row.lon),
             "esri": ("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export"

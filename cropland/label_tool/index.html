@@ -31,6 +31,9 @@ main{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:14px;padding:14p
 .hires img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;background:#ddd}
 .hires .frame{position:relative;aspect-ratio:1}
 .hires .frame img{height:100%}
+.mwrap{position:relative;line-height:0}
+.mwrap svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hires .spotmark{position:absolute;border:2px solid;box-shadow:0 0 0 1px rgba(0,0,0,.6);pointer-events:none;font:700 10px/1 sans-serif;color:#fff;text-shadow:0 0 2px #000}
 .hires .boxmark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border:2px solid #ffe600;box-shadow:0 0 0 1px rgba(0,0,0,.45);pointer-events:none}
 .links a{margin-right:10px;color:var(--no)}
 .q{padding:7px 0;border-bottom:1px solid var(--line)}
@@ -155,43 +158,42 @@ function points(){
   return setSel.value === "pilot" ? all : all.filter(p => (p.labellers||[]).includes(whoSel.value));
 }
 
-// the box split into patches with different curves (04_image_strips.py): a field gets its own line
+// NDVI chart: the box's own curve and spread, the ~500 m square as "the grass around" (cue c), and the
+// windows of cues a-c. No score and no place picked out as crop-like: the labeller decides from the images.
 const PATCH_COL = ["#b98200", "#b4332e", "#2f7d4a"], PATCH_NAME = "ABC";
 let show24 = safe.get("cropland-show24", false);
-function patchChart(p){
-  const W=360,H=150,L=30,R=8,T=10,B=24, x=i=>L+(W-L-R)*i/11, y=v=>T+(H-T-B)*(1-(v+0.1)/0.9);
-  const line = (arr, col, dash, w) => { if (!arr) return ""; let d="", pen=false; arr.forEach((v,i)=>{ if(v==null){pen=false;return;} d+=(pen?"L":"M")+x(i).toFixed(1)+","+y(v).toFixed(1); pen=true; }); return `<path d="${d}" fill="none" stroke="${col}" stroke-width="${w||2.2}" ${dash?`stroke-dasharray="${dash}"`:''}/>`; };
-  let g = [0,0.2,0.4,0.6,0.8].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e4e3df"/><text x="${L-4}" y="${y(v)+4}" text-anchor="end">${v.toFixed(1)}</text>`).join("");
-  g += MONTHS.map((m,i)=>`<text x="${x(i)}" y="${H-8}" text-anchor="middle">${m}</text>`).join("");
-  const ps = p.patches;
-  let lines = line(p.ndvi_500m, "#1d6f8c", "5 3", 1.8);
-  if (show24) ps.forEach((q,j) => { lines += line(q.ndvi_2024, PATCH_COL[j], "2 3", 1.4); });
-  ps.forEach((q,j) => { lines += line(q.ndvi, PATCH_COL[j], "", j ? 2.6 : 2.2)
-    + q.ndvi.map((v,i)=> v==null?"":`<circle cx="${x(i)}" cy="${y(v)}" r="2.4" fill="${PATCH_COL[j]}"/>`).join(""); });
-  // map of the patches: 21 x 21 box pixels, north up, same orientation as the images
-  const n = Math.round(Math.sqrt(p.patch_map.length)), c = 92 / n;
-  let cells = ""; [...p.patch_map].forEach((k,i) => { cells += `<rect x="${(i % n) * c}" y="${Math.floor(i / n) * c}" width="${c + .2}" height="${c + .2}" fill="${PATCH_COL[+k]}"/>`; });
-  const legend = ps.map((q,j) => `<span><span style="color:${PATCH_COL[j]}">●</span> patch ${PATCH_NAME[j]}, ${Math.round(q.share * 100)}% of the box</span>`).join(" · ");
-  return `<div class="ndvi"><svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="NDVI of each patch through the year">${g}${lines}</svg>
-      <div class="pmap"><svg viewBox="0 0 92 92" role="img" aria-label="Where each patch is in the box">${cells}<rect x="1" y="1" width="90" height="90" fill="none" stroke="#ffe600" stroke-width="2"/></svg>where the patches are</div></div>
-    <div class="muted plegend">${ps.length > 1 ? legend : `<span style="color:${PATCH_COL[0]}">●</span> the whole box: no part of it has a different curve`} · <span style="color:#1d6f8c">- -</span> ~500 m square, 2025 · gaps = box mostly cloudy</div>
-    <label class="muted"><input type="checkbox" id="show24" ${show24?"checked":""}> show 2024 for the same patches (dotted)</label>
-    ${ps.length > 1 ? `<div class="muted">A field is usually a small patch that is bare in Apr–May and drops before the others in Sep–Oct.</div>` : ""}`;
-}
-
+let showParts = safe.get("cropland-parts", false);
 function chart(p){
-  if (p.patches && p.patch_map) return patchChart(p);
-  const W=360,H=150,L=30,R=8,T=10,B=24, x=i=>L+(W-L-R)*i/11, y=v=>T+(H-T-B)*(1-(v+0.1)/0.9);
+  const W=360,H=166,L=30,R=8,T=18,B=24, step=(W-L-R)/11, x=i=>L+step*i, y=v=>T+(H-T-B)*(1-Math.min(.8,Math.max(0,v))/0.8);
   const line = (arr, col, dash, w) => { if (!arr) return ""; let d="", pen=false; arr.forEach((v,i)=>{ if(v==null){pen=false;return;} d+=(pen?"L":"M")+x(i).toFixed(1)+","+y(v).toFixed(1); pen=true; }); return `<path d="${d}" fill="none" stroke="${col}" stroke-width="${w||2.2}" ${dash?`stroke-dasharray="${dash}"`:''}/>`; };
-  let g = [0,0.2,0.4,0.6,0.8].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e4e3df"/><text x="${L-4}" y="${y(v)+4}" text-anchor="end">${v.toFixed(1)}</text>`).join("");
+  const dots = (arr, col, r) => arr.map((v,i)=> v==null?"":`<circle cx="${x(i)}" cy="${y(v)}" r="${r}" fill="${col}"/>`).join("");
+  // the months each cue is about, so every part of the chart matches a question of the key
+  let g = [[3,4,"a · bare","#f1e7d3"],[5,7,"b · green-up","#e5efe1"],[8,10,"c · harvest","#f3e1d6"]].map(([a,b,t,f]) =>
+    `<rect x="${x(a)-step/2+1}" y="${T}" width="${x(b)-x(a)+step-2}" height="${H-T-B}" fill="${f}"/><text x="${(x(a)+x(b))/2}" y="${T-5}" text-anchor="middle">${t}</text>`).join("");
+  g += [0,0.2,0.4,0.6,0.8].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e4e3df"/><text x="${L-4}" y="${y(v)+4}" text-anchor="end">${v.toFixed(1)}</text>`).join("");
   g += MONTHS.map((m,i)=>`<text x="${x(i)}" y="${H-8}" text-anchor="middle">${m}</text>`).join("");
-  // spread inside the box (10th-90th percentile): the top edge is the greenest patch, the bottom the barest
+  // spread inside the box (10th-90th percentile of its pixels): a small field in grass shows as the lower edge dropping early
   const band = (lo, hi) => { if (!lo || !hi) return ""; let out = "", run = [];
-    const flush = () => { if (run.length > 1) out += `<path d="M${run.map(i=>x(i).toFixed(1)+","+y(hi[i]).toFixed(1)).join("L")}L${run.slice().reverse().map(i=>x(i).toFixed(1)+","+y(lo[i]).toFixed(1)).join("L")}Z" fill="#b98200" fill-opacity=".16"/>`; run = []; };
+    const flush = () => { if (run.length > 1) out += `<path d="M${run.map(i=>x(i).toFixed(1)+","+y(hi[i]).toFixed(1)).join("L")}L${run.slice().reverse().map(i=>x(i).toFixed(1)+","+y(lo[i]).toFixed(1)).join("L")}Z" fill="#5d6b62" fill-opacity=".18"/>`; run = []; };
     lo.forEach((v,i) => { if (v==null || hi[i]==null) flush(); else run.push(i); }); flush(); return out; };
-  const dots = p.ndvi.map((v,i)=> v==null?"":`<circle cx="${x(i)}" cy="${y(v)}" r="2.6" fill="#b98200"/>`).join("");
-  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="NDVI through the year">${g}${band(p.ndvi_p10,p.ndvi_p90)}${line(p.ndvi_2024,"#9aa39c","2 3",1.6)}${line(p.ndvi_500m,"#1d6f8c","5 3")}${line(p.ndvi,"#b98200")}${dots}</svg>
-    <div class="muted"><span style="color:#b98200">●</span> the ${BOX_M} m box, 2025 (median)${p.ndvi_p10?` · <span style="color:#b98200;opacity:.5">▮</span> 10–90% of the box's pixels: a field in a box of grass shows as the top or bottom edge`:""} · <span style="color:#1d6f8c">- -</span> ~500 m square, 2025 · <span style="color:#9aa39c">···</span> the box, 2024 · gaps = box mostly cloudy</div>`;
+  const BOXC = "#2b3a30", parts = (p.patches || []).length > 1 && p.patch_map, onParts = showParts && parts;
+  let lines = band(p.ndvi_p10, p.ndvi_p90);
+  if (show24) lines += onParts ? p.patches.map((q,j) => line(q.ndvi_2024, PATCH_COL[j], "2 3", 1.4)).join("") : line(p.ndvi_2024, BOXC, "2 3", 1.5);
+  lines += line(p.ndvi_500m, "#1d6f8c", "5 3", 1.8);
+  if (onParts) lines += p.patches.map((q,j) => line(q.ndvi, PATCH_COL[j], "", 1.8) + dots(q.ndvi, PATCH_COL[j], 2)).join("");
+  lines += line(p.ndvi, BOXC, "", 2.4) + dots(p.ndvi, BOXC, 2.6);          // the box itself, always drawn
+  let map = "";
+  if (onParts) {
+    const n = Math.round(Math.sqrt(p.patch_map.length)), c = 92 / n;
+    let cells = ""; [...p.patch_map].forEach((k,i) => { cells += `<rect x="${(i % n) * c}" y="${Math.floor(i / n) * c}" width="${c + .2}" height="${c + .2}" fill="${PATCH_COL[+k]}"/>`; });
+    map = `<div class="pmap"><svg viewBox="0 0 92 92" role="img" aria-label="Where each part is in the box">${cells}<rect x="1" y="1" width="90" height="90" fill="none" stroke="#ffe600" stroke-width="2"/></svg>where the parts are</div>`;
+  }
+  const partLegend = onParts ? " · " + p.patches.map((q,j) => `<span><span style="color:${PATCH_COL[j]}">●</span> part ${PATCH_NAME[j]}, ${Math.round(q.share * 100)}%</span>`).join(" · ") : "";
+  return `<div class="ndvi" style="${map ? "" : "grid-template-columns:1fr"}"><svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="NDVI of the box through the year">${g}${lines}</svg>${map}</div>
+    <div class="muted plegend"><span><span style="color:${BOXC}">●</span> the box, 2025 (median)</span> · <span><span style="color:#5d6b62;opacity:.6">▮</span> 10–90% of its pixels</span> · <span><span style="color:#1d6f8c">- -</span> ~500 m square (the grass around)</span>${show24 ? ` · <span>··· 2024</span>` : ""}${partLegend} · gaps = mostly cloudy</div>
+    <label class="muted"><input type="checkbox" id="show24" ${show24?"checked":""}> show 2024 (dotted)</label>
+    ${parts ? `<label class="muted" style="margin-left:10px"><input type="checkbox" id="showparts" ${showParts?"checked":""}> show the parts of the box whose curves differ</label>` : `<span class="muted" style="margin-left:10px">no part of the box has a different curve</span>`}
+    <div class="muted">Look at the images first. Use the chart for timing only: does the lower edge of the band (or a part) start low in Apr–May and drop before the dashed line in Sep–Nov? Click that month to see where. Different is not crop.</div>`;
 }
 
 function radarChart(p){
@@ -221,6 +223,23 @@ function boxPct(p){
   // share of the high-res image width taken by the box; the image spans 2 * esri_half_deg degrees
   const half = p.esri_half_deg || 0.003;
   return (100 * BOX_M / (2 * half * 111320 * Math.cos(p.lat * Math.PI / 180))).toFixed(1);
+}
+
+// spots drawn on the images: in a 153 px month tile the box starts at pixel 15 (x3 = 45) and a spot is 3 pixels (x3 = 9)
+let showSpots = safe.get("cropland-showspots", true);
+const spotsOn = p => false;                      // small spots dropped (see report); overlays kept off
+function stripSpots(p){
+  if (!spotsOn(p)) return "";
+  let r = "";
+  for (let m = 0; m < 12; m++) p.spots.forEach((q,j) => {
+    r += `<rect x="${(m % 6) * 157 + 45 + q.col * 9 - .5}" y="${Math.floor(m / 6) * 157 + 45 + q.row * 9 - .5}" width="10" height="10" fill="none" stroke="#000" stroke-width="2.6"/>`
+       + `<rect x="${(m % 6) * 157 + 45 + q.col * 9 - .5}" y="${Math.floor(m / 6) * 157 + 45 + q.row * 9 - .5}" width="10" height="10" fill="none" stroke="${PATCH_COL[j]}" stroke-width="1.4"/>`; });
+  return `<svg viewBox="0 0 938 310" preserveAspectRatio="none" aria-hidden="true">${r}</svg>`;
+}
+function hiresSpots(p){
+  if (!spotsOn(p)) return "";
+  const b = +boxPct(p), k = 21 / 3;
+  return p.spots.map((q,j) => `<div class="spotmark" style="border-color:${PATCH_COL[j]};left:${50 - b / 2 + b * q.col / k}%;top:${50 - b / 2 + b * q.row / k}%;width:${b / k}%;height:${b / k}%">${j + 1}</div>`).join("");
 }
 
 function radios(name, values, cur, disabled){
@@ -263,14 +282,15 @@ function render(){
         <h3>${p.id} · yellow square = the ${BOX_M} m × ${BOX_M} m box you label: crop if there is cropland anywhere in it · ${view==="tc"?"true colour":"false colour (vegetation = red)"} <kbd>V</kbd></h3>
         ${p.box_m === BOX_M ? "" : `<div class="banner" style="margin:4px 0">The greenness curve here is still the old one (centre pixel only) and the radar curve is missing. Don't label this set until step 4 is rerun: <code>python cropland/04_image_strips.py ${setSel.value}</code>.</div>`}
         <div class="yr"><b>2025</b>, the year you label</div>
-        <img class="mstrip" src="img/${p.id}_2025_${view}.webp" alt="Monthly Sentinel-2 images, 2025">
+        <div class="mwrap"><img class="mstrip" src="img/${p.id}_2025_${view}.webp" alt="Monthly Sentinel-2 images, 2025">${stripSpots(p)}</div>
         <div class="y24"><div class="yr">2024, only to recognise fallow (cue e)</div>
-        <img class="mstrip" src="img/${p.id}_2024_${view}.webp" alt="Monthly Sentinel-2 images, 2024"></div>
+        <div class="mwrap"><img class="mstrip" src="img/${p.id}_2024_${view}.webp" alt="Monthly Sentinel-2 images, 2024">${stripSpots(p)}</div></div>
+        
       </div>
       <div class="row2">
         <div class="card"><h3>Greenness (NDVI)</h3>${chart(p)}<h3 style="margin-top:10px">Radar (through clouds)</h3>${radarChart(p)}</div>
         <div class="card hires"><h3>${esriTitle(p)}</h3>
-          <div class="frame"><img src="${p.esri}" alt="Esri World Imagery around the point"><div class="boxmark" style="width:${boxPct(p)}%;height:${boxPct(p)}%"></div></div>
+          <div class="frame"><img src="${p.esri}" alt="Esri World Imagery around the point"><div class="boxmark" style="width:${boxPct(p)}%;height:${boxPct(p)}%"></div>${hiresSpots(p)}</div>
           <p class="links muted"><a href="${p.wayback}" target="_blank" rel="noopener">Wayback (dates)</a><a href="${p.google}" target="_blank" rel="noopener">Google Maps</a><a href="${p.eo}" target="_blank" rel="noopener">EO Browser</a></p>
           <p class="muted">The yellow square is the ${BOX_M} m box. Fields move between years: trust shapes, not what grew.</p></div>
       </div>
@@ -301,6 +321,9 @@ function render(){
   form.addEventListener("submit", e => { e.preventDefault(); save(); });
   $("prev").onclick = () => move(-1);
   app.querySelectorAll(".list button").forEach(b => b.onclick = () => { idx = +b.dataset.i; load(); });
+  app.querySelectorAll('input[name="lineview"]').forEach(r => r.onchange = e => { lineView = e.target.value; safe.set("cropland-view", lineView); render(); });
+  if ($("showspots")) $("showspots").onchange = e => { showSpots = e.target.checked; safe.set("cropland-showspots", showSpots); render(); };
+  if ($("showparts")) $("showparts").onchange = e => { showParts = e.target.checked; safe.set("cropland-parts", showParts); render(); };
   if ($("show24")) $("show24").onchange = e => { show24 = e.target.checked; safe.set("cropland-show24", show24); render(); };
   app.querySelectorAll("img.mstrip").forEach(im => im.onclick = e => {
     // which month tile was clicked: 6 x 2 tiles of 153 px with 4 px gaps in a 938 x 310 image
@@ -405,7 +428,11 @@ function zoom(m){
   [["z25","2025"],["z24","2024"]].forEach(([cid, yr]) => {
     const img = new Image();
     img.onload = () => { const c = $(cid).getContext("2d"); c.imageSmoothingEnabled = false;
-      c.drawImage(img, (zm % 6) * 157, Math.floor(zm / 6) * 157, 153, 153, 0, 0, 459, 459); };
+      c.drawImage(img, (zm % 6) * 157, Math.floor(zm / 6) * 157, 153, 153, 0, 0, 459, 459);
+      if (spotsOn(p)) p.spots.forEach((q,j) => { const x = (45 + q.col * 9) * 3, y = (45 + q.row * 9) * 3;
+        c.lineWidth = 4; c.strokeStyle = "#000"; c.strokeRect(x, y, 27, 27);
+        c.lineWidth = 2; c.strokeStyle = PATCH_COL[j]; c.strokeRect(x, y, 27, 27);
+        c.font = "bold 13px sans-serif"; c.fillStyle = "#fff"; c.fillText(j + 1, x + 2, y - 3); }); };
     img.src = `img/${p.id}_${yr}_${view}.webp`;
   });
   if (!$("zoomdlg").open) $("zoomdlg").showModal();

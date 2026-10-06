@@ -56,6 +56,7 @@ svg text{font-size:11px;fill:var(--ink2)}
 .list{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}
 .list button{padding:1px 6px;font-size:.75rem;font-variant-numeric:tabular-nums}
 .list button.done{background:#dcebd9;border-color:#b6d3b1}
+.list button.done.crop{background:var(--crop-soft);border-color:#e2c46a}
 .list button.cur{outline:2px solid var(--ink)}
 .list button.later{background:var(--warn-soft);border-color:#e5b892}
 .zoomgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
@@ -294,7 +295,7 @@ function render(){
           <p class="links muted"><a href="${p.wayback}" target="_blank" rel="noopener">Wayback (dates)</a><a href="${p.google}" target="_blank" rel="noopener">Google Maps</a><a href="${p.eo}" target="_blank" rel="noopener">EO Browser</a></p>
           <p class="muted">The yellow square is the ${BOX_M} m box. Fields move between years: trust shapes, not what grew.</p></div>
       </div>
-      <div class="card" style="margin-top:14px"><h3>All points (${pts.length})${later().size?` · <span style="color:var(--warn)">${later().size} to come back to</span>`:""}</h3><div class="list">${pts.map((q,i)=>`<button data-i="${i}" class="${labels[q.id]?.label?"done":""} ${later().has(q.id)?"later":""} ${i===idx?"cur":""}">${q.id}</button>`).join("")}</div></div>
+      <div class="card" style="margin-top:14px"><h3>All points (${pts.length})${later().size?` · <span style="color:var(--warn)">${later().size} to come back to</span>`:""}</h3><div class="list">${pts.map((q,i)=>`<button data-i="${i}" class="${labels[q.id]?.label?"done":""} ${labels[q.id]?.label==="crop"?"crop":""} ${later().has(q.id)?"later":""} ${i===idx?"cur":""}">${q.id}</button>`).join("")}</div></div>
     </div>
     <form class="card" id="form">
       <h3>Labelling key · ${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}</h3>

@@ -1,0 +1,181 @@
+id,lat,lon,area,labeller,label,reason,confidence,cover,cue_a_bare,cue_b_greenup,cue_c_harvest,cue_d_shape,cue_e_crop2024,key_suggestion,overridden,minutes,notes,saved_at,unit,box_west,box_south,box_east,box_north,crop_share
+S005,8.802457,27.829852,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,yes,crop,0,1.97,,2026-10-06T09:31:59.208Z,210m,27.828898,8.801507,27.830806,8.803407,>50
+S010,8.592431,27.744243,aweil,Wei,crop,,3,open,yes,yes,yes,yes,,crop,0,0.82,,2026-10-06T09:32:48.418Z,210m,27.743289,8.591481,27.745197,8.593381,25-50
+S018,9.325007,26.380241,aweil,Wei,not crop,grass/bush,2,open,yes,yes,can't tell,no,no,not crop,0,0.90,,2026-10-06T09:33:42.549Z,210m,26.379285,9.324057,26.381197,9.325957,0
+S023,7.035471,32.226746,bor_south,Wei,not crop,grass/bush,2,open,can't tell,yes,no,no,no,not crop,0,0.60,,2026-10-06T09:34:18.480Z,210m,32.225796,7.034521,32.227696,7.036421,0
+S025,8.949421,27.555237,aweil,Wei,crop,,3,open,yes,can't tell,can't tell,yes,yes,crop,0,166.19,,2026-10-06T12:20:29.907Z,210m,27.554282,8.948471,27.556192,8.950371,25-50
+S028,8.860847,26.719175,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.33,,2026-10-06T12:20:49.874Z,210m,26.71822,8.859897,26.72013,8.861797,0
+S033,8.915914,27.259153,aweil,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.44,,2026-10-06T12:21:16.221Z,210m,27.258198,8.914964,27.260108,8.916864,0
+S034,9.255208,27.415819,aweil,Wei,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,0.94,,2026-10-06T12:22:12.704Z,210m,27.414863,9.254258,27.416775,9.256158,>50
+S035,6.592601,31.357806,bor_south,Wei,not crop,water,3,water,no,no,no,no,no,not crop,0,0.63,,2026-10-06T12:22:50.520Z,210m,31.356856,6.591651,31.358756,6.593551,0
+S036,8.516433,27.175609,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.52,,2026-10-06T12:23:21.489Z,210m,27.174655,8.515483,27.176563,8.517383,0
+S039,9.388518,27.144707,aweil,Wei,crop,,3,open,yes,yes,yes,yes,,crop,0,0.73,,2026-10-06T12:24:05.385Z,210m,27.143751,9.387568,27.145663,9.389468,25-50
+S042,9.24308,27.618928,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,0.95,,2026-10-06T12:25:02.136Z,210m,27.617972,9.24213,27.619884,9.24403,25-50
+S043,5.957492,31.842537,bor_south,Wei,not crop,,2,open,yes,yes,yes,no,no,crop,1,6.65,no patchwork.,2026-10-06T12:31:41.435Z,210m,31.841589,5.956542,31.843485,5.958442,0
+S047,9.190978,26.724655,aweil,Wei,crop,,3,open,yes,yes,yes,yes,yes,crop,0,1.38,,2026-10-06T12:33:04.079Z,210m,26.7237,9.190028,26.72561,9.191928,25-50
+S054,9.38699,27.895789,aweil,Wei,not crop,grass/bush,2,open,yes,yes,can't tell,no,no,not crop,0,2.32,,2026-10-06T12:35:23.205Z,210m,27.894833,9.38604,27.896745,9.38794,0
+S055,9.264191,27.530624,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,yes,crop,0,1144.55,,2026-10-07T07:39:56.507Z,210m,27.529668,9.263241,27.53158,9.265141,>50
+S057,8.974394,26.360658,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,1.04,,2026-10-07T07:43:08.414Z,210m,26.359703,8.973444,26.361613,8.975344,0
+S058,8.153065,26.928932,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.18,,2026-10-07T07:43:19.413Z,210m,26.927979,8.152115,26.929885,8.154015,0
+S062,9.097643,27.870097,aweil,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.92,,2026-10-07T07:44:14.578Z,210m,27.869142,9.096693,27.871052,9.098593,0
+S065,9.291949,27.873151,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.16,,2026-10-07T07:44:24.160Z,210m,27.872195,9.290999,27.874107,9.292899,0
+S068,8.994247,27.51634,aweil,Wei,crop,,3,open,yes,yes,no,yes,yes,crop,0,0.36,,2026-10-07T07:49:41.828Z,210m,27.515385,8.993297,27.517295,8.995197,>50
+S070,9.426157,27.470526,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,,crop,0,0.72,,2026-10-07T07:50:25.227Z,210m,27.46957,9.425207,27.471482,9.427107,25-50
+S073,8.939809,27.334971,aweil,Wei,crop,,3,open,yes,yes,yes,yes,yes,crop,0,2.50,,2026-10-07T07:52:55.120Z,210m,27.334016,8.938859,27.335926,8.940759,25-50
+S074,9.405316,26.509868,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.08,,2026-10-07T07:53:00.086Z,210m,26.508912,9.404366,26.510824,9.406266,0
+S075,6.85976,31.933536,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,3.14,,2026-10-07T07:56:08.628Z,210m,31.932586,6.85881,31.934486,6.86071,0
+S077,8.006639,26.999629,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.11,,2026-10-07T07:56:15.093Z,210m,26.998676,8.005689,27.000582,8.007589,0
+S080,8.847552,27.587307,aweil,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.84,,2026-10-07T07:57:05.364Z,210m,27.586352,8.846602,27.588262,8.848502,0
+S084,6.932254,32.293851,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,1.42,,2026-10-07T07:58:30.623Z,210m,32.292901,6.931304,32.294801,6.933204,0
+S085,9.376211,27.179562,aweil,Wei,crop,,3,open,yes,yes,no,yes,yes,crop,0,1.11,,2026-10-07T07:59:37.151Z,210m,27.178606,9.375261,27.180518,9.377161,25-50
+S088,8.721878,27.28736,aweil,Wei,crop,,3,open,yes,yes,no,yes,yes,crop,0,0.27,,2026-10-07T07:59:53.550Z,210m,27.286406,8.720928,27.288314,8.722828,>50
+S089,8.763919,27.868839,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,,crop,0,0.85,,2026-10-07T08:00:44.547Z,210m,27.867885,8.762969,27.869793,8.764869,>50
+S093,6.798315,32.255762,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.55,,2026-10-07T08:01:17.494Z,210m,32.254812,6.797365,32.256712,6.799265,0
+S095,9.260328,27.442409,aweil,Wei,crop,,3,open,yes,yes,yes,yes,yes,crop,0,0.80,,2026-10-07T08:02:05.490Z,210m,27.441453,9.259378,27.443365,9.261278,25-50
+S096,6.934141,32.109247,bor_south,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.28,,2026-10-07T08:02:22.439Z,210m,32.108297,6.933191,32.110197,6.935091,0
+S097,8.319073,27.024962,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.21,,2026-10-07T08:02:34.905Z,210m,27.024009,8.318123,27.025915,8.320023,0
+S101,6.252319,31.553459,bor_south,Wei,crop,,3,open,yes,yes,yes,yes,yes,crop,0,0.48,,2026-10-07T08:03:03.919Z,210m,31.55251,6.251369,31.554408,6.253269,>50
+S102,6.486061,32.066217,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.51,,2026-10-07T08:03:34.800Z,210m,32.065268,6.485111,32.067166,6.487011,0
+S104,8.960111,27.470706,aweil,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.39,,2026-10-07T08:03:57.932Z,210m,27.469751,8.959161,27.471661,8.961061,0
+S110,8.741731,27.880068,aweil,Wei,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,2.35,,2026-10-07T08:06:18.971Z,210m,27.879114,8.740781,27.881022,8.742681,25-50
+S111,6.237048,32.290437,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.43,,2026-10-07T08:06:45.036Z,210m,32.289488,6.236098,32.291386,6.237998,0
+S113,7.028464,32.065858,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,15.61,,2026-10-07T08:22:21.915Z,210m,32.064908,7.027514,32.066808,7.029414,0
+S117,9.394536,27.630247,aweil,Wei,not crop,grass/bush,2,open,yes,yes,can't tell,no,no,not crop,0,35.90,,2026-10-07T08:58:16.095Z,210m,27.629291,9.393586,27.631203,9.395486,0
+S118,6.715041,32.244533,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.69,,2026-10-07T08:58:57.713Z,210m,32.243583,6.714091,32.245483,6.715991,0
+S120,9.069616,27.161147,aweil,Wei,not crop,grass/bush,2,open,yes,yes,can't tell,no,no,not crop,0,3.25,,2026-10-07T09:02:12.952Z,210m,27.160192,9.068666,27.162102,9.070566,0
+S125,6.489385,32.373172,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.45,,2026-10-07T09:10:58.532Z,210m,32.372223,6.488435,32.374121,6.490335,0
+S126,8.714062,27.370274,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,yes,crop,0,1.54,,2026-10-07T09:20:52.272Z,210m,27.36932,8.713112,27.371228,8.715012,25-50
+S127,6.063853,31.669971,bor_south,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.41,,2026-10-07T09:21:17.026Z,210m,31.669022,6.062903,31.67092,6.064803,0
+S131,8.949241,27.714688,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,yes,crop,0,1.94,,2026-10-07T09:23:13.599Z,210m,27.713733,8.948291,27.715643,8.950191,25-50
+S133,9.339829,27.415819,aweil,Wei,not crop,grass/bush,2,open,yes,yes,can't tell,no,no,not crop,0,0.64,,2026-10-07T09:26:05.942Z,210m,27.414863,9.338879,27.416775,9.340779,0
+S136,8.648575,27.349164,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,no,crop,0,1.37,,2026-10-07T09:27:27.971Z,210m,27.34821,8.647625,27.350118,8.649525,25-50
+S139,6.879703,32.367692,bor_south,Wei,not crop,grass/bush,2,open,no,yes,no,no,no,not crop,0,0.52,,2026-10-07T09:27:59.121Z,210m,32.366742,6.878753,32.368642,6.880653,0
+S141,9.491554,27.492984,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,,crop,0,0.66,,2026-10-07T09:28:38.702Z,210m,27.492028,9.490604,27.49394,9.492504,25-50
+S143,8.64067,27.773169,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.22,,2026-10-07T09:28:51.818Z,210m,27.772215,8.63972,27.774123,8.64162,0
+S147,9.344859,26.454352,aweil,Wei,not crop,grass/bush,2,open,yes,yes,no,can't tell,no,not crop,0,0.86,,2026-10-07T09:29:43.617Z,210m,26.453396,9.343909,26.455308,9.345809,0
+S151,5.940873,32.351792,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,35.76,,2026-10-07T10:05:29.080Z,210m,32.350844,5.939923,32.35274,5.941823,0
+S153,9.138157,27.63411,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,0.48,,2026-10-07T10:05:58.095Z,210m,27.633155,9.137207,27.635065,9.139107,25-50
+S155,9.090007,27.23939,aweil,Wei,not crop,grass/bush,2,open,yes,yes,can't tell,can't tell,can't tell,not crop,0,1.70,,2026-10-07T10:07:39.974Z,210m,27.238435,9.089057,27.240345,9.090957,0
+S156,6.334335,31.903802,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.42,,2026-10-07T10:08:05.256Z,210m,31.902853,6.333385,31.904751,6.335285,0
+S161,9.126749,27.747567,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,0.98,,2026-10-07T10:09:04.320Z,210m,27.746612,9.125799,27.748522,9.127699,25-50
+S162,8.485172,26.655844,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.08,,2026-10-07T10:09:08.854Z,210m,26.65489,8.484222,26.656798,8.486122,0
+S164,6.413567,32.297713,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,1.05,,2026-10-07T10:10:11.702Z,210m,32.296764,6.412617,32.298662,6.414517,0
+S165,9.364533,26.652431,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.08,,2026-10-07T10:10:16.319Z,210m,26.651475,9.363583,26.653387,9.365483,0
+S169,8.971071,27.683697,aweil,Wei,crop,,3,open,yes,yes,yes,yes,yes,crop,0,2.06,,2026-10-07T10:12:19.831Z,210m,27.682742,8.970121,27.684652,8.972021,10-25
+S171,7.000436,31.972972,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.20,,2026-10-07T10:12:32.102Z,210m,31.972022,6.999486,31.973922,7.001386,0
+S176,6.451027,31.794836,bor_south,Wei,not crop,grass/bush,2,open,no,no,no,no,no,not crop,0,0.59,,2026-10-07T10:13:07.796Z,210m,31.793887,6.450077,31.795785,6.451977,0
+S177,8.878185,27.807664,aweil,Wei,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,6.09,,2026-10-07T10:19:13.186Z,210m,27.806709,8.877235,27.808619,8.879135,10-25
+S180,8.841444,26.856887,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.21,,2026-10-07T10:19:25.585Z,210m,26.855932,8.840494,26.857842,8.842394,0
+S182,8.852942,27.566646,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,,crop,0,1.39,,2026-10-07T10:20:48.966Z,210m,27.565691,8.851992,27.567601,8.853892,10-25
+S184,5.91087,32.035765,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.68,,2026-10-07T10:21:29.881Z,210m,32.034817,5.90992,32.036713,5.91182,0
+S185,9.489309,26.315383,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.08,,2026-10-07T10:21:34.698Z,210m,26.314427,9.488359,26.316339,9.490259,0
+S187,9.373336,27.403422,aweil,Wei,not crop,grass/bush,2,open,yes,yes,can't tell,can't tell,can't tell,not crop,0,1.02,,2026-10-07T10:22:36.168Z,210m,27.402466,9.372386,27.404378,9.374286,0
+S188,8.415912,27.294726,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.16,,2026-10-07T10:22:45.929Z,210m,27.293773,8.414962,27.295679,8.416862,0
+S190,8.645341,27.608867,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.15,,2026-10-07T10:22:54.745Z,210m,27.607913,8.644391,27.609821,8.646291,0
+S198,8.389052,26.701568,aweil,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.76,,2026-10-07T10:23:40.309Z,210m,26.700615,8.388102,26.702521,8.390002,0
+S203,9.494878,26.904588,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.10,,2026-10-07T10:23:46.109Z,210m,26.903632,9.493928,26.905544,9.495828,0
+S205,9.250626,27.526042,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,,crop,0,0.65,,2026-10-07T10:24:25.043Z,210m,27.525086,9.249676,27.526998,9.251576,10-25
+S206,6.998011,31.913953,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.32,,2026-10-07T10:24:44.508Z,210m,31.913003,6.997061,31.914903,6.998961,0
+S208,9.305154,27.629708,aweil,Wei,not crop,grass/bush,2,open,yes,yes,can't tell,no,no,not crop,0,0.31,,2026-10-07T10:25:03.158Z,210m,27.628752,9.304204,27.630664,9.306104,0
+S210,8.922472,27.397942,aweil,Wei,crop,,3,open,yes,yes,yes,yes,yes,crop,0,0.68,,2026-10-07T10:25:43.806Z,210m,27.396987,8.921522,27.398897,8.923422,25-50
+S212,9.20607,27.403063,aweil,Wei,crop,,3,open,yes,yes,yes,yes,yes,crop,0,2.92,,2026-10-07T10:28:38.985Z,210m,27.402107,9.20512,27.404019,9.20702,10-25
+S214,8.905314,27.361381,aweil,Wei,crop,,3,open,yes,yes,yes,yes,yes,crop,0,0.93,,2026-10-07T10:29:34.599Z,210m,27.360426,8.904364,27.362336,8.906264,>50
+S217,6.681983,31.347835,bor_south,Wei,not crop,grass/bush,2,open,no,no,no,no,no,not crop,0,0.39,,2026-10-07T10:29:57.765Z,210m,31.346885,6.681033,31.348785,6.682933,0
+S219,7.093502,32.181022,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.54,,2026-10-07T10:30:30.296Z,210m,32.180071,7.092552,32.181973,7.094452,0
+S221,8.836593,27.752058,aweil,Wei,crop,,3,open,yes,yes,yes,yes,no,crop,0,0.62,,2026-10-07T10:31:07.714Z,210m,27.751103,8.835643,27.753013,8.837543,25-50
+S222,9.517336,26.951839,aweil,Wei,crop,,3,open,yes,yes,yes,yes,yes,crop,0,1.15,,2026-10-07T10:32:16.961Z,210m,26.950883,9.516386,26.952795,9.518286,10-25
+S227,8.985264,26.938274,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.22,,2026-10-07T10:32:29.927Z,210m,26.937319,8.984314,26.939229,8.986214,0
+S228,8.720261,27.334701,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,0.61,,2026-10-07T10:33:06.276Z,210m,27.333747,8.719311,27.335655,8.721211,25-50
+S229,9.081024,27.273885,aweil,Wei,crop,,3,open,yes,yes,yes,yes,yes,crop,0,0.74,,2026-10-07T10:33:50.641Z,210m,27.27293,9.080074,27.27484,9.081974,10-25
+S235,6.715491,31.784955,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,5.11,,2026-10-07T10:38:57.089Z,210m,31.784005,6.714541,31.785905,6.716441,0
+S238,8.57662,27.672378,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.24,,2026-10-07T10:39:11.604Z,210m,27.671424,8.57567,27.673332,8.57757,0
+S240,6.588559,31.775343,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.27,,2026-10-07T10:39:27.753Z,210m,31.774394,6.587609,31.776292,6.589509,0
+S244,6.696446,32.082028,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.31,,2026-10-07T10:39:46.635Z,210m,32.081078,6.695496,32.082978,6.697396,0
+S245,8.291854,27.25547,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.23,,2026-10-07T10:40:00.569Z,210m,27.254517,8.290904,27.256423,8.292804,0
+S246,8.745144,27.335779,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,0.70,,2026-10-07T10:40:42.568Z,210m,27.334825,8.744194,27.336733,8.746094,25-50
+S250,8.604288,26.806851,aweil,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.33,,2026-10-07T10:41:02.583Z,210m,26.805897,8.603338,26.807805,8.605238,0
+S254,9.012752,27.800747,aweil,Wei,crop,,3,open,yes,yes,yes,yes,yes,crop,0,0.71,,2026-10-07T10:41:45.330Z,210m,27.799792,9.011802,27.801702,9.013702,25-50
+S255,8.94457,27.376563,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,1.62,,2026-10-07T10:43:22.460Z,210m,27.375608,8.94362,27.377518,8.94552,25-50
+S256,9.16331,27.558292,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,,crop,0,0.76,,2026-10-07T10:44:07.891Z,210m,27.557337,9.16236,27.559247,9.16426,>50
+S261,9.424091,27.789698,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.28,,2026-10-07T10:44:24.774Z,210m,27.788742,9.423141,27.790654,9.425041,0
+S262,6.538253,32.400031,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.92,,2026-10-07T10:45:19.772Z,210m,32.399082,6.537303,32.40098,6.539203,0
+S263,6.704172,32.00621,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,2.07,,2026-10-07T10:47:24.117Z,210m,32.00526,6.703222,32.00716,6.705122,0
+S269,6.738488,31.7607,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.31,,2026-10-07T10:47:42.999Z,210m,31.75975,6.737538,31.76165,6.739438,0
+S272,6.407728,31.789087,bor_south,Wei,not crop,grass/bush,2,open,no,yes,no,no,no,not crop,0,0.60,,2026-10-07T10:48:19.012Z,210m,31.788138,6.406778,31.790036,6.408678,0
+S273,8.978077,27.525413,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,no,crop,0,1.59,,2026-10-07T10:49:54.243Z,210m,27.524458,8.977127,27.526368,8.979027,25-50
+S274,9.507544,27.497925,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,0.69,,2026-10-07T10:50:35.842Z,210m,27.496969,9.506594,27.498881,9.508494,>50
+S276,6.307206,32.40614,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.51,,2026-10-07T10:51:06.390Z,210m,32.405191,6.306256,32.407089,6.308156,0
+S279,9.018412,27.453189,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,0.64,,2026-10-07T10:51:44.521Z,210m,27.452234,9.017462,27.454144,9.019362,>50
+S280,8.988138,27.610933,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,1.12,,2026-10-07T10:52:51.667Z,210m,27.609978,8.987188,27.611888,8.989088,>50
+S282,8.945738,27.535834,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,0.44,,2026-10-07T10:53:18.151Z,210m,27.534879,8.944788,27.536789,8.946688,25-50
+S285,9.418611,27.361471,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.17,,2026-10-07T10:53:28.633Z,210m,27.360515,9.417661,27.362427,9.419561,0
+S286,8.621895,26.468366,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.09,,2026-10-07T10:53:33.933Z,210m,26.467412,8.620945,26.46932,8.622845,0
+S292,6.88644,32.238874,bor_south,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.24,,2026-10-07T10:53:48.232Z,210m,32.237924,6.88549,32.239824,6.88739,0
+S296,9.439811,27.949688,aweil,Wei,not crop,,2,open,yes,yes,yes,no,no,crop,1,3.03,There is no patchwork or similar objects.,2026-10-07T10:56:50.344Z,210m,27.948732,9.438861,27.950644,9.440761,0
+S297,6.437821,31.937848,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,can't tell,no,can't tell,not crop,0,0.68,,2026-10-07T10:57:30.923Z,210m,31.936899,6.436871,31.938797,6.438771,0
+S298,8.468283,27.128358,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.17,,2026-10-07T10:57:41.288Z,210m,27.127404,8.467333,27.129312,8.469233,0
+S304,8.473494,26.437374,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.19,,2026-10-07T10:57:52.776Z,210m,26.43642,8.472544,26.438328,8.474444,0
+S305,9.227629,27.284126,aweil,Wei,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,7.87,,2026-10-07T11:05:45.068Z,210m,27.28317,9.226679,27.285082,9.228579,25-50
+S306,8.65657,27.051552,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.30,,2026-10-07T11:06:02.918Z,210m,27.050598,8.65562,27.052506,8.65752,0
+S310,9.062429,27.075268,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.63,,2026-10-07T11:06:40.583Z,210m,27.074313,9.061479,27.076223,9.063379,0
+S311,9.005296,27.502596,aweil,Wei,crop,,3,open,yes,yes,yes,yes,yes,crop,0,1.55,,2026-10-07T11:08:13.528Z,210m,27.501641,9.004346,27.503551,9.006246,25-50
+S317,8.963165,27.322933,aweil,Wei,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,1.55,,2026-10-07T11:09:46.659Z,210m,27.321978,8.962215,27.323888,8.964115,>50
+S318,9.354292,27.05245,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.27,,2026-10-07T11:10:02.757Z,210m,27.051494,9.353342,27.053406,9.355242,0
+S321,7.999183,26.745137,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,1.38,,2026-10-07T11:11:25.294Z,210m,26.744185,7.998233,26.746089,8.000133,0
+S323,6.117572,32.152096,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,2.27,,2026-10-07T11:13:41.491Z,210m,32.151147,6.116622,32.153045,6.118522,0
+S324,8.912051,27.336049,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,7.97,,2026-10-07T11:21:40.006Z,210m,27.335094,8.911101,27.337004,8.913001,25-50
+S326,8.860398,27.40441,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,8.06,,2026-10-07T11:29:43.536Z,210m,27.403455,8.859448,27.405365,8.861348,10-25
+S330,9.017783,27.394259,aweil,Wei,crop,,3,open,yes,yes,yes,yes,yes,crop,0,5.65,,2026-10-07T11:35:22.342Z,210m,27.393304,9.016833,27.395214,9.018733,25-50
+S331,7.056761,32.493816,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,2.36,,2026-10-07T11:37:43.770Z,210m,32.492866,7.055811,32.494766,7.057711,0
+S332,6.472407,32.054629,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.42,,2026-10-07T11:38:09.203Z,210m,32.05368,6.471457,32.055578,6.473357,0
+S334,8.601144,26.694112,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.72,,2026-10-07T11:38:52.552Z,210m,26.693158,8.600194,26.695066,8.602094,0
+S340,9.495417,26.617935,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.35,,2026-10-07T11:39:13.302Z,210m,26.616979,9.494467,26.618891,9.496367,0
+S341,6.562508,32.11284,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.54,,2026-10-07T11:39:45.850Z,210m,32.111891,6.561558,32.113789,6.563458,0
+S344,6.776666,32.387006,bor_south,Wei,not crop,grass/bush,2,open,no,yes,no,no,no,not crop,0,0.68,,2026-10-07T11:40:26.417Z,210m,32.386056,6.775716,32.387956,6.777616,0
+S346,8.966848,27.528737,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,1.18,,2026-10-07T11:41:37.299Z,210m,27.527782,8.965898,27.529692,8.967798,25-50
+S347,9.547699,27.443577,aweil,Wei,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,4.18,,2026-10-07T11:45:48.093Z,210m,27.442621,9.546749,27.444533,9.548649,10-25
+S349,9.024251,27.588475,aweil,Wei,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,14.45,,2026-10-07T12:00:15.195Z,210m,27.58752,9.023301,27.58943,9.025201,25-50
+S351,6.450218,32.387006,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.38,,2026-10-07T12:00:37.828Z,210m,32.386057,6.449268,32.387955,6.451168,0
+S354,8.947894,27.621443,aweil,Wei,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,9.24,,2026-10-07T12:09:52.067Z,210m,27.620488,8.946944,27.622398,8.948844,25-50
+S355,9.415826,27.151804,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.47,,2026-10-07T12:10:20.583Z,210m,27.150848,9.414876,27.15276,9.416776,0
+S359,9.426427,27.240917,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,5.40,,2026-10-07T12:15:44.510Z,210m,27.239961,9.425477,27.241873,9.427377,25-50
+S363,8.310449,26.388236,aweil,Wei,not crop,grass/bush,2,open,yes,yes,can't tell,no,can't tell,not crop,0,0.64,,2026-10-07T12:16:22.759Z,210m,26.387283,8.309499,26.389189,8.311399,0
+S364,5.891825,31.996508,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.39,,2026-10-07T12:16:46.077Z,210m,31.99556,5.890875,31.997456,5.892775,0
+S366,8.310719,27.560088,aweil,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.37,,2026-10-07T12:17:08.311Z,210m,27.559135,8.309769,27.561041,8.311669,0
+S374,8.500443,26.306849,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.36,,2026-10-07T12:17:29.843Z,210m,26.305895,8.499493,26.307803,8.501393,0
+S376,6.396768,31.572234,bor_south,Wei,not crop,grass/bush,2,open,no,yes,no,no,no,not crop,0,4.58,,2026-10-07T12:22:04.738Z,210m,31.571285,6.395818,31.573183,6.397718,0
+S380,8.831652,27.85258,aweil,Wei,not crop,grass/bush,2,open,yes,yes,can't tell,no,can't tell,not crop,0,1.95,,2026-10-07T12:24:01.920Z,210m,27.851625,8.830702,27.853535,8.832602,0
+S381,8.90747,26.262113,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.10,,2026-10-07T12:24:08.103Z,210m,26.261158,8.90652,26.263068,8.90842,0
+S382,9.178312,26.927495,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,4.17,,2026-10-07T12:28:18.433Z,210m,26.92654,9.177362,26.92845,9.179262,10-25
+S384,8.51796,27.478701,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.20,,2026-10-07T12:28:30.199Z,210m,27.477747,8.51701,27.479655,8.51891,0
+S390,9.247841,26.410874,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.24,,2026-10-07T12:28:44.883Z,210m,26.409918,9.246891,26.41183,9.248791,0
+S391,8.7261,27.76706,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,0.82,,2026-10-07T12:29:34.248Z,210m,27.766106,8.72515,27.768014,8.72705,10-25
+S394,8.99775,27.469448,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,0.72,,2026-10-07T12:30:17.764Z,210m,27.468493,8.9968,27.470403,8.9987,>50
+S395,9.395075,26.91941,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.20,,2026-10-07T12:30:29.895Z,210m,26.918454,9.394125,26.920366,9.396025,0
+S397,6.999268,32.314961,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,60.56,,2026-10-07T13:31:03.298Z,210m,32.314011,6.998318,32.315911,7.000218,0
+S398,8.450676,26.57302,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.34,,2026-10-07T13:31:23.780Z,210m,26.572066,8.449726,26.573974,8.451626,0
+S404,6.348978,32.122811,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,1.22,,2026-10-07T13:32:36.795Z,210m,32.121862,6.348028,32.12376,6.349928,0
+S405,8.766075,27.868929,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,0.76,,2026-10-07T13:33:22.576Z,210m,27.867975,8.765125,27.869883,8.767025,10-25
+S406,8.69385,27.293648,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,2.50,,2026-10-07T13:35:52.823Z,210m,27.292694,8.6929,27.294602,8.6948,10-25
+S409,8.795809,27.437558,aweil,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,1.23,,2026-10-07T13:37:06.521Z,210m,27.436604,8.794859,27.438512,8.796759,0
+S412,9.032156,27.587217,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,0.87,,2026-10-07T13:37:58.650Z,210m,27.586262,9.031206,27.588172,9.033106,25-50
+S414,9.223407,26.207495,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.15,,2026-10-07T13:38:07.868Z,210m,26.206539,9.222457,26.208451,9.224357,0
+S415,9.060633,26.452735,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,1.31,,2026-10-07T13:39:26.549Z,210m,26.45178,9.059683,26.45369,9.061583,10-25
+S419,8.915105,27.380425,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,0.77,,2026-10-07T13:40:12.563Z,210m,27.37947,8.914155,27.38138,8.916055,>50
+S422,9.233289,27.57509,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.21,,2026-10-07T13:40:25.130Z,210m,27.574134,9.232339,27.576046,9.234239,0
+S423,9.505299,27.662856,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,24.65,,2026-10-07T14:05:04.436Z,210m,27.6619,9.504349,27.663812,9.506249,25-50
+S426,6.230041,31.935063,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,1.20,,2026-10-07T14:06:16.366Z,210m,31.934114,6.229091,31.936012,6.230991,0
+S427,8.990205,27.59108,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,,crop,0,0.85,,2026-10-07T14:07:07.199Z,210m,27.590125,8.989255,27.592035,8.991155,25-50
+S429,9.551113,27.312243,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.25,,2026-10-07T14:07:22.032Z,210m,27.311287,9.550163,27.313199,9.552063,0
+S432,8.835874,27.855185,aweil,Wei,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,1.43,,2026-10-07T14:08:47.995Z,210m,27.85423,8.834924,27.85614,8.836824,10-25
+S435,6.084514,32.107001,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.61,,2026-10-07T14:09:24.511Z,210m,32.106052,6.083564,32.10795,6.085464,0
+S436,8.825903,26.864343,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.30,,2026-10-07T14:09:42.525Z,210m,26.863388,8.824953,26.865298,8.826853,0
+S437,9.001074,27.489391,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,1.66,,2026-10-07T14:11:22.224Z,210m,27.488436,9.000124,27.490346,9.002024,25-50
+S438,8.928131,27.728702,aweil,Wei,crop,,3,open,yes,yes,yes,yes,,crop,0,0.56,,2026-10-07T14:11:55.939Z,210m,27.727747,8.927181,27.729657,8.929081,>50
+S440,9.09917,26.843772,aweil,Wei,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,1.91,,2026-10-07T14:13:50.853Z,210m,26.842817,9.09822,26.844727,9.10012,10-25
+S443,6.072656,32.018876,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.46,,2026-10-07T14:14:18.718Z,210m,32.017927,6.071706,32.019825,6.073606,0
+S444,6.845926,32.099365,bor_south,Wei,not crop,grass/bush,2,open,yes,yes,no,no,no,not crop,0,0.16,,2026-10-07T14:14:28.200Z,210m,32.098415,6.844976,32.100315,6.846876,0
+S446,8.724752,26.848892,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.27,,2026-10-07T14:14:44.701Z,210m,26.847938,8.723802,26.849846,8.725702,0
+S447,9.210202,27.457321,aweil,Wei,crop,,3,open,yes,yes,yes,yes,,crop,0,1.84,,2026-10-07T14:16:34.831Z,210m,27.456365,9.209252,27.458277,9.211152,10-25
+S448,8.712086,26.452106,aweil,Wei,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.23,,2026-10-07T14:16:48.815Z,210m,26.451152,8.711136,26.45306,8.713036,0
+S450,9.100697,27.64992,aweil,Wei,not crop,grass/bush,2,open,yes,yes,no,no,can't tell,not crop,0,2.67,,2026-10-07T14:18:10.693Z,210m,27.648965,9.099747,27.650875,9.101647,0

@@ -275,8 +275,9 @@ def one(ee, row):
                      "&size=400,400&format=jpg&f=image"),
             "google": f"https://www.google.com/maps/@{row.lat},{row.lon},250m/data=!3m1!1e3",
             "wayback": f"https://livingatlas.arcgis.com/wayback/#mapCenter={row.lon}%2C{row.lat}%2C17",
-            "eo": (f"https://apps.sentinel-hub.com/eo-browser/?zoom=16&lat={row.lat}&lng={row.lon}"
-                   f"&fromTime={C.YEAR}-01-01&toTime={C.YEAR}-12-31")}
+            "eo": (f"https://browser.dataspace.copernicus.eu/?zoom=16&lat={row.lat}&lng={row.lon}"
+                   f"&fromTime={C.YEAR}-09-01T00:00:00.000Z&toTime={C.YEAR}-09-30T23:59:59.999Z"
+                   "&datasetId=S2_L2A_CDAS&layerId=1_TRUE_COLOR")}
 
 
 def main() -> None:

@@ -217,6 +217,9 @@ function radarChart(p){
     <div class="muted"><span style="color:#5b4a8b">●</span> radar VH (dB), the box, 2025: sees through clouds; rises as a crop grows, drops at harvest; very low = standing water · gaps = no radar pass that month (Aweil has none Jan–Apr 2025)</div>`;
 }
 
+// Copernicus Browser (EO Browser was shut down), Sentinel-2 true colour, September 2025: peak green-up
+const copernicus = p => `https://browser.dataspace.copernicus.eu/?zoom=16&lat=${p.lat}&lng=${p.lon}`
+  + `&fromTime=2025-09-01T00:00:00.000Z&toTime=2025-09-30T23:59:59.999Z&datasetId=S2_L2A_CDAS&layerId=1_TRUE_COLOR`;
 function esriTitle(p){
   const e = p.esri_date;
   if (!e) return "High-resolution image (date unknown: check Wayback)";
@@ -307,7 +310,7 @@ function render(){
         <div class="card"><h3>Greenness (NDVI)</h3>${chart(p)}<h3 style="margin-top:10px">Radar (through clouds)</h3>${radarChart(p)}</div>
         <div class="card hires"><h3>${esriTitle(p)}</h3>
           <div class="frame"><img src="${p.esri}" alt="Esri World Imagery around the point"><div class="boxmark" style="width:${boxPct(p)}%;height:${boxPct(p)}%"></div>${hiresSpots(p)}</div>
-          <p class="links muted"><a href="${p.wayback}" target="_blank" rel="noopener">Wayback (dates)</a><a href="${p.google}" target="_blank" rel="noopener">Google Maps</a><a href="${p.eo}" target="_blank" rel="noopener">EO Browser</a></p>
+          <p class="links muted"><a href="${p.wayback}" target="_blank" rel="noopener">Wayback (dates)</a><a href="${p.google}" target="_blank" rel="noopener">Google Maps</a><a href="${copernicus(p)}" target="_blank" rel="noopener">Copernicus (Sep 2025)</a></p>
           <p class="muted">The yellow square is the ${BOX_M} m box. Fields move between years: trust shapes, not what grew.</p></div>
       </div>
       <div class="card" style="margin-top:14px"><h3>All points (${pts.length})${later().size?` · <span style="color:var(--warn)">${later().size} to come back to</span>`:""}</h3><div class="list">${pts.map((q,i)=>`<button data-i="${i}" class="${labels[q.id]?.label?"done":""} ${labels[q.id]?.label==="crop"?"crop":""} ${later().has(q.id)?"later":""} ${i===idx?"cur":""}">${q.id}</button>`).join("")}</div></div>

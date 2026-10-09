@@ -1,0 +1,181 @@
+id,lat,lon,area,labeller,label,reason,confidence,cover,cue_a_bare,cue_b_greenup,cue_c_harvest,cue_d_shape,cue_e_crop2024,key_suggestion,overridden,minutes,notes,saved_at,unit,box_west,box_south,box_east,box_north,crop_share
+S004,8.927323,27.656837,aweil,Yassin,crop,,3,open,yes,yes,no,yes,can't tell,crop,0,3.53,,2026-10-05T20:31:25.768Z,210m,27.655882,8.926373,27.657792,8.928273,>50
+S006,6.317357,32.20357,bor_south,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,1.43,,2026-10-05T20:33:30.249Z,210m,32.202621,6.316407,32.204519,6.318307,0
+S008,9.303806,27.114165,aweil,Yassin,crop,,3,open,yes,yes,no,yes,yes,crop,0,5.41,,2026-10-05T20:38:54.798Z,210m,27.113209,9.302856,27.115121,9.304756,10-25
+S012,9.048505,26.968458,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.89,,2026-10-05T20:39:48.058Z,210m,26.967503,9.047555,26.969413,9.049455,0
+S019,8.923011,27.514364,aweil,Yassin,crop,,3,open,yes,yes,can't tell,yes,yes,crop,0,3.03,Crop is outside the box.,2026-10-05T20:42:50.048Z,210m,27.513409,8.922061,27.515319,8.923961,25-50
+S021,9.128815,27.482294,aweil,Yassin,crop,,2,open,yes,yes,yes,can't tell,can't tell,crop,0,5.82,,2026-10-05T20:48:40.473Z,210m,27.481339,9.127865,27.483249,9.129765,<10
+S022,8.492179,26.277833,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.12,,2026-10-05T20:48:47.830Z,210m,26.276879,8.491229,26.278787,8.493129,0
+S026,9.490476,27.487684,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,yes,crop,0,1.32,,2026-10-05T20:50:06.985Z,210m,27.486728,9.489526,27.48864,9.491426,>50
+S027,9.042037,27.549488,aweil,Yassin,not crop,grass/bush,1,open,no,yes,can't tell,can't tell,can't tell,not crop,0,1.58,,2026-10-07T22:28:08.779Z,210m,27.548533,9.041087,27.550443,9.042987,0
+S029,5.915721,32.317117,bor_south,Yassin,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,0.71,,2026-10-05T20:51:29.116Z,210m,32.316169,5.914771,32.318065,5.916671,0
+S031,8.841354,27.709658,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,1.32,,2026-10-05T20:56:03.627Z,210m,27.708703,8.840404,27.710613,8.842304,>50
+S036,8.516433,27.175609,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.14,,2026-10-05T20:56:11.953Z,210m,27.174655,8.515483,27.176563,8.517383,0
+S038,8.786826,26.809366,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.19,,2026-10-05T20:56:23.598Z,210m,26.808412,8.785876,26.81032,8.787776,0
+S040,6.632307,31.514382,bor_south,Yassin,crop,grass/bush,1,open,no,yes,no,can't tell,can't tell,not crop,1,3.43,"Very unclear. It looks like grass, but in the wayback it seems that those brown patches might have been crop.",2026-10-05T20:59:49.618Z,210m,31.513432,6.631357,31.515332,6.633257,10-25
+S046,9.071502,26.720703,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.83,,2026-10-05T21:00:39.221Z,210m,26.719748,9.070552,26.721658,9.072452,0
+S049,9.371899,27.547692,aweil,Yassin,not crop,grass/bush,2,open,can't tell,yes,yes,can't tell,can't tell,not crop,0,8.03,,2026-10-05T21:11:48.549Z,210m,27.546736,9.370949,27.548648,9.372849,0
+S050,6.713874,32.258098,bor_south,Yassin,not crop,grass/bush,2,open,can't tell,yes,can't tell,no,can't tell,not crop,0,1.52,,2026-10-05T21:13:19.946Z,210m,32.257148,6.712924,32.259048,6.714824,0
+S052,9.089019,27.349254,aweil,Yassin,not crop,grass/bush,2,open,yes,yes,can't tell,can't tell,can't tell,not crop,0,1.79,,2026-10-05T21:26:09.568Z,210m,27.348299,9.088069,27.350209,9.089969,0
+S054,9.38699,27.895789,aweil,Yassin,not crop,grass/bush,2,open,no,yes,no,no,no,not crop,0,0.85,,2026-10-05T21:27:00.824Z,210m,27.894833,9.38604,27.896745,9.38794,0
+S055,9.264191,27.530624,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,yes,crop,0,3.45,,2026-10-05T21:20:33.241Z,210m,27.529668,9.263241,27.53158,9.265141,>50
+S056,8.764548,27.329311,aweil,Yassin,crop,,3,open,yes,yes,no,yes,can't tell,crop,0,0.75,,2026-10-05T21:21:58.533Z,210m,27.328357,8.763598,27.330265,8.765498,>50
+S061,8.718734,27.885278,aweil,Yassin,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,1.14,,2026-10-05T21:24:08.916Z,210m,27.884324,8.717784,27.886232,8.719684,>50
+S063,9.276318,26.43953,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.18,,2026-10-05T21:20:58.686Z,210m,26.438574,9.275368,26.440486,9.277268,0
+S067,9.085785,27.268316,aweil,Yassin,crop,,,open,yes,yes,can't tell,can't tell,can't tell,not crop,1,1.00,,2026-10-05T21:32:52.568Z,210m,27.267361,9.084835,27.269271,9.086735,<10
+S070,9.426157,27.470526,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,2.04,,2026-10-05T21:16:36.528Z,210m,27.46957,9.425207,27.471482,9.427107,>50
+S072,6.677402,31.944226,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.94,,2026-10-05T20:52:50.268Z,210m,31.943276,6.676452,31.945176,6.678352,0
+S074,9.405316,26.509868,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,1.21,,2026-10-05T20:54:02.954Z,210m,26.508912,9.404366,26.510824,9.406266,0
+S076,9.726823,26.24774,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.11,,2026-10-05T21:27:14.067Z,210m,26.246783,9.725873,26.248697,9.727773,0
+S078,8.98733,27.305506,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,4.58,,2026-10-05T21:31:48.898Z,210m,27.304551,8.98638,27.306461,8.98828,>50
+S083,8.788263,27.876385,aweil,Yassin,crop,,2,open,yes,yes,yes,yes,,crop,0,0.93,,2026-10-05T21:35:08.320Z,210m,27.875431,8.787313,27.877339,8.789213,25-50
+S086,9.402711,26.548046,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.17,,2026-10-05T21:35:18.637Z,210m,26.54709,9.401761,26.549002,9.403661,0
+S088,8.721878,27.28736,aweil,Yassin,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,0.41,,2026-10-05T21:35:43.133Z,210m,27.286406,8.720928,27.288314,8.722828,>50
+S090,6.794722,31.960576,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.63,,2026-10-05T21:36:20.996Z,210m,31.959626,6.793772,31.961526,6.795672,0
+S091,6.341612,31.961474,bor_south,Yassin,not crop,grass/bush,3,open,no,yes,no,no,can't tell,not crop,0,0.87,,2026-10-05T21:37:13.161Z,210m,31.960525,6.340662,31.962423,6.342562,0
+S094,8.892827,27.849166,aweil,Yassin,not crop,grass/bush,2,open,yes,yes,can't tell,can't tell,can't tell,not crop,0,3.12,,2026-10-05T22:39:58.247Z,210m,27.848211,8.891877,27.850121,8.893777,0
+S096,6.934141,32.109247,bor_south,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.06,,2026-10-05T21:37:31.977Z,210m,32.108297,6.933191,32.110197,6.935091,0
+S100,8.982749,27.648123,aweil,Yassin,crop,,2,open,yes,yes,can't tell,yes,can't tell,crop,0,2.28,,2026-10-05T23:03:21.444Z,210m,27.647168,8.981799,27.649078,8.983699,25-50
+S102,6.486061,32.066217,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.20,,2026-10-05T22:35:54.998Z,210m,32.065268,6.485111,32.067166,6.487011,0
+S103,6.49702,32.456625,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.50,,2026-10-05T22:41:37.866Z,210m,32.455676,6.49607,32.457574,6.49797,0
+S104,8.960111,27.470706,aweil,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.20,,2026-10-05T22:41:50.149Z,210m,27.469751,8.959161,27.471661,8.961061,0
+S106,8.722237,26.24226,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.09,,2026-10-05T22:41:55.417Z,210m,26.241306,8.721287,26.243214,8.723187,0
+S107,9.309196,27.653693,aweil,Yassin,not crop,grass/bush,3,open,no,yes,no,no,can't tell,not crop,0,0.72,,2026-10-05T22:42:38.465Z,210m,27.652737,9.308246,27.654649,9.310146,0
+S109,6.722408,32.3579,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,2.78,,2026-10-05T22:45:25.388Z,210m,32.35695,6.721458,32.35885,6.723358,0
+S114,8.881419,27.822307,aweil,Yassin,crop,,2,open,yes,yes,can't tell,yes,,crop,0,1.73,,2026-10-05T22:57:47.291Z,210m,27.821352,8.880469,27.823262,8.882369,25-50
+S115,6.010493,31.651825,bor_south,Yassin,not crop,settlement,3,open,no,no,no,no,can't tell,not crop,0,3.24,,2026-10-05T23:01:01.489Z,210m,31.650877,6.009543,31.652773,6.011443,0
+S116,6.906832,32.32098,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.19,,2026-10-05T22:47:58.336Z,210m,32.32003,6.905882,32.32193,6.907782,0
+S120,9.069616,27.161147,aweil,Yassin,not crop,grass/bush,2,open,no,yes,no,no,can't tell,not crop,0,1.72,,2026-10-05T22:52:20.508Z,210m,27.160192,9.068666,27.162102,9.070566,0
+S123,9.581476,27.775055,aweil,Yassin,crop,grass/bush,2,open,yes,yes,can't tell,can't tell,can't tell,not crop,1,2.37,Quite unsure whether it's cropland.,2026-10-05T22:54:42.905Z,210m,27.774098,9.580526,27.776012,9.582426,<10
+S125,6.489385,32.373172,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,can't tell,not crop,0,1.02,,2026-10-05T22:55:44.187Z,210m,32.372223,6.488435,32.374121,6.490335,0
+S129,9.247752,27.486426,aweil,Yassin,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,1.40,,2026-10-05T22:47:43.945Z,210m,27.48547,9.246802,27.487382,9.248702,>50
+S134,6.501422,31.777409,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.62,,2026-10-05T22:46:15.807Z,210m,31.77646,6.500472,31.778358,6.502372,0
+S135,6.903149,32.223962,bor_south,Yassin,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,1.10,,2026-10-05T21:34:08.898Z,210m,32.223012,6.902199,32.224912,6.904099,0
+S137,6.541128,32.407218,bor_south,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.22,,2026-10-07T11:09:07.459Z,210m,32.406269,6.540178,32.408167,6.542078,0
+S141,9.491554,27.492984,aweil,Yassin,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,3.45,,2026-10-07T11:12:34.339Z,210m,27.492028,9.490604,27.49394,9.492504,25-50
+S142,9.411694,27.482204,aweil,Yassin,crop,settlement,1,open,yes,yes,yes,yes,,crop,0,1.70,,2026-10-07T21:30:37.807Z,210m,27.481248,9.410744,27.48316,9.412644,10-25
+S146,9.496046,27.493703,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,,crop,0,0.71,,2026-10-07T21:31:20.456Z,210m,27.492747,9.495096,27.494659,9.496996,25-50
+S147,9.344859,26.454352,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.11,,2026-10-07T21:27:13.554Z,210m,26.453396,9.343909,26.455308,9.345809,0
+S148,9.095667,26.788974,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,,crop,0,0.48,,2026-10-07T22:21:36.003Z,210m,26.788019,9.094717,26.789929,9.096617,25-50
+S149,9.448884,27.580929,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,,crop,0,1.17,,2026-10-07T21:28:26.934Z,210m,27.579973,9.447934,27.581885,9.449834,25-50
+S152,8.057843,27.026489,aweil,Yassin,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,0.63,,2026-10-07T21:26:59.999Z,210m,27.025536,8.056893,27.027442,8.058793,0
+S154,8.954721,27.045264,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.24,,2026-10-07T21:22:38.142Z,210m,27.044309,8.953771,27.046219,8.955671,0
+S156,6.334335,31.903802,bor_south,Yassin,not crop,other,3,open,no,no,no,no,no,not crop,0,0.82,desert,2026-10-07T21:23:27.105Z,210m,31.902853,6.333385,31.904751,6.335285,0
+S158,7.036998,32.213631,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.61,,2026-10-07T21:24:03.903Z,210m,32.212681,7.036048,32.214581,7.037948,0
+S163,9.49407,27.125214,aweil,Yassin,crop,grass/bush,,open,yes,yes,can't tell,yes,,crop,0,1.29,,2026-10-07T21:38:54.820Z,210m,27.124258,9.49312,27.12617,9.49502,>50
+S168,9.364533,27.821318,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.42,,2026-10-07T21:39:20.145Z,210m,27.820362,9.363583,27.822274,9.365483,0
+S172,8.940258,27.366951,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,0.40,,2026-10-07T21:24:48.048Z,210m,27.365996,8.939308,27.367906,8.941208,>50
+S174,6.589996,32.285856,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.22,,2026-10-07T21:25:01.499Z,210m,32.284906,6.589046,32.286806,6.590946,0
+S176,6.451027,31.794836,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.22,,2026-10-07T21:25:14.622Z,210m,31.793887,6.450077,31.795785,6.451977,0
+S179,9.426876,27.80425,aweil,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.34,,2026-10-07T21:25:35.185Z,210m,27.803294,9.425926,27.805206,9.427826,0
+S181,8.871358,27.376024,aweil,Yassin,crop,,3,open,yes,yes,can't tell,yes,,crop,0,0.56,,2026-10-07T21:26:08.862Z,210m,27.375069,8.870408,27.376979,8.872308,>50
+S183,8.318894,26.808198,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.10,,2026-10-07T21:18:29.956Z,210m,26.807245,8.317944,26.809151,8.319844,0
+S184,5.91087,32.035765,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.19,,2026-10-07T21:18:41.231Z,210m,32.034817,5.90992,32.036713,5.91182,0
+S188,8.415912,27.294726,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.07,,2026-10-07T21:18:45.456Z,210m,27.293773,8.414962,27.295679,8.416862,0
+S189,8.753948,27.48445,aweil,Yassin,not crop,grass/bush,2,open,no,no,no,no,can't tell,not crop,0,1.04,,2026-10-07T21:46:20.824Z,210m,27.483496,8.752998,27.485404,8.754898,0
+S196,8.993439,27.506459,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,,crop,0,0.53,,2026-10-07T21:18:20.546Z,210m,27.505504,8.992489,27.507414,8.994389,>50
+S197,8.562427,26.456867,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.12,,2026-10-07T21:17:44.952Z,210m,26.455913,8.561477,26.457821,8.563377,0
+S200,6.928032,32.379011,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.27,,2026-10-07T21:17:20.549Z,210m,32.378061,6.927082,32.379961,6.928982,0
+S201,6.719264,31.862929,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.51,,2026-10-05T21:49:36.008Z,210m,31.861979,6.718314,31.863879,6.720214,0
+S203,9.494878,26.904588,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.46,,2026-10-05T22:25:54.774Z,210m,26.903632,9.493928,26.905544,9.495828,0
+S204,8.053531,26.891113,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.10,,2026-10-05T22:26:00.838Z,210m,26.89016,8.052581,26.892066,8.054481,0
+S205,9.250626,27.526042,aweil,Yassin,crop,,2,open,yes,yes,can't tell,yes,can't tell,crop,0,1.39,,2026-10-05T22:27:24.150Z,210m,27.525086,9.249676,27.526998,9.251576,10-25
+S207,8.795989,27.801196,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,,crop,0,1.02,,2026-10-07T20:57:58.029Z,210m,27.800242,8.795039,27.80215,8.796939,25-50
+S209,8.314043,27.563861,aweil,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.20,,2026-10-07T20:58:10.257Z,210m,27.562908,8.313093,27.564814,8.314993,0
+S213,6.695099,32.090292,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.19,,2026-10-07T20:58:21.965Z,210m,32.089342,6.694149,32.091242,6.696049,0
+S214,8.905314,27.361381,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,,crop,0,0.40,,2026-10-07T20:58:46.301Z,210m,27.360426,8.904364,27.362336,8.906264,>50
+S218,9.12594,27.616323,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,,crop,0,4.00,,2026-10-07T21:02:46.323Z,210m,27.615368,9.12499,27.617278,9.12689,10-25
+S220,9.301561,27.117219,aweil,Yassin,crop,grass/bush,2,open,yes,yes,yes,yes,,crop,0,2.00,,2026-10-07T22:25:02.873Z,210m,27.116263,9.300611,27.118175,9.302511,25-50
+S225,9.051649,26.524151,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,,crop,0,0.84,,2026-10-07T22:22:59.970Z,210m,26.523196,9.050699,26.525106,9.052599,25-50
+S227,8.985264,26.938274,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,2.33,"Even though everything in the box is bush, outside it i see cropland, but we cannot label it as cropland since the model would learn something incorrectly.",2026-10-07T21:14:43.761Z,210m,26.937319,8.984314,26.939229,8.986214,0
+S230,6.809095,31.762767,bor_south,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.53,,2026-10-07T21:15:15.645Z,210m,31.761817,6.808145,31.763717,6.810045,0
+S232,6.671114,31.801484,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,can't tell,not crop,0,0.22,,2026-10-07T21:15:29.060Z,210m,31.800534,6.670164,31.802434,6.672064,0
+S233,9.409269,27.136084,aweil,Yassin,crop,,3,open,yes,yes,can't tell,yes,,crop,0,0.91,,2026-10-07T21:16:23.695Z,210m,27.135128,9.408319,27.13704,9.410219,>50
+S234,8.989666,27.097815,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.12,,2026-10-07T21:40:58.161Z,210m,27.09686,8.988716,27.09877,8.990616,0
+S241,9.414838,27.871534,aweil,Yassin,not crop,other,3,open,no,no,no,no,,,0,0.85,desert. bare land,2026-10-07T21:41:49.357Z,210m,27.870578,9.413888,27.87249,9.415788,0
+S242,5.97474,31.729709,bor_south,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.17,,2026-10-07T21:41:59.816Z,210m,31.728761,5.97379,31.730657,5.97569,0
+S246,8.745144,27.335779,aweil,Yassin,crop,,3,open,yes,yes,can't tell,yes,,crop,0,0.90,,2026-10-07T21:47:18.531Z,210m,27.334825,8.744194,27.336733,8.746094,25-50
+S249,8.870459,26.714235,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.09,,2026-10-07T21:03:07.775Z,210m,26.71328,8.869509,26.71519,8.871409,0
+S250,8.604288,26.806851,aweil,Yassin,not crop,grass/bush,2,open,no,no,no,no,no,not crop,0,2.35,,2026-10-07T21:05:28.982Z,210m,26.805897,8.603338,26.807805,8.605238,0
+S251,8.934599,27.282958,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,2.36,,2026-10-07T21:07:50.855Z,210m,27.282003,8.933649,27.283913,8.935549,>50
+S252,8.96074,27.347008,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,,crop,0,0.73,,2026-10-07T21:08:34.504Z,210m,27.346053,8.95979,27.347963,8.96169,>50
+S253,6.586313,32.468483,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.29,,2026-10-07T21:08:51.970Z,210m,32.467534,6.585363,32.469432,6.587263,0
+S258,6.298313,31.925092,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.52,,2026-10-07T21:09:23.198Z,210m,31.924143,6.297363,31.926041,6.299263,0
+S259,9.517246,27.53242,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,,crop,0,2.93,,2026-10-07T21:12:19.317Z,210m,27.531464,9.516296,27.533376,9.518196,25-50
+S262,6.538253,32.400031,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.19,,2026-10-05T21:49:50.946Z,210m,32.399082,6.537303,32.40098,6.539203,0
+S266,9.251704,27.422916,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,0.93,,2026-10-05T21:50:47.049Z,210m,27.42196,9.250754,27.423872,9.252654,>50
+S267,6.596644,32.09685,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.24,,2026-10-05T21:51:01.617Z,210m,32.0959,6.595694,32.0978,6.597594,0
+S271,5.898203,32.406409,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.16,,2026-10-05T21:51:11.015Z,210m,32.405461,5.897253,32.407357,5.899153,0
+S274,9.507544,27.497925,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,0.71,,2026-10-05T21:53:05.409Z,210m,27.496969,9.506594,27.498881,9.508494,>50
+S275,9.236253,26.760408,aweil,Yassin,crop,,2,open,can't tell,yes,yes,yes,can't tell,crop,0,1.69,,2026-10-05T21:54:46.739Z,210m,26.759452,9.235303,26.761364,9.237203,10-25
+S278,8.954901,27.563143,aweil,Yassin,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,1.31,,2026-10-05T21:56:05.584Z,210m,27.562188,8.953951,27.564098,8.955851,25-50
+S281,9.224216,27.375934,aweil,Yassin,not crop,grass/bush,2,open,yes,yes,can't tell,can't tell,can't tell,not crop,0,1.81,,2026-10-05T21:57:54.533Z,210m,27.374978,9.223266,27.37689,9.225166,0
+S285,9.418611,27.361471,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.08,,2026-10-05T21:57:59.446Z,210m,27.360515,9.417661,27.362427,9.419561,0
+S287,8.931724,27.216213,aweil,Yassin,crop,grass/bush,1,open,yes,yes,can't tell,can't tell,can't tell,not crop,1,1.67,,2026-10-05T21:59:39.547Z,210m,27.215258,8.930774,27.217168,8.932674,<10
+S292,6.88644,32.238874,bor_south,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.28,,2026-10-05T21:59:44.920Z,210m,32.237924,6.88549,32.239824,6.88739,0
+S293,9.363724,26.244146,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.07,,2026-10-05T21:51:35.990Z,210m,26.24319,9.362774,26.245102,9.364674,0
+S294,8.779819,26.611288,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.09,,2026-10-05T21:59:46.247Z,210m,26.610334,8.778869,26.612242,8.780769,0
+S295,6.883026,31.949975,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.20,,2026-10-05T21:51:53.041Z,210m,31.949025,6.882076,31.950925,6.883976,0
+S301,9.396782,27.003313,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.51,,2026-10-05T22:00:18.326Z,210m,27.002357,9.395832,27.004269,9.397732,0
+S303,8.996493,27.217561,aweil,Yassin,not crop,settlement,2,open,yes,yes,no,can't tell,can't tell,not crop,0,2.59,,2026-10-05T22:12:31.780Z,210m,27.216606,8.995543,27.218516,8.997443,0
+S304,8.473494,26.437374,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.06,,2026-10-05T22:00:26.893Z,210m,26.43642,8.472544,26.438328,8.474444,0
+S308,9.138157,27.391744,aweil,Yassin,crop,,3,open,yes,yes,no,yes,no,crop,0,1.75,,2026-10-05T22:14:21.361Z,210m,27.390789,9.137207,27.392699,9.139107,10-25
+S309,9.140493,27.897855,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.17,,2026-10-05T22:00:40.283Z,210m,27.8969,9.139543,27.89881,9.141443,0
+S315,8.277212,27.051372,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.14,,2026-10-05T22:00:48.890Z,210m,27.050419,8.276262,27.052325,8.278162,0
+S316,6.586582,32.111762,bor_south,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.17,,2026-10-05T22:00:59.052Z,210m,32.110813,6.585632,32.112711,6.587532,0
+S318,9.354292,27.05245,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.06,,2026-10-05T22:01:02.777Z,210m,27.051494,9.353342,27.053406,9.355242,0
+S319,5.878979,32.420423,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.16,,2026-10-05T22:01:12.700Z,210m,32.419475,5.878029,32.421371,5.879929,0
+S324,8.912051,27.336049,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,,crop,0,0.51,,2026-10-05T22:01:43.643Z,210m,27.335094,8.911101,27.337004,8.913001,>50
+S325,6.812778,31.976296,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.15,,2026-10-05T22:01:52.681Z,210m,31.975346,6.811828,31.977246,6.813728,0
+S326,8.860398,27.40441,aweil,Yassin,crop,,2,open,yes,yes,yes,can't tell,,crop,0,2.94,,2026-10-05T22:04:57.674Z,210m,27.403455,8.859448,27.405365,8.861348,10-25
+S328,8.755116,27.779996,aweil,Yassin,crop,,2,open,yes,yes,yes,can't tell,,crop,0,4.91,,2026-10-05T22:09:52.427Z,210m,27.779042,8.754166,27.78095,8.756066,10-25
+S329,9.153608,26.723847,aweil,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.23,,2026-10-05T22:09:54.025Z,210m,26.722892,9.152658,26.724802,9.154558,0
+S335,9.41367,27.286821,aweil,Yassin,not crop,grass/bush,2,open,no,yes,no,no,no,not crop,0,0.75,,2026-10-05T22:20:54.954Z,210m,27.285865,9.41272,27.287777,9.41462,0
+S337,6.31601,31.797891,bor_south,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.15,,2026-10-05T22:21:03.750Z,210m,31.796942,6.31506,31.79884,6.31696,0
+S339,9.078419,27.879709,aweil,Yassin,not crop,settlement,1,open,yes,yes,no,can't tell,can't tell,not crop,0,2.42,Unsure about this one. I don't know what the boundaries are.,2026-10-05T22:24:03.429Z,210m,27.878754,9.077469,27.880664,9.079369,0
+S344,6.776666,32.387006,bor_south,Yassin,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,0.65,,2026-10-05T22:24:42.460Z,210m,32.386056,6.775716,32.387956,6.777616,0
+S345,9.577254,26.230133,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.27,,2026-10-05T22:24:58.559Z,210m,26.229176,9.576304,26.23109,9.578204,0
+S349,9.024251,27.588475,aweil,Yassin,crop,,3,open,yes,yes,can't tell,yes,can't tell,crop,0,2.84,,2026-10-07T10:59:24.330Z,210m,27.58752,9.023301,27.58943,9.025201,25-50
+S352,9.08345,27.371891,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,2.25,,2026-10-07T11:01:39.583Z,210m,27.370936,9.0825,27.372846,9.0844,10-25
+S353,8.423637,27.752238,aweil,Yassin,crop,,2,open,yes,yes,can't tell,yes,can't tell,crop,0,2.52,,2026-10-07T11:04:11.129Z,210m,27.751284,8.422687,27.753192,8.424587,>50
+S357,9.466671,27.309908,aweil,Yassin,fallow,,2,open,can't tell,yes,can't tell,yes,can't tell,fallow,0,2.48,,2026-10-07T20:31:33.646Z,210m,27.308952,9.465721,27.310864,9.467621,10-25
+S360,6.193749,32.028578,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.30,,2026-10-07T20:31:51.745Z,210m,32.027629,6.192799,32.029527,6.194699,0
+S361,6.700489,31.80337,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,1.67,,2026-10-07T20:33:31.757Z,210m,31.80242,6.699539,31.80432,6.701439,0
+S363,8.310449,26.388236,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.46,,2026-10-07T20:33:59.317Z,210m,26.387283,8.309499,26.389189,8.311399,0
+S365,8.175882,26.534302,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.21,,2026-10-07T20:34:11.699Z,210m,26.533349,8.174932,26.535255,8.176832,0
+S370,9.420677,27.680013,aweil,Yassin,not crop,grass/bush,2,open,yes,yes,can't tell,can't tell,can't tell,not crop,0,1.99,corpland could be outside the box.,2026-10-07T21:50:20.971Z,210m,27.679057,9.419727,27.680969,9.421627,0
+S371,9.269491,27.611023,aweil,Yassin,crop,,2,open,yes,yes,yes,yes,,crop,0,1.17,,2026-10-07T21:43:50.240Z,210m,27.610067,9.268541,27.611979,9.270441,10-25
+S372,9.048775,27.294007,aweil,Yassin,crop,settlement,2,open,yes,yes,yes,can't tell,,crop,0,1.32,,2026-10-07T21:45:09.645Z,210m,27.293052,9.047825,27.294962,9.049725,10-25
+S376,6.396768,31.572234,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.31,,2026-10-07T20:55:43.703Z,210m,31.571285,6.395818,31.573183,6.397718,0
+S378,8.678849,27.07922,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.11,,2026-10-07T20:55:50.451Z,210m,27.078266,8.677899,27.080174,8.679799,0
+S379,6.935039,32.199707,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.58,,2026-10-07T20:38:16.508Z,210m,32.198757,6.934089,32.200657,6.935989,0
+S383,9.24865,27.209566,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.14,,2026-10-07T20:38:24.777Z,210m,27.20861,9.2477,27.210522,9.2496,0
+S389,8.847193,27.839375,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,yes,crop,0,2.57,,2026-10-07T20:41:50.894Z,210m,27.83842,8.846243,27.84033,8.848143,25-50
+S390,9.247841,26.410874,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.29,,2026-10-07T20:42:08.465Z,210m,26.409918,9.246891,26.41183,9.248791,0
+S394,8.99775,27.469448,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,can't tell,crop,0,0.92,,2026-10-07T20:55:15.221Z,210m,27.468493,8.9968,27.470403,8.9987,>50
+S395,9.395075,26.91941,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.31,,2026-10-07T20:54:15.222Z,210m,26.918454,9.394125,26.920366,9.396025,0
+S396,8.551467,27.744782,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.10,,2026-10-07T20:53:54.774Z,210m,27.743828,8.550517,27.745736,8.552417,0
+S397,6.999268,32.314961,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.34,,2026-10-05T21:38:24.541Z,210m,32.314011,6.998318,32.315911,7.000218,0
+S399,9.000625,27.797244,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,,crop,0,1.38,,2026-10-05T22:16:20.808Z,210m,27.796289,8.999675,27.798199,9.001575,10-25
+S400,8.910794,27.380515,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,,crop,0,2.08,My percentage is also counting cropland outside the box.,2026-10-05T22:18:25.382Z,210m,27.37956,8.909844,27.38147,8.911744,>50
+S401,5.858139,32.228992,bor_south,Yassin,not crop,grass/bush,2,open,no,no,no,no,no,not crop,0,0.20,,2026-10-05T22:18:37.465Z,210m,32.228044,5.857189,32.22994,5.859089,0
+S402,9.074287,27.308021,aweil,Yassin,not crop,grass/bush,2,open,yes,yes,can't tell,no,can't tell,not crop,0,1.29,,2026-10-07T22:26:31.145Z,210m,27.307066,9.073337,27.308976,9.075237,0
+S403,8.739305,27.174352,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.12,,2026-10-07T22:20:58.422Z,210m,27.173398,8.738355,27.175306,8.740255,0
+S404,6.348978,32.122811,bor_south,Yassin,not crop,grass/bush,3,open,no,no,no,no,no,not crop,0,0.32,,2026-10-05T22:30:06.600Z,210m,32.121862,6.348028,32.12376,6.349928,0
+S405,8.766075,27.868929,aweil,Yassin,crop,grass/bush,2,open,yes,yes,yes,yes,can't tell,crop,0,1.33,,2026-10-07T21:36:43.812Z,210m,27.867975,8.765125,27.869883,8.767025,25-50
+S410,8.89148,27.490828,aweil,Yassin,crop,settlement,2,open,yes,yes,yes,can't tell,,crop,0,1.75,,2026-10-05T22:50:29.159Z,210m,27.489873,8.89053,27.491783,8.89243,10-25
+S413,9.604652,27.080747,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.07,,2026-10-05T22:29:02.378Z,210m,27.07979,9.603702,27.081704,9.605602,0
+S417,9.441069,27.607699,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.10,,2026-10-05T22:28:56.395Z,210m,27.606743,9.440119,27.608655,9.442019,0
+S418,9.430289,27.26059,aweil,Yassin,crop,,3,open,yes,yes,no,yes,,crop,0,2.04,I opened the Wayback and it seems this area has quite some cropland.,2026-10-05T22:32:16.692Z,210m,27.259634,9.429339,27.261546,9.431239,>50
+S427,8.990205,27.59108,aweil,Yassin,crop,settlement,1,open,yes,yes,no,can't tell,can't tell,not crop,1,2.98,"This is a village but I saw some cropland near the homes, so that's why my confidence score is a guess.",2026-10-05T22:35:15.350Z,210m,27.590125,8.989255,27.592035,8.991155,10-25
+S428,9.287277,26.26328,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.30,,2026-10-05T21:39:21.570Z,210m,26.262324,9.286327,26.264236,9.288227,0
+S430,8.478884,27.231125,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.24,,2026-10-05T21:39:35.932Z,210m,27.230171,8.477934,27.232079,8.479834,0
+S431,9.476463,26.539243,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.23,,2026-10-05T21:39:49.468Z,210m,26.538287,9.475513,26.540199,9.477413,0
+S433,6.704801,31.77175,bor_south,Yassin,not crop,grass/bush,3,open,no,yes,can't tell,no,can't tell,not crop,0,0.43,,2026-10-05T21:40:15.091Z,210m,31.7708,6.703851,31.7727,6.705751,0
+S436,8.825903,26.864343,aweil,Yassin,not crop,grass/bush,3,open,no,yes,no,no,can't tell,not crop,0,1.23,,2026-10-05T21:41:28.701Z,210m,26.863388,8.824953,26.865298,8.826853,0
+S437,9.001074,27.489391,aweil,Yassin,crop,,3,open,yes,yes,yes,yes,,crop,0,1.39,,2026-10-05T21:42:52.410Z,210m,27.488436,9.000124,27.490346,9.002024,>50
+S439,9.010327,27.504303,aweil,Yassin,crop,,2,open,yes,yes,yes,can't tell,can't tell,crop,0,1.23,,2026-10-05T21:44:39.408Z,210m,27.503348,9.009377,27.505258,9.011277,10-25
+S442,8.879263,27.456423,aweil,Yassin,crop,,2,open,yes,yes,yes,can't tell,can't tell,crop,0,2.56,,2026-10-05T21:47:13.061Z,210m,27.455468,8.878313,27.457378,8.880213,<10
+S445,8.701935,26.934861,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.09,,2026-10-05T21:47:18.507Z,210m,26.933907,8.700985,26.935815,8.702885,0
+S446,8.724752,26.848892,aweil,Yassin,not crop,grass/bush,3,open,no,yes,no,no,no,not crop,0,0.25,,2026-10-05T21:43:21.559Z,210m,26.847938,8.723802,26.849846,8.725702,0
+S449,9.446189,26.727799,aweil,Yassin,not crop,trees/shrub,3,trees,no,no,no,no,no,not crop,0,0.28,,2026-10-05T21:37:52.504Z,210m,26.726843,9.445239,26.728755,9.447139,0

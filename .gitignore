@@ -22,3 +22,5 @@ data/
 
 #MARC
 HANDOFF.md
+# cropland report: figures are small and the team reviews them on GitHub (the Overleaf copies in report/figures stay ignored)
+!deliverables/cropland_report/figures/*.png

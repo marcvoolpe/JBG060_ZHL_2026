@@ -40,6 +40,10 @@ def main() -> None:
     path = Path(sys.argv[1])
     ruleset = R.load(path)
     ee = C.ee_init()
+    try:
+        ee.data.createAsset({"type": "FOLDER"}, C.ASSETS)          # first run in a new project
+    except ee.EEException:
+        pass                                                       # folder exists
     check_same(ee, ruleset)
     jobs = [(a, C.area_geometry(ee, a), 10) for a in C.AREAS] + [("south_sudan", C.country_geometry(ee), 30)]
     for name, geom, scale in jobs:

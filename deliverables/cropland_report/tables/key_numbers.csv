@@ -1,0 +1,46 @@
+,value
+"Aweil crop share, lowest map (%)",0.21591602819307268
+"Aweil crop share, highest map (%)",1.9192568108489023
+Aweil CFSAM 2025 cereal area (% of land),3.614829775846342
+Aweil CFSAM 2022 cereal area (% of land),5.407643252351687
+"Bor South crop share, Dynamic World 2025 (%)",8.989977556026059
+"Bor South crop share, highest other map (%)",0.24866631109328446
+Aweil land no map calls crop (%),94.96556678855431
+Aweil land all 7 maps call crop (%),1.779300015937138e-05
+Aweil land >= 4 maps call crop (%),0.0653301061726749
+"Aweil pairwise IoU, best pair",0.1614713698676375
+"Aweil pairwise IoU, median pair",0.041984532720882
+"National crop, lowest map (Mha)",0.2228849466019459
+"National crop, highest map (Mha)",1.7969931260844487
+National CFSAM 2025 cereal area (Mha),1.258886
+National FAOSTAT arable land (Mha),2.3947
+"Aweil 2022 flooded cropland, lowest map (ha)",431.96015690676563
+"Aweil 2022 flooded cropland, highest map (ha)",5804.785383865166
+"National 2022 flooded cropland, lowest map (ha)",1192.7719153648654
+"National 2022 flooded cropland, highest map (ha)",21353.183812532658
+"National 2022 flooded cropland, ASAP (ha)",3883.5580666321307
+CFSAM 2022 cultivated land damaged by floods (ha),130000.0
+"Bor South 2025 flooded cropland, Dynamic World (ha)",1599.5924942221359
+"Bor South 2025 flooded cropland, all other maps (ha, max)",9.7399602277023
+Labelled twice so far (points),450.0
+Labeller splits on cropland (points),53.0
+Exact label agreement (%),84.66666666666667
+Exact label agreement (points),381.0
+Labels given (judgements),900.0
+Splits where field shape answers differ (points),41.0
+"Labellers agree cropland vs not, Aweil (%)",83.33333333333334
+"Cohen's kappa cropland vs not, Aweil",0.6791131855309219
+"Cohen's kappa cropland vs not, Bor South",0.1440798858773188
+Labellers agree cropland vs not (%),85.55555555555556
+Cohen's kappa cropland vs not,0.7040791550321718
+"Esri F1 in Mali, Kerner et al. 2024",0.0
+"Esri accuracy in Mali, Kerner et al. 2024",0.97
+Rank corr. published recall (Kerner) vs Aweil crop share,0.8928571428571429
+Rank corr. published recall (Kerner) vs Bor South crop share,-0.39285714285714296
+Aweil land (ha),3085318.1730773933
+Bor South land (ha),1396328.1744734251
+Aweil land all 7 maps call crop (ha),0.5489706674527748
+"Usual interval coverage, lowest (%)",46.68
+"Usual interval coverage, highest (%)",93.7
+"Adjusted interval coverage, lowest (%)",87.64
+"Adjusted interval coverage, lowest in Aweil (%)",93.905

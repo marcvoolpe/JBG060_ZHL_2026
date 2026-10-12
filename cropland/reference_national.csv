@@ -1,0 +1,12 @@
+source,year,item,value,unit,where
+CFSAM,2022,cereal harvested area,1078923,ha,"FAO/WFP CFSAM 2022 special report, Table 1 (published 21 Jun 2023)"
+CFSAM,2022,cultivated land damaged by floods,130000,ha,"CFSAM 2022, overview and crop section"
+CFSAM,2022,cereals lost to floods,65000,t,"CFSAM 2022, overview and crop section"
+CFSAM,2022,average cereal yield,1.08,t/ha,"CFSAM 2022, Table 4"
+CFSAM,2025,cereal harvested area,1258886,ha,"FAO/WFP CFSAM 2025 special report, Table 3 (19 Mar 2026, doi 10.4060/cd8719en)"
+CFSAM,2025,average cereal yield,1.2,t/ha,"CFSAM 2025, Table 3"
+CFSAM,2025,cereal requirement per person,110,kg/person/year,"CFSAM 2025, Table 3 (requirement / population)"
+FAOSTAT,2022,arable land,2394700,ha,"FAO land use via World Bank WDI AG.LND.ARBL.HA; same value 2021-2024 (carried forward)"
+FAOSTAT,2022,permanent crops,0.1299,% of land area,"FAO land use via World Bank WDI AG.LND.CROP.ZS"
+FAOSTAT,2024,arable land,2394700,ha,"FAO land use via World Bank WDI AG.LND.ARBL.HA"
+FAOSTAT,2024,permanent crops,0.1316,% of land area,"FAO land use via World Bank WDI AG.LND.CROP.ZS"

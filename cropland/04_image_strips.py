@@ -35,6 +35,7 @@ Outputs: cropland/label_tool/img/<id>_<year>_tc.webp, <id>_<year>_fc.webp and
 Run from group_repo:
   python cropland/04_image_strips.py pilot     (uses pilot_points.csv)
   python cropland/04_image_strips.py sample    (uses sample.csv)
+  python cropland/04_image_strips.py config    (only label_tool/config.js: the tool's texts and months)
 """
 
 import json
@@ -44,6 +45,7 @@ from itertools import combinations
 import urllib.parse
 import urllib.request
 import warnings
+from calendar import monthrange
 from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
@@ -66,7 +68,9 @@ SPOT_TREE = 0.05               # spots greener than the 500 m square in Jan-Mar 
 SPOT_GREEN = 0.35              # spots that never reach this NDVI in Jun-Aug never grew anything
 ESRI_HALF_DEG = 0.003         # high-resolution image: ~660 m square, the box is about a third of it
 SCALE = 3                      # thumbnail upscaling, nearest neighbour
-YEARS = (2025, 2024)
+YEARS = (C.YEAR, C.YEAR - 1)    # the season labelled, and the year before (only for fallow, cue e)
+IMAGE_MONTH = C.CALENDAR["image_month"]   # month of the Copernicus Browser link
+BARE, PEAK, HARVEST, DRY = ([m - 1 for m in C.CALENDAR[k]] for k in ("bare_soil", "peak", "harvest", "dry"))   # 0-based
 MONTHS = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
 TOOL = C.HERE / "label_tool"
 ESRI_META = "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/{}/query"
@@ -169,7 +173,7 @@ def patches(box25, clear25, box24, clear24):
             m = lab == j
             out.append({"share": round(float(m.mean()), 3),
                         "ndvi": _r(np.nanmedian(box25[:, m], axis=1), clear25),
-                        "ndvi_2024": _r(np.nanmedian(box24[:, m], axis=1), clear24)})
+                        f"ndvi_{YEARS[1]}": _r(np.nanmedian(box24[:, m], axis=1), clear24)})
     return out, "".join(map(str, lab))
 
 
@@ -197,9 +201,9 @@ def spots(box25, box24, hood25):
                 w24 = grid24[:, r * s:(r + 1) * s, c * s:(c + 1) * s].reshape(12, -1)
                 ok25, ok24 = np.isfinite(w25).sum(axis=1) >= 5, np.isfinite(w24).sum(axis=1) >= 5
                 c25 = np.where(ok25, np.nanmedian(w25, axis=1), np.nan)
-                if np.nanmean(c25[0:3] - h[0:3]) > SPOT_TREE or not np.nanmax(c25[5:8]) >= SPOT_GREEN:
+                if np.nanmean(c25[DRY] - h[DRY]) > SPOT_TREE or not np.nanmax(c25[PEAK]) >= SPOT_GREEN:
                     continue
-                bare, brown = np.nanmean(h[3:5] - c25[3:5]), np.nanmean(h[8:11] - c25[8:11])
+                bare, brown = np.nanmean(h[BARE] - c25[BARE]), np.nanmean(h[HARVEST] - c25[HARVEST])
                 if not (bare > 0 and brown > 0 and bare + brown >= SPOT_MIN):
                     continue
                 cand.append((bare + brown, r, c, c25, np.where(ok24, np.nanmedian(w24, axis=1), np.nan)))
@@ -211,7 +215,7 @@ def spots(box25, box24, hood25):
         if any(max(abs(r - q["row"]), abs(c - q["col"])) <= 1 for q in out):
             continue                                                  # touches a spot already shown
         where[r * s:(r + 1) * s, c * s:(c + 1) * s] = str(len(out))
-        out.append({"score": round(float(score), 3), "row": r, "col": c, "ndvi": _r(c25), "ndvi_2024": _r(c24)})
+        out.append({"score": round(float(score), 3), "row": r, "col": c, "ndvi": _r(c25), f"ndvi_{YEARS[1]}": _r(c24)})
     return out, "".join(where.ravel())
 
 
@@ -260,13 +264,14 @@ def one(ee, row):
         strip(data, "tc").save(IMG / f"{row.id}_{year}_tc.webp", quality=90, method=6)   # WebP: ~4x smaller than PNG, fits in git
         strip(data, "fc").save(IMG / f"{row.id}_{year}_fc.webp", quality=90, method=6)
         curves[year] = ndvi(data)
-    parts, where = patches(curves[2025][4], curves[2025][5], curves[2024][4], curves[2024][5])
-    sp, sp_where = spots(curves[2025][4], curves[2024][4], curves[2025][3])
+    now, before = curves[YEARS[0]], curves[YEARS[1]]
+    parts, where = patches(now[4], now[5], before[4], before[5])
+    sp, sp_where = spots(now[4], before[4], now[3])
     d = ESRI_HALF_DEG
     return {"id": row.id, "lat": row.lat, "lon": row.lon, "area": getattr(row, "area", "pilot"),
             "box_m": C.BOX_M, "esri_half_deg": d,
-            "ndvi": curves[2025][0], "ndvi_p10": curves[2025][1], "ndvi_p90": curves[2025][2],
-            "ndvi_500m": curves[2025][3], "ndvi_2024": curves[2024][0], "vh": radar(ee, row.lat, row.lon),
+            "ndvi": now[0], "ndvi_p10": now[1], "ndvi_p90": now[2],
+            "ndvi_500m": now[3], f"ndvi_{YEARS[1]}": before[0], "vh": radar(ee, row.lat, row.lon),
             "patches": parts, "patch_map": where, "spots": sp, "spot_map": sp_where,
             "labellers": [getattr(row, "labeller_1", ""), getattr(row, "labeller_2", "")],
             "esri_date": esri_date(row.lat, row.lon),
@@ -276,11 +281,29 @@ def one(ee, row):
             "google": f"https://www.google.com/maps/@{row.lat},{row.lon},250m/data=!3m1!1e3",
             "wayback": f"https://livingatlas.arcgis.com/wayback/#mapCenter={row.lon}%2C{row.lat}%2C17",
             "eo": (f"https://browser.dataspace.copernicus.eu/?zoom=16&lat={row.lat}&lng={row.lon}"
-                   f"&fromTime={C.YEAR}-09-01T00:00:00.000Z&toTime={C.YEAR}-09-30T23:59:59.999Z"
+                   f"&fromTime={C.YEAR}-{IMAGE_MONTH:02d}-01T00:00:00.000Z"
+                   f"&toTime={C.YEAR}-{IMAGE_MONTH:02d}-{monthrange(C.YEAR, IMAGE_MONTH)[1]}T23:59:59.999Z"
                    "&datasetId=S2_L2A_CDAS&layerId=1_TRUE_COLOR")}
 
 
+def write_tool_config() -> None:
+    """label_tool/config.js: year, season shading, cue texts and area notes from the config file."""
+    cal, tool = C.CALENDAR, C.CONFIG.get("tool", {})
+    band = lambda k, text, colour: [cal[k][0] - 1, cal[k][-1] - 1, text, colour]
+    cfg = {"name": C.CONFIG["study"]["name"], "year": C.YEAR, "box_m": C.BOX_M,
+           "labellers": C.CONFIG["sample"]["labellers"],
+           "image_month": cal["image_month"], "after_harvest_until": cal["after_harvest_until"],
+           "season_bands": [band("bare_soil", "a · bare", "#f1e7d3"), band("peak", "b · green-up", "#e5efe1"),
+                            band("harvest", "c · harvest", "#f3e1d6")],
+           **{k: tool[k] for k in ("cues", "area_notes", "help", "radar_note") if k in tool}}
+    (TOOL / "config.js").write_text("window.TOOL_CONFIG = " + json.dumps(cfg, ensure_ascii=False, indent=1) + ";\n",
+                                    encoding="utf-8")
+
+
 def main() -> None:
+    if sys.argv[1:2] == ["config"]:                 # only the tool's texts, no Earth Engine
+        write_tool_config()
+        return
     which = sys.argv[1] if len(sys.argv) > 1 else "pilot"
     pts = pd.read_csv(C.HERE / ("pilot_points.csv" if which == "pilot" else "sample.csv"))
     IMG.mkdir(parents=True, exist_ok=True)
@@ -288,6 +311,7 @@ def main() -> None:
     with ThreadPoolExecutor(8) as pool:
         recs = list(pool.map(lambda r: one(ee, r), pts.itertuples()))
     (TOOL / f"data_{which}.js").write_text(f"window.POINTS_{which.upper()} = " + json.dumps(recs) + ";\n")
+    write_tool_config()
     print(f"{len(recs)} points written for '{which}'")
 
 

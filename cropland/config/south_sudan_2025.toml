@@ -1,0 +1,65 @@
+# Settings of the JBG060 group 1 study: Aweil counties and Bor South, South Sudan, 2025.
+# This is the default (CROPLAND_CONFIG unset). It reproduces every number in METHODOLOGY.md:
+# do not edit it; copy TEMPLATE.toml for a new area or country (see REUSE.md).
+
+[study]
+name = "south_sudan_2025"
+country = "South Sudan"
+year = 2025
+seed = 42
+box_m = 210                       # the labelled unit: a 210 m x 210 m box (21 x 21 Sentinel-2 pixels)
+
+[boundaries]
+source = "file"                   # "file" (GeoJSON) or "gaul" (FAO GAUL 2015 in Earth Engine, any country)
+admin2_file = "Administrative boundaries/ssd_admin2.geojson"   # relative to the course data folder, or absolute
+admin2_name_column = "adm2_name"
+admin0_file = "Administrative boundaries/ssd_admin0.geojson"
+
+[areas]                           # study area -> its admin-2 units (counties); sampled, labelled and scored
+aweil = ["Aweil North", "Aweil East", "Aweil South", "Aweil West", "Aweil Centre"]
+bor_south = ["Bor South"]
+
+[allocation]                      # points per stratum (METHODOLOGY.md section 3)
+aweil = { A = 150, B = 90, C = 90 }
+bor_south = { A = 60, B = 30, C = 30 }
+
+[sample]
+calibration_share = 0.3333333333333333   # one third of each stratum fits the rules, two thirds test them
+min_distance_m = 100
+min_stratum_share = 0.001         # strata under 0.1% of their area merge into the next one down
+labellers = ["Matteo", "Marc", "Yassin", "Wei", "Matei"]   # every point goes to two of them
+
+[strata]
+maps = ["worldcover_2021", "glad_2019", "deafrica_2019", "worldcereal_2021", "esri_2025", "dynamicworld_2025", "gfsad_2015"]
+b_from = 1                        # stratum B: at least this many maps say crop
+c_from = 3                        # stratum C: at least this many
+
+[calendar]                        # months (1-12) of the crop season behind the cues and the features
+bare_soil = [4, 5]                # cue a: bare, tilled soil before sowing
+peak = [6, 7, 8]                  # cue b: green-up / peak greenness
+harvest = [9, 10, 11]             # cue c: harvest, browner than the grass around
+dry = [1, 2, 3]                   # trees and shrub stay green in the dry season
+radar = [6, 7, 8, 9]              # four cloudy months for the Sentinel-1 features
+burn_from = "previous-11-01"      # burned area counted from this date ...
+burn_to = "05-01"                 # ... to this date of the study year
+image_month = 9                   # month of the Copernicus Browser link in the tool
+after_harvest_until = "04-01"     # high-resolution images up to this date of the next year still show the season's fields
+
+[tool]                            # texts of the labelling tool (cue keys are fixed; only the texts change)
+radar_note = "(Aweil has none Jan–Apr 2025)"
+
+[tool.cues]
+cue_a_bare = "a. Is any patch in the box bare, tilled soil in Apr–May (light, even, not a dark burn)?"
+cue_b_greenup = "b. Does that patch green up between Jun and Aug?"
+cue_c_harvest = "c. Does it brown or get cleared Aug–Nov earlier than the grass around it?"
+cue_d_shape = "d. Field shape anywhere in the box: straight edges, rectangles, patchwork?"
+cue_e_crop2024 = "e. Was any patch in the box cropped in 2024 (bare in spring, early harvest)?"
+
+[tool.area_notes]
+aweil = "<b>Aweil</b> (Northern Bahr el Ghazal): rain-fed sorghum, groundnut, sesame near homesteads; sowing done by late May, sorghum harvest Sep–Oct; rice scheme near Aweil town."
+bor_south = "<b>Bor South</b> (Jonglei, Nile floodplain): sorghum and maize on higher ground, flood-recession plots near the river; harvest Sep–Oct, recession crops after the water drops (Nov–Feb)."
+pilot = "<b>Pilot</b>, Twic county (Warrap): similar to Aweil; rain-fed sorghum, harvest Sep–Oct."
+
+[tool.help]
+crop = "<b>crop</b>: at least one field in the box was sown and grown in 2025. Usually bare in Apr–May, green by Jul, brown or cleared in Sep–Oct before the grass around, often with edges. Home gardens count.<br>"
+fallow = "<b>fallow</b>: the box has a field (edges, plots, or cropped in 2024) but none of it was cropped in 2025: no spring bare soil, no early harvest.<br>"

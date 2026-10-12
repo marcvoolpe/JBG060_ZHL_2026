@@ -28,7 +28,7 @@ Two runs, because the agreement map is too heavy to compute on the fly
       the existing sample.csv (no Earth Engine; ids, points and split stay),
       and copies the new pairs into label_tool/data_sample.js. Only before
       anyone has labelled the sample.
-The labeller names are set in LABELLERS below.
+The labeller names, the split and the distance rule come from the config (common.CONFIG["sample"]).
 """
 
 import json
@@ -40,8 +40,8 @@ import pandas as pd
 
 import common as C
 
-LABELLERS = ["Matteo", "Marc", "Yassin", "Wei", "Matei"]
-MIN_DISTANCE_M = 100
+LABELLERS = C.CONFIG["sample"]["labellers"]
+MIN_DISTANCE_M = C.CONFIG["sample"]["min_distance_m"]
 OVERSAMPLE = 3                    # draw extra points so the distance rule can drop some
 
 
@@ -73,7 +73,7 @@ def stratum_areas(ee, area, geom):
     return df
 
 
-MIN_SHARE = 0.001            # strata smaller than 0.1% of their area are merged down (METHODOLOGY.md 3.4)
+MIN_SHARE = C.CONFIG["sample"]["min_stratum_share"]   # strata smaller than 0.1% of their area are merged down (METHODOLOGY.md 3.4)
 
 
 def merge_small(areas):
@@ -120,7 +120,7 @@ def draw(ee, area, geom, codes, alloc):
         d = df[df.stratum == s].head(alloc[s]).copy()
         if len(d) < alloc[s]:
             print(f"  {area} stratum {s}: only {len(d)} of {alloc[s]} points available")
-        n_cal = round(len(d) / 3)
+        n_cal = round(len(d) * C.CONFIG["sample"]["calibration_share"])
         d["split"] = ["calibration"] * n_cal + ["test"] * (len(d) - n_cal)
         parts.append(d)
     out = pd.concat(parts)

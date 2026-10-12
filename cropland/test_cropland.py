@@ -11,6 +11,7 @@ Fast (no Earth Engine):
   - merging labels: agreed values only where both agree, the two-labeller mean
     everywhere, no tiebreak;
   - model_data.load never mixes calibration and test points.
+  - the default config (config/south_sudan_2025.toml) is our study; every config has the same settings.
 Slow (needs Earth Engine, run with --ee):
   - the Earth Engine map from a rules file gives the same label as the Python
     rules at the pilot points;
@@ -129,6 +130,22 @@ def test_model_data_splits():
     assert abs(t.ha_per_point.sum() - pd.read_csv(C.HERE / "strata_areas.csv").ha.sum()) < 1
 
 
+def test_config():
+    """The default config is our study; every other config has the same settings, and fits the features."""
+    s = pd.read_csv(C.HERE / "sample.csv")
+    ours = C.load_config("south_sudan_2025")
+    assert (ours["study"]["year"], ours["study"]["box_m"], ours["study"]["seed"]) == (2025, 210, 42)
+    assert {a: sum(n.values()) for a, n in ours["allocation"].items()} == s.groupby("area").size().to_dict() \
+        == {"aweil": 330, "bor_south": 120}
+    assert list(ours["areas"]) == ["aweil", "bor_south"] and len(ours["strata"]["maps"]) == 7
+    keys = lambda d: {k: keys(v) if isinstance(v, dict) and k not in ("areas", "allocation", "area_notes") else None
+                      for k, v in d.items()}
+    for f in (C.HERE / "config").glob("*.toml"):
+        cfg = C.load_config(str(f))
+        assert keys(cfg) == keys(ours), f.name
+        assert len(cfg["calendar"]["radar"]) == 4 and set(cfg["allocation"]) == set(cfg["areas"]), f.name
+
+
 def test_ee_equals_python():
     ee = C.ee_init()
     _, _, _, rs = fake_ruleset()
@@ -156,7 +173,7 @@ def test_building_distance():
 
 if __name__ == "__main__":
     tests = [test_area, test_area_share, test_accuracy_one_stratum, test_tree_equals_rules,
-             test_sample_pairs_balanced, test_merge_no_tiebreak, test_model_data_splits]
+             test_sample_pairs_balanced, test_merge_no_tiebreak, test_model_data_splits, test_config]
     if "--ee" in sys.argv:
         tests += [test_ee_equals_python, test_building_distance]
     for t in tests:

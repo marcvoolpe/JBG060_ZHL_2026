@@ -1,0 +1,898 @@
+map,kind,group,value,points,errors,share,definition
+worldcover_2021,false crop,area,aweil,89,0,0.0,cropland
+worldcover_2021,false crop,area,bor_south,74,0,0.0,cropland
+worldcover_2021,false crop,stratum,A,122,0,0.0,cropland
+worldcover_2021,false crop,stratum,B,41,0,0.0,cropland
+worldcover_2021,false crop,cover,labellers differ,32,0,0.0,cropland
+worldcover_2021,false crop,cover,open,74,0,0.0,cropland
+worldcover_2021,false crop,cover,trees,56,0,0.0,cropland
+worldcover_2021,false crop,cover,water,1,0,0.0,cropland
+worldcover_2021,false crop,open_no_cues,False,113,0,0.0,cropland
+worldcover_2021,false crop,open_no_cues,True,50,0,0.0,cropland
+worldcover_2021,false crop,cue_d_shape,False,163,0,0.0,cropland
+worldcover_2021,false crop,fallow_any,False,163,0,0.0,cropland
+worldcover_2021,false crop,share_class,0,163,0,0.0,cropland
+worldcover_2021,false crop,homestead,< 250 m,15,0,0.0,cropland
+worldcover_2021,false crop,homestead,250-1000 m,36,0,0.0,cropland
+worldcover_2021,false crop,homestead,> 1 km,112,0,0.0,cropland
+worldcover_2021,missed crop,area,aweil,97,36,0.3711340206185567,cropland
+worldcover_2021,missed crop,stratum,A,8,7,0.875,cropland
+worldcover_2021,missed crop,stratum,B,37,24,0.6486486486486487,cropland
+worldcover_2021,missed crop,stratum,C,52,5,0.09615384615384616,cropland
+worldcover_2021,missed crop,cover,open,97,36,0.3711340206185567,cropland
+worldcover_2021,missed crop,open_no_cues,False,96,36,0.375,cropland
+worldcover_2021,missed crop,open_no_cues,True,1,0,0.0,cropland
+worldcover_2021,missed crop,cue_d_shape,False,29,7,0.2413793103448276,cropland
+worldcover_2021,missed crop,cue_d_shape,True,68,29,0.4264705882352941,cropland
+worldcover_2021,missed crop,fallow_any,False,93,35,0.3763440860215054,cropland
+worldcover_2021,missed crop,fallow_any,True,4,1,0.25,cropland
+worldcover_2021,missed crop,share_class,10-25,15,3,0.2,cropland
+worldcover_2021,missed crop,share_class,25-50,8,3,0.375,cropland
+worldcover_2021,missed crop,share_class,<10,3,1,0.3333333333333333,cropland
+worldcover_2021,missed crop,share_class,>50,11,4,0.36363636363636365,cropland
+worldcover_2021,missed crop,share_class,differs,60,25,0.4166666666666667,cropland
+worldcover_2021,missed crop,homestead,< 250 m,93,32,0.34408602150537637,cropland
+worldcover_2021,missed crop,homestead,250-1000 m,3,3,1.0,cropland
+worldcover_2021,missed crop,homestead,> 1 km,1,1,1.0,cropland
+glad_2019,false crop,area,aweil,89,0,0.0,cropland
+glad_2019,false crop,area,bor_south,74,0,0.0,cropland
+glad_2019,false crop,stratum,A,122,0,0.0,cropland
+glad_2019,false crop,stratum,B,41,0,0.0,cropland
+glad_2019,false crop,cover,labellers differ,32,0,0.0,cropland
+glad_2019,false crop,cover,open,74,0,0.0,cropland
+glad_2019,false crop,cover,trees,56,0,0.0,cropland
+glad_2019,false crop,cover,water,1,0,0.0,cropland
+glad_2019,false crop,open_no_cues,False,113,0,0.0,cropland
+glad_2019,false crop,open_no_cues,True,50,0,0.0,cropland
+glad_2019,false crop,cue_d_shape,False,163,0,0.0,cropland
+glad_2019,false crop,fallow_any,False,163,0,0.0,cropland
+glad_2019,false crop,share_class,0,163,0,0.0,cropland
+glad_2019,false crop,homestead,< 250 m,15,0,0.0,cropland
+glad_2019,false crop,homestead,250-1000 m,36,0,0.0,cropland
+glad_2019,false crop,homestead,> 1 km,112,0,0.0,cropland
+glad_2019,missed crop,area,aweil,97,33,0.3402061855670103,cropland
+glad_2019,missed crop,stratum,A,8,7,0.875,cropland
+glad_2019,missed crop,stratum,B,37,19,0.5135135135135135,cropland
+glad_2019,missed crop,stratum,C,52,7,0.1346153846153846,cropland
+glad_2019,missed crop,cover,open,97,33,0.3402061855670103,cropland
+glad_2019,missed crop,open_no_cues,False,96,33,0.34375,cropland
+glad_2019,missed crop,open_no_cues,True,1,0,0.0,cropland
+glad_2019,missed crop,cue_d_shape,False,29,9,0.3103448275862069,cropland
+glad_2019,missed crop,cue_d_shape,True,68,24,0.35294117647058826,cropland
+glad_2019,missed crop,fallow_any,False,93,31,0.3333333333333333,cropland
+glad_2019,missed crop,fallow_any,True,4,2,0.5,cropland
+glad_2019,missed crop,share_class,10-25,15,5,0.3333333333333333,cropland
+glad_2019,missed crop,share_class,25-50,8,2,0.25,cropland
+glad_2019,missed crop,share_class,<10,3,2,0.6666666666666666,cropland
+glad_2019,missed crop,share_class,>50,11,5,0.45454545454545453,cropland
+glad_2019,missed crop,share_class,differs,60,19,0.31666666666666665,cropland
+glad_2019,missed crop,homestead,< 250 m,93,29,0.3118279569892473,cropland
+glad_2019,missed crop,homestead,250-1000 m,3,3,1.0,cropland
+glad_2019,missed crop,homestead,> 1 km,1,1,1.0,cropland
+deafrica_2019,false crop,area,aweil,89,14,0.15730337078651685,cropland
+deafrica_2019,false crop,area,bor_south,74,0,0.0,cropland
+deafrica_2019,false crop,stratum,A,122,12,0.09836065573770492,cropland
+deafrica_2019,false crop,stratum,B,41,2,0.04878048780487805,cropland
+deafrica_2019,false crop,cover,labellers differ,32,4,0.125,cropland
+deafrica_2019,false crop,cover,open,74,2,0.02702702702702703,cropland
+deafrica_2019,false crop,cover,trees,56,8,0.14285714285714285,cropland
+deafrica_2019,false crop,cover,water,1,0,0.0,cropland
+deafrica_2019,false crop,open_no_cues,False,113,13,0.11504424778761062,cropland
+deafrica_2019,false crop,open_no_cues,True,50,1,0.02,cropland
+deafrica_2019,false crop,cue_d_shape,False,163,14,0.08588957055214724,cropland
+deafrica_2019,false crop,fallow_any,False,163,14,0.08588957055214724,cropland
+deafrica_2019,false crop,share_class,0,163,14,0.08588957055214724,cropland
+deafrica_2019,false crop,homestead,< 250 m,15,3,0.2,cropland
+deafrica_2019,false crop,homestead,250-1000 m,36,1,0.027777777777777776,cropland
+deafrica_2019,false crop,homestead,> 1 km,112,10,0.08928571428571429,cropland
+deafrica_2019,missed crop,area,aweil,97,8,0.08247422680412371,cropland
+deafrica_2019,missed crop,stratum,A,8,4,0.5,cropland
+deafrica_2019,missed crop,stratum,B,37,1,0.02702702702702703,cropland
+deafrica_2019,missed crop,stratum,C,52,3,0.057692307692307696,cropland
+deafrica_2019,missed crop,cover,open,97,8,0.08247422680412371,cropland
+deafrica_2019,missed crop,open_no_cues,False,96,8,0.08333333333333333,cropland
+deafrica_2019,missed crop,open_no_cues,True,1,0,0.0,cropland
+deafrica_2019,missed crop,cue_d_shape,False,29,3,0.10344827586206896,cropland
+deafrica_2019,missed crop,cue_d_shape,True,68,5,0.07352941176470588,cropland
+deafrica_2019,missed crop,fallow_any,False,93,7,0.07526881720430108,cropland
+deafrica_2019,missed crop,fallow_any,True,4,1,0.25,cropland
+deafrica_2019,missed crop,share_class,10-25,15,3,0.2,cropland
+deafrica_2019,missed crop,share_class,25-50,8,0,0.0,cropland
+deafrica_2019,missed crop,share_class,<10,3,0,0.0,cropland
+deafrica_2019,missed crop,share_class,>50,11,1,0.09090909090909091,cropland
+deafrica_2019,missed crop,share_class,differs,60,4,0.06666666666666667,cropland
+deafrica_2019,missed crop,homestead,< 250 m,93,6,0.06451612903225806,cropland
+deafrica_2019,missed crop,homestead,250-1000 m,3,1,0.3333333333333333,cropland
+deafrica_2019,missed crop,homestead,> 1 km,1,1,1.0,cropland
+worldcereal_2021,false crop,area,aweil,89,1,0.011235955056179775,cropland
+worldcereal_2021,false crop,area,bor_south,74,0,0.0,cropland
+worldcereal_2021,false crop,stratum,A,122,1,0.00819672131147541,cropland
+worldcereal_2021,false crop,stratum,B,41,0,0.0,cropland
+worldcereal_2021,false crop,cover,labellers differ,32,0,0.0,cropland
+worldcereal_2021,false crop,cover,open,74,1,0.013513513513513514,cropland
+worldcereal_2021,false crop,cover,trees,56,0,0.0,cropland
+worldcereal_2021,false crop,cover,water,1,0,0.0,cropland
+worldcereal_2021,false crop,open_no_cues,False,113,1,0.008849557522123894,cropland
+worldcereal_2021,false crop,open_no_cues,True,50,0,0.0,cropland
+worldcereal_2021,false crop,cue_d_shape,False,163,1,0.006134969325153374,cropland
+worldcereal_2021,false crop,fallow_any,False,163,1,0.006134969325153374,cropland
+worldcereal_2021,false crop,share_class,0,163,1,0.006134969325153374,cropland
+worldcereal_2021,false crop,homestead,< 250 m,15,1,0.06666666666666667,cropland
+worldcereal_2021,false crop,homestead,250-1000 m,36,0,0.0,cropland
+worldcereal_2021,false crop,homestead,> 1 km,112,0,0.0,cropland
+worldcereal_2021,missed crop,area,aweil,97,20,0.20618556701030927,cropland
+worldcereal_2021,missed crop,stratum,A,8,6,0.75,cropland
+worldcereal_2021,missed crop,stratum,B,37,11,0.2972972972972973,cropland
+worldcereal_2021,missed crop,stratum,C,52,3,0.057692307692307696,cropland
+worldcereal_2021,missed crop,cover,open,97,20,0.20618556701030927,cropland
+worldcereal_2021,missed crop,open_no_cues,False,96,20,0.20833333333333334,cropland
+worldcereal_2021,missed crop,open_no_cues,True,1,0,0.0,cropland
+worldcereal_2021,missed crop,cue_d_shape,False,29,6,0.20689655172413793,cropland
+worldcereal_2021,missed crop,cue_d_shape,True,68,14,0.20588235294117646,cropland
+worldcereal_2021,missed crop,fallow_any,False,93,19,0.20430107526881722,cropland
+worldcereal_2021,missed crop,fallow_any,True,4,1,0.25,cropland
+worldcereal_2021,missed crop,share_class,10-25,15,1,0.06666666666666667,cropland
+worldcereal_2021,missed crop,share_class,25-50,8,2,0.25,cropland
+worldcereal_2021,missed crop,share_class,<10,3,2,0.6666666666666666,cropland
+worldcereal_2021,missed crop,share_class,>50,11,3,0.2727272727272727,cropland
+worldcereal_2021,missed crop,share_class,differs,60,12,0.2,cropland
+worldcereal_2021,missed crop,homestead,< 250 m,93,16,0.17204301075268819,cropland
+worldcereal_2021,missed crop,homestead,250-1000 m,3,3,1.0,cropland
+worldcereal_2021,missed crop,homestead,> 1 km,1,1,1.0,cropland
+esri_2025,false crop,area,aweil,89,0,0.0,cropland
+esri_2025,false crop,area,bor_south,74,0,0.0,cropland
+esri_2025,false crop,stratum,A,122,0,0.0,cropland
+esri_2025,false crop,stratum,B,41,0,0.0,cropland
+esri_2025,false crop,cover,labellers differ,32,0,0.0,cropland
+esri_2025,false crop,cover,open,74,0,0.0,cropland
+esri_2025,false crop,cover,trees,56,0,0.0,cropland
+esri_2025,false crop,cover,water,1,0,0.0,cropland
+esri_2025,false crop,open_no_cues,False,113,0,0.0,cropland
+esri_2025,false crop,open_no_cues,True,50,0,0.0,cropland
+esri_2025,false crop,cue_d_shape,False,163,0,0.0,cropland
+esri_2025,false crop,fallow_any,False,163,0,0.0,cropland
+esri_2025,false crop,share_class,0,163,0,0.0,cropland
+esri_2025,false crop,homestead,< 250 m,15,0,0.0,cropland
+esri_2025,false crop,homestead,250-1000 m,36,0,0.0,cropland
+esri_2025,false crop,homestead,> 1 km,112,0,0.0,cropland
+esri_2025,missed crop,area,aweil,97,80,0.8247422680412371,cropland
+esri_2025,missed crop,stratum,A,8,8,1.0,cropland
+esri_2025,missed crop,stratum,B,37,34,0.918918918918919,cropland
+esri_2025,missed crop,stratum,C,52,38,0.7307692307692307,cropland
+esri_2025,missed crop,cover,open,97,80,0.8247422680412371,cropland
+esri_2025,missed crop,open_no_cues,False,96,79,0.8229166666666666,cropland
+esri_2025,missed crop,open_no_cues,True,1,1,1.0,cropland
+esri_2025,missed crop,cue_d_shape,False,29,25,0.8620689655172413,cropland
+esri_2025,missed crop,cue_d_shape,True,68,55,0.8088235294117647,cropland
+esri_2025,missed crop,fallow_any,False,93,78,0.8387096774193549,cropland
+esri_2025,missed crop,fallow_any,True,4,2,0.5,cropland
+esri_2025,missed crop,share_class,10-25,15,12,0.8,cropland
+esri_2025,missed crop,share_class,25-50,8,5,0.625,cropland
+esri_2025,missed crop,share_class,<10,3,3,1.0,cropland
+esri_2025,missed crop,share_class,>50,11,9,0.8181818181818182,cropland
+esri_2025,missed crop,share_class,differs,60,51,0.85,cropland
+esri_2025,missed crop,homestead,< 250 m,93,76,0.8172043010752689,cropland
+esri_2025,missed crop,homestead,250-1000 m,3,3,1.0,cropland
+esri_2025,missed crop,homestead,> 1 km,1,1,1.0,cropland
+dynamicworld_2025,false crop,area,aweil,89,4,0.0449438202247191,cropland
+dynamicworld_2025,false crop,area,bor_south,74,44,0.5945945945945946,cropland
+dynamicworld_2025,false crop,stratum,A,122,11,0.09016393442622951,cropland
+dynamicworld_2025,false crop,stratum,B,41,37,0.9024390243902439,cropland
+dynamicworld_2025,false crop,cover,labellers differ,32,4,0.125,cropland
+dynamicworld_2025,false crop,cover,open,74,44,0.5945945945945946,cropland
+dynamicworld_2025,false crop,cover,trees,56,0,0.0,cropland
+dynamicworld_2025,false crop,cover,water,1,0,0.0,cropland
+dynamicworld_2025,false crop,open_no_cues,False,113,15,0.13274336283185842,cropland
+dynamicworld_2025,false crop,open_no_cues,True,50,33,0.66,cropland
+dynamicworld_2025,false crop,cue_d_shape,False,163,48,0.294478527607362,cropland
+dynamicworld_2025,false crop,fallow_any,False,163,48,0.294478527607362,cropland
+dynamicworld_2025,false crop,share_class,0,163,48,0.294478527607362,cropland
+dynamicworld_2025,false crop,homestead,< 250 m,15,0,0.0,cropland
+dynamicworld_2025,false crop,homestead,250-1000 m,36,12,0.3333333333333333,cropland
+dynamicworld_2025,false crop,homestead,> 1 km,112,36,0.32142857142857145,cropland
+dynamicworld_2025,missed crop,area,aweil,97,88,0.9072164948453608,cropland
+dynamicworld_2025,missed crop,stratum,A,8,8,1.0,cropland
+dynamicworld_2025,missed crop,stratum,B,37,35,0.9459459459459459,cropland
+dynamicworld_2025,missed crop,stratum,C,52,45,0.8653846153846154,cropland
+dynamicworld_2025,missed crop,cover,open,97,88,0.9072164948453608,cropland
+dynamicworld_2025,missed crop,open_no_cues,False,96,87,0.90625,cropland
+dynamicworld_2025,missed crop,open_no_cues,True,1,1,1.0,cropland
+dynamicworld_2025,missed crop,cue_d_shape,False,29,28,0.9655172413793104,cropland
+dynamicworld_2025,missed crop,cue_d_shape,True,68,60,0.8823529411764706,cropland
+dynamicworld_2025,missed crop,fallow_any,False,93,85,0.9139784946236559,cropland
+dynamicworld_2025,missed crop,fallow_any,True,4,3,0.75,cropland
+dynamicworld_2025,missed crop,share_class,10-25,15,15,1.0,cropland
+dynamicworld_2025,missed crop,share_class,25-50,8,6,0.75,cropland
+dynamicworld_2025,missed crop,share_class,<10,3,3,1.0,cropland
+dynamicworld_2025,missed crop,share_class,>50,11,8,0.7272727272727273,cropland
+dynamicworld_2025,missed crop,share_class,differs,60,56,0.9333333333333333,cropland
+dynamicworld_2025,missed crop,homestead,< 250 m,93,84,0.9032258064516129,cropland
+dynamicworld_2025,missed crop,homestead,250-1000 m,3,3,1.0,cropland
+dynamicworld_2025,missed crop,homestead,> 1 km,1,1,1.0,cropland
+gfsad_2015,false crop,area,aweil,89,5,0.056179775280898875,cropland
+gfsad_2015,false crop,area,bor_south,74,1,0.013513513513513514,cropland
+gfsad_2015,false crop,stratum,A,122,3,0.02459016393442623,cropland
+gfsad_2015,false crop,stratum,B,41,3,0.07317073170731707,cropland
+gfsad_2015,false crop,cover,labellers differ,32,2,0.0625,cropland
+gfsad_2015,false crop,cover,open,74,3,0.04054054054054054,cropland
+gfsad_2015,false crop,cover,trees,56,1,0.017857142857142856,cropland
+gfsad_2015,false crop,cover,water,1,0,0.0,cropland
+gfsad_2015,false crop,open_no_cues,False,113,5,0.04424778761061947,cropland
+gfsad_2015,false crop,open_no_cues,True,50,1,0.02,cropland
+gfsad_2015,false crop,cue_d_shape,False,163,6,0.03680981595092025,cropland
+gfsad_2015,false crop,fallow_any,False,163,6,0.03680981595092025,cropland
+gfsad_2015,false crop,share_class,0,163,6,0.03680981595092025,cropland
+gfsad_2015,false crop,homestead,< 250 m,15,2,0.13333333333333333,cropland
+gfsad_2015,false crop,homestead,250-1000 m,36,3,0.08333333333333333,cropland
+gfsad_2015,false crop,homestead,> 1 km,112,1,0.008928571428571428,cropland
+gfsad_2015,missed crop,area,aweil,97,53,0.5463917525773195,cropland
+gfsad_2015,missed crop,stratum,A,8,8,1.0,cropland
+gfsad_2015,missed crop,stratum,B,37,18,0.4864864864864865,cropland
+gfsad_2015,missed crop,stratum,C,52,27,0.5192307692307693,cropland
+gfsad_2015,missed crop,cover,open,97,53,0.5463917525773195,cropland
+gfsad_2015,missed crop,open_no_cues,False,96,53,0.5520833333333334,cropland
+gfsad_2015,missed crop,open_no_cues,True,1,0,0.0,cropland
+gfsad_2015,missed crop,cue_d_shape,False,29,18,0.6206896551724138,cropland
+gfsad_2015,missed crop,cue_d_shape,True,68,35,0.5147058823529411,cropland
+gfsad_2015,missed crop,fallow_any,False,93,53,0.5698924731182796,cropland
+gfsad_2015,missed crop,fallow_any,True,4,0,0.0,cropland
+gfsad_2015,missed crop,share_class,10-25,15,7,0.4666666666666667,cropland
+gfsad_2015,missed crop,share_class,25-50,8,4,0.5,cropland
+gfsad_2015,missed crop,share_class,<10,3,3,1.0,cropland
+gfsad_2015,missed crop,share_class,>50,11,6,0.5454545454545454,cropland
+gfsad_2015,missed crop,share_class,differs,60,33,0.55,cropland
+gfsad_2015,missed crop,homestead,< 250 m,93,49,0.5268817204301075,cropland
+gfsad_2015,missed crop,homestead,250-1000 m,3,3,1.0,cropland
+gfsad_2015,missed crop,homestead,> 1 km,1,1,1.0,cropland
+asap_v04,false crop,area,aweil,89,0,0.0,cropland
+asap_v04,false crop,area,bor_south,74,0,0.0,cropland
+asap_v04,false crop,stratum,A,122,0,0.0,cropland
+asap_v04,false crop,stratum,B,41,0,0.0,cropland
+asap_v04,false crop,cover,labellers differ,32,0,0.0,cropland
+asap_v04,false crop,cover,open,74,0,0.0,cropland
+asap_v04,false crop,cover,trees,56,0,0.0,cropland
+asap_v04,false crop,cover,water,1,0,0.0,cropland
+asap_v04,false crop,open_no_cues,False,113,0,0.0,cropland
+asap_v04,false crop,open_no_cues,True,50,0,0.0,cropland
+asap_v04,false crop,cue_d_shape,False,163,0,0.0,cropland
+asap_v04,false crop,fallow_any,False,163,0,0.0,cropland
+asap_v04,false crop,share_class,0,163,0,0.0,cropland
+asap_v04,false crop,homestead,< 250 m,15,0,0.0,cropland
+asap_v04,false crop,homestead,250-1000 m,36,0,0.0,cropland
+asap_v04,false crop,homestead,> 1 km,112,0,0.0,cropland
+asap_v04,missed crop,area,aweil,97,31,0.31958762886597936,cropland
+asap_v04,missed crop,stratum,A,8,7,0.875,cropland
+asap_v04,missed crop,stratum,B,37,17,0.4594594594594595,cropland
+asap_v04,missed crop,stratum,C,52,7,0.1346153846153846,cropland
+asap_v04,missed crop,cover,open,97,31,0.31958762886597936,cropland
+asap_v04,missed crop,open_no_cues,False,96,31,0.3229166666666667,cropland
+asap_v04,missed crop,open_no_cues,True,1,0,0.0,cropland
+asap_v04,missed crop,cue_d_shape,False,29,6,0.20689655172413793,cropland
+asap_v04,missed crop,cue_d_shape,True,68,25,0.36764705882352944,cropland
+asap_v04,missed crop,fallow_any,False,93,28,0.3010752688172043,cropland
+asap_v04,missed crop,fallow_any,True,4,3,0.75,cropland
+asap_v04,missed crop,share_class,10-25,15,4,0.26666666666666666,cropland
+asap_v04,missed crop,share_class,25-50,8,2,0.25,cropland
+asap_v04,missed crop,share_class,<10,3,2,0.6666666666666666,cropland
+asap_v04,missed crop,share_class,>50,11,4,0.36363636363636365,cropland
+asap_v04,missed crop,share_class,differs,60,19,0.31666666666666665,cropland
+asap_v04,missed crop,homestead,< 250 m,93,27,0.2903225806451613,cropland
+asap_v04,missed crop,homestead,250-1000 m,3,3,1.0,cropland
+asap_v04,missed crop,homestead,> 1 km,1,1,1.0,cropland
+rule1,false crop,area,aweil,89,4,0.0449438202247191,cropland
+rule1,false crop,area,bor_south,74,1,0.013513513513513514,cropland
+rule1,false crop,stratum,A,122,5,0.040983606557377046,cropland
+rule1,false crop,stratum,B,41,0,0.0,cropland
+rule1,false crop,cover,labellers differ,32,1,0.03125,cropland
+rule1,false crop,cover,open,74,2,0.02702702702702703,cropland
+rule1,false crop,cover,trees,56,2,0.03571428571428571,cropland
+rule1,false crop,cover,water,1,0,0.0,cropland
+rule1,false crop,open_no_cues,False,113,4,0.035398230088495575,cropland
+rule1,false crop,open_no_cues,True,50,1,0.02,cropland
+rule1,false crop,cue_d_shape,False,163,5,0.03067484662576687,cropland
+rule1,false crop,fallow_any,False,163,5,0.03067484662576687,cropland
+rule1,false crop,share_class,0,163,5,0.03067484662576687,cropland
+rule1,false crop,homestead,< 250 m,15,5,0.3333333333333333,cropland
+rule1,false crop,homestead,250-1000 m,36,0,0.0,cropland
+rule1,false crop,homestead,> 1 km,112,0,0.0,cropland
+rule1,missed crop,area,aweil,97,4,0.041237113402061855,cropland
+rule1,missed crop,stratum,A,8,3,0.375,cropland
+rule1,missed crop,stratum,B,37,0,0.0,cropland
+rule1,missed crop,stratum,C,52,1,0.019230769230769232,cropland
+rule1,missed crop,cover,open,97,4,0.041237113402061855,cropland
+rule1,missed crop,open_no_cues,False,96,4,0.041666666666666664,cropland
+rule1,missed crop,open_no_cues,True,1,0,0.0,cropland
+rule1,missed crop,cue_d_shape,False,29,2,0.06896551724137931,cropland
+rule1,missed crop,cue_d_shape,True,68,2,0.029411764705882353,cropland
+rule1,missed crop,fallow_any,False,93,4,0.043010752688172046,cropland
+rule1,missed crop,fallow_any,True,4,0,0.0,cropland
+rule1,missed crop,share_class,10-25,15,1,0.06666666666666667,cropland
+rule1,missed crop,share_class,25-50,8,0,0.0,cropland
+rule1,missed crop,share_class,<10,3,0,0.0,cropland
+rule1,missed crop,share_class,>50,11,2,0.18181818181818182,cropland
+rule1,missed crop,share_class,differs,60,1,0.016666666666666666,cropland
+rule1,missed crop,homestead,< 250 m,93,1,0.010752688172043012,cropland
+rule1,missed crop,homestead,250-1000 m,3,2,0.6666666666666666,cropland
+rule1,missed crop,homestead,> 1 km,1,1,1.0,cropland
+rf_features,false crop,area,aweil,89,2,0.02247191011235955,cropland
+rf_features,false crop,area,bor_south,74,0,0.0,cropland
+rf_features,false crop,stratum,A,122,1,0.00819672131147541,cropland
+rf_features,false crop,stratum,B,41,1,0.024390243902439025,cropland
+rf_features,false crop,cover,labellers differ,32,0,0.0,cropland
+rf_features,false crop,cover,open,74,2,0.02702702702702703,cropland
+rf_features,false crop,cover,trees,56,0,0.0,cropland
+rf_features,false crop,cover,water,1,0,0.0,cropland
+rf_features,false crop,open_no_cues,False,113,1,0.008849557522123894,cropland
+rf_features,false crop,open_no_cues,True,50,1,0.02,cropland
+rf_features,false crop,cue_d_shape,False,163,2,0.012269938650306749,cropland
+rf_features,false crop,fallow_any,False,163,2,0.012269938650306749,cropland
+rf_features,false crop,share_class,0,163,2,0.012269938650306749,cropland
+rf_features,false crop,homestead,< 250 m,15,1,0.06666666666666667,cropland
+rf_features,false crop,homestead,250-1000 m,36,0,0.0,cropland
+rf_features,false crop,homestead,> 1 km,112,1,0.008928571428571428,cropland
+rf_features,missed crop,area,aweil,97,5,0.05154639175257732,cropland
+rf_features,missed crop,stratum,A,8,4,0.5,cropland
+rf_features,missed crop,stratum,B,37,0,0.0,cropland
+rf_features,missed crop,stratum,C,52,1,0.019230769230769232,cropland
+rf_features,missed crop,cover,open,97,5,0.05154639175257732,cropland
+rf_features,missed crop,open_no_cues,False,96,5,0.052083333333333336,cropland
+rf_features,missed crop,open_no_cues,True,1,0,0.0,cropland
+rf_features,missed crop,cue_d_shape,False,29,3,0.10344827586206896,cropland
+rf_features,missed crop,cue_d_shape,True,68,2,0.029411764705882353,cropland
+rf_features,missed crop,fallow_any,False,93,5,0.053763440860215055,cropland
+rf_features,missed crop,fallow_any,True,4,0,0.0,cropland
+rf_features,missed crop,share_class,10-25,15,1,0.06666666666666667,cropland
+rf_features,missed crop,share_class,25-50,8,0,0.0,cropland
+rf_features,missed crop,share_class,<10,3,0,0.0,cropland
+rf_features,missed crop,share_class,>50,11,2,0.18181818181818182,cropland
+rf_features,missed crop,share_class,differs,60,2,0.03333333333333333,cropland
+rf_features,missed crop,homestead,< 250 m,93,1,0.010752688172043012,cropland
+rf_features,missed crop,homestead,250-1000 m,3,3,1.0,cropland
+rf_features,missed crop,homestead,> 1 km,1,1,1.0,cropland
+rf_embedding,false crop,area,aweil,89,6,0.06741573033707865,cropland
+rf_embedding,false crop,area,bor_south,74,0,0.0,cropland
+rf_embedding,false crop,stratum,A,122,2,0.01639344262295082,cropland
+rf_embedding,false crop,stratum,B,41,4,0.0975609756097561,cropland
+rf_embedding,false crop,cover,labellers differ,32,0,0.0,cropland
+rf_embedding,false crop,cover,open,74,6,0.08108108108108109,cropland
+rf_embedding,false crop,cover,trees,56,0,0.0,cropland
+rf_embedding,false crop,cover,water,1,0,0.0,cropland
+rf_embedding,false crop,open_no_cues,False,113,2,0.017699115044247787,cropland
+rf_embedding,false crop,open_no_cues,True,50,4,0.08,cropland
+rf_embedding,false crop,cue_d_shape,False,163,6,0.03680981595092025,cropland
+rf_embedding,false crop,fallow_any,False,163,6,0.03680981595092025,cropland
+rf_embedding,false crop,share_class,0,163,6,0.03680981595092025,cropland
+rf_embedding,false crop,homestead,< 250 m,15,2,0.13333333333333333,cropland
+rf_embedding,false crop,homestead,250-1000 m,36,3,0.08333333333333333,cropland
+rf_embedding,false crop,homestead,> 1 km,112,1,0.008928571428571428,cropland
+rf_embedding,missed crop,area,aweil,97,5,0.05154639175257732,cropland
+rf_embedding,missed crop,stratum,A,8,4,0.5,cropland
+rf_embedding,missed crop,stratum,B,37,1,0.02702702702702703,cropland
+rf_embedding,missed crop,stratum,C,52,0,0.0,cropland
+rf_embedding,missed crop,cover,open,97,5,0.05154639175257732,cropland
+rf_embedding,missed crop,open_no_cues,False,96,5,0.052083333333333336,cropland
+rf_embedding,missed crop,open_no_cues,True,1,0,0.0,cropland
+rf_embedding,missed crop,cue_d_shape,False,29,3,0.10344827586206896,cropland
+rf_embedding,missed crop,cue_d_shape,True,68,2,0.029411764705882353,cropland
+rf_embedding,missed crop,fallow_any,False,93,5,0.053763440860215055,cropland
+rf_embedding,missed crop,fallow_any,True,4,0,0.0,cropland
+rf_embedding,missed crop,share_class,10-25,15,1,0.06666666666666667,cropland
+rf_embedding,missed crop,share_class,25-50,8,0,0.0,cropland
+rf_embedding,missed crop,share_class,<10,3,1,0.3333333333333333,cropland
+rf_embedding,missed crop,share_class,>50,11,1,0.09090909090909091,cropland
+rf_embedding,missed crop,share_class,differs,60,2,0.03333333333333333,cropland
+rf_embedding,missed crop,homestead,< 250 m,93,2,0.021505376344086023,cropland
+rf_embedding,missed crop,homestead,250-1000 m,3,2,0.6666666666666666,cropland
+rf_embedding,missed crop,homestead,> 1 km,1,1,1.0,cropland
+logistic_l2,false crop,area,aweil,89,13,0.14606741573033707,cropland
+logistic_l2,false crop,area,bor_south,74,1,0.013513513513513514,cropland
+logistic_l2,false crop,stratum,A,122,9,0.07377049180327869,cropland
+logistic_l2,false crop,stratum,B,41,5,0.12195121951219512,cropland
+logistic_l2,false crop,cover,labellers differ,32,1,0.03125,cropland
+logistic_l2,false crop,cover,open,74,11,0.14864864864864866,cropland
+logistic_l2,false crop,cover,trees,56,1,0.017857142857142856,cropland
+logistic_l2,false crop,cover,water,1,1,1.0,cropland
+logistic_l2,false crop,open_no_cues,False,113,8,0.07079646017699115,cropland
+logistic_l2,false crop,open_no_cues,True,50,6,0.12,cropland
+logistic_l2,false crop,cue_d_shape,False,163,14,0.08588957055214724,cropland
+logistic_l2,false crop,fallow_any,False,163,14,0.08588957055214724,cropland
+logistic_l2,false crop,share_class,0,163,14,0.08588957055214724,cropland
+logistic_l2,false crop,homestead,< 250 m,15,4,0.26666666666666666,cropland
+logistic_l2,false crop,homestead,250-1000 m,36,6,0.16666666666666666,cropland
+logistic_l2,false crop,homestead,> 1 km,112,4,0.03571428571428571,cropland
+logistic_l2,missed crop,area,aweil,97,3,0.030927835051546393,cropland
+logistic_l2,missed crop,stratum,A,8,2,0.25,cropland
+logistic_l2,missed crop,stratum,B,37,0,0.0,cropland
+logistic_l2,missed crop,stratum,C,52,1,0.019230769230769232,cropland
+logistic_l2,missed crop,cover,open,97,3,0.030927835051546393,cropland
+logistic_l2,missed crop,open_no_cues,False,96,3,0.03125,cropland
+logistic_l2,missed crop,open_no_cues,True,1,0,0.0,cropland
+logistic_l2,missed crop,cue_d_shape,False,29,2,0.06896551724137931,cropland
+logistic_l2,missed crop,cue_d_shape,True,68,1,0.014705882352941176,cropland
+logistic_l2,missed crop,fallow_any,False,93,3,0.03225806451612903,cropland
+logistic_l2,missed crop,fallow_any,True,4,0,0.0,cropland
+logistic_l2,missed crop,share_class,10-25,15,1,0.06666666666666667,cropland
+logistic_l2,missed crop,share_class,25-50,8,0,0.0,cropland
+logistic_l2,missed crop,share_class,<10,3,0,0.0,cropland
+logistic_l2,missed crop,share_class,>50,11,1,0.09090909090909091,cropland
+logistic_l2,missed crop,share_class,differs,60,1,0.016666666666666666,cropland
+logistic_l2,missed crop,homestead,< 250 m,93,1,0.010752688172043012,cropland
+logistic_l2,missed crop,homestead,250-1000 m,3,1,0.3333333333333333,cropland
+logistic_l2,missed crop,homestead,> 1 km,1,1,1.0,cropland
+logistic_rule1_inputs,false crop,area,aweil,89,12,0.1348314606741573,cropland
+logistic_rule1_inputs,false crop,area,bor_south,74,1,0.013513513513513514,cropland
+logistic_rule1_inputs,false crop,stratum,A,122,12,0.09836065573770492,cropland
+logistic_rule1_inputs,false crop,stratum,B,41,1,0.024390243902439025,cropland
+logistic_rule1_inputs,false crop,cover,labellers differ,32,3,0.09375,cropland
+logistic_rule1_inputs,false crop,cover,open,74,5,0.06756756756756757,cropland
+logistic_rule1_inputs,false crop,cover,trees,56,5,0.08928571428571429,cropland
+logistic_rule1_inputs,false crop,cover,water,1,0,0.0,cropland
+logistic_rule1_inputs,false crop,open_no_cues,False,113,11,0.09734513274336283,cropland
+logistic_rule1_inputs,false crop,open_no_cues,True,50,2,0.04,cropland
+logistic_rule1_inputs,false crop,cue_d_shape,False,163,13,0.07975460122699386,cropland
+logistic_rule1_inputs,false crop,fallow_any,False,163,13,0.07975460122699386,cropland
+logistic_rule1_inputs,false crop,share_class,0,163,13,0.07975460122699386,cropland
+logistic_rule1_inputs,false crop,homestead,< 250 m,15,10,0.6666666666666666,cropland
+logistic_rule1_inputs,false crop,homestead,250-1000 m,36,3,0.08333333333333333,cropland
+logistic_rule1_inputs,false crop,homestead,> 1 km,112,0,0.0,cropland
+logistic_rule1_inputs,missed crop,area,aweil,97,2,0.020618556701030927,cropland
+logistic_rule1_inputs,missed crop,stratum,A,8,2,0.25,cropland
+logistic_rule1_inputs,missed crop,stratum,B,37,0,0.0,cropland
+logistic_rule1_inputs,missed crop,stratum,C,52,0,0.0,cropland
+logistic_rule1_inputs,missed crop,cover,open,97,2,0.020618556701030927,cropland
+logistic_rule1_inputs,missed crop,open_no_cues,False,96,2,0.020833333333333332,cropland
+logistic_rule1_inputs,missed crop,open_no_cues,True,1,0,0.0,cropland
+logistic_rule1_inputs,missed crop,cue_d_shape,False,29,1,0.034482758620689655,cropland
+logistic_rule1_inputs,missed crop,cue_d_shape,True,68,1,0.014705882352941176,cropland
+logistic_rule1_inputs,missed crop,fallow_any,False,93,2,0.021505376344086023,cropland
+logistic_rule1_inputs,missed crop,fallow_any,True,4,0,0.0,cropland
+logistic_rule1_inputs,missed crop,share_class,10-25,15,1,0.06666666666666667,cropland
+logistic_rule1_inputs,missed crop,share_class,25-50,8,0,0.0,cropland
+logistic_rule1_inputs,missed crop,share_class,<10,3,0,0.0,cropland
+logistic_rule1_inputs,missed crop,share_class,>50,11,1,0.09090909090909091,cropland
+logistic_rule1_inputs,missed crop,share_class,differs,60,0,0.0,cropland
+logistic_rule1_inputs,missed crop,homestead,< 250 m,93,0,0.0,cropland
+logistic_rule1_inputs,missed crop,homestead,250-1000 m,3,1,0.3333333333333333,cropland
+logistic_rule1_inputs,missed crop,homestead,> 1 km,1,1,1.0,cropland
+worldcover_2021,false crop,area,aweil,89,0,0.0,crop
+worldcover_2021,false crop,area,bor_south,74,0,0.0,crop
+worldcover_2021,false crop,stratum,A,122,0,0.0,crop
+worldcover_2021,false crop,stratum,B,41,0,0.0,crop
+worldcover_2021,false crop,cover,labellers differ,32,0,0.0,crop
+worldcover_2021,false crop,cover,open,74,0,0.0,crop
+worldcover_2021,false crop,cover,trees,56,0,0.0,crop
+worldcover_2021,false crop,cover,water,1,0,0.0,crop
+worldcover_2021,false crop,open_no_cues,False,113,0,0.0,crop
+worldcover_2021,false crop,open_no_cues,True,50,0,0.0,crop
+worldcover_2021,false crop,cue_d_shape,False,163,0,0.0,crop
+worldcover_2021,false crop,fallow_any,False,163,0,0.0,crop
+worldcover_2021,false crop,share_class,0,163,0,0.0,crop
+worldcover_2021,false crop,homestead,< 250 m,15,0,0.0,crop
+worldcover_2021,false crop,homestead,250-1000 m,36,0,0.0,crop
+worldcover_2021,false crop,homestead,> 1 km,112,0,0.0,crop
+worldcover_2021,missed crop,area,aweil,93,35,0.3763440860215054,crop
+worldcover_2021,missed crop,stratum,A,8,7,0.875,crop
+worldcover_2021,missed crop,stratum,B,36,23,0.6388888888888888,crop
+worldcover_2021,missed crop,stratum,C,49,5,0.10204081632653061,crop
+worldcover_2021,missed crop,cover,open,93,35,0.3763440860215054,crop
+worldcover_2021,missed crop,open_no_cues,False,92,35,0.3804347826086957,crop
+worldcover_2021,missed crop,open_no_cues,True,1,0,0.0,crop
+worldcover_2021,missed crop,cue_d_shape,False,28,7,0.25,crop
+worldcover_2021,missed crop,cue_d_shape,True,65,28,0.4307692307692308,crop
+worldcover_2021,missed crop,fallow_any,False,93,35,0.3763440860215054,crop
+worldcover_2021,missed crop,share_class,10-25,13,2,0.15384615384615385,crop
+worldcover_2021,missed crop,share_class,25-50,7,3,0.42857142857142855,crop
+worldcover_2021,missed crop,share_class,<10,3,1,0.3333333333333333,crop
+worldcover_2021,missed crop,share_class,>50,11,4,0.36363636363636365,crop
+worldcover_2021,missed crop,share_class,differs,59,25,0.423728813559322,crop
+worldcover_2021,missed crop,homestead,< 250 m,89,31,0.34831460674157305,crop
+worldcover_2021,missed crop,homestead,250-1000 m,3,3,1.0,crop
+worldcover_2021,missed crop,homestead,> 1 km,1,1,1.0,crop
+glad_2019,false crop,area,aweil,89,0,0.0,crop
+glad_2019,false crop,area,bor_south,74,0,0.0,crop
+glad_2019,false crop,stratum,A,122,0,0.0,crop
+glad_2019,false crop,stratum,B,41,0,0.0,crop
+glad_2019,false crop,cover,labellers differ,32,0,0.0,crop
+glad_2019,false crop,cover,open,74,0,0.0,crop
+glad_2019,false crop,cover,trees,56,0,0.0,crop
+glad_2019,false crop,cover,water,1,0,0.0,crop
+glad_2019,false crop,open_no_cues,False,113,0,0.0,crop
+glad_2019,false crop,open_no_cues,True,50,0,0.0,crop
+glad_2019,false crop,cue_d_shape,False,163,0,0.0,crop
+glad_2019,false crop,fallow_any,False,163,0,0.0,crop
+glad_2019,false crop,share_class,0,163,0,0.0,crop
+glad_2019,false crop,homestead,< 250 m,15,0,0.0,crop
+glad_2019,false crop,homestead,250-1000 m,36,0,0.0,crop
+glad_2019,false crop,homestead,> 1 km,112,0,0.0,crop
+glad_2019,missed crop,area,aweil,93,31,0.3333333333333333,crop
+glad_2019,missed crop,stratum,A,8,7,0.875,crop
+glad_2019,missed crop,stratum,B,36,19,0.5277777777777778,crop
+glad_2019,missed crop,stratum,C,49,5,0.10204081632653061,crop
+glad_2019,missed crop,cover,open,93,31,0.3333333333333333,crop
+glad_2019,missed crop,open_no_cues,False,92,31,0.33695652173913043,crop
+glad_2019,missed crop,open_no_cues,True,1,0,0.0,crop
+glad_2019,missed crop,cue_d_shape,False,28,8,0.2857142857142857,crop
+glad_2019,missed crop,cue_d_shape,True,65,23,0.35384615384615387,crop
+glad_2019,missed crop,fallow_any,False,93,31,0.3333333333333333,crop
+glad_2019,missed crop,share_class,10-25,13,4,0.3076923076923077,crop
+glad_2019,missed crop,share_class,25-50,7,1,0.14285714285714285,crop
+glad_2019,missed crop,share_class,<10,3,2,0.6666666666666666,crop
+glad_2019,missed crop,share_class,>50,11,5,0.45454545454545453,crop
+glad_2019,missed crop,share_class,differs,59,19,0.3220338983050847,crop
+glad_2019,missed crop,homestead,< 250 m,89,27,0.30337078651685395,crop
+glad_2019,missed crop,homestead,250-1000 m,3,3,1.0,crop
+glad_2019,missed crop,homestead,> 1 km,1,1,1.0,crop
+deafrica_2019,false crop,area,aweil,89,14,0.15730337078651685,crop
+deafrica_2019,false crop,area,bor_south,74,0,0.0,crop
+deafrica_2019,false crop,stratum,A,122,12,0.09836065573770492,crop
+deafrica_2019,false crop,stratum,B,41,2,0.04878048780487805,crop
+deafrica_2019,false crop,cover,labellers differ,32,4,0.125,crop
+deafrica_2019,false crop,cover,open,74,2,0.02702702702702703,crop
+deafrica_2019,false crop,cover,trees,56,8,0.14285714285714285,crop
+deafrica_2019,false crop,cover,water,1,0,0.0,crop
+deafrica_2019,false crop,open_no_cues,False,113,13,0.11504424778761062,crop
+deafrica_2019,false crop,open_no_cues,True,50,1,0.02,crop
+deafrica_2019,false crop,cue_d_shape,False,163,14,0.08588957055214724,crop
+deafrica_2019,false crop,fallow_any,False,163,14,0.08588957055214724,crop
+deafrica_2019,false crop,share_class,0,163,14,0.08588957055214724,crop
+deafrica_2019,false crop,homestead,< 250 m,15,3,0.2,crop
+deafrica_2019,false crop,homestead,250-1000 m,36,1,0.027777777777777776,crop
+deafrica_2019,false crop,homestead,> 1 km,112,10,0.08928571428571429,crop
+deafrica_2019,missed crop,area,aweil,93,7,0.07526881720430108,crop
+deafrica_2019,missed crop,stratum,A,8,4,0.5,crop
+deafrica_2019,missed crop,stratum,B,36,1,0.027777777777777776,crop
+deafrica_2019,missed crop,stratum,C,49,2,0.04081632653061224,crop
+deafrica_2019,missed crop,cover,open,93,7,0.07526881720430108,crop
+deafrica_2019,missed crop,open_no_cues,False,92,7,0.07608695652173914,crop
+deafrica_2019,missed crop,open_no_cues,True,1,0,0.0,crop
+deafrica_2019,missed crop,cue_d_shape,False,28,2,0.07142857142857142,crop
+deafrica_2019,missed crop,cue_d_shape,True,65,5,0.07692307692307693,crop
+deafrica_2019,missed crop,fallow_any,False,93,7,0.07526881720430108,crop
+deafrica_2019,missed crop,share_class,10-25,13,2,0.15384615384615385,crop
+deafrica_2019,missed crop,share_class,25-50,7,0,0.0,crop
+deafrica_2019,missed crop,share_class,<10,3,0,0.0,crop
+deafrica_2019,missed crop,share_class,>50,11,1,0.09090909090909091,crop
+deafrica_2019,missed crop,share_class,differs,59,4,0.06779661016949153,crop
+deafrica_2019,missed crop,homestead,< 250 m,89,5,0.056179775280898875,crop
+deafrica_2019,missed crop,homestead,250-1000 m,3,1,0.3333333333333333,crop
+deafrica_2019,missed crop,homestead,> 1 km,1,1,1.0,crop
+worldcereal_2021,false crop,area,aweil,89,1,0.011235955056179775,crop
+worldcereal_2021,false crop,area,bor_south,74,0,0.0,crop
+worldcereal_2021,false crop,stratum,A,122,1,0.00819672131147541,crop
+worldcereal_2021,false crop,stratum,B,41,0,0.0,crop
+worldcereal_2021,false crop,cover,labellers differ,32,0,0.0,crop
+worldcereal_2021,false crop,cover,open,74,1,0.013513513513513514,crop
+worldcereal_2021,false crop,cover,trees,56,0,0.0,crop
+worldcereal_2021,false crop,cover,water,1,0,0.0,crop
+worldcereal_2021,false crop,open_no_cues,False,113,1,0.008849557522123894,crop
+worldcereal_2021,false crop,open_no_cues,True,50,0,0.0,crop
+worldcereal_2021,false crop,cue_d_shape,False,163,1,0.006134969325153374,crop
+worldcereal_2021,false crop,fallow_any,False,163,1,0.006134969325153374,crop
+worldcereal_2021,false crop,share_class,0,163,1,0.006134969325153374,crop
+worldcereal_2021,false crop,homestead,< 250 m,15,1,0.06666666666666667,crop
+worldcereal_2021,false crop,homestead,250-1000 m,36,0,0.0,crop
+worldcereal_2021,false crop,homestead,> 1 km,112,0,0.0,crop
+worldcereal_2021,missed crop,area,aweil,93,19,0.20430107526881722,crop
+worldcereal_2021,missed crop,stratum,A,8,6,0.75,crop
+worldcereal_2021,missed crop,stratum,B,36,11,0.3055555555555556,crop
+worldcereal_2021,missed crop,stratum,C,49,2,0.04081632653061224,crop
+worldcereal_2021,missed crop,cover,open,93,19,0.20430107526881722,crop
+worldcereal_2021,missed crop,open_no_cues,False,92,19,0.20652173913043478,crop
+worldcereal_2021,missed crop,open_no_cues,True,1,0,0.0,crop
+worldcereal_2021,missed crop,cue_d_shape,False,28,6,0.21428571428571427,crop
+worldcereal_2021,missed crop,cue_d_shape,True,65,13,0.2,crop
+worldcereal_2021,missed crop,fallow_any,False,93,19,0.20430107526881722,crop
+worldcereal_2021,missed crop,share_class,10-25,13,1,0.07692307692307693,crop
+worldcereal_2021,missed crop,share_class,25-50,7,1,0.14285714285714285,crop
+worldcereal_2021,missed crop,share_class,<10,3,2,0.6666666666666666,crop
+worldcereal_2021,missed crop,share_class,>50,11,3,0.2727272727272727,crop
+worldcereal_2021,missed crop,share_class,differs,59,12,0.2033898305084746,crop
+worldcereal_2021,missed crop,homestead,< 250 m,89,15,0.16853932584269662,crop
+worldcereal_2021,missed crop,homestead,250-1000 m,3,3,1.0,crop
+worldcereal_2021,missed crop,homestead,> 1 km,1,1,1.0,crop
+esri_2025,false crop,area,aweil,89,0,0.0,crop
+esri_2025,false crop,area,bor_south,74,0,0.0,crop
+esri_2025,false crop,stratum,A,122,0,0.0,crop
+esri_2025,false crop,stratum,B,41,0,0.0,crop
+esri_2025,false crop,cover,labellers differ,32,0,0.0,crop
+esri_2025,false crop,cover,open,74,0,0.0,crop
+esri_2025,false crop,cover,trees,56,0,0.0,crop
+esri_2025,false crop,cover,water,1,0,0.0,crop
+esri_2025,false crop,open_no_cues,False,113,0,0.0,crop
+esri_2025,false crop,open_no_cues,True,50,0,0.0,crop
+esri_2025,false crop,cue_d_shape,False,163,0,0.0,crop
+esri_2025,false crop,fallow_any,False,163,0,0.0,crop
+esri_2025,false crop,share_class,0,163,0,0.0,crop
+esri_2025,false crop,homestead,< 250 m,15,0,0.0,crop
+esri_2025,false crop,homestead,250-1000 m,36,0,0.0,crop
+esri_2025,false crop,homestead,> 1 km,112,0,0.0,crop
+esri_2025,missed crop,area,aweil,93,78,0.8387096774193549,crop
+esri_2025,missed crop,stratum,A,8,8,1.0,crop
+esri_2025,missed crop,stratum,B,36,33,0.9166666666666666,crop
+esri_2025,missed crop,stratum,C,49,37,0.7551020408163265,crop
+esri_2025,missed crop,cover,open,93,78,0.8387096774193549,crop
+esri_2025,missed crop,open_no_cues,False,92,77,0.8369565217391305,crop
+esri_2025,missed crop,open_no_cues,True,1,1,1.0,crop
+esri_2025,missed crop,cue_d_shape,False,28,25,0.8928571428571429,crop
+esri_2025,missed crop,cue_d_shape,True,65,53,0.8153846153846154,crop
+esri_2025,missed crop,fallow_any,False,93,78,0.8387096774193549,crop
+esri_2025,missed crop,share_class,10-25,13,11,0.8461538461538461,crop
+esri_2025,missed crop,share_class,25-50,7,5,0.7142857142857143,crop
+esri_2025,missed crop,share_class,<10,3,3,1.0,crop
+esri_2025,missed crop,share_class,>50,11,9,0.8181818181818182,crop
+esri_2025,missed crop,share_class,differs,59,50,0.847457627118644,crop
+esri_2025,missed crop,homestead,< 250 m,89,74,0.8314606741573034,crop
+esri_2025,missed crop,homestead,250-1000 m,3,3,1.0,crop
+esri_2025,missed crop,homestead,> 1 km,1,1,1.0,crop
+dynamicworld_2025,false crop,area,aweil,89,4,0.0449438202247191,crop
+dynamicworld_2025,false crop,area,bor_south,74,44,0.5945945945945946,crop
+dynamicworld_2025,false crop,stratum,A,122,11,0.09016393442622951,crop
+dynamicworld_2025,false crop,stratum,B,41,37,0.9024390243902439,crop
+dynamicworld_2025,false crop,cover,labellers differ,32,4,0.125,crop
+dynamicworld_2025,false crop,cover,open,74,44,0.5945945945945946,crop
+dynamicworld_2025,false crop,cover,trees,56,0,0.0,crop
+dynamicworld_2025,false crop,cover,water,1,0,0.0,crop
+dynamicworld_2025,false crop,open_no_cues,False,113,15,0.13274336283185842,crop
+dynamicworld_2025,false crop,open_no_cues,True,50,33,0.66,crop
+dynamicworld_2025,false crop,cue_d_shape,False,163,48,0.294478527607362,crop
+dynamicworld_2025,false crop,fallow_any,False,163,48,0.294478527607362,crop
+dynamicworld_2025,false crop,share_class,0,163,48,0.294478527607362,crop
+dynamicworld_2025,false crop,homestead,< 250 m,15,0,0.0,crop
+dynamicworld_2025,false crop,homestead,250-1000 m,36,12,0.3333333333333333,crop
+dynamicworld_2025,false crop,homestead,> 1 km,112,36,0.32142857142857145,crop
+dynamicworld_2025,missed crop,area,aweil,93,85,0.9139784946236559,crop
+dynamicworld_2025,missed crop,stratum,A,8,8,1.0,crop
+dynamicworld_2025,missed crop,stratum,B,36,34,0.9444444444444444,crop
+dynamicworld_2025,missed crop,stratum,C,49,43,0.8775510204081632,crop
+dynamicworld_2025,missed crop,cover,open,93,85,0.9139784946236559,crop
+dynamicworld_2025,missed crop,open_no_cues,False,92,84,0.9130434782608695,crop
+dynamicworld_2025,missed crop,open_no_cues,True,1,1,1.0,crop
+dynamicworld_2025,missed crop,cue_d_shape,False,28,27,0.9642857142857143,crop
+dynamicworld_2025,missed crop,cue_d_shape,True,65,58,0.8923076923076924,crop
+dynamicworld_2025,missed crop,fallow_any,False,93,85,0.9139784946236559,crop
+dynamicworld_2025,missed crop,share_class,10-25,13,13,1.0,crop
+dynamicworld_2025,missed crop,share_class,25-50,7,6,0.8571428571428571,crop
+dynamicworld_2025,missed crop,share_class,<10,3,3,1.0,crop
+dynamicworld_2025,missed crop,share_class,>50,11,8,0.7272727272727273,crop
+dynamicworld_2025,missed crop,share_class,differs,59,55,0.9322033898305084,crop
+dynamicworld_2025,missed crop,homestead,< 250 m,89,81,0.9101123595505618,crop
+dynamicworld_2025,missed crop,homestead,250-1000 m,3,3,1.0,crop
+dynamicworld_2025,missed crop,homestead,> 1 km,1,1,1.0,crop
+gfsad_2015,false crop,area,aweil,89,5,0.056179775280898875,crop
+gfsad_2015,false crop,area,bor_south,74,1,0.013513513513513514,crop
+gfsad_2015,false crop,stratum,A,122,3,0.02459016393442623,crop
+gfsad_2015,false crop,stratum,B,41,3,0.07317073170731707,crop
+gfsad_2015,false crop,cover,labellers differ,32,2,0.0625,crop
+gfsad_2015,false crop,cover,open,74,3,0.04054054054054054,crop
+gfsad_2015,false crop,cover,trees,56,1,0.017857142857142856,crop
+gfsad_2015,false crop,cover,water,1,0,0.0,crop
+gfsad_2015,false crop,open_no_cues,False,113,5,0.04424778761061947,crop
+gfsad_2015,false crop,open_no_cues,True,50,1,0.02,crop
+gfsad_2015,false crop,cue_d_shape,False,163,6,0.03680981595092025,crop
+gfsad_2015,false crop,fallow_any,False,163,6,0.03680981595092025,crop
+gfsad_2015,false crop,share_class,0,163,6,0.03680981595092025,crop
+gfsad_2015,false crop,homestead,< 250 m,15,2,0.13333333333333333,crop
+gfsad_2015,false crop,homestead,250-1000 m,36,3,0.08333333333333333,crop
+gfsad_2015,false crop,homestead,> 1 km,112,1,0.008928571428571428,crop
+gfsad_2015,missed crop,area,aweil,93,53,0.5698924731182796,crop
+gfsad_2015,missed crop,stratum,A,8,8,1.0,crop
+gfsad_2015,missed crop,stratum,B,36,18,0.5,crop
+gfsad_2015,missed crop,stratum,C,49,27,0.5510204081632653,crop
+gfsad_2015,missed crop,cover,open,93,53,0.5698924731182796,crop
+gfsad_2015,missed crop,open_no_cues,False,92,53,0.5760869565217391,crop
+gfsad_2015,missed crop,open_no_cues,True,1,0,0.0,crop
+gfsad_2015,missed crop,cue_d_shape,False,28,18,0.6428571428571429,crop
+gfsad_2015,missed crop,cue_d_shape,True,65,35,0.5384615384615384,crop
+gfsad_2015,missed crop,fallow_any,False,93,53,0.5698924731182796,crop
+gfsad_2015,missed crop,share_class,10-25,13,7,0.5384615384615384,crop
+gfsad_2015,missed crop,share_class,25-50,7,4,0.5714285714285714,crop
+gfsad_2015,missed crop,share_class,<10,3,3,1.0,crop
+gfsad_2015,missed crop,share_class,>50,11,6,0.5454545454545454,crop
+gfsad_2015,missed crop,share_class,differs,59,33,0.559322033898305,crop
+gfsad_2015,missed crop,homestead,< 250 m,89,49,0.550561797752809,crop
+gfsad_2015,missed crop,homestead,250-1000 m,3,3,1.0,crop
+gfsad_2015,missed crop,homestead,> 1 km,1,1,1.0,crop
+asap_v04,false crop,area,aweil,89,0,0.0,crop
+asap_v04,false crop,area,bor_south,74,0,0.0,crop
+asap_v04,false crop,stratum,A,122,0,0.0,crop
+asap_v04,false crop,stratum,B,41,0,0.0,crop
+asap_v04,false crop,cover,labellers differ,32,0,0.0,crop
+asap_v04,false crop,cover,open,74,0,0.0,crop
+asap_v04,false crop,cover,trees,56,0,0.0,crop
+asap_v04,false crop,cover,water,1,0,0.0,crop
+asap_v04,false crop,open_no_cues,False,113,0,0.0,crop
+asap_v04,false crop,open_no_cues,True,50,0,0.0,crop
+asap_v04,false crop,cue_d_shape,False,163,0,0.0,crop
+asap_v04,false crop,fallow_any,False,163,0,0.0,crop
+asap_v04,false crop,share_class,0,163,0,0.0,crop
+asap_v04,false crop,homestead,< 250 m,15,0,0.0,crop
+asap_v04,false crop,homestead,250-1000 m,36,0,0.0,crop
+asap_v04,false crop,homestead,> 1 km,112,0,0.0,crop
+asap_v04,missed crop,area,aweil,93,28,0.3010752688172043,crop
+asap_v04,missed crop,stratum,A,8,7,0.875,crop
+asap_v04,missed crop,stratum,B,36,16,0.4444444444444444,crop
+asap_v04,missed crop,stratum,C,49,5,0.10204081632653061,crop
+asap_v04,missed crop,cover,open,93,28,0.3010752688172043,crop
+asap_v04,missed crop,open_no_cues,False,92,28,0.30434782608695654,crop
+asap_v04,missed crop,open_no_cues,True,1,0,0.0,crop
+asap_v04,missed crop,cue_d_shape,False,28,6,0.21428571428571427,crop
+asap_v04,missed crop,cue_d_shape,True,65,22,0.3384615384615385,crop
+asap_v04,missed crop,fallow_any,False,93,28,0.3010752688172043,crop
+asap_v04,missed crop,share_class,10-25,13,3,0.23076923076923078,crop
+asap_v04,missed crop,share_class,25-50,7,1,0.14285714285714285,crop
+asap_v04,missed crop,share_class,<10,3,2,0.6666666666666666,crop
+asap_v04,missed crop,share_class,>50,11,4,0.36363636363636365,crop
+asap_v04,missed crop,share_class,differs,59,18,0.3050847457627119,crop
+asap_v04,missed crop,homestead,< 250 m,89,24,0.2696629213483146,crop
+asap_v04,missed crop,homestead,250-1000 m,3,3,1.0,crop
+asap_v04,missed crop,homestead,> 1 km,1,1,1.0,crop
+rule1,false crop,area,aweil,89,4,0.0449438202247191,crop
+rule1,false crop,area,bor_south,74,1,0.013513513513513514,crop
+rule1,false crop,stratum,A,122,5,0.040983606557377046,crop
+rule1,false crop,stratum,B,41,0,0.0,crop
+rule1,false crop,cover,labellers differ,32,1,0.03125,crop
+rule1,false crop,cover,open,74,2,0.02702702702702703,crop
+rule1,false crop,cover,trees,56,2,0.03571428571428571,crop
+rule1,false crop,cover,water,1,0,0.0,crop
+rule1,false crop,open_no_cues,False,113,4,0.035398230088495575,crop
+rule1,false crop,open_no_cues,True,50,1,0.02,crop
+rule1,false crop,cue_d_shape,False,163,5,0.03067484662576687,crop
+rule1,false crop,fallow_any,False,163,5,0.03067484662576687,crop
+rule1,false crop,share_class,0,163,5,0.03067484662576687,crop
+rule1,false crop,homestead,< 250 m,15,5,0.3333333333333333,crop
+rule1,false crop,homestead,250-1000 m,36,0,0.0,crop
+rule1,false crop,homestead,> 1 km,112,0,0.0,crop
+rule1,missed crop,area,aweil,93,4,0.043010752688172046,crop
+rule1,missed crop,stratum,A,8,3,0.375,crop
+rule1,missed crop,stratum,B,36,0,0.0,crop
+rule1,missed crop,stratum,C,49,1,0.02040816326530612,crop
+rule1,missed crop,cover,open,93,4,0.043010752688172046,crop
+rule1,missed crop,open_no_cues,False,92,4,0.043478260869565216,crop
+rule1,missed crop,open_no_cues,True,1,0,0.0,crop
+rule1,missed crop,cue_d_shape,False,28,2,0.07142857142857142,crop
+rule1,missed crop,cue_d_shape,True,65,2,0.03076923076923077,crop
+rule1,missed crop,fallow_any,False,93,4,0.043010752688172046,crop
+rule1,missed crop,share_class,10-25,13,1,0.07692307692307693,crop
+rule1,missed crop,share_class,25-50,7,0,0.0,crop
+rule1,missed crop,share_class,<10,3,0,0.0,crop
+rule1,missed crop,share_class,>50,11,2,0.18181818181818182,crop
+rule1,missed crop,share_class,differs,59,1,0.01694915254237288,crop
+rule1,missed crop,homestead,< 250 m,89,1,0.011235955056179775,crop
+rule1,missed crop,homestead,250-1000 m,3,2,0.6666666666666666,crop
+rule1,missed crop,homestead,> 1 km,1,1,1.0,crop
+rf_features,false crop,area,aweil,89,2,0.02247191011235955,crop
+rf_features,false crop,area,bor_south,74,0,0.0,crop
+rf_features,false crop,stratum,A,122,1,0.00819672131147541,crop
+rf_features,false crop,stratum,B,41,1,0.024390243902439025,crop
+rf_features,false crop,cover,labellers differ,32,0,0.0,crop
+rf_features,false crop,cover,open,74,2,0.02702702702702703,crop
+rf_features,false crop,cover,trees,56,0,0.0,crop
+rf_features,false crop,cover,water,1,0,0.0,crop
+rf_features,false crop,open_no_cues,False,113,1,0.008849557522123894,crop
+rf_features,false crop,open_no_cues,True,50,1,0.02,crop
+rf_features,false crop,cue_d_shape,False,163,2,0.012269938650306749,crop
+rf_features,false crop,fallow_any,False,163,2,0.012269938650306749,crop
+rf_features,false crop,share_class,0,163,2,0.012269938650306749,crop
+rf_features,false crop,homestead,< 250 m,15,1,0.06666666666666667,crop
+rf_features,false crop,homestead,250-1000 m,36,0,0.0,crop
+rf_features,false crop,homestead,> 1 km,112,1,0.008928571428571428,crop
+rf_features,missed crop,area,aweil,93,5,0.053763440860215055,crop
+rf_features,missed crop,stratum,A,8,4,0.5,crop
+rf_features,missed crop,stratum,B,36,0,0.0,crop
+rf_features,missed crop,stratum,C,49,1,0.02040816326530612,crop
+rf_features,missed crop,cover,open,93,5,0.053763440860215055,crop
+rf_features,missed crop,open_no_cues,False,92,5,0.05434782608695652,crop
+rf_features,missed crop,open_no_cues,True,1,0,0.0,crop
+rf_features,missed crop,cue_d_shape,False,28,3,0.10714285714285714,crop
+rf_features,missed crop,cue_d_shape,True,65,2,0.03076923076923077,crop
+rf_features,missed crop,fallow_any,False,93,5,0.053763440860215055,crop
+rf_features,missed crop,share_class,10-25,13,1,0.07692307692307693,crop
+rf_features,missed crop,share_class,25-50,7,0,0.0,crop
+rf_features,missed crop,share_class,<10,3,0,0.0,crop
+rf_features,missed crop,share_class,>50,11,2,0.18181818181818182,crop
+rf_features,missed crop,share_class,differs,59,2,0.03389830508474576,crop
+rf_features,missed crop,homestead,< 250 m,89,1,0.011235955056179775,crop
+rf_features,missed crop,homestead,250-1000 m,3,3,1.0,crop
+rf_features,missed crop,homestead,> 1 km,1,1,1.0,crop
+rf_embedding,false crop,area,aweil,89,6,0.06741573033707865,crop
+rf_embedding,false crop,area,bor_south,74,0,0.0,crop
+rf_embedding,false crop,stratum,A,122,2,0.01639344262295082,crop
+rf_embedding,false crop,stratum,B,41,4,0.0975609756097561,crop
+rf_embedding,false crop,cover,labellers differ,32,0,0.0,crop
+rf_embedding,false crop,cover,open,74,6,0.08108108108108109,crop
+rf_embedding,false crop,cover,trees,56,0,0.0,crop
+rf_embedding,false crop,cover,water,1,0,0.0,crop
+rf_embedding,false crop,open_no_cues,False,113,2,0.017699115044247787,crop
+rf_embedding,false crop,open_no_cues,True,50,4,0.08,crop
+rf_embedding,false crop,cue_d_shape,False,163,6,0.03680981595092025,crop
+rf_embedding,false crop,fallow_any,False,163,6,0.03680981595092025,crop
+rf_embedding,false crop,share_class,0,163,6,0.03680981595092025,crop
+rf_embedding,false crop,homestead,< 250 m,15,2,0.13333333333333333,crop
+rf_embedding,false crop,homestead,250-1000 m,36,3,0.08333333333333333,crop
+rf_embedding,false crop,homestead,> 1 km,112,1,0.008928571428571428,crop
+rf_embedding,missed crop,area,aweil,93,5,0.053763440860215055,crop
+rf_embedding,missed crop,stratum,A,8,4,0.5,crop
+rf_embedding,missed crop,stratum,B,36,1,0.027777777777777776,crop
+rf_embedding,missed crop,stratum,C,49,0,0.0,crop
+rf_embedding,missed crop,cover,open,93,5,0.053763440860215055,crop
+rf_embedding,missed crop,open_no_cues,False,92,5,0.05434782608695652,crop
+rf_embedding,missed crop,open_no_cues,True,1,0,0.0,crop
+rf_embedding,missed crop,cue_d_shape,False,28,3,0.10714285714285714,crop
+rf_embedding,missed crop,cue_d_shape,True,65,2,0.03076923076923077,crop
+rf_embedding,missed crop,fallow_any,False,93,5,0.053763440860215055,crop
+rf_embedding,missed crop,share_class,10-25,13,1,0.07692307692307693,crop
+rf_embedding,missed crop,share_class,25-50,7,0,0.0,crop
+rf_embedding,missed crop,share_class,<10,3,1,0.3333333333333333,crop
+rf_embedding,missed crop,share_class,>50,11,1,0.09090909090909091,crop
+rf_embedding,missed crop,share_class,differs,59,2,0.03389830508474576,crop
+rf_embedding,missed crop,homestead,< 250 m,89,2,0.02247191011235955,crop
+rf_embedding,missed crop,homestead,250-1000 m,3,2,0.6666666666666666,crop
+rf_embedding,missed crop,homestead,> 1 km,1,1,1.0,crop
+logistic_l2,false crop,area,aweil,89,13,0.14606741573033707,crop
+logistic_l2,false crop,area,bor_south,74,1,0.013513513513513514,crop
+logistic_l2,false crop,stratum,A,122,9,0.07377049180327869,crop
+logistic_l2,false crop,stratum,B,41,5,0.12195121951219512,crop
+logistic_l2,false crop,cover,labellers differ,32,1,0.03125,crop
+logistic_l2,false crop,cover,open,74,11,0.14864864864864866,crop
+logistic_l2,false crop,cover,trees,56,1,0.017857142857142856,crop
+logistic_l2,false crop,cover,water,1,1,1.0,crop
+logistic_l2,false crop,open_no_cues,False,113,8,0.07079646017699115,crop
+logistic_l2,false crop,open_no_cues,True,50,6,0.12,crop
+logistic_l2,false crop,cue_d_shape,False,163,14,0.08588957055214724,crop
+logistic_l2,false crop,fallow_any,False,163,14,0.08588957055214724,crop
+logistic_l2,false crop,share_class,0,163,14,0.08588957055214724,crop
+logistic_l2,false crop,homestead,< 250 m,15,4,0.26666666666666666,crop
+logistic_l2,false crop,homestead,250-1000 m,36,6,0.16666666666666666,crop
+logistic_l2,false crop,homestead,> 1 km,112,4,0.03571428571428571,crop
+logistic_l2,missed crop,area,aweil,93,3,0.03225806451612903,crop
+logistic_l2,missed crop,stratum,A,8,2,0.25,crop
+logistic_l2,missed crop,stratum,B,36,0,0.0,crop
+logistic_l2,missed crop,stratum,C,49,1,0.02040816326530612,crop
+logistic_l2,missed crop,cover,open,93,3,0.03225806451612903,crop
+logistic_l2,missed crop,open_no_cues,False,92,3,0.03260869565217391,crop
+logistic_l2,missed crop,open_no_cues,True,1,0,0.0,crop
+logistic_l2,missed crop,cue_d_shape,False,28,2,0.07142857142857142,crop
+logistic_l2,missed crop,cue_d_shape,True,65,1,0.015384615384615385,crop
+logistic_l2,missed crop,fallow_any,False,93,3,0.03225806451612903,crop
+logistic_l2,missed crop,share_class,10-25,13,1,0.07692307692307693,crop
+logistic_l2,missed crop,share_class,25-50,7,0,0.0,crop
+logistic_l2,missed crop,share_class,<10,3,0,0.0,crop
+logistic_l2,missed crop,share_class,>50,11,1,0.09090909090909091,crop
+logistic_l2,missed crop,share_class,differs,59,1,0.01694915254237288,crop
+logistic_l2,missed crop,homestead,< 250 m,89,1,0.011235955056179775,crop
+logistic_l2,missed crop,homestead,250-1000 m,3,1,0.3333333333333333,crop
+logistic_l2,missed crop,homestead,> 1 km,1,1,1.0,crop
+logistic_rule1_inputs,false crop,area,aweil,89,12,0.1348314606741573,crop
+logistic_rule1_inputs,false crop,area,bor_south,74,1,0.013513513513513514,crop
+logistic_rule1_inputs,false crop,stratum,A,122,12,0.09836065573770492,crop
+logistic_rule1_inputs,false crop,stratum,B,41,1,0.024390243902439025,crop
+logistic_rule1_inputs,false crop,cover,labellers differ,32,3,0.09375,crop
+logistic_rule1_inputs,false crop,cover,open,74,5,0.06756756756756757,crop
+logistic_rule1_inputs,false crop,cover,trees,56,5,0.08928571428571429,crop
+logistic_rule1_inputs,false crop,cover,water,1,0,0.0,crop
+logistic_rule1_inputs,false crop,open_no_cues,False,113,11,0.09734513274336283,crop
+logistic_rule1_inputs,false crop,open_no_cues,True,50,2,0.04,crop
+logistic_rule1_inputs,false crop,cue_d_shape,False,163,13,0.07975460122699386,crop
+logistic_rule1_inputs,false crop,fallow_any,False,163,13,0.07975460122699386,crop
+logistic_rule1_inputs,false crop,share_class,0,163,13,0.07975460122699386,crop
+logistic_rule1_inputs,false crop,homestead,< 250 m,15,10,0.6666666666666666,crop
+logistic_rule1_inputs,false crop,homestead,250-1000 m,36,3,0.08333333333333333,crop
+logistic_rule1_inputs,false crop,homestead,> 1 km,112,0,0.0,crop
+logistic_rule1_inputs,missed crop,area,aweil,93,2,0.021505376344086023,crop
+logistic_rule1_inputs,missed crop,stratum,A,8,2,0.25,crop
+logistic_rule1_inputs,missed crop,stratum,B,36,0,0.0,crop
+logistic_rule1_inputs,missed crop,stratum,C,49,0,0.0,crop
+logistic_rule1_inputs,missed crop,cover,open,93,2,0.021505376344086023,crop
+logistic_rule1_inputs,missed crop,open_no_cues,False,92,2,0.021739130434782608,crop
+logistic_rule1_inputs,missed crop,open_no_cues,True,1,0,0.0,crop
+logistic_rule1_inputs,missed crop,cue_d_shape,False,28,1,0.03571428571428571,crop
+logistic_rule1_inputs,missed crop,cue_d_shape,True,65,1,0.015384615384615385,crop
+logistic_rule1_inputs,missed crop,fallow_any,False,93,2,0.021505376344086023,crop
+logistic_rule1_inputs,missed crop,share_class,10-25,13,1,0.07692307692307693,crop
+logistic_rule1_inputs,missed crop,share_class,25-50,7,0,0.0,crop
+logistic_rule1_inputs,missed crop,share_class,<10,3,0,0.0,crop
+logistic_rule1_inputs,missed crop,share_class,>50,11,1,0.09090909090909091,crop
+logistic_rule1_inputs,missed crop,share_class,differs,59,0,0.0,crop
+logistic_rule1_inputs,missed crop,homestead,< 250 m,89,0,0.0,crop
+logistic_rule1_inputs,missed crop,homestead,250-1000 m,3,1,0.3333333333333333,crop
+logistic_rule1_inputs,missed crop,homestead,> 1 km,1,1,1.0,crop

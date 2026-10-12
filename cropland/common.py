@@ -1,12 +1,18 @@
 """
 Shared settings for the cropland scripts: Earth Engine project, study areas,
-the public maps (and how each is turned into crop / not crop), and the 2025
+the public maps (and how each is turned into crop / not crop), and the
 Sentinel-2 monthly composites. Every script imports this, so a change here
 changes all of them.
+
+Where, when and how much come from a config file in config/ (REUSE.md):
+CROPLAND_CONFIG=<name> picks config/<name>.toml (or a path to a .toml file);
+unset, it is config/south_sudan_2025.toml, the settings of our study.
 """
 
+import csv
 import json
 import os
+import tomllib
 from pathlib import Path
 
 import geopandas as gpd
@@ -16,24 +22,37 @@ REPO = HERE.parent
 RAW = REPO / "raw_data"
 OUT = RAW / "cropland"                      # large outputs, not in git
 OUT.mkdir(parents=True, exist_ok=True)
-ADMIN2 = RAW / "Administrative boundaries" / "ssd_admin2.geojson"
+# course data: raw_data/ in the repo, or the course folder next to the repo when raw_data/ only holds outputs
+COURSE = next((p for p in (RAW, REPO.parent / "data-JBG060-2026") if (p / "flood_masks").exists()), RAW)
 
+
+def load_config(name: str | None = None) -> dict:
+    name = name or os.environ.get("CROPLAND_CONFIG", "south_sudan_2025")
+    path = Path(name) if name.endswith(".toml") else HERE / "config" / f"{name}.toml"
+    return tomllib.loads(path.read_text(encoding="utf-8"))
+
+
+CONFIG = load_config()
 GROUP_PROJECT = "grand-loop-457810-a1"      # Google Cloud project registered for Earth Engine; holds our assets
 # Run on your own Earth Engine project with: set CROPLAND_EE_PROJECT=<your-project-id> (steps 04 and 05 only need public data)
 EE_PROJECT = os.environ.get("CROPLAND_EE_PROJECT", GROUP_PROJECT)
-ASSETS = f"projects/{GROUP_PROJECT}/assets/sample-points"   # folder made in the Code Editor
-YEAR = 2025
-SEED = 42
-BOX_M = 210                                  # the labelled unit: the outer yellow box, 210 m x 210 m (21 x 21 Sentinel-2 pixels) centred on a point
+ASSETS = f"projects/{EE_PROJECT}/assets/sample-points"      # in the project you run on (group project by default)
+YEAR = CONFIG["study"]["year"]
+SEED = CONFIG["study"]["seed"]
+BOX_M = CONFIG["study"]["box_m"]             # the labelled unit: the outer yellow box, 210 m x 210 m (21 x 21 Sentinel-2 pixels) centred on a point
 
-AREAS = {                                    # study areas: sampled, labelled and scored
-    "aweil": ["Aweil North", "Aweil East", "Aweil South", "Aweil West", "Aweil Centre"],
-    "bor_south": ["Bor South"],
-}
-ALLOCATION = {                               # points per stratum (METHODOLOGY.md section 3)
-    "aweil": {"A": 150, "B": 90, "C": 90},
-    "bor_south": {"A": 60, "B": 30, "C": 30},
-}
+AREAS = CONFIG["areas"]                      # study areas: sampled, labelled and scored -> their admin-2 units
+ALLOCATION = CONFIG["allocation"]            # points per stratum (METHODOLOGY.md section 3)
+CALENDAR = CONFIG["calendar"]                # months of the crop season (features.py, the labelling tool)
+BOUNDARIES = CONFIG["boundaries"]
+ADMIN2 = COURSE / BOUNDARIES.get("admin2_file", "")      # an absolute path in the config stays absolute
+ADMIN2_NAME = BOUNDARIES.get("admin2_name_column", "adm2_name")
+
+if (HERE / "sample.csv").exists():                       # never write a new area's outputs over another study's
+    with open(HERE / "sample.csv", newline="", encoding="utf-8") as f:
+        if not {r["area"] for r in csv.DictReader(f)} <= set(AREAS):
+            raise SystemExit(f"{HERE} holds another study (sample.csv); start {CONFIG['study']['name']} in a clean copy: "
+                             "python cropland/make_new_area.py <folder> (REUSE.md)")
 
 
 def ee_init():
@@ -42,10 +61,18 @@ def ee_init():
     return ee
 
 
+def _gaul(ee, level: int):
+    return ee.FeatureCollection(f"FAO/GAUL/2015/level{level}").filter(
+        ee.Filter.eq("ADM0_NAME", CONFIG["study"]["country"]))
+
+
 def area_geometry(ee, area: str, simplify_deg: float = 0.0):
     """Earth Engine geometry of one study area (union of its counties)."""
+    if BOUNDARIES["source"] == "gaul":
+        geom = _gaul(ee, 2).filter(ee.Filter.inList("ADM2_NAME", AREAS[area])).geometry()
+        return geom.simplify(simplify_deg * 111_000) if simplify_deg else geom
     admin = gpd.read_file(ADMIN2)
-    geom = admin[admin.adm2_name.isin(AREAS[area])].dissolve().geometry.iloc[0]
+    geom = admin[admin[ADMIN2_NAME].isin(AREAS[area])].dissolve().geometry.iloc[0]
     if simplify_deg:
         geom = geom.simplify(simplify_deg)
     return ee.Geometry(json.loads(gpd.GeoSeries([geom], crs=4326).to_json())["features"][0]["geometry"])
@@ -57,7 +84,9 @@ def box(ee, lon: float, lat: float):
 
 
 def country_geometry(ee):
-    admin0 = gpd.read_file(RAW / "Administrative boundaries" / "ssd_admin0.geojson")
+    if BOUNDARIES["source"] == "gaul":
+        return _gaul(ee, 0).geometry().simplify(1000)
+    admin0 = gpd.read_file(COURSE / BOUNDARIES["admin0_file"])
     geom = admin0.geometry.iloc[0].simplify(0.01)
     return ee.Geometry(json.loads(gpd.GeoSeries([geom], crs=4326).to_json())["features"][0]["geometry"])
 
@@ -79,22 +108,23 @@ def public_maps(ee) -> dict:
         "glad_2019": (ee.ImageCollection("users/potapovpeter/Global_cropland_2019").mosaic().gt(0.5), 2019),
         "deafrica_2019": (ee.ImageCollection("projects/sat-io/open-datasets/DEAF/CROPLAND-EXTENT/mask").mosaic().eq(1), 2019),
         "worldcereal_2021": (cereal.eq(100), 2021),
-        "esri_2025": (esri.eq(5), 2025),
-        "dynamicworld_2025": (dw.eq(4), 2025),
+        f"esri_{YEAR}": (esri.eq(5), YEAR),
+        f"dynamicworld_{YEAR}": (dw.eq(4), YEAR),
         "gfsad_2015": (ee.ImageCollection("projects/sat-io/open-datasets/GFSAD/GCEP30").mosaic().eq(2), 2015),
     }
-    return {k: (img.unmask(0).rename(k).toByte(), y) for k, (img, y) in maps.items()}
+    return {k: (img.unmask(0).rename(k).toByte(), y) for k, (img, y) in maps.items()
+            if k in CONFIG["strata"]["maps"]}                 # the maps the config chooses
 
 
 def agreement(ee):
-    """Number of the 7 public maps that call each pixel crop (0-7)."""
+    """Number of the public maps (7 in our study) that call each pixel crop."""
     return ee.Image.cat([img for img, _ in public_maps(ee).values()]).reduce(ee.Reducer.sum()).rename("n_maps")
 
 
 def strata(ee):
-    """1 = A (0 maps say crop), 2 = B (1-2 maps), 3 = C (3 or more)."""
-    n = agreement(ee)
-    return ee.Image(1).where(n.gte(1), 2).where(n.gte(3), 3).rename("stratum").toByte()
+    """1 = A (0 maps say crop), 2 = B (1-2 maps), 3 = C (3 or more); the cuts come from the config."""
+    n, s = agreement(ee), CONFIG["strata"]
+    return ee.Image(1).where(n.gte(s["b_from"]), 2).where(n.gte(s["c_from"]), 3).rename("stratum").toByte()
 
 
 def s2_monthly(ee, geom, year: int = YEAR):

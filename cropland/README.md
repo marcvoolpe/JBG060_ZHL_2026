@@ -135,9 +135,12 @@ Setup:
 | 8 | `python cropland/08_run_map.py cropland/rule1_<date>.json` | checks map = rules, exports our map (10 m areas, 30 m country) | Earth Engine assets |
 | 9 | `python cropland/09_score.py cropland/rule1_<date>.json` | accuracy and area ± 95% CI | `results/accuracy.csv`, `results/area.csv` |
 | 10 | `python cropland/10_flood.py cropland/rule1_<date>.json` | flooded cropland 2025, Aweil vs Bor South | `results/flooded_cropland.csv` |
+| 11 | `python cropland/11_evaluate.py cropland/rule1_<date>.json` | evaluation additions (change log 12 Oct): adjusted area interval, where maps fail, ours vs published, points needed, rule readability, pixel-count bias, trigger agreement (our map against the sample's "box holds it", public maps against the share of box) | `results/area_adjusted.csv`, `error_analysis.csv`, `published_vs_ours.csv`, `design_efficiency.csv`, `rule_complexity.csv`, `pixel_count_bias.csv`, `trigger_agreement.csv` |
+| 12 | `python cropland/12_other_models.py compare`, then `... freeze <name>` | logistic regression and other trees on the calibration points (repeated cross-validation, no test label); `freeze` writes the predictions, then rerun 09 | `results/model_cv.csv`, `logistic_coefficients.csv`, `predictions_<name>.csv`, `<name>_<date>.json` |
 
 Shared code:
-- `common.py`: settings, areas, public maps.
+- `config/south_sudan_2025.toml`: our settings (areas, year, allocation, crop calendar, strata maps, labellers, tool texts); `common.py` reads it. Another area or country: `config/TEMPLATE.toml`, `make_new_area.py` and **`REUSE.md`**.
+- `common.py`: settings from the config, area geometry, public maps.
 - `features.py`: the 18 features.
 - `rules.py`: the rules in Python and in Earth Engine.
 - `estimators.py`: the stratified estimators.
@@ -145,7 +148,13 @@ Shared code:
 
 Checks: `python cropland/test_cropland.py`, with `--ee` to also check that Earth Engine and Python agree, and the building-distance feature.
 
+EDA of the public maps (report context, data understanding, labeller agreement, sample size): `eda_public_maps.ipynb`, with `eda_maps.py`, `eda_figures.py`, `eda_labels.py`, `efficiency.py`; reference statistics in `reference_statistics.csv` / `reference_national.csv`; published accuracy of the same maps (Kerner et al. 2024, Adebayo et al. 2026) in `reference_accuracy_literature.csv`. Results and report notes: `deliverables/cropland_report/README.md`.
+
+Evaluation additions on top of steps 09-10 (proposed, see `deliverables/cropland_report/notes/06_evaluation_methodology.md`): `evaluation.py` (adjusted area interval and its coverage simulation, error analysis, trigger agreement, ours vs published, design efficiency, rule readability), checked by `python cropland/test_evaluation.py`. Versions this ran with: `requirements-cropland.txt`.
+
 ### Building another model (Wei, Matei)
+
+Start with **`tree_workbench.ipynb`**: settings to change (target, areas, inputs, tree parameters), repeated cross-validation on the calibration points, the tree drawn and as rules, Rule 1 retrained from scratch, and a `FREEZE` cell that writes the rules file and `results/predictions_<name>.csv` only when you set it to True. For logistic regression and other families: `12_other_models.py`.
 
 Everything a model needs is in **`model_table.csv`**, one row per sample point (written by step 6):
 

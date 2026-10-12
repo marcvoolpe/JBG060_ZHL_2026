@@ -1,0 +1,239 @@
+% =============================================================================
+% JBG060 methodological report, group 1 -- SKELETON WITH PLACEHOLDERS
+% Max 2,000 words incl. captions; words inside tables and figures do not count.
+% Headings = the rubric headings, not combined.
+%
+% How to use
+%   * Numbers come from numbers.tex (python deliverables/cropland_report/report/build_report_inputs.py,
+%     after running cropland/eda_public_maps.ipynb). Never type a result by hand.
+%   * \ph{...}   red placeholder: text or a result still to come.
+%   * \idea{...} blue box: ideas and choices to make; delete when done.
+%   * \budget{n} word target of a section.
+%   * \draftfalse hides all three: do that before counting words
+%     (Overleaf: Menu > Word Count; table bodies are excluded below with %TC:ignore).
+% Long notes behind every section: deliverables/cropland_report/notes/0*_*.md
+% =============================================================================
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage[round,authoryear]{natbib}
+\usepackage[hidelinks]{hyperref}
+
+\newif\ifdraft \drafttrue   % set to \draftfalse for the final version and the word count
+\DeclareRobustCommand{\ph}[1]{\ifdraft\textcolor{red!70!black}{[#1]}\fi}   % robust: also used in captions
+\newcommand{\idea}[1]{\ifdraft\par\smallskip\noindent\fcolorbox{blue!50!black}{blue!4}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\footnotesize\textbf{Idea.} #1}}\par\smallskip\fi}
+\newcommand{\budget}[1]{\ifdraft\noindent{\footnotesize\textcolor{gray}{[target about #1 words]}}\par\fi}
+\newcommand{\figslot}[2]{\IfFileExists{#1}{\includegraphics[width=\linewidth]{#1}}{\fbox{\parbox{0.95\linewidth}{\centering\vspace{1.5em}\ph{figure to make: #2}\vspace{1.5em}}}}}
+%TC:macro \ph [ignore]
+%TC:macro \idea [ignore]
+%TC:macro \budget [ignore]
+
+\input{numbers}
+
+\title{Counting South Sudan's cropland: how accurately do public maps show the farmland a flood trigger depends on?\ph{working title}}
+\author{Group 1: \ph{full names and student numbers}\\ \small JBG060 Capstone Data Challenge, TU/e and Tilburg University, with Zero Hunger Lab and ZOA International}
+\date{\ph{25 October 2026}}
+
+\begin{document}
+\maketitle
+
+% =============================================================================
+\section{Context / Problem Background / Motivation of Analysis}
+\budget{200}
+
+Floods hit South Sudan every year, and since 2019 they have been the largest in the satellite record. ZOA International wants to act before a flood damages livelihoods (anticipatory action) in two areas: along the Lol river in the five Aweil counties and in Bor South \citep{zoaqa2}. There, the impact ZOA names first is a harvest lost to flooding, and its example trigger is a flood that ``inundates cropland''. About 80\% of rural communities live mainly from farming, yet ZOA itself suspects the available data ``might not capture agricultural land fully''.
+
+A flooded-cropland trigger multiplies a flood map by a cropland map \citep{pacetti2017}. The cropland side has never been checked in South Sudan: the two largest accuracy studies of African cropland maps leave it out \citep{kerner2024,adebayo2026}. Where they did look, maps often fail on rare crop: in Mali, the Esri map reaches \EsriMaliAcc{} accuracy with an F1 of \EsriMaliFone, because it calls nothing crop. Section~\ref{sec:data} shows that in ZOA's areas the public maps disagree so much that whether a trigger fires depends more on the map than on the flood. A trigger cannot be trusted until someone measures how much cropland there is, with an honest error bar, and how wrong each map is there.
+
+\idea{Open with one concrete image instead: ``for the 2022 flood, the same overlay gives \AwFloodMin{} or \AwFloodMax{} ha of flooded cropland in Aweil, depending only on the cropland map''. Keep the ZOA quotes short; the SLE essay can carry the ``whose farmland counts'' framing.}
+
+% =============================================================================
+\section{Business and Data Understanding}\label{sec:data}
+\budget{300}
+
+\paragraph{Prior work.} \citet{kerner2024} scored 11 public maps against labelled points in eight African countries: mean F1 per country ranged from 0.21 to 0.71, unanimous crop covered under 0.5\% of every country, and overall accuracy misled wherever crop was rare. \citet{adebayo2026} turned map accuracy into the number of labelled points an area estimate needs (relative efficiency): for a rare class, a map's recall matters most. Both estimate area from a stratified probability sample \citep{olofsson2014,stehman2014}, which stays unbiased whatever the maps' quality; pixel counting does not.
+
+\paragraph{Data.} Table~\ref{tab:data} lists the data. Course data: NASA MCDWD flood masks \citep{mcdwd}, the ASAP crop mask \citep{fritz2024asap} and county boundaries. We added seven public cropland maps, Sentinel-1/2 and sub-metre imagery to label points, and the FAO/WFP crop assessments \citep{cfsam2022,cfsam2025}, whose cereal area is modelled from population and household figures.
+
+\paragraph{What the data show.} In the Aweil counties the maps call between \AwCropMin{} and \AwCropMax{} of the land crop; none reaches even the crop assessment's cereal area (\AwCfsamTwentyFive; Figure~\ref{fig:share}). In Bor South, Dynamic World calls \BsDwShare{} crop while no other map exceeds \BsOtherMax. Where two maps call crop it is mostly different land: the best pair shares \AwIoUMax{} of its crop area, the median pair \AwIoUMedian{} (Figure~\ref{fig:iou}); all seven maps agree on about \AwAllSevenHa{} ha of \AwLandHa{} ha. Laid under the 2022 flood, Aweil's flooded cropland ranges from \AwFloodMin{} to \AwFloodMax{} ha by map.
+
+\idea{Terms to introduce here (rubric asks for it): precision = user's accuracy, recall = producer's accuracy, F1, stratum, probability sample, ``cropland'' (cropped or fallow) vs ``cropped in 2025''. One line each, or a small glossary table. Optional extra findings (pick one): the national pattern does not follow CFSAM (rank correlation $\le 0.25$ for most maps); Dynamic World changes by a factor 10 between years; published recall predicts which maps show least crop in Aweil (\RecallRhoAw) but not in Bor South (\RecallRhoBs).}
+
+\begin{table}[t]
+\centering
+\caption{Data used. Course data from Zero Hunger Lab; the rest collected by us.}\label{tab:data}
+%TC:ignore
+\small
+\begin{tabularx}{\linewidth}{@{}lXl@{}}
+\toprule
+Data & Use & Source \\
+\midrule
+NASA MCDWD flood masks, 2000--2025, $\sim$232 m & flooded cropland 2022, 2025 & course \\
+ASAP crop mask v04, $\sim$500 m & one of the maps scored & course \\
+County boundaries (79 counties) & study areas, totals & course \\
+WorldCover 2021, GLAD 2019, DE Africa 2019, WorldCereal 2021, Esri 2025, Dynamic World 2025, GFSAD 2015 & strata, maps scored & Earth Engine \\
+Sentinel-2 L2A, Sentinel-1, Esri sub-metre imagery & labelling, features & Earth Engine, Esri \\
+450 points, two blind labels each, 2025 & reference sample & ours \\
+FAO/WFP crop assessments 2022, 2025 & order of magnitude & FAO/WFP \\
+\bottomrule
+\end{tabularx}
+%TC:endignore
+\end{table}
+
+\begin{figure}[t]
+\centering
+\figslot{figures/01_crop_share_per_map.png}{crop share per map}
+\caption{Share of the land each public cropland map calls crop, in the five Aweil counties, in Bor South and in South Sudan. Lines: FAO/WFP cereal harvested area (modelled) and FAOSTAT arable land.}\label{fig:share}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\figslot{figures/03_pairwise_iou_aweil.png}{pairwise overlap}
+\caption{Aweil counties: overlap of the crop class of every two maps (intersection over union). The same pairs agree on 97--99\% of all pixels, because most land is ``not crop'' in every map.}\label{fig:iou}
+\end{figure}
+
+% =============================================================================
+\section{Research Objective}
+\budget{200}
+
+We estimate how much land in ZOA's two areas was cropland in the 2025 season, with a 95\% confidence interval that does not depend on any map; measure how accurately seven public cropland maps, the course's ASAP mask and a readable rule-based map of our own capture it there; and show how the choice of map changes the flooded-cropland figure a trigger would use. Sub-objectives: (1) cropland area per area, for cropland (cropped or fallow) and cropped in 2025; (2) precision, recall and F1 of each map on held-out points; (3) the same for our rule-based map; (4) flooded cropland per map against the sample, and the points a yearly check needs.
+
+\paragraph{Assumptions and scope.} The reference is what two trained people see on imagery (no field visits); one season (2025); results hold for the two areas only; a point stands for the 210 m box around it; flood masks are taken as given; no forecast.
+
+\paragraph{An adequate solution} must state its uncertainty, report misses and false alarms separately, be readable and repeatable by local staff, and be judged where ZOA works \citep{zoaqa2}; Table~\ref{tab:criteria} turns this into measures.
+
+\idea{Keep the RO one sentence; sub-objectives can be the table rows. Rubric wants ``specific and measurable'' and ``feasible'': mention that the sample was drawn and labelled within the course.}
+
+% =============================================================================
+\section{Approach}
+\budget{450}
+
+\idea{One diagram (Figure~\ref{fig:method}) does a lot of words' work: maps $\rightarrow$ agreement strata $\rightarrow$ 450 points $\rightarrow$ split $\rightarrow$ two blind labels $\rightarrow$ (area; map scores; Rule 1; flood overlay). Make it in draw.io or PowerPoint, export as figures/method_diagram.png.}
+
+\subsection{Reference sample}
+We stack the seven public maps on a 10 m grid and split each area by how many call a pixel crop: no map (\AwNoMap{} of Aweil), one or two, three or more. Kerner et al.\ recommend such agreement strata; they put points where maps disagree and trust no single map. We drew 450 points (Aweil 150/90/90, Bor South 60/60) at least 100 m apart and split each stratum into one third calibration and two thirds test before anyone labelled.
+
+\subsection{Labelling}
+Each point stands for the 210 m box around it: in a pilot, people could not judge a single 10 m pixel (kappa 0.00--0.38). Two of five group members label every box independently and blind to all maps, from monthly Sentinel-2 images of 2025, a radar curve for the cloudy months and dated sub-metre imagery, following a written key (bare soil before sowing, green-up, harvest earlier than the surrounding grass, field shape). Labels: crop, fallow, not crop or unsure, plus the share of the box that is cropland. Disagreements are kept, not settled.
+
+\subsection{Our readable map}
+\ph{Matteo: features (18 cues summarised over the box), Rule 1 = decision tree of depth 2--4 chosen by cross-validation on the calibration points, frozen in a dated file, mapped in Earth Engine; random-forest benchmarks. METHODOLOGY.md sections 5--6.}
+
+\subsection{Estimation and flood overlay}
+Area: stratified mean of the labelled share of each box, weighted by stratum area \citep{olofsson2014}. Accuracy of every map on the test points: precision, recall and F1 with standard errors, using estimators for strata that are not map classes \citep{stehman2014}. Flooded cropland: the 2025 NASA flood extent over each map and over the labelled sample.
+
+\begin{figure}[t]
+\centering
+\figslot{figures/method_diagram.png}{method diagram}
+\caption{\ph{The approach, from the public maps to the area estimate, the scores and the flood overlay.}}\label{fig:method}
+\end{figure}
+
+% =============================================================================
+\section{Evaluation Methodology}
+\budget{200}
+
+Each part is judged on its own terms (Table~\ref{tab:criteria}). Labels: agreement and Cohen's kappa between the two labellers, with positive and negative specific agreement because crop is rare \citep{cohen1960,cicchetti1990}. Area: the estimate with its standard error and 95\% interval. Maps: precision, recall and F1 on test points only; maps whose intervals overlap are not ranked. Overall accuracy is never used to rank, because it rewards a map that finds nothing where crop is rare (Figure~\ref{fig:published}). Use: whether each map's flooded cropland gives the same trigger decision as the sample's interval.
+
+We checked the interval itself by simulating our design: the usual $\pm1.96$ SE interval holds the true area only \CovUsualMin--\CovUsualMax{} of the time, every miss below the truth, because the stratum where no map sees crop often holds no cropland point. We report an adjusted upper bound, which reaches \CovAdjMinAw--100\% in Aweil. Qualitatively, we break each map's errors down by what the labellers saw (land cover, crop cues, distance to homesteads) and inspect images of the worst errors.
+
+\begin{table}[t]
+\centering
+\caption{Criteria for an adequate solution and how we measure them.}\label{tab:criteria}
+%TC:ignore
+\small
+\begin{tabularx}{\linewidth}{@{}XX@{}}
+\toprule
+Criterion (from ZOA and ZHL) & Measure \\
+\midrule
+State how certain we are & 95\% intervals on area, standard errors on scores, simulated coverage \\
+Misses and false alarms both cost & recall and precision reported separately \\
+Relevant to the decision & trigger decisions per map against the sample \\
+Transparent, interpretable & rules, conditions and features of Rule 1; F1 lost against a black box \\
+Local, and cheap to repeat & scores per area; points and hours a yearly check needs \\
+Whose farmland is seen & recall per map; errors by homestead distance and field size \\
+\bottomrule
+\end{tabularx}
+%TC:endignore
+\end{table}
+
+\begin{figure}[t]
+\centering
+\figslot{figures/09_published_accuracy_of_our_maps.png}{published accuracy}
+\caption{F1 and recall of the maps we compare, as published for other African countries \citep{kerner2024,adebayo2026}. Ringed: Mali, where Esri has \EsriMaliAcc{} accuracy and an F1 of \EsriMaliFone.}\label{fig:published}
+\end{figure}
+
+% =============================================================================
+\section{Results}
+\budget{300}
+
+\paragraph{Labels.} On all \LabTwice{} points the two blind labellers agreed on cropland versus not at \LabAgree{} (Cohen's kappa \LabKappa; Aweil \LabAgreeAw, kappa \LabKappaAw). In Bor South agreement was high but almost only on ``not crop'' (kappa \LabKappaBs): the few boxes anyone called cropland were rarely confirmed. At \LabShapeSplits{} of the \LabSplits{} points where they split, one labeller saw field shapes and the other did not: they disagreed about whether a field is there, hardly ever about the land cover.
+
+\idea{If space is short, keep the Bor South sentence: it explains why its area interval will be wide and its map scores only indicative.}
+
+\paragraph{Cropland area.} \ph{Table~\ref{tab:area}: Aweil X ha (95\% interval Y--Z), Bor South ...; cropped in 2025; upper bound; against CFSAM \AwCfsamTwentyFive.}
+
+\paragraph{Map accuracy.} \ph{Figure~\ref{fig:scorecard}: precision and recall per map and area; which maps can be told apart; Rule 1 against the best public map and the black box; ours against the published range.}
+
+\paragraph{Where maps fail.} \ph{error analysis: false crop on grass / wetland (expected: Dynamic World in Bor South), missed crop near homesteads or in small fields; one sentence per pattern.}
+
+\paragraph{Flooded cropland and the trigger.} \ph{flooded cropland 2025 per map against the sample's interval; at which thresholds each map agrees with the sample; the ``cannot tell'' band.}
+
+\idea{Report negative results plainly (rubric): e.g. ``Rule 1 does not beat WorldCover in Aweil (F1 X vs Y, intervals overlap)''. Branches to prepare are in notes/07.}
+
+\begin{table}[t]
+\centering
+\caption{\ph{Cropland area, 2025, with 95\% intervals (usual; adjusted upper bound).}}\label{tab:area}
+%TC:ignore
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+ & \multicolumn{2}{c}{Aweil counties (\AwLandHa{} ha)} & \multicolumn{2}{c}{Bor South (\BsLandHa{} ha)} \\
+ & share of land & ha & share of land & ha \\
+\midrule
+Cropland (cropped or fallow) & \ph{} & \ph{} & \ph{} & \ph{} \\
+Cropped in 2025 & \ph{} & \ph{} & \ph{} & \ph{} \\
+Upper bound: box holds cropland & \ph{} & \ph{} & \ph{} & \ph{} \\
+CFSAM 2025 cereal area (modelled) & \AwCfsamTwentyFive & & & \\
+\bottomrule
+\end{tabular}
+%TC:endignore
+\end{table}
+
+\begin{figure}[t]
+\centering
+\figslot{figures/scorecard.png}{scorecard: precision and recall with intervals, per map and area}
+\caption{\ph{Precision and recall of every map on the test points, Aweil and Bor South, with 95\% intervals.}}\label{fig:scorecard}
+\end{figure}
+
+% =============================================================================
+\section{Discussion}
+\budget{200}
+
+\ph{What the numbers mean for ZOA: which map to use where, how wide the honest interval is, what a trigger can and cannot rely on.}
+
+\ph{Strengths: probability sample, blind double labels, frozen rules, interval checked by simulation. Weaknesses: labels from imagery, few crop test points, 210 m unit, one season, two areas.}
+
+\ph{Extent to which the RO is met: area with interval (yes/no); scores (rankable or not); readable map (better/worse); trigger relevance (shown).}
+
+\idea{Positive and negative impacts of ZOA using this (rubric): fewer silent misses, transparent numbers, cheap yearly check; but false precision outside the two areas, a sample gives area not location, field maps can be sensitive in a conflict setting. See notes/05 section 5.9.}
+
+% =============================================================================
+\section{Conclusion}
+\budget{150}
+
+\ph{One-sentence answer to the RO.} \ph{Recommendations, each tied to a finding: (1) which map per area, and never choose by overall accuracy; (2) base a trigger on flooded cropland with an interval, not a single map's hectares; (3) repeat a check of about \ph{n} points each season (\ph{hours}); (4) ask partners for field points; (5) next research: crop stage and flood duration for damage.}
+
+\idea{The rubric wants every recommendation linked to a finding or limitation; one short clause of evidence after each.}
+
+% =============================================================================
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

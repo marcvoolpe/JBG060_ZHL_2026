@@ -125,8 +125,10 @@ class Handler(SimpleHTTPRequestHandler):
 def main() -> None:
     LABELS.mkdir(exist_ok=True)
     n_img = len(list((TOOL / "img").glob("*.webp"))) if (TOOL / "img").exists() else 0
-    if n_img < 1900:
-        print(f"WARNING: only {n_img} images in cropland/label_tool/img/ (expected 1,920).\n"
+    points = sum(sum(1 for _ in open(HERE / f, encoding="utf-8")) - 1
+                 for f in ("sample.csv", "pilot_points.csv") if (HERE / f).exists())
+    if n_img < 4 * points:                          # 2 years x true and false colour per point (1,920 in our study)
+        print(f"WARNING: only {n_img} images in cropland/label_tool/img/ (expected {4 * points:,}).\n"
               "  Unzip cropland_images.zip inside cropland/label_tool/ so that the folder\n"
               "  cropland/label_tool/img/ holds the .webp files. The images are not in git.")
     server = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)

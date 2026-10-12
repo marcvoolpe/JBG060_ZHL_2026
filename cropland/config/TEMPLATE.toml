@@ -1,0 +1,68 @@
+# Template for a new area or country. Copy to config/<your_name>.toml, fill in every line
+# marked CHANGE, then run the steps with:  set CROPLAND_CONFIG=<your_name>   (see REUSE.md)
+# Values below are an example (Kenya, Busia county, 2025); none of them is checked.
+
+[study]
+name = "example_busia_2025"       # CHANGE: short name, used in file and asset names
+country = "Kenya"                 # CHANGE: as written in FAO GAUL 2015 (ADM0_NAME) if boundaries.source = "gaul"
+year = 2025                       # CHANGE: the season you label; images of the year before are shown for fallow
+seed = 42                         # keep: makes the sample reproducible
+box_m = 210                       # keep unless you have a reason: the labelled unit (21 x 21 Sentinel-2 pixels)
+
+[boundaries]
+source = "gaul"                   # "gaul": FAO GAUL 2015 in Earth Engine (any country, no files needed)
+                                  # "file": your own GeoJSON (then set the three lines below)
+admin2_file = ""                  # e.g. "C:/data/ken_admin2.geojson"
+admin2_name_column = "adm2_name"
+admin0_file = ""
+
+[areas]                           # CHANGE: study area -> its admin-2 units, names exactly as in the boundaries
+busia = ["Busia"]
+
+[allocation]                      # CHANGE: points per stratum and area (A: no map sees crop, B: some, C: most)
+                                  # our study: 330 points in Aweil, 120 in Bor South; fewer in C if it is tiny
+busia = { A = 100, B = 60, C = 60 }
+
+[sample]
+calibration_share = 0.3333333333333333   # keep: one third fits the rules, two thirds test them
+min_distance_m = 100              # keep: no two boxes overlap
+min_stratum_share = 0.001         # keep: strata under 0.1% of the area merge into the next one down
+labellers = ["Name1", "Name2", "Name3", "Name4", "Name5"]   # CHANGE: every point goes to two of them, blind
+
+[strata]
+# CHANGE if a map does not cover your country: deafrica_2019 and gfsad_2015 cover Africa only.
+# Esri and Dynamic World take the study year: write esri_<year> and dynamicworld_<year>.
+maps = ["worldcover_2021", "glad_2019", "deafrica_2019", "worldcereal_2021", "esri_2025", "dynamicworld_2025", "gfsad_2015"]
+b_from = 1                        # stratum B: at least this many maps say crop
+c_from = 3                        # stratum C: at least this many
+
+[calendar]
+# CHANGE: the most important part. Months (1-12) of YOUR main season. South Sudan has one rainy
+# season (sow May, harvest Sep-Nov). Busia has two (long rains Mar-Jul, short rains Sep-Dec):
+# label the main one, or make one config per season.
+bare_soil = [2, 3]                # cue a: bare, tilled soil just before sowing
+peak = [5, 6, 7]                  # cue b: green-up / peak greenness
+harvest = [7, 8, 9]               # cue c: harvest, browner than the grass around
+dry = [1, 2, 3]                   # trees and shrub stay green in the dry season
+radar = [4, 5, 6, 7]              # exactly 4 cloudy months for the Sentinel-1 features
+burn_from = "previous-11-01"      # burned area counted from this date ("previous" = the year before) ...
+burn_to = "03-01"                 # ... to this date of the study year (the burning season before sowing)
+image_month = 6                   # month of the Copernicus Browser link in the tool (peak green)
+after_harvest_until = "02-01"     # high-resolution images up to this date of the next year still show the season's fields
+
+[tool]
+radar_note = ""                   # e.g. a month without a radar pass in your area
+
+[tool.cues]                       # CHANGE: the months in the texts must match [calendar]; the keys stay
+cue_a_bare = "a. Is any patch in the box bare, tilled soil in Feb–Mar (light, even, not a dark burn)?"
+cue_b_greenup = "b. Does that patch green up between May and Jul?"
+cue_c_harvest = "c. Does it brown or get cleared Jul–Sep earlier than the grass around it?"
+cue_d_shape = "d. Field shape anywhere in the box: straight edges, rectangles, patchwork?"
+cue_e_crop2024 = "e. Was any patch in the box cropped in 2024 (bare before sowing, early harvest)?"   # the year before
+
+[tool.area_notes]                 # CHANGE: one line per area: crops, calendar, anything that looks unusual
+busia = "<b>Busia</b>: maize, beans, cassava, sorghum on small plots; long rains Mar–Jul, short rains Sep–Dec."
+
+[tool.help]                       # CHANGE: the definitions shown under "Examples & guide"
+crop = "<b>crop</b>: at least one field in the box was sown and grown in 2025. Usually bare in Feb–Mar, green by Jun, brown or cleared in Jul–Sep before the grass around, often with edges. Home gardens count.<br>"
+fallow = "<b>fallow</b>: the box has a field (edges, plots, or cropped in 2024) but none of it was cropped in 2025: no bare soil before sowing, no early harvest.<br>"

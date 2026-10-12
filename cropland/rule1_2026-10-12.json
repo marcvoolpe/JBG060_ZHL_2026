@@ -1,0 +1,62 @@
+{
+  "name": "rule1",
+  "frozen": "2026-10-12",
+  "features": [
+    "ndvi_min_am",
+    "bsi_max_am",
+    "ndvi_peak_jja",
+    "greenup",
+    "drop_son",
+    "drop_vs_500m",
+    "texture_jja",
+    "edge_density",
+    "ndvi_min_jfm",
+    "water_occurrence",
+    "s1_vv_min",
+    "dist_buildings_m",
+    "burned",
+    "vh_jun",
+    "vh_jul",
+    "vh_aug",
+    "vh_sep",
+    "vh_range"
+  ],
+  "fill": {
+    "ndvi_min_am": 0.1627,
+    "bsi_max_am": 0.2454,
+    "ndvi_peak_jja": 0.734,
+    "greenup": 0.6111,
+    "drop_son": 0.3798,
+    "drop_vs_500m": 0.0827,
+    "texture_jja": 42.5833,
+    "edge_density": 0.0823,
+    "ndvi_min_jfm": 0.1943,
+    "water_occurrence": 0.0,
+    "s1_vv_min": -15.416,
+    "dist_buildings_m": 979.2599,
+    "burned": 0.0,
+    "vh_jun": -19.3757,
+    "vh_jul": -16.318,
+    "vh_aug": -16.1231,
+    "vh_sep": -15.3801,
+    "vh_range": 10.4697
+  },
+  "rules": [
+    {
+      "if": [
+        [
+          "dist_buildings_m",
+          "<=",
+          333.4111
+        ],
+        [
+          "edge_density",
+          ">",
+          0.0937
+        ]
+      ],
+      "then": 1
+    }
+  ],
+  "else": 0
+}

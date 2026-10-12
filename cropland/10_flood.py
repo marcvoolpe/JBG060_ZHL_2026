@@ -36,7 +36,7 @@ CHUNK = 1500
 def flood_cells(area):
     parts = []
     for kind in ("compact_recurring", "compact_unusual"):
-        df = pd.read_parquet(C.RAW / "flood_masks" / kind / f"flood_events_{TILES[area]}_{C.YEAR}.parquet",
+        df = pd.read_parquet(C.COURSE / "flood_masks" / kind / f"flood_events_{TILES[area]}_{C.YEAR}.parquet",
                              columns=["date", "lat", "lon"])
         df = df[pd.to_datetime(df.date.astype(str)) >= f"{C.YEAR}-06-01"]
         parts.append(df[["lat", "lon"]].astype(float).round(6))   # float32 from parquet -> float64 for Earth Engine
@@ -78,11 +78,13 @@ def main() -> None:
         cells = in_area(ee, flood_cells(area), area)
         print(f"{area}: {len(cells)} flooded cells ({cells.ha.sum():,.0f} ha)")
         maps = {k: img for k, (img, _) in C.public_maps(ee).items()}
+        # our map: a pixel is 1 when the 210 m box around it holds a cropped field, so its hectares
+        # compare with the sample's "box holds it" upper bound, not with the share of box (11_evaluate.py)
         maps["rule1"] = ee.Image(f"{C.ASSETS}/{rule_file.stem}_{area}").unmask(0).rename("rule1")
         frac = map_fractions(ee, cells, ee.Image.cat(list(maps.values())))
         for m in maps:
             rows.append({"area": area, "map": m, "flooded_crop_ha": float((frac[m].fillna(0) * cells.ha).sum())})
-        with rasterio.open(C.RAW / "farmland" / "asap_mask_crop_v04.tif") as src:
+        with rasterio.open(C.COURSE / "farmland" / "asap_mask_crop_v04.tif") as src:
             v = np.array([x[0] for x in src.sample(zip(cells.lon, cells.lat))]).astype(float)
         v = np.where((v >= 5) & (v <= 100), v / 100, 0)                 # ASAP value = % of the cell that is crop
         rows.append({"area": area, "map": "asap_v04", "flooded_crop_ha": float((v * cells.ha).sum())})

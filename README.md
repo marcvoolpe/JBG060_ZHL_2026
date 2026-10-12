@@ -1,5 +1,7 @@
 # JBG060-2026: Flood Dynamics in South Sudan
 
+> **Cropland project (group 1): start at [`deliverables/cropland_report/README.md`](deliverables/cropland_report/README.md)** for the report notes, LaTeX report, figures, tables and what to review. Code: [`cropland/`](cropland/).
+
 ## Introduction and overview
 
 This repository supports the 2026 JBG060 course project on flood dynamics in South Sudan. 

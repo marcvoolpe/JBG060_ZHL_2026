@@ -63,7 +63,10 @@ def public_values(ee, s):
     for k in maps:                                  # share of the box the map calls crop -> any crop, like the labels
         df[f"{k}_share"] = df[k]
         df[k] = (df[k] > 0).astype(int)
-    with rasterio.open(C.RAW / "farmland" / "asap_mask_crop_v04.tif") as src:
+    asap = C.COURSE / "farmland" / "asap_mask_crop_v04.tif"
+    if not asap.exists():                           # course data for South Sudan; another area scores the maps only
+        return df, {k: y for k, (_, y) in maps.items()}
+    with rasterio.open(asap) as src:
         v = np.array([x[0] for x in src.sample(zip(s.lon, s.lat))])
     df["asap_v04"] = ((v >= 5) & (v <= 100)).astype(int)
     return df, {k: y for k, (_, y) in maps.items()} | {"asap_v04": "2017-23"}

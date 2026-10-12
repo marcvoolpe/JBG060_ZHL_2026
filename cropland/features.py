@@ -71,13 +71,14 @@ def pixel_features(ee, geom, year: int = C.YEAR):
     ndvi = _fill([m.normalizedDifference(["B8", "B4"]) for m in s2])
     bsi = _fill([m.expression("((b('B11') + b('B4')) - (b('B8') + b('B2'))) / ((b('B11') + b('B4')) + (b('B8') + b('B2')))")
                  for m in s2])
-    mn = lambda idx: ee.ImageCollection([ndvi[i] for i in idx]).min()
-    mx = lambda idx: ee.ImageCollection([ndvi[i] for i in idx]).max()
+    mn = lambda months: ee.ImageCollection([ndvi[m - 1] for m in months]).min()      # months 1-12
+    mx = lambda months: ee.ImageCollection([ndvi[m - 1] for m in months]).max()
+    cal = C.CALENDAR                                 # South Sudan: names say the months of our study
 
-    ndvi_min_am = mn([3, 4])                         # April, May (months are 0-based here)
-    bsi_max_am = ee.ImageCollection([bsi[3], bsi[4]]).max()
-    peak = mx([5, 6, 7])                             # June-August
-    drop = peak.subtract(mn([8, 9, 10]))             # to September-November
+    ndvi_min_am = mn(cal["bare_soil"])               # April, May
+    bsi_max_am = ee.ImageCollection([bsi[m - 1] for m in cal["bare_soil"]]).max()
+    peak = mx(cal["peak"])                           # June-August
+    drop = peak.subtract(mn(cal["harvest"]))         # to September-November
     hood = drop.reduceNeighborhood(ee.Reducer.median(), ee.Kernel.square(250, "meters"))
     ndvi_int = peak.multiply(100).toInt().rename("ndvi")
     texture = ndvi_int.glcmTexture(size=1).select("ndvi_contrast")          # GLCM contrast, 3x3
@@ -89,7 +90,8 @@ def pixel_features(ee, geom, year: int = C.YEAR):
     # distance in metres, the same at any output scale (10 m study areas, 30 m national map)
     # capped at 2.5 km: the kernel may be at most 512 pixels wide at 10 m
     dist = buildings.unmask(0).distance(ee.Kernel.euclidean(2500, "meters")).unmask(2500).min(2500)
-    burned = (ee.ImageCollection("MODIS/061/MCD64A1").filterDate(f"{year - 1}-11-01", f"{year}-05-01")
+    burn_from = cal["burn_from"].replace("previous", str(year - 1))                # November before the season
+    burned = (ee.ImageCollection("MODIS/061/MCD64A1").filterDate(burn_from, f"{year}-{cal['burn_to']}")
               .select("BurnDate").max().gt(0).unmask(0))
     water = ee.Image("JRC/GSW1_4/GlobalSurfaceWater").select("occurrence").unmask(0)
 
@@ -97,15 +99,17 @@ def pixel_features(ee, geom, year: int = C.YEAR):
           .filter(ee.Filter.eq("instrumentMode", "IW"))
           .filter(ee.Filter.eq("orbitProperties_pass", "DESCENDING"))   # only pass over South Sudan in 2025
           .filter(ee.Filter.listContains("transmitterReceiverPolarisation", "VH")))
+    # a month without a pass (Aweil, January-April 2025) becomes a masked image instead of one with no bands
+    none = ee.ImageCollection([ee.Image.constant([0, 0]).rename(["VV", "VH"]).float().updateMask(0)])
     s1m = [s1.filterDate(ee.Date.fromYMD(year, m, 1), ee.Date.fromYMD(year, m, 1).advance(1, "month"))
-           .select(["VV", "VH"]).mean() for m in range(1, 13)]
+           .select(["VV", "VH"]).merge(none).mean() for m in range(1, 13)]
     vh = [m.select("VH") for m in s1m]
     vh_all = ee.ImageCollection(vh)
 
     img = ee.Image.cat([
         ndvi_min_am, bsi_max_am, peak, peak.subtract(ndvi_min_am), drop, drop.subtract(hood),
-        texture, edges, mn([0, 1, 2]), water, ee.ImageCollection([m.select("VV") for m in s1m]).min(),
-        dist, burned, vh[5], vh[6], vh[7], vh[8], vh_all.max().subtract(vh_all.min()),
+        texture, edges, mn(cal["dry"]), water, ee.ImageCollection([m.select("VV") for m in s1m]).min(),
+        dist, burned, *[vh[m - 1] for m in cal["radar"]], vh_all.max().subtract(vh_all.min()),
     ]).rename(FEATURES)
     return img.float()
 

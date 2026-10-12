@@ -1,0 +1,54 @@
+id,area,stratum,cover_differs,covers,cues_one_said_yes,n_cues_differ
+S003,aweil,B,False,open,"c. early harvest, d. field shape",2
+S015,bor_south,B,True,open / trees,b. green-up Jun-Aug,1
+S019,aweil,B,False,open,"a. bare soil Apr-May, d. field shape, e. cropped in 2024",3
+S027,aweil,A,False,open,"a. bare soil Apr-May, c. early harvest, d. field shape",3
+S032,aweil,A,False,open,d. field shape,1
+S040,bor_south,A,True,open / trees,b. green-up Jun-Aug,1
+S041,aweil,C,False,open,"a. bare soil Apr-May, d. field shape, e. cropped in 2024",3
+S050,bor_south,B,False,open,d. field shape,1
+S052,aweil,B,False,open,d. field shape,1
+S056,aweil,C,False,open,"a. bare soil Apr-May, b. green-up Jun-Aug, d. field shape",3
+S060,aweil,A,True,open / trees,"b. green-up Jun-Aug, d. field shape",2
+S062,aweil,B,False,open,d. field shape,1
+S073,aweil,C,False,open,"c. early harvest, d. field shape, e. cropped in 2024",3
+S085,aweil,C,False,open,"d. field shape, e. cropped in 2024",2
+S094,aweil,C,False,open,d. field shape,1
+S100,aweil,B,False,open,d. field shape,1
+S115,bor_south,B,False,open,"a. bare soil Apr-May, b. green-up Jun-Aug, c. early harvest, d. field shape, e. cropped in 2024",5
+S117,aweil,B,False,open,,0
+S121,aweil,B,False,open,d. field shape,1
+S136,aweil,A,False,open,d. field shape,1
+S155,aweil,C,False,open,"c. early harvest, d. field shape, e. cropped in 2024",3
+S159,aweil,B,False,open,"c. early harvest, d. field shape, e. cropped in 2024",3
+S170,aweil,A,False,open,d. field shape,1
+S178,aweil,B,False,open,"a. bare soil Apr-May, d. field shape, e. cropped in 2024",3
+S186,aweil,A,True,open / trees,"a. bare soil Apr-May, b. green-up Jun-Aug, c. early harvest",3
+S187,aweil,B,False,open,c. early harvest,1
+S213,bor_south,B,False,open,"a. bare soil Apr-May, b. green-up Jun-Aug",2
+S219,bor_south,B,False,open,,0
+S220,aweil,C,False,open,"c. early harvest, d. field shape",2
+S226,bor_south,B,False,open,a. bare soil Apr-May,1
+S236,aweil,B,False,open,e. cropped in 2024,1
+S257,bor_south,B,False,open,"b. green-up Jun-Aug, d. field shape",2
+S259,aweil,B,False,open,"c. early harvest, d. field shape",2
+S265,aweil,C,False,open,"c. early harvest, d. field shape, e. cropped in 2024",3
+S270,aweil,A,False,open,"c. early harvest, d. field shape",2
+S281,aweil,B,False,open,"c. early harvest, d. field shape, e. cropped in 2024",3
+S282,aweil,B,False,open,d. field shape,1
+S291,bor_south,B,False,open,"a. bare soil Apr-May, d. field shape",2
+S303,aweil,C,False,open,c. early harvest,1
+S333,aweil,B,False,open,"c. early harvest, d. field shape",2
+S339,aweil,C,False,open,"c. early harvest, d. field shape, e. cropped in 2024",3
+S343,aweil,B,False,open,d. field shape,1
+S347,aweil,A,True,open / trees,"a. bare soil Apr-May, b. green-up Jun-Aug, c. early harvest, d. field shape",4
+S356,aweil,A,True,open / trees,"a. bare soil Apr-May, b. green-up Jun-Aug, c. early harvest",3
+S362,aweil,B,False,open,"c. early harvest, d. field shape, e. cropped in 2024",3
+S370,aweil,A,False,open,"c. early harvest, d. field shape, e. cropped in 2024",3
+S391,aweil,C,False,open,"a. bare soil Apr-May, b. green-up Jun-Aug, d. field shape",3
+S393,aweil,B,False,open,"c. early harvest, d. field shape, e. cropped in 2024",3
+S406,aweil,C,False,open,d. field shape,1
+S415,aweil,B,False,open,"a. bare soil Apr-May, b. green-up Jun-Aug, d. field shape",3
+S425,aweil,A,False,open,"a. bare soil Apr-May, d. field shape",2
+S439,aweil,C,False,open,c. early harvest,1
+S447,aweil,B,False,open,"c. early harvest, d. field shape",2

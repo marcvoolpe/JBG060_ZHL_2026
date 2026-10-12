@@ -1,0 +1,27 @@
+{
+  "name": "logistic_rule1_inputs",
+  "frozen": "2026-10-12",
+  "features": [
+    "dist_buildings_m",
+    "edge_density"
+  ],
+  "fill": {
+    "dist_buildings_m": 979.2599,
+    "edge_density": 0.0823
+  },
+  "mean": {
+    "dist_buildings_m": 1194.863334,
+    "edge_density": 0.112327
+  },
+  "sd": {
+    "dist_buildings_m": 1069.885314,
+    "edge_density": 0.086188
+  },
+  "coef_per_sd": {
+    "dist_buildings_m": -3.30287,
+    "edge_density": 1.516246
+  },
+  "intercept": -2.385123,
+  "C": 21.54434690031882,
+  "crop_if": "intercept + sum(coef * (x - mean) / sd) > 0"
+}

@@ -1,0 +1,41 @@
+source,year,level,name,state10,population,households,pct_farming,farming_households,ha_per_farming_household,cereal_harvested_ha,gross_yield_t_ha,net_cereal_t,where
+CFSAM,2025,county,Aweil Centre,Northern Bahr el Ghazal,80752,17532,75,13149,1.20,15779,0.6,7953,CFSAM 2025 Tables 2-3
+CFSAM,2025,county,Aweil East,Northern Bahr el Ghazal,366583,67275,80,53820,0.63,33907,0.8,20344,CFSAM 2025 Tables 2-3
+CFSAM,2025,county,Aweil North,Northern Bahr el Ghazal,179094,34524,85,29346,0.80,23476,1.0,18781,CFSAM 2025 Tables 2-3
+CFSAM,2025,county,Aweil South,Northern Bahr el Ghazal,150879,28725,67,19246,0.72,13857,0.8,9090,CFSAM 2025 Tables 2-3
+CFSAM,2025,county,Aweil West,Northern Bahr el Ghazal,216683,37363,80,29890,0.82,24510,1.5,29412,CFSAM 2025 Tables 2-3
+CFSAM,2025,county,Bor South,Jonglei,360983,51190,65,33273,0.78,25953,0.7,14534,CFSAM 2025 Tables 2-3
+CFSAM,2025,state,Central Equatoria,Central Equatoria,1642927,267966,55,147785,0.82,120600,1.5,143926,CFSAM 2025 Tables 2-3
+CFSAM,2025,state,Eastern Equatoria,Eastern Equatoria,1196150,199320,75,150295,1.04,155634,1.3,156299,CFSAM 2025 Tables 2-3
+CFSAM,2025,state,Jonglei,Jonglei,1833011,256649,44,111973,0.63,70829,0.8,42965,CFSAM 2025 Tables 2-3
+CFSAM,2025,state,Pibor Administrative Area,Jonglei,326597,50413,53,26681,0.78,20710,0.8,13081,CFSAM 2025 Tables 2-3
+CFSAM,2025,state,Lakes,Lakes,1285865,174031,80,139777,1.34,186953,1.3,188442,CFSAM 2025 Tables 2-3
+CFSAM,2025,state,Northern Bahr el Ghazal,Northern Bahr el Ghazal,993991,185420,78,145451,0.77,111530,1.0,85580,CFSAM 2025 Tables 2-3
+CFSAM,2025,state,Unity,Unity,994351,117935,37,43416,0.45,19698,0.9,13421,CFSAM 2025 Tables 2-3
+CFSAM,2025,state,Ruweng Administrative Area,Unity,199978,24119,56,13587,0.57,7763,1.1,6833,CFSAM 2025 Tables 2-3
+CFSAM,2025,state,Upper Nile,Upper Nile,1618027,240420,47,112948,0.79,88816,0.8,56726,CFSAM 2025 Tables 2-3
+CFSAM,2025,state,Western Bahr el Ghazal,Western Bahr el Ghazal,704604,123152,82,100374,0.91,91504,1.4,99157,CFSAM 2025 Tables 2-3
+CFSAM,2025,state,Warrap,Warrap,1375467,241590,76,183991,0.99,181463,1.1,154983,CFSAM 2025 Tables 2-3
+CFSAM,2025,state,Abyei Administrative Area,Abyei Region,137977,20603,40,8241,0.85,7005,0.9,5044,CFSAM 2025 Tables 2-3
+CFSAM,2025,state,Western Equatoria,Western Equatoria,1026065,196080,78,152627,1.29,196380,1.6,246649,CFSAM 2025 Tables 2-3
+CFSAM,2025,national,South Sudan,,,,,,,1258886,1.2,1213106,CFSAM 2025 Table 3 (TOTAL)
+CFSAM,2022,county,Aweil Centre,Northern Bahr el Ghazal,124679,27069,60,16242,1.00,16242,0.84,10914,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,county,Aweil East,Northern Bahr el Ghazal,624742,114652,75,85989,0.65,55893,0.70,31300,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,county,Aweil North,Northern Bahr el Ghazal,317820,61267,80,49013,0.80,39211,0.85,26663,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,county,Aweil South,Northern Bahr el Ghazal,169916,32350,70,22645,0.84,19022,0.65,9891,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,county,Aweil West,Northern Bahr el Ghazal,352558,60792,75,45594,0.80,36475,1.30,37934,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,county,Bor South,Jonglei,271371,38482,52,20011,0.73,14608,0.75,8765,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,state,Central Equatoria,Central Equatoria,1202175,194378,45,88419,0.93,82619,1.38,91030,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,state,Eastern Equatoria,Eastern Equatoria,1127333,194381,71,137588,0.97,133950,1.17,125522,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,state,Jonglei,Jonglei,1668776,233176,33,76828,0.61,46728,0.72,26774,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,state,Pibor Administrative Area,Jonglei,309324,47804,48,23060,0.72,16650,0.85,11332,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,state,Lakes,Lakes,1389929,186670,75,139952,1.16,161687,1.18,152367,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,state,Northern Bahr el Ghazal,Northern Bahr el Ghazal,1589716,296130,74,219483,0.76,166843,0.87,116703,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,state,Unity,Unity,784428,97919,29,28025,0.44,12433,0.66,6530,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,state,Ruweng Administrative Area,Unity,184050,22672,43,9767,0.46,4479,0.92,3281,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,state,Upper Nile,Upper Nile,1129595,167450,47,78209,0.62,48454,0.67,25992,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,state,Western Bahr el Ghazal,Western Bahr el Ghazal,614643,109397,69,75927,0.85,64264,1.26,64682,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,state,Warrap,Warrap,1576831,275768,71,196240,0.91,179533,0.89,128318,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,state,Abyei Administrative Area,Abyei Region,88897,13274,60,7964,1.00,7964,0.90,5734,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,state,Western Equatoria,Western Equatoria,864051,158881,74,117622,1.30,153319,1.45,177942,CFSAM 2022 Tables 1 and 4
+CFSAM,2022,national,South Sudan,,12529746,1997900,60,1199083,0.90,1078923,1.08,936207,CFSAM 2022 Tables 1 and 4 (TOTAL)

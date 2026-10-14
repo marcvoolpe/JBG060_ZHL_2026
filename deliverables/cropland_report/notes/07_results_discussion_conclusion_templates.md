@@ -30,7 +30,7 @@ Tables in `cropland/results/`. Accuracy on test points both labellers agree on, 
 | Aweil counties | 10,314 ha (0.3% of the area) | 10 (Esri 2025) to 307 ha (Digital Earth Africa); ASAP 77 | 3,588 ha | 606 ha, but from **1** point in a flood cell: cannot tell |
 | Bor South | 29,419 ha (2.1%) | 0-10 ha, except Dynamic World 1,606 ha | 126 ha | 0 ha from **2** points in flood cells, neither with cropland: cannot tell |
 
-- **The maps disagree by a factor of 30 in Aweil** (10 to 307 ha among the public maps). In Bor South Dynamic World alone puts 1,606 ha of cropland under water, where every other map sees almost none: the same wetland it calls crop at 44 of 74 empty test boxes. So "the map decides the trigger" (notes 01, finding 5) holds for 2025 too.
+- **The maps disagree by a factor of 30 in Aweil** (10 to 307 ha among the public maps). In Bor South Dynamic World alone puts 1,606 ha of cropland under water, where every other map sees almost none: the same kind of land it calls crop at 44 of 74 empty test boxes (open grassland, no field). So "the map decides the trigger" (notes 01, finding 5) holds for 2025 too.
 - **The sample cannot say which map is right about the flooded part.** A random sample over the whole area puts almost no points on the 0.3-2.1% of land that floods. The usual interval (Bor South "0 to 0 ha") would look precise without being so; with the cautious upper bound, capped at the flooded land, the sample says "cannot tell" at every trigger threshold from 100 to 5,000 ha. This is a negative result to report plainly.
 - **What we can still say:** which maps are accurate on cropland in general (R3), and that Dynamic World's flooded cropland in Bor South comes from a class that is wrong on dry test boxes. **Next time:** a stratum on flood-prone land (e.g. the recurring flood mask) with its own points, so flooded cropland gets its own estimate (Discussion; REUSE).
 - Our map's 3,588 ha in Aweil counts land whose 210 m box holds crop near a flood cell, so it is an upper bound; it is not comparable with the public maps' pixel counts.
@@ -47,7 +47,7 @@ Tables in `cropland/results/`. Accuracy on test points both labellers agree on, 
 
 - **The maps under-count flooded cropland, as they under-count cropland.** In all 9 Aweil years with enough points, the sample's estimate is 4-16 times the maps' median and above all 8 maps in 5 years (2007, 2008, 2010, 2020, 2022; level with the highest in 2013). Intervals are wide (lower bounds above zero only in 2008 and 2022), so state the direction, not a factor.
 - **Trigger hindcast** (`trigger_hindcast.csv`): the sample can confirm a trigger at 100-500 ha in 2008 and 2022, and at 1,000 ha in 2008. In those floods, **Esri, GLAD and WorldCover would have stayed silent** (500 ha in 2022; 1,000 ha in 2008): missed triggers in the two biggest floods. In the other years the sample cannot tell.
-- **Bor South**: only 2007 and 2010 have 5+ points on flooded land, with almost no cropland (0 and 358 ha). In 2007 the sample's upper bound (2,096 ha) is below a 5,000 ha trigger, while both Dynamic World versions would have fired: a false alarm on wetland.
+- **Bor South**: only 2007 and 2010 have 5+ points on flooded land, with almost no cropland (0 and 358 ha). In 2007 the sample's upper bound (2,096 ha) is below a 5,000 ha trigger, while both Dynamic World versions would have fired: a false alarm on grassland.
 - **10+ flood days** (closer to crop damage): only 2008 has enough points: 6,711 ha (5,175-12,019).
 - **Where** (figure 13 and `maps/flood_aweil_2022.html`): in the 2022 flood, WorldCereal shows crop in 1,646 of 10,184 flooded cells; our map adds 3,627 (Esri as 'before': 5,191 added). The added cells lie along the Lol and in Aweil East and South, where 9 of the 11 sample points on flooded land hold cropland.
 - **Our map** (box holds crop, compared with the sample's "box holds it"): close to the sample in 2007, 2010, 2019 and 2020 (e.g. 2010: 11,709 against 11,366 ha), higher in 2013, 2014 and 2021, lower in 2008 and 2022; never outside the sample's (wide) interval.
@@ -104,7 +104,7 @@ Template: "On the [n_test] test points in Aweil, recall ranged from [r_min] ([ma
 
 Template: "False crop concentrates on [open land without crop cues / wetland / trees] ([x] of [n] false-crop points for [map]); missed crop on [small fields / boxes within 250 m of homesteads / fallow] ([x] of [n])."
 
-Expected patterns to confirm or reject: Dynamic World false crop on wetland grass in Bor South; Esri and Dynamic World missing small fields near homesteads; GLAD and GFSAD counting fallow as crop (fine for "cropland", not for "cropped").
+Expected patterns to confirm or reject: Dynamic World false crop on wetland grass in Bor South (14 Oct: confirmed as grassland, open land without a field; not open water, so do not call it wetland); Esri and Dynamic World missing small fields near homesteads; GLAD and GFSAD counting fallow as crop (fine for "cropland", not for "cropped").
 
 ### R5. Flooded cropland and the trigger (inputs: `results/flooded_cropland.csv`; `evaluation.trigger_agreement`)
 

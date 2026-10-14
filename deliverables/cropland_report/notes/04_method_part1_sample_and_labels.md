@@ -45,7 +45,7 @@ How they connect: the maps only decide where points go (step 3); people decide w
 
 ### Why agreement strata (not one map, as Adebayo et al. do)
 
-- Adebayo et al. stratify on one map at a time and pick the map that needs the fewest points. That needs a credible map to start from. In South Sudan we have no accuracy information for any map, and the maps disagree too much to pick one: stratifying on Dynamic World would put Bor South's B stratum on wetland grass (file 01, finding 1).
+- Adebayo et al. stratify on one map at a time and pick the map that needs the fewest points. That needs a credible map to start from. In South Sudan we have no accuracy information for any map, and the maps disagree too much to pick one: stratifying on Dynamic World would put Bor South's B stratum on grassland it calls crop (file 01, finding 1; confirmed by the labels).
 - Kerner et al. (2024) suggest strata by consensus level. Every map's crop pixels fall in B or C, so every map gets enough "map says crop" points to estimate its precision; points in A test what all maps miss (their recall).
 - **The cost**: stratum A is 95% of Aweil, so a little crop in A carries a large area. With 150 / 90 / 90 points and crop shares of 1-5% in A, 91-99% of the variance of the area estimate comes from A, and the 95% interval is about ±1.6-3.4 percentage points (`sample_size_planning_aweil.csv`). This is Adebayo's rare-class finding seen from the other side: omission (fields no map sees) drives the uncertainty. We report it, and it sets the recommendation for next year's design (file 05).
 

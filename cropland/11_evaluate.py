@@ -70,7 +70,7 @@ def main() -> None:
     if lit.exists():
         V.published_vs_ours(accuracy, pd.read_csv(lit)).to_csv(RES / "published_vs_ours.csv", index=False)
 
-    public = [m for m in maps if m in values and m not in ("rule1", "rf_features", "rf_embedding") and values[m].isin([0, 1]).all()]
+    public = [m for m in C.CONFIG["strata"]["maps"] + ["asap_v04"] if m in values]   # public maps only, never our models
     eff = []
     for area in C.AREAS:
         w = W[W.area == area].set_index("stratum").share.to_dict()

@@ -24,6 +24,7 @@ needed.
 | 3 | `figures/01`, `07`, `09`, `11` | 5 min | the story in four pictures |
 | 4 | `DASHBOARD_PLAN.md`, section 3 | 5 min | the five dashboard pages |
 | 5 | `notes/04_method_part1_sample_and_labels.md`, section 4.4b | 5 min | what we can do with the 65 disagreements |
+| 6 | `report/report_draft.md` (added 14 Oct) | 20 min, can replace your part's notes | the whole report as a draft from our results, about twice the word limit: mark what to cut in `REVIEW_NOTES.md` |
 
 ## 2. Your own part (about 90 minutes)
 
@@ -61,7 +62,7 @@ and push to the same branch (`git pull` first). Start each comment with a tag:
 | 5 | Dashboard: the five pages and who builds what (`DASHBOARD_PLAN.md`, 5b) | confirm / change | confirm; build 16-18 Oct, frozen 19 Oct | Marc |
 | 6 | Report: section owners, word budget, figures | per section | budget in README section 8; figures 1, 3, 7, 9 + method diagram | Matteo |
 | 7 | Poster: panels and owners (`notes/08`, rewritten 14 Oct against the Canvas rubric: A0 portrait, 20 pt minimum also inside figures, 300-400 words) | per panel | panels A-I as in notes 08; figures 14, 15, 13, 12 + a method diagram; everyone rehearses the pitch and the questions | Yassin |
-| 8 | Bor South: how to present it | | area 0.4% with a wide interval; no recall possible (no agreed crop test point); Dynamic World paints wetland as crop | Marc |
+| 8 | Bor South: how to present it | | area 0.4% with a wide interval; no recall possible (no agreed crop test point); Dynamic World calls open grassland crop | Marc |
 | 8b | Flooded cropland (added 14 Oct): the sample has 1-2 points in flood cells and cannot tell; keep the cautious bound ("cannot tell") and say so, or present the map numbers only | cautious bound / maps only | cautious bound, reported as a negative result plus the lesson (a flood stratum next season) | Yassin |
 | 8c | Past floods on today's cropland (added 14 Oct, figure 12, notes 07 R5b): use in the report and on the poster? It is an analysis added after the results, a scenario (2025 cropland), with two rules set after a first look (5+ points; trivial years not counted) | use as scenario / appendix only / drop | use, as the anticipatory-action result, with its limits stated | Yassin |
 | 9 | Merge `cropland-review-12oct` into `main` | now / after fixes | after the [fix] comments are done | whoever is last |

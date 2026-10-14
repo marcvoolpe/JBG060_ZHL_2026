@@ -1,21 +1,31 @@
-# Methodological report (LaTeX skeleton)
+# Methodological report (LaTeX)
 
-`report.tex` has the eight rubric headings, draft text where we already have content, red `[placeholders]` for what is still to come, blue "Idea" boxes with choices to make, and a word target per section. The long notes behind each section are in `deliverables/cropland_report/notes/` (01-08).
+Two versions, same template, same figures and references:
 
-## Build and upload
+| file | what it is |
+|---|---|
+| `report_draft.tex` | **the full draft written from our results (14 Oct)**, about 4,100 words with captions, so the group cuts rather than writes. Results waiting for a group decision carry an orange `[pending decision N]` tag (REVIEW_PLAN.md, section 4); red `[...]` marks what is still to write or make (names, the method diagram); blue "Idea" boxes suggest what to cut. |
+| `report_draft.md` | **a reading copy of the draft for GitHub**, with the numbers filled in, the figures shown and a reference list. Generated: do not edit it; edit `report_draft.tex` and run `python deliverables/cropland_report/report/draft_to_markdown.py`. |
+| `report.tex` | the earlier skeleton: the eight rubric headings with placeholders, idea boxes and a word target per section. Kept for its notes; the draft supersedes it. |
 
-1. Run `cropland/eda_public_maps.ipynb` (writes `deliverables/cropland_report/tables/key_numbers.csv` and the figures).
-2. `python deliverables/cropland_report/report/build_report_inputs.py` writes:
-   - `numbers.tex`: one LaTeX macro per quoted number (e.g. `\AwCropMin` = 0.22\%). Never type a result by hand: rerun the notebook and this script, and the report follows;
-   - `figures/`: the notebook's figures (PNG, not in git);
-   - `overleaf_upload.zip`: everything Overleaf needs. Overleaf: New project > Upload project > the zip.
-3. Compile with pdfLaTeX + BibTeX (Overleaf does this by default).
+The long notes behind each section are in `deliverables/cropland_report/notes/` (01-08); the results with every number are in notes 07, section 7.0.
+
+## Numbers are never typed by hand
+
+`python deliverables/cropland_report/report/build_report_inputs.py` writes:
+- `numbers.tex`: the EDA numbers (from `tables/key_numbers.csv`, written by `cropland/eda_public_maps.ipynb`), e.g. `\AwCropMin` = 0.22\%;
+- `results.tex`: the results (from `cropland/results/`, steps 09-12): area, F1, precision and recall of every map, flooded cropland, the 2000-2025 floods, e.g. `\AwAreaHa` = 116,500, `\RuleOneFone` = 0.72;
+- `figures/`: copies of all figures (not in git);
+- `overleaf_upload.zip`: both .tex files, references, numbers, results and figures. Overleaf: New project > Upload project > the zip, then compile `report_draft.tex`.
+
+After any rerun of the pipeline, rerun the build script (and the Markdown converter): the text follows the new numbers.
 
 ## Word limit (2,000 words, captions included, words in tables and figures not)
 
-- Switch `\drafttrue` to `\draftfalse` in `report.tex`: placeholders, idea boxes and word targets disappear.
-- Overleaf: Menu > Word Count. Table bodies are wrapped in `%TC:ignore ... %TC:endignore`, and `\ph`, `\idea`, `\budget` are ignored by the counter, so Overleaf's count follows the course rule. Add "words in headers" and "words in floats/captions" to the text count.
+- Switch `\drafttrue` to `\draftfalse`: tags, placeholders and idea boxes disappear.
+- Overleaf: Menu > Word Count. Table bodies are wrapped in `%TC:ignore ... %TC:endignore`, and `\ph`, `\idea`, `\pending` are ignored by the counter. Add "words in headers" and "words in floats/captions" to the count.
+- The draft is about twice the limit. The idea box under Results suggests which figures to move to the poster; the Discussion and Approach have the most room to cut.
 
-## Not checked locally
+## Not compiled locally
 
-There is no LaTeX on the laptop where this was written; the file was checked for balanced environments, braces, labels and citations only (`check_tex.py`, in the agent's scratchpad). Compile once on Overleaf and fix anything it reports.
+There is no LaTeX on the laptop where this was written. Both files were checked for balanced environments and braces, resolved references and citations, and every number macro defined. Compile once on Overleaf and fix anything it reports.

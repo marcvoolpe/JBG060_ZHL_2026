@@ -41,7 +41,7 @@ From `trigger_check.csv` (observed floods June-December, cells flooded at least 
 | South Sudan south of 10 N, 2022 | 1,193 - 21,353 ha (CFSAM: 130,000 ha damaged) | 5,000 ha: 3 of 8 |
 
 - The relative form (y% of the yield) is no safer: the share of a map's cropland that flooded in Aweil in 2022 runs from 1.6% to 23.7% between maps.
-- So for the same flood, **whether the trigger fires is decided by the map**, not by the water. A trigger built on a map with low recall stays silent (a miss: "vulnerable people did not receive critical assistance on time", slide 10); one built on a map that calls wetland crop fires on grass (a false alarm: "critical resources spent ... decreased trust", slide 10).
+- So for the same flood, **whether the trigger fires is decided by the map**, not by the water. A trigger built on a map with low recall stays silent (a miss: "vulnerable people did not receive critical assistance on time", slide 10); one built on a map that calls grassland crop fires on grass (a false alarm: "critical resources spent ... decreased trust", slide 10).
 - What we planned to add: flooded cropland from the labelled sample, with a 95% interval and independent of any map, so ZOA could set "x% certainty" on the cropland part too. **In 2025 this did not work** (step 10, 14 Oct): only 1 of 330 Aweil points and 2 of 120 Bor South points fall in a flood cell, because flooded land is 0.3% and 2.1% of the areas, so the sample "cannot tell" at any threshold (notes 07, R5). What we do add: which maps are accurate on cropland in each area (scorecard; Dynamic World's 1,600 ha in Bor South comes from a class that is wrong on dry test boxes), and the design that would fix it: a stratum on flood-prone land with its own points next season.
 - **Past floods on today's cropland (2000-2025; notes 07, R5b, figure 12).** In Aweil's big flood years enough sample points lie on flooded land, and the picture is consistent: the sample puts 4-16 times more cropland under water than the median public map (2022: 7,263 ha, 639-14,336, against 331-3,572 ha). Played back as a trigger, the sample confirms a 500 ha trigger in 2008 and 2022, and **Esri, GLAD and WorldCover would have stayed silent in 2022** (and at 1,000 ha in 2008): a missed trigger in exactly the floods that matter. In Bor South in 2007, both Dynamic World versions would have fired a 5,000 ha trigger the sample rules out: a false alarm. For ZOA this is the most direct argument: with a low-recall map, the trigger misses the big floods.
 
@@ -100,7 +100,7 @@ ZOA wants local staff, and ideally community leaders, to run things without exte
 ## 5.9 Positive and negative impacts of using it (for the Discussion)
 
 Positive:
-- Fewer silent misses where maps under-count fields, fewer false alarms where a map paints wetland as crop; triggers with a stated uncertainty, as ZOA asked.
+- Fewer silent misses where maps under-count fields, fewer false alarms where a map calls grassland crop; triggers with a stated uncertainty, as ZOA asked.
 - Transparent: a written key, readable rules, open data; numbers a community meeting can discuss.
 - Cheap to repeat, so the check can follow the landscape (returnees expanding fields, CFSAM 2025; fields shifting after floods).
 

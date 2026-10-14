@@ -20,6 +20,7 @@ Group 1, JBG060. Everything for the methodological report (max 2,000 words, due 
 | 10 flood overlay + trigger agreement | **done 14 Oct**: the maps disagree (Aweil 10-307 ha flooded cropland; Bor South 0-10 ha, Dynamic World 1,606); the sample has only 1-2 points in flood cells, so it **cannot tell** flooded cropland (notes 07, R5) |
 | 10b past floods 2000-2025 on today's cropland | **done 14 Oct** (`cropland/10b_flood_history.py`, figure 12): in Aweil's 9 big flood years the sample puts 4-16 times more cropland under water than the median map; Esri, GLAD and WorldCover would have missed a 500 ha trigger in 2022 (notes 07, R5b) |
 | Figures 13-15 and the interactive flood map | **done 14 Oct**: before/after flood map (13, `maps/flood_aweil_2022.html`, `cropland/10c_flood_map.py`), area vs maps (14), scorecard (15) |
+| **Report draft** | **written 14 Oct from the results**: `report/report_draft.md` (read it on GitHub) and `report/report_draft.tex` (edit it; Overleaf). About 4,100 words, so the group cuts to 2,000; pending decisions tagged |
 | Poster | plan rewritten 14 Oct against the Canvas requirements and rubric (notes 08): A0 portrait, 20 pt minimum, 300-400 words, panels A-I, pitch and questions |
 | Dashboard | plan revised 12 Oct ([`DASHBOARD_PLAN.md`](DASHBOARD_PLAN.md), in this folder): five-page results story, no general course data |
 | Own trees (Wei, Matei) | open: `cropland/tree_workbench.ipynb` (calibration points only; retrains Rule 1 exactly; writes nothing until `FREEZE = True`) |

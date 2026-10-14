@@ -3,6 +3,8 @@ Our map over the whole country: how much it marks, counted from its native pixel
 and how its state ranking compares with the FAO/WFP crop assessment (CFSAM 2025).
 
     python cropland/national_map.py summary cropland/rule1_2026-10-12.json      (Earth Engine, about a minute)
+    python cropland/national_map.py fetch cropland/rule1_2026-10-12.json        (Earth Engine: ~1 km map, cached)
+    python cropland/national_map.py figure                                      (figure 27, no Earth Engine)
 
 Writes results/rule1_map_share.csv (study areas: 10 m map, 30 m national map, and the stratified estimate of the
 map's share from the labelled points) and results/rule1_national_by_state.csv (share and hectares per state, CFSAM
@@ -72,8 +74,83 @@ def summary(rule_file: Path) -> None:
     print(f"South Sudan: {100 * t.map_ha.sum() / t.ha.sum():.1f}% of the land, {t.map_ha.sum():,.0f} ha; rank correlation with CFSAM {rho:.2f}")
 
 
+CELL, BBOX = 0.01, (23.4, 3.4, 36.0, 12.3)              # ~1.1 km cells over South Sudan (west, south, east, north)
+CACHE = C.OUT / "eda" / "national_rule1_1km.npz"
+
+
+def fetch(rule_file: Path, strips: int = 6) -> None:
+    """Share of each ~1 km cell that our national map marks, from the native 30 m pixels, plus the share inside the country."""
+    import numpy as np
+    ee = C.ee_init()
+    nat = ee.Image(f"{C.ASSETS}/{rule_file.stem}_south_sudan")
+    img = ee.Image.cat([nat.unmask(0).toFloat().rename("share"), nat.mask().toFloat().rename("inside")])
+    west, south, east, north = BBOX
+    nx, ny = round((east - west) / CELL), round((north - south) / CELL)
+    out = {"share": np.zeros((ny, nx), np.float32), "inside": np.zeros((ny, nx), np.float32)}
+    rows = np.linspace(0, ny, strips + 1).astype(int)
+    for r0, r1 in zip(rows[:-1], rows[1:]):
+        top = north - r0 * CELL
+        t = [CELL, 0, west, 0, -CELL, top]
+        agg = img.reduceResolution(ee.Reducer.mean(), maxPixels=4096).reproject(crs="EPSG:4326", crsTransform=t)
+        got = ee.data.computePixels({"expression": agg, "fileFormat": "NUMPY_NDARRAY",
+                                     "grid": {"dimensions": {"width": nx, "height": int(r1 - r0)}, "crsCode": "EPSG:4326",
+                                              "affineTransform": {"scaleX": CELL, "shearX": 0, "translateX": west,
+                                                                  "shearY": 0, "scaleY": -CELL, "translateY": top}}})
+        out["share"][r0:r1], out["inside"][r0:r1] = got["share"], got["inside"]
+        print(f"  rows {r0}-{r1} of {ny}", flush=True)
+    np.savez_compressed(CACHE, **out, bbox=np.array(BBOX), cell=CELL)
+    print("saved", CACHE)
+
+
+def figure():
+    """Figure 27: the national map (share of each cell marked) and its state ranking against CFSAM 2025."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from matplotlib.colors import BoundaryNorm, ListedColormap
+    import eda_figures as FG
+    z = np.load(CACHE)
+    share = np.where(z["inside"] > 0.5, z["share"] / np.maximum(z["inside"], 1e-6), np.nan)
+    west, south, east, north = z["bbox"]
+    adm1 = gpd.read_file(C.ADMIN2.parent / "ssd_admin1.geojson")
+    adm2 = gpd.read_file(C.ADMIN2)
+    oranges = ["#f4f3ef", "#fde9df", "#f9c4ab", "#f39b74", "#eb6834", "#b84a1d"]
+    bounds = [0, 0.001, 0.05, 0.15, 0.3, 0.5, 1.0001]
+    fig, (ax, bx) = plt.subplots(1, 2, figsize=(12, 5.6), gridspec_kw={"width_ratios": [1.45, 1]})
+    im = ax.imshow(share, extent=(west, east, south, north), cmap=ListedColormap(oranges), norm=BoundaryNorm(bounds, 6),
+                   interpolation="nearest")
+    adm1.boundary.plot(ax=ax, color=FG.MUTED, linewidth=0.5)
+    for area in C.AREAS:
+        adm2[adm2[C.ADMIN2_NAME].isin(C.AREAS[area])].dissolve().boundary.plot(ax=ax, color=FG.INK, linewidth=1.6)
+    ax.set_xlim(west, east), ax.set_ylim(south, north), ax.set_aspect(1 / np.cos(np.radians(8))), ax.set_axis_off()
+    ax.set_title("Our map over South Sudan: share of each ~1 km cell where a 210 m box holds a field\n"
+                 "(black outlines: Aweil counties and Bor South, the only areas with labels; elsewhere not checked)",
+                 loc="left", fontsize=9)
+    cb = fig.colorbar(im, ax=ax, shrink=0.55, pad=0.01)
+    cb.set_ticks(bounds[:-1] + [1], labels=["0", "", "5%", "15%", "30%", "50%", "100%"], fontsize=7)
+    t = pd.read_csv(RES / "rule1_national_by_state.csv").dropna(subset=["cfsam_pct"])
+    bx.scatter(t.map_pct, t.cfsam_pct, s=36, color=FG.SERIES[1], edgecolor=FG.SURFACE, zorder=3)
+    for r in t.itertuples():
+        off = (4, -10) if r.state == "Western Bahr el Ghazal" else (4, 3)        # keep it clear of Upper Nile
+        bx.annotate(r.state, (r.map_pct, r.cfsam_pct), xytext=off, textcoords="offset points", fontsize=7.5, color=FG.INK2)
+    rho = spearmanr(t.map_pct, t.cfsam_pct)[0]
+    bx.set_xlabel("our map: land whose 210 m box holds a field, % of the state")
+    bx.set_ylabel("CFSAM 2025 cereal area, % of the state (modelled)")
+    bx.set_title(f"States: our map against the crop assessment\nrank correlation {rho:.2f} (public maps -0.36 to 0.25; GFSAD 0.59)",
+                 loc="left", fontsize=9)
+    bx.set_xlim(0, None), bx.set_ylim(0, None)
+    bx.grid(True, color=FG.GRID_C, linewidth=0.8), bx.set_axisbelow(True)
+    fig.tight_layout()
+    return FG._save(fig, "27_national_map")
+
+
 if __name__ == "__main__":
     if sys.argv[1:2] == ["summary"] and len(sys.argv) == 3:
         summary(Path(sys.argv[2]))
+    elif sys.argv[1:2] == ["fetch"] and len(sys.argv) == 3:
+        fetch(Path(sys.argv[2]))
+    elif sys.argv[1:2] == ["figure"]:
+        print(figure())
     else:
         raise SystemExit(__doc__)

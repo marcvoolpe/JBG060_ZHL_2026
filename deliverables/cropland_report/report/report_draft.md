@@ -89,7 +89,7 @@ For every box we computed 18 features in Google Earth Engine (Table 6). Each is 
 
 ![Figure 3](../figures/17_method_diagram.png)
 
-*Figure 3. The approach. The sample is drawn from strata of map agreement and labelled twice; the labels give the area, train our models (calibration points) and score every map (test points); flood masks are laid over all of them. The protocol was frozen before labelling; every later change is in a dated change log (Appendix G).*
+*Figure 3. The approach. The sample is drawn from strata of map agreement and labelled twice; the labels give the area, train our models (calibration points) and score every map (test points); flood masks are laid over all of them. The protocol was frozen before labelling; every later change is in a dated change log (Appendix H).*
 
 ## 5. Evaluation Methodology
 
@@ -125,6 +125,8 @@ Two further measures address ZOA's wish for a cheap, local check: the number of 
 **The models.** Rule 1 learned two questions (Figure 7): is there a building within 333 m of the box, and does the box show field edges? Of the 40 calibration boxes that pass both, 39 hold a cropped field; of the 79 boxes far from any building, 2. On the test points, which it had never seen, the questions hold up: 93 of the 98 boxes it calls crop are cropland, and only 3 of the 149 boxes far from buildings are (Figure 15). In cross-validation on the calibration points all models scored alike: trees 0.85-0.86, logistic regressions 0.87-0.88, the random forest 0.92 (Figure 8, Table 7). On the test points every model scores lower, between 0.61 and 0.76, with overlapping intervals. Two things explain the drop: cross-validation counts every point alike, while the test scores weigh each point by the land it stands for, so a false crop in stratum A (95% of Aweil) weighs heavily; and with 41 crop points the calibration scores are themselves uncertain. What the models learned agrees (Figure 16). Distance to the nearest building is the strongest input of the logistic model (-0.85 log-odds per standard deviation), followed by June radar (-0.85; lower over cropland, likely because fields are freshly sown and bare, Figure 14) and the harvest drop (+0.64). In the random forest, distance to buildings carries 0.23 of the importance and field edges 0.14. Cropland in Aweil is homestead cropland, and every model finds it there. Our answer to "trees or logistic regression?" is that it matters little here; we keep the two-question tree because local staff can read and check it. *(pending decision 2)*
 
 **Where maps fail.** Rule 1's false crop lies within 250 m of buildings and its missed crop mostly farther away: it is, in effect, a "fields around homesteads" rule. The logistic models make more false crop in stratum A (9-12 of 122 empty test boxes, against 5 for Rule 1), where most of the land is, which is why their precision drops. Dynamic World's false crop in Bor South is open land where the labellers saw no field: grassland.
+
+**Our map, and the whole country.** Counted over its own pixels, our map marks 22.6% of the Aweil counties (the stratified estimate from the 330 labelled points: 16.3%), more than the 14.3% of land whose box holds cropland in the sample: it over-marks, mostly boxes near homesteads without a field, as its precision of 0.70 says. In Bor South it marks 1.2%. Applied to the whole country at 30 m, it marks 6.8% of South Sudan (about 4,280,000 ha, an upper bound) and agrees with the 10 m map where both exist (Aweil 23.6%). Outside our two areas it is not checked. Per state it ranks the land much like the crop assessment (rank correlation 0.52; the public maps -0.36 to 0.25, GFSAD 0.59), but it marks Unity high and Western Equatoria low, where a rule learned around Aweil's homesteads fits least (Appendix G).
 
 **Flooded cropland.** In 2025, 10,314 ha of the Aweil counties flooded at least one day, and the public maps put 10-307 ha of cropland under water. In Bor South 29,419 ha flooded; every public map shows at most 10 ha of flooded cropland except Dynamic World, with 1,606 ha. The sample cannot say which is right: only 1 of the 330 Aweil points and 2 of the 120 Bor South points lie on flooded land, so in 2025 it "cannot tell" at any trigger threshold from 100 to 5,000 ha. *(pending decision 8b)* This is a negative result about our design, not about the maps.
 
@@ -351,9 +353,9 @@ We recommend that ZOA (1) base the cropland part of a trigger on a labelled samp
 
 *Figure 21. Share of the land that at least k of the seven maps call crop (log scale). Bor South has no land where four or more agree.*
 
-![Figure 22](../figures/04_national_crop_share_per_county.png)
+![Figure 27](../figures/04_national_crop_share_per_county.png)
 
-*Figure 22. Where each map puts South Sudan's cropland: crop share per county per map, and the crop assessment's 2025 cereal area per state.*
+*Figure 27. Where each map puts South Sudan's cropland: crop share per county per map, and the crop assessment's 2025 cereal area per state.*
 
 ![Figure 23](../figures/05_states_vs_cfsam_2025.png)
 
@@ -405,7 +407,28 @@ We recommend that ZOA (1) base the cropland part of a trigger on a labelled samp
 | WorldCereal 2021 | 8 | 2/2 | 4 | 2/2 | 2 | 1/1 |
 | WorldCover 2021 | 8 | 2/2 | 1 | 1/2 | 0 | 0/1 |
 
-## Appendix G. Protocol and its changes
+## Appendix G. Our map over the whole country
+
+![Figure 27](../figures/27_national_map.png)
+
+*Figure 27. Our map applied to all of South Sudan (30 m), shown as the share of each 1 km cell where a 210 m box holds a field. Only the outlined areas have labels; elsewhere the map is not checked. Right: per state against the crop assessment's modelled cereal area.*
+
+*Table 12. Our map over South Sudan per state (land whose 210 m box holds a field; an upper bound, not checked outside Aweil and Bor South) against the 2025 crop assessment's modelled cereal area.*
+
+| State | Our map, % | Our map, ha | CFSAM cereal, % | CFSAM cereal, ha |
+|---|---|---|---|---|
+| Warrap | 28.0 | 1,005,557 | 5.1 | 181,463 |
+| Northern Bahr el Ghazal | 23.6 | 727,425 | 3.6 | 111,530 |
+| Unity | 9.0 | 333,378 | 0.5 | 19,698 |
+| Lakes | 8.0 | 344,345 | 4.3 | 186,953 |
+| Central Equatoria | 7.0 | 299,372 | 2.8 | 120,600 |
+| Eastern Equatoria | 4.3 | 317,193 | 2.1 | 155,634 |
+| Upper Nile | 4.0 | 310,106 | 1.1 | 88,816 |
+| Western Bahr el Ghazal | 3.6 | 331,245 | 1.0 | 91,504 |
+| Jonglei | 3.2 | 393,768 | 0.6 | 70,829 |
+| Western Equatoria | 2.7 | 215,620 | 2.5 | 196,380 |
+
+## Appendix H. Protocol and its changes
 
 The protocol (`cropland/METHODOLOGY.md`) was frozen before labelling on 3 October 2026. Every later change is dated there with its reason; in short:
 

@@ -178,6 +178,17 @@ def write_results():
     w = pd.read_csv(TABLES / "window_aweil_s020.csv")                 # figure 16 (eda_window.py)
     pub = w[w["map"] != "rule1"].crop_share_of_window_pct
     m |= {"WindowMin": f"{pub.min():.1f}\\%", "WindowMax": f"{pub.max():.1f}\\%"}
+    ms = R("rule1_map_share.csv").set_index("area")                     # our map counted over its pixels (national_map.py)
+    st = R("rule1_national_by_state.csv")
+    rc = pd.read_csv(TABLES / "state_rank_correlation_with_cfsam.csv", index_col=0)["2025"]
+    pub = rc[[k for k in ORDER if k in rc.index and k != "gfsad_2015"]]
+    from scipy.stats import spearmanr
+    s2 = st.dropna(subset=["cfsam_pct"])
+    m |= {"MapShareAw": f"{ms.loc['aweil', 'map_10m_pct']:.1f}\\%", "MapThirtyAw": f"{ms.loc['aweil', 'map_30m_national_pct']:.1f}\\%",
+          "MapShareAwPoints": f"{ms.loc['aweil', 'from_labelled_points_pct']:.1f}\\%", "MapShareBs": f"{ms.loc['bor_south', 'map_10m_pct']:.1f}\\%",
+          "NatMapPct": f"{100 * st.map_ha.sum() / st.ha.sum():.1f}\\%", "NatMapHa": f"{round(st.map_ha.sum(), -4):,.0f}",
+          "NatMapRho": f"{spearmanr(s2.map_pct, s2.cfsam_pct)[0]:.2f}", "PubRhoMin": f"{pub.min():.2f}", "PubRhoMax": f"{pub.max():.2f}",
+          "GfsadRho": f"{rc['gfsad_2015']:.2f}"}
     m = write_model_numbers(m)
     lines = ["% Written by build_report_inputs.py from cropland/results/ (steps 09-12). Do not edit by hand."]
     lines += [f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in m.items()]
@@ -296,7 +307,12 @@ def write_appendix_tables():
                       "(fires), and in how many of the years the sample can judge it agrees with the sample.", "tab:hindcast",
                       "lrrrrrr", ["Layer", "100 ha: fires", "agrees", "500 ha: fires", "agrees", "1,000 ha: fires", "agrees"],
                       sorted(rows), size="footnotesize"))
-    groups = {"app_sample": [1, 2], "app_models": [0, 4], "app_accuracy": [3, 5], "app_floods": [6, 7]}   # one file per appendix section
+    st = R("rule1_national_by_state.csv").sort_values("map_pct", ascending=False)
+    out.append(_table("Our map over South Sudan per state (land whose 210 m box holds a field; an upper bound, not checked outside Aweil and Bor South) against the 2025 crop assessment's modelled cereal area.", "tab:national", "lrrrr",
+                      ["State", "Our map, \\%", "Our map, ha", "CFSAM cereal, \\%", "CFSAM cereal, ha"],
+                      [(r.state, f"{r.map_pct:.1f}", f"{r.map_ha:,.0f}", "--" if pd.isna(r.cfsam_pct) else f"{r.cfsam_pct:.1f}",
+                        "--" if pd.isna(r.cfsam_2025_cereal_ha) else f"{r.cfsam_2025_cereal_ha:,.0f}") for r in st.itertuples()]))
+    groups = {"app_sample": [1, 2], "app_models": [0, 4], "app_accuracy": [3, 5], "app_floods": [6, 7], "app_national": [8]}   # one file per appendix section
     for name, idx in groups.items():
         (HERE / f"{name}.tex").write_text("% Written by build_report_inputs.py from CSVs. Do not edit by hand.\n\n"
                                           + "\n".join(out[i] for i in idx), encoding="utf-8")
@@ -328,7 +344,7 @@ def embed_in_draft():
                           + strip((HERE / "results.tex").read_text(encoding="utf-8")), "\\input{numbers}\n\\input{results}"),
               "bib": ("\\begin{filecontents*}[overwrite]{references.bib}\n"
                       + (HERE / "references.bib").read_text(encoding="utf-8").strip() + "\n\\end{filecontents*}", None)}
-    for name in ("app_sample", "app_models", "app_accuracy", "app_floods"):
+    for name in ("app_sample", "app_models", "app_accuracy", "app_floods", "app_national"):
         blocks[name] = (strip((HERE / f"{name}.tex").read_text(encoding="utf-8")), f"\\input{{{name}}}")
     for name, (content, old_input) in blocks.items():
         start, end = f"%% <<{name}>> written by build_report_inputs.py: do not edit between these lines", f"%% <</{name}>>"

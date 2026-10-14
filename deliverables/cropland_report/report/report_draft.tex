@@ -459,6 +459,16 @@
 \newcommand{\MapAddedEsri}{5,191}
 \newcommand{\WindowMin}{0.0\%}
 \newcommand{\WindowMax}{21.7\%}
+\newcommand{\MapShareAw}{22.6\%}
+\newcommand{\MapThirtyAw}{23.6\%}
+\newcommand{\MapShareAwPoints}{16.3\%}
+\newcommand{\MapShareBs}{1.2\%}
+\newcommand{\NatMapPct}{6.8\%}
+\newcommand{\NatMapHa}{4,280,000}
+\newcommand{\NatMapRho}{0.52}
+\newcommand{\PubRhoMin}{-0.36}
+\newcommand{\PubRhoMax}{0.25}
+\newcommand{\GfsadRho}{0.59}
 \newcommand{\LeafCropCalN}{40}
 \newcommand{\LeafCropCalCrop}{39}
 \newcommand{\LeafFarCalN}{79}
@@ -633,6 +643,8 @@ Whose farmland is seen & recall per map; errors by distance to buildings and fie
 \paragraph{The models.} Rule 1 learned two questions (Figure~\ref{fig:tree}): is there a building within 333 m of the box, and does the box show field edges? Of the \LeafCropCalN{} calibration boxes that pass both, \LeafCropCalCrop{} hold a cropped field; of the \LeafFarCalN{} boxes far from any building, \LeafFarCalCrop. On the test points, which it had never seen, the questions hold up: \LeafCropTestCrop{} of the \LeafCropTestN{} boxes it calls crop are cropland, and only \LeafFarTestCrop{} of the \LeafFarTestN{} boxes far from buildings are (Figure~\ref{fig:space}). In cross-validation on the calibration points all models scored alike: trees \CvTreeMin--\CvTreeMax, logistic regressions \CvLogitMin--\CvLogitMax, the random forest \CvRf{} (Figure~\ref{fig:models}, Table~\ref{tab:models}). On the test points every model scores lower, between \LogitTwoFone{} and \RfFone, with overlapping intervals. Two things explain the drop: cross-validation counts every point alike, while the test scores weigh each point by the land it stands for, so a false crop in stratum A (95\% of Aweil) weighs heavily; and with 41 crop points the calibration scores are themselves uncertain. What the models learned agrees (Figure~\ref{fig:learned}). Distance to the nearest building is the strongest input of the logistic model (\CoefBuildings{} log-odds per standard deviation), followed by June radar (\CoefVhJun; lower over cropland, likely because fields are freshly sown and bare, Figure~\ref{fig:features}) and the harvest drop (+\CoefDrop). In the random forest, distance to buildings carries \ImpBuildings{} of the importance and field edges \ImpEdges. Cropland in Aweil is homestead cropland, and every model finds it there. Our answer to ``trees or logistic regression?'' is that it matters little here; we keep the two-question tree because local staff can read and check it.\pending{2}
 
 \paragraph{Where maps fail.} Rule 1's false crop lies within 250 m of buildings and its missed crop mostly farther away: it is, in effect, a ``fields around homesteads'' rule. The logistic models make more false crop in stratum A (9--12 of 122 empty test boxes, against 5 for Rule 1), where most of the land is, which is why their precision drops. Dynamic World's false crop in Bor South is open land where the labellers saw no field: grassland.
+
+\paragraph{Our map, and the whole country.} Counted over its own pixels, our map marks \MapShareAw{} of the Aweil counties (the stratified estimate from the 330 labelled points: \MapShareAwPoints), more than the \AwBoxPct{} of land whose box holds cropland in the sample: it over-marks, mostly boxes near homesteads without a field, as its precision of \RuleOnePrec{} says. In Bor South it marks \MapShareBs. Applied to the whole country at 30 m, it marks \NatMapPct{} of South Sudan (about \NatMapHa{} ha, an upper bound) and agrees with the 10 m map where both exist (Aweil \MapThirtyAw). Outside our two areas it is not checked. Per state it ranks the land much like the crop assessment (rank correlation \NatMapRho; the public maps \PubRhoMin{} to \PubRhoMax, GFSAD \GfsadRho), but it marks Unity high and Western Equatoria low, where a rule learned around Aweil's homesteads fits least (Appendix~\ref{app:national}).
 
 \paragraph{Flooded cropland.} In 2025, \AwFloodLandTwentyFive{} ha of the Aweil counties flooded at least one day, and the public maps put \AwFloodMapsMinTwentyFive--\AwFloodMapsMaxTwentyFive{} ha of cropland under water. In Bor South \BsFloodLandTwentyFive{} ha flooded; every public map shows at most 10 ha of flooded cropland except Dynamic World, with \BsFloodDwTwentyFive{} ha. The sample cannot say which is right: only \AwFloodPoints{} of the 330 Aweil points and \BsFloodPoints{} of the 120 Bor South points lie on flooded land, so in 2025 it ``cannot tell'' at any trigger threshold from 100 to 5,000 ha.\pending{8b} This is a negative result about our design, not about the maps.
 
@@ -1037,6 +1049,41 @@ WorldCover 2021 & 8 & 2/2 & 1 & 1/2 & 0 & 0/1 \\
 %TC:endignore
 \end{table}
 %% <</app_floods>>
+
+% =============================================================================
+\section{Our map over the whole country}\label{app:national}
+
+\begin{figure}[tbp]
+\centering
+\figslot{figures/27_national_map.png}{national map}
+\caption{Our map applied to all of South Sudan (30 m), shown as the share of each 1 km cell where a 210 m box holds a field. Only the outlined areas have labels; elsewhere the map is not checked. Right: per state against the crop assessment's modelled cereal area.}\label{fig:national}
+\end{figure}
+
+%% <<app_national>> written by build_report_inputs.py: do not edit between these lines
+\begin{table}[tbp]
+\centering
+\caption{Our map over South Sudan per state (land whose 210 m box holds a field; an upper bound, not checked outside Aweil and Bor South) against the 2025 crop assessment's modelled cereal area.}\label{tab:national}
+%TC:ignore
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+State & Our map, \% & Our map, ha & CFSAM cereal, \% & CFSAM cereal, ha \\
+\midrule
+Warrap & 28.0 & 1,005,557 & 5.1 & 181,463 \\
+Northern Bahr el Ghazal & 23.6 & 727,425 & 3.6 & 111,530 \\
+Unity & 9.0 & 333,378 & 0.5 & 19,698 \\
+Lakes & 8.0 & 344,345 & 4.3 & 186,953 \\
+Central Equatoria & 7.0 & 299,372 & 2.8 & 120,600 \\
+Eastern Equatoria & 4.3 & 317,193 & 2.1 & 155,634 \\
+Upper Nile & 4.0 & 310,106 & 1.1 & 88,816 \\
+Western Bahr el Ghazal & 3.6 & 331,245 & 1.0 & 91,504 \\
+Jonglei & 3.2 & 393,768 & 0.6 & 70,829 \\
+Western Equatoria & 2.7 & 215,620 & 2.5 & 196,380 \\
+\bottomrule
+\end{tabular}
+%TC:endignore
+\end{table}
+%% <</app_national>>
 
 % =============================================================================
 \section{Protocol and its changes}\label{app:changes}

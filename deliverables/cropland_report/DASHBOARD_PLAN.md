@@ -67,6 +67,7 @@ Sources: `results/flooded_cropland.csv`, county table from `13_dashboard_data.py
 
 ### Page 5. How sure are we, reuse and limits
 - **How sure**: 450 points, each labelled blind by two people, 85.6% agreement (kappa 0.70); every area figure has an interval; the usual interval is too narrow when crop is rare, so we also give an adjusted upper bound (simulation in report notes 06).
+- **The whole country** (figure 27, `cropland/results/rule1_national_by_state.csv`): our map over South Sudan, clearly labelled "not checked outside Aweil and Bor South", with the state comparison against CFSAM.
 - **Reuse**: how ZOA or another team repeats it next season (~150 points) or in another area or country (section 5 below), with the link to the guide.
 - **Limits**: 2025 only; an outside view from images, no ground visit; Bor South has almost no cropland in the sample, so its figures are wide; county numbers from maps are unchecked; no forecast.
 

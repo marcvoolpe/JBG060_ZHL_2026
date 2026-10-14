@@ -21,6 +21,7 @@ Group 1, JBG060. Everything for the methodological report (max 2,000 words, due 
 | 10b past floods 2000-2025 on today's cropland | **done 14 Oct** (`cropland/10b_flood_history.py`, figure 12): in Aweil's 9 big flood years the sample puts 4-16 times more cropland under water than the median map; Esri, GLAD and WorldCover would have missed a 500 ha trigger in 2022 (notes 07, R5b) |
 | Figures 13-15 and the interactive flood map | **done 14 Oct**: before/after flood map (13, `maps/flood_aweil_2022.html`, `cropland/10c_flood_map.py`), area vs maps (14), scorecard (15) |
 | **Report draft** | **written 14 Oct from the results**: `report/report_draft.md` (read it on GitHub) and `report/report_draft.tex` (edit it; Overleaf). About 4,100 words, so the group cuts to 2,000; pending decisions tagged |
+| Our map over the whole country | **done 14 Oct** (`cropland/national_map.py`, figure 27, notes 07 R7): 6.8% of South Sudan marked (upper bound, not checked outside our areas); state ranking like CFSAM (0.52). Correction: in Aweil our map marks 22.6%, above the sample's 14.3%: it over-marks |
 | Poster | plan rewritten 14 Oct against the Canvas requirements and rubric (notes 08): A0 portrait, 20 pt minimum, 300-400 words, panels A-I, pitch and questions |
 | Dashboard | plan revised 12 Oct ([`DASHBOARD_PLAN.md`](DASHBOARD_PLAN.md), in this folder): five-page results story, no general course data |
 | Own trees (Wei, Matei) | open: `cropland/tree_workbench.ipynb` (calibration points only; retrains Rule 1 exactly; writes nothing until `FREEZE = True`) |
@@ -111,6 +112,8 @@ Code added in this round (in `cropland/`): `eda_public_maps.ipynb` (the EDA, run
 24. `24_labelling_examples.png`. **What the labellers see.** Twelve monthly images of 2025 for an agreed crop box, an agreed not-crop box and a disputed box.
 25. `25_interval_simulation.png`. **The interval check.** Coverage of the usual and the adjusted interval in simulations of our design, per area and measure.
 26. `26_points_per_design.png`. **Points needed** for a 20% CV: our strata against strata from one map.
+
+27. `27_national_map.png`. **Our map over South Sudan.** Rule 1 applied to the whole country (30 m), as the share of each 1 km cell where a 210 m box holds a field; only Aweil and Bor South have labels (outlined). Right: per state against CFSAM 2025 (rank correlation 0.52). Drawn by `cropland/national_map.py`.
 
 Figures 17-26 are drawn by `cropland/report_figures.py` (no Earth Engine).
 

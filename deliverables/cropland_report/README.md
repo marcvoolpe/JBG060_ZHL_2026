@@ -104,7 +104,7 @@ set CROPLAND_EE_PROJECT=<your Earth Engine project>     (only for Earth Engine s
 python deliverables/cropland_report/report/build_report_inputs.py   (numbers.tex, Overleaf zip)
 python cropland/test_cropland.py && python cropland/test_evaluation.py
 ```
-The notebook needs the course data next to the repo (`data-JBG060-2026/`) or in `raw_data/`, and the cached Earth Engine counts in `raw_data/cropland/eda/` (about 55 MB; ask Yassin, or rerun the exports with `python cropland/eda_maps.py export`, which takes hours).
+The notebook needs the course data next to the repo (`data-JBG060-2026/`) or in `raw_data/`, and the cached Earth Engine counts in `raw_data/cropland/eda/`. Those are in git since 14 Oct except `national.npz` (51 MB, only for figures 4-5: ask Yassin, or rerun `python cropland/eda_maps.py export`, which takes hours). The random-forest benchmarks (`raw_data/cropland/benchmarks.joblib`, needed by step 09) and Rule 1 per flood cell (needed by step 10b) are in git too.
 
 ## 8. Open points
 

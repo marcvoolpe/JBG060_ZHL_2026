@@ -6,7 +6,18 @@ raw_data/flood_masks/compact_unusual/*_meta.json
 *.pyc
 __pycache__/
 .DS_Store
-raw_data
+# raw_data/ holds the course data (never in git) and our large outputs; only the cropland outputs
+# the team needs to rerun steps 09 and 10b and the EDA are shared (national.npz, 51 MB, stays local)
+raw_data/*
+!raw_data/cropland/
+raw_data/cropland/*
+!raw_data/cropland/benchmarks.joblib
+!raw_data/cropland/flood_history_rule1_*.csv
+!raw_data/cropland/eda/
+raw_data/cropland/eda/*
+!raw_data/cropland/eda/zoa_*.npz
+!raw_data/cropland/eda/stab_*.npz
+!raw_data/cropland/eda/national_by_county.pkl
 eda/outputs/
 cache
 .idea

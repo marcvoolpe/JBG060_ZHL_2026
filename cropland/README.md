@@ -185,4 +185,4 @@ Rules:
 - **To be scored:** write `results/predictions_<name>.csv` with `id,prediction` (1/0) for all 450 points, and `09_score.py` adds the model to `results/accuracy.csv` next to Rule 1 and the public maps, per area and definition.
 - **For a map:** save the tree with `rules.save(rules.from_tree(tree, F.FEATURES, fill, "<name>"), C.HERE)`. Then `08_run_map.py cropland/<name>_<date>.json` maps it in Earth Engine exactly as it scores. For one tree per area, save one file per area.
 
-**What's in git:** code, points, features, labels, rules, results. **Not in git:** the images (`label_tool/img/`, shared as a zip) and large outputs in `raw_data/cropland/`.
+**What's in git:** code, points, features, labels, rules, results. **Also in git (since 14 Oct):** from `raw_data/cropland/`, the benchmarks (`benchmarks.joblib`, step 09 needs them to score any model), Rule 1 per flood cell (step 10b) and the EDA cache except `eda/national.npz`. **Not in git:** the images (`label_tool/img/`, shared as a zip), `eda/national.npz` (51 MB) and the course data.

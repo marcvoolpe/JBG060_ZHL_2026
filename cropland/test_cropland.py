@@ -146,6 +146,18 @@ def test_config():
         assert len(cfg["calendar"]["radar"]) == 4 and set(cfg["allocation"]) == set(cfg["areas"]), f.name
 
 
+def test_linear_rules():
+    """A logistic model saved as JSON (12_other_models.py) predicts exactly its frozen predictions."""
+    t = pd.read_csv(M.TABLE) if M.TABLE.exists() else None
+    for f in sorted(C.HERE.glob("logistic_*.json")):
+        rs = R.load(f)
+        saved = C.HERE / "results" / f"predictions_{rs['name']}.csv"
+        if t is None or not saved.exists():
+            continue
+        p = pd.read_csv(saved).set_index("id").prediction.reindex(t.id).to_numpy()
+        assert R.is_linear(rs) and (R.predict(rs, t) == p).all(), f.name
+
+
 def test_ee_equals_python():
     ee = C.ee_init()
     _, _, _, rs = fake_ruleset()
@@ -173,7 +185,8 @@ def test_building_distance():
 
 if __name__ == "__main__":
     tests = [test_area, test_area_share, test_accuracy_one_stratum, test_tree_equals_rules,
-             test_sample_pairs_balanced, test_merge_no_tiebreak, test_model_data_splits, test_config]
+             test_sample_pairs_balanced, test_merge_no_tiebreak, test_model_data_splits, test_config,
+             test_linear_rules]
     if "--ee" in sys.argv:
         tests += [test_ee_equals_python, test_building_distance]
     for t in tests:

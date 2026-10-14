@@ -92,6 +92,9 @@ def main() -> None:
         b = V.pixel_count_bias(m, {k: 100 * ref[k] for k in ("estimate", "low", "high_adjusted")})
         bias.append(b.assign(area=area, sample_pct=100 * ref.estimate).reset_index())
     pd.concat(bias).to_csv(RES / "pixel_count_bias.csv", index=False)
+    import eda_figures as FG                         # figures 14 (area vs maps) and 15 (scorecard)
+    agree = pd.read_csv(EDA / "label_agreement.csv").set_index("group").cropland_pos_agree
+    print("figures:", FG.area_vs_maps(pd.concat(bias), a), FG.scorecard(accuracy, agreement=agree["aweil"]))
     trigger()
     print("written to", RES)
 

@@ -19,6 +19,8 @@ Group 1, JBG060. Everything for the methodological report (max 2,000 words, due 
 | 12 logistic regression vs trees | **done 12 Oct** (`cropland/12_other_models.py`): chosen by cross-validation on calibration points, two logistic models frozen and scored (F1 0.61-0.66); no model ranked above another |
 | 10 flood overlay + trigger agreement | **done 14 Oct**: the maps disagree (Aweil 10-307 ha flooded cropland; Bor South 0-10 ha, Dynamic World 1,606); the sample has only 1-2 points in flood cells, so it **cannot tell** flooded cropland (notes 07, R5) |
 | 10b past floods 2000-2025 on today's cropland | **done 14 Oct** (`cropland/10b_flood_history.py`, figure 12): in Aweil's 9 big flood years the sample puts 4-16 times more cropland under water than the median map; Esri, GLAD and WorldCover would have missed a 500 ha trigger in 2022 (notes 07, R5b) |
+| Figures 13-15 and the interactive flood map | **done 14 Oct**: before/after flood map (13, `maps/flood_aweil_2022.html`, `cropland/10c_flood_map.py`), area vs maps (14), scorecard (15) |
+| Poster | plan rewritten 14 Oct against the Canvas requirements and rubric (notes 08): A0 portrait, 20 pt minimum, 300-400 words, panels A-I, pitch and questions |
 | Dashboard | plan revised 12 Oct ([`DASHBOARD_PLAN.md`](DASHBOARD_PLAN.md), in this folder): five-page results story, no general course data |
 | Own trees (Wei, Matei) | open: `cropland/tree_workbench.ipynb` (calibration points only; retrains Rule 1 exactly; writes nothing until `FREEZE = True`) |
 | Reuse for other areas / countries | **done 12 Oct**: `cropland/config/*.toml`, `cropland/REUSE.md`, `cropland/make_new_area.py` |
@@ -68,7 +70,8 @@ deliverables/cropland_report/
   notes/           long notes per rubric heading (01-08)
   report/          LaTeX skeleton for Overleaf: report.tex, references.bib, numbers.tex (macros), build_report_inputs.py
   submission/      README_DRAFT.md: draft of the code-submission README and the outline of the single final notebook
-  figures/         all EDA figures (PNG, tracked in git)
+  figures/         all figures (PNG, tracked in git): EDA 1-11, results 12-15
+  maps/            interactive maps (HTML, open in a browser; needs internet for the satellite background)
   tables/          the CSV behind every figure and number; key_numbers.csv = the numbers the text quotes
   sources/         Kerner 2024, Adebayo 2026, our plan (28 Sep), methodological feedback slides, sprint review (11 Oct)
 cropland/          all code (pipeline steps 00-12, EDA and evaluation modules, tree_workbench.ipynb), METHODOLOGY.md,
@@ -93,7 +96,11 @@ Code added in this round (in `cropland/`): `eda_public_maps.ipynb` (the EDA, run
 
 12. `12_flood_history.png`. **Past floods on today's cropland.** Cropland under water in each year's flood (2000-2025, June-December), Aweil counties and Bor South: the 8 public maps as a range with their median, our labelled sample as dots with 95% intervals in the years where at least 5 sample points lay on flooded land. A scenario: the 2025 cropland under each past flood.
 
-Suggested use: report = 1, 3 (or 2), 7, 9 (+ 12) + a method diagram; poster = 1, 4, 7, 9, 11, 12 (+ 8).
+13. `13_flood_map_aweil_2022.png`. **Same flood, different answer.** The 2022 flood in the Aweil counties, cell by cell (232 m): left, the flooded cells where WorldCereal 2021 (the best public map on our test points) shows crop; right, the cells our map adds (its 210 m box holds a field), with our sample points on flooded land. Our map shows where; how much comes from the sample (7,263 ha against WorldCereal's 1,002). Interactive version with every public map: `maps/flood_aweil_2022.html`.
+14. `14_area_vs_maps.png`. **The maps under-count cropland.** Share of the land that is cropland per public map (pixel count) against our labelled sample with its 95% interval, Aweil counties and Bor South (log scale).
+15. `15_scorecard.png`. **Which map to trust.** Precision, recall and F1 of every map on the Aweil test points, with 95% intervals; our models orange, public maps blue; dashed line: how well the two labellers agree (0.86).
+
+Suggested use: report = 15, 12, 14 (or table 1) + a method diagram; poster = 14, 15, 13, 12 + method diagram (notes 08: A0 portrait, 20 pt minimum, also inside figures).
 
 ## 7. How to regenerate everything
 

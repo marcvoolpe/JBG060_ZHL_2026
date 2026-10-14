@@ -8,7 +8,7 @@
 
 Tables in `cropland/results/`. Accuracy on test points both labellers agree on, stratified estimators. "±" is one standard error; 95% intervals are ± 1.96 SE.
 
-**R2. Cropland area 2025** (`area_adjusted.csv`, share of box, all 450 points):
+**R2. Cropland area 2025** (`area_adjusted.csv`, share of box, all 450 points; figure 14):
 
 | area | share of land | hectares | 95% interval (ha) | adjusted upper bound (ha) | public maps, pixel count |
 |---|---|---|---|---|---|
@@ -17,7 +17,7 @@ Tables in `cropland/results/`. Accuracy on test points both labellers agree on, 
 
 "Box holds cropland" (upper bound): Aweil 14.3% (10.3-18.3% if all splits are none / all cropland), Bor South 1.5%. "Cropped in 2025" is within 0.1 percentage point of "cropland" (fallow 7 of 900 labels).
 
-**R3. Map accuracy, Aweil** (`accuracy.csv`, 186 test points; cropland; F1 ± SE): Dynamic World 2025 0.03 ± 0.02, Esri 2025 0.06 ± 0.03, GFSAD 0.26 ± 0.06, WorldCover 0.36 ± 0.11, GLAD 0.41 ± 0.11, ASAP 0.43 ± 0.11, Digital Earth Africa 0.50 ± 0.09, WorldCereal 0.55 ± 0.11, **Rule 1 0.72 ± 0.09** (precision 0.70, recall 0.75), logistic (18 features) 0.66 ± 0.09, logistic (Rule 1's 2 inputs) 0.61 ± 0.09, random forest 0.76 ± 0.09 (features) and 0.71 ± 0.09 (embedding). Precision of Esri, WorldCover, GLAD and ASAP is 1.00 with recall 0.03-0.28: **they are right when they say crop, but miss most fields**. Dynamic World has both low precision (0.10) and low recall (0.02). Rule 1's 95% interval (0.55-0.90) overlaps those of WorldCereal, Digital Earth Africa, ASAP, GLAD and WorldCover, so by our rule it is not ranked above them; it is clearly above Esri, Dynamic World and GFSAD. Against the papers (`published_vs_ours.csv`): WorldCover, GLAD, GFSAD and Dynamic World recall fall below the range Kerner et al. and Adebayo et al. found anywhere in Africa.
+**R3. Map accuracy, Aweil** (`accuracy.csv`, 186 test points; cropland; F1 ± SE; figure 15, where the two labellers' agreement of 0.86 is drawn as a ceiling): Dynamic World 2025 0.03 ± 0.02, Esri 2025 0.06 ± 0.03, GFSAD 0.26 ± 0.06, WorldCover 0.36 ± 0.11, GLAD 0.41 ± 0.11, ASAP 0.43 ± 0.11, Digital Earth Africa 0.50 ± 0.09, WorldCereal 0.55 ± 0.11, **Rule 1 0.72 ± 0.09** (precision 0.70, recall 0.75), logistic (18 features) 0.66 ± 0.09, logistic (Rule 1's 2 inputs) 0.61 ± 0.09, random forest 0.76 ± 0.09 (features) and 0.71 ± 0.09 (embedding). Precision of Esri, WorldCover, GLAD and ASAP is 1.00 with recall 0.03-0.28: **they are right when they say crop, but miss most fields**. Dynamic World has both low precision (0.10) and low recall (0.02). Rule 1's 95% interval (0.55-0.90) overlaps those of WorldCereal, Digital Earth Africa, ASAP, GLAD and WorldCover, so by our rule it is not ranked above them; it is clearly above Esri, Dynamic World and GFSAD. Against the papers (`published_vs_ours.csv`): WorldCover, GLAD, GFSAD and Dynamic World recall fall below the range Kerner et al. and Adebayo et al. found anywhere in Africa.
 
 **Bor South:** no agreed crop point among the 80 test points, so recall and F1 cannot be computed. False crop: Dynamic World calls crop in 44 of 74 boxes the labellers saw no field in (overall accuracy 0.70); Rule 1 and the logistic models in 1; all other maps in 0 or 1.
 
@@ -49,6 +49,7 @@ Tables in `cropland/results/`. Accuracy on test points both labellers agree on, 
 - **Trigger hindcast** (`trigger_hindcast.csv`): the sample can confirm a trigger at 100-500 ha in 2008 and 2022, and at 1,000 ha in 2008. In those floods, **Esri, GLAD and WorldCover would have stayed silent** (500 ha in 2022; 1,000 ha in 2008): missed triggers in the two biggest floods. In the other years the sample cannot tell.
 - **Bor South**: only 2007 and 2010 have 5+ points on flooded land, with almost no cropland (0 and 358 ha). In 2007 the sample's upper bound (2,096 ha) is below a 5,000 ha trigger, while both Dynamic World versions would have fired: a false alarm on wetland.
 - **10+ flood days** (closer to crop damage): only 2008 has enough points: 6,711 ha (5,175-12,019).
+- **Where** (figure 13 and `maps/flood_aweil_2022.html`): in the 2022 flood, WorldCereal shows crop in 1,646 of 10,184 flooded cells; our map adds 3,627 (Esri as 'before': 5,191 added). The added cells lie along the Lol and in Aweil East and South, where 9 of the 11 sample points on flooded land hold cropland.
 - **Our map** (box holds crop, compared with the sample's "box holds it"): close to the sample in 2007, 2010, 2019 and 2020 (e.g. 2010: 11,709 against 11,366 ha), higher in 2013, 2014 and 2021, lower in 2008 and 2022; never outside the sample's (wide) interval.
 - **Limits:** cropland moves between years (Dynamic World swings by a factor of 10); the 2025 labels stand for today, not for 2008. One sample of 330 points; 5-17 of them on flooded land.
 

@@ -136,6 +136,7 @@ Setup:
 | 9 | `python cropland/09_score.py cropland/rule1_<date>.json` | accuracy and area ± 95% CI | `results/accuracy.csv`, `results/area.csv` |
 | 10 | `python cropland/10_flood.py cropland/rule1_<date>.json` | flooded cropland 2025, Aweil vs Bor South | `results/flooded_cropland.csv` |
 | 10b | `python cropland/10b_flood_history.py rule1 cropland/rule1_<date>.json`, then `... summary` | past floods 2000-2025 on today's cropland (scenario): flooded cropland per map, Rule 1 and the sample (ratio and expansion estimators), trigger hindcast; figure 12. Needs the EDA cache (`raw_data/cropland/eda/`) | `results/flood_history.csv`, `results/trigger_hindcast.csv` |
+| 10c | `python cropland/10c_flood_map.py [area] [year] [model] [min_days]` (default aweil 2022 rule1 1) | before/after map of flooded cropland: figure 13, interactive HTML (pick the 'before' map), per-cell table. Needs the EDA cache and the 10b model cache | `figures/13_flood_map_<area>_<year>.png`, `maps/flood_<area>_<year>.html`, `results/flood_cells_<area>_<year>.csv` |
 | 11 | `python cropland/11_evaluate.py cropland/rule1_<date>.json` | evaluation additions (change log 12 Oct): adjusted area interval, where maps fail, ours vs published, points needed, rule readability, pixel-count bias, trigger agreement (our map against the sample's "box holds it", public maps against the share of box) | `results/area_adjusted.csv`, `error_analysis.csv`, `published_vs_ours.csv`, `design_efficiency.csv`, `rule_complexity.csv`, `pixel_count_bias.csv`, `trigger_agreement.csv` |
 | 12 | `python cropland/12_other_models.py compare`, then `... freeze <name>` | logistic regression and other trees on the calibration points (repeated cross-validation, no test label); `freeze` writes the predictions, then rerun 09 | `results/model_cv.csv`, `logistic_coefficients.csv`, `predictions_<name>.csv`, `<name>_<date>.json` |
 
@@ -184,5 +185,16 @@ Rules:
 - **Test points are for scoring only, after you freeze the model.** Never tune on them.
 - **To be scored:** write `results/predictions_<name>.csv` with `id,prediction` (1/0) for all 450 points, and `09_score.py` adds the model to `results/accuracy.csv` next to Rule 1 and the public maps, per area and definition.
 - **For a map:** save the tree with `rules.save(rules.from_tree(tree, F.FEATURES, fill, "<name>"), C.HERE)`. Then `08_run_map.py cropland/<name>_<date>.json` maps it in Earth Engine exactly as it scores. For one tree per area, save one file per area.
+
+### Applying a frozen model to more land (later)
+
+The group plans to train its models on the two study areas and then apply them to more of the country. What is ready:
+
+1. **Freeze** the model as a JSON file: a tree via `rules.from_tree` (the workbench's FREEZE cell) or a logistic regression via `12_other_models.py freeze`. Both formats work everywhere below.
+2. **Map it:** `python cropland/08_run_map.py cropland/<name>_<date>.json` checks Earth Engine = Python at the calibration points, then exports the two study areas at 10 m and the whole country at 30 m. For other areas, add them to a config (`config/`, REUSE.md) and run 08 with that config.
+3. **Overlay floods:** `python cropland/10b_flood_history.py model cropland/<name>_<date>.json` (per flood cell, once), then `10b ... summary` and `10c_flood_map.py <area> <year> <name>`.
+4. **Check before trusting it:** outside the labelled areas the map is "not checked". Rule 1 learned "a building within 333 m and field edges" in Aweil; label a new sample in each new landscape (REUSE.md) and score the model there before using its numbers.
+
+Still missing for the whole country: the public maps per flood cell outside the study areas (the EDA's `national` cache covers the country, `eda/national.npz`, not in git) and a national flood overlay that does not go cell by cell through Earth Engine (too many cells: export a per-cell image instead, as the EDA does).
 
 **What's in git:** code, points, features, labels, rules, results. **Also in git (since 14 Oct):** from `raw_data/cropland/`, the benchmarks (`benchmarks.joblib`, step 09 needs them to score any model), Rule 1 per flood cell (step 10b) and the EDA cache except `eda/national.npz`. **Not in git:** the images (`label_tool/img/`, shared as a zip), `eda/national.npz` (51 MB) and the course data.

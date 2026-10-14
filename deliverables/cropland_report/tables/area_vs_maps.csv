@@ -1,0 +1,17 @@
+area,map,map_pct,sample_pct,sample_low_pct,sample_high_adjusted_pct
+aweil,gfsad_2015,1.919,3.777,2.485,5.934
+aweil,glad_2019,0.997,3.777,2.485,5.934
+aweil,deafrica_2019,1.773,3.777,2.485,5.934
+aweil,worldcover_2021,0.35,3.777,2.485,5.934
+aweil,worldcereal_2021,0.998,3.777,2.485,5.934
+aweil,esri_2025,0.389,3.777,2.485,5.934
+aweil,dynamicworld_2025,0.216,3.777,2.485,5.934
+aweil,asap_v04,0.966,3.777,2.485,5.934
+bor_south,gfsad_2015,0.224,0.384,0.071,1.181
+bor_south,glad_2019,0.249,0.384,0.071,1.181
+bor_south,deafrica_2019,0.001,0.384,0.071,1.181
+bor_south,worldcover_2021,0.0,0.384,0.071,1.181
+bor_south,worldcereal_2021,0.014,0.384,0.071,1.181
+bor_south,esri_2025,0.032,0.384,0.071,1.181
+bor_south,dynamicworld_2025,8.99,0.384,0.071,1.181
+bor_south,asap_v04,0.013,0.384,0.071,1.181

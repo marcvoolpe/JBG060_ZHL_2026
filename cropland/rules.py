@@ -20,8 +20,17 @@ import pandas as pd
 OPS = {">": np.greater, "<=": np.less_equal}
 
 
+def is_linear(ruleset: dict) -> bool:
+    """A logistic regression saved by 12_other_models.py: crop if intercept + sum(coef * (x - mean) / sd) > 0."""
+    return "coef_per_sd" in ruleset
+
+
 def predict(ruleset: dict, df: pd.DataFrame) -> np.ndarray:
     X = df[ruleset["features"]].fillna(ruleset["fill"])
+    if is_linear(ruleset):
+        z = ruleset["intercept"] + sum(ruleset["coef_per_sd"][f] * (X[f] - ruleset["mean"][f]) / ruleset["sd"][f]
+                                       for f in ruleset["features"])
+        return (z.to_numpy() > 0).astype(int)
     out = np.full(len(X), ruleset["else"])
     decided = np.zeros(len(X), bool)
     for r in ruleset["rules"]:
@@ -35,9 +44,14 @@ def predict(ruleset: dict, df: pd.DataFrame) -> np.ndarray:
 
 
 def to_ee(ee, ruleset: dict, feature_img):
-    """The same rules as an Earth Engine image (1 = crop, 0 = not crop)."""
-    img = feature_img.unmask(ee.Image.constant([ruleset["fill"][f] for f in ruleset["features"]])
+    """The same rules (or logistic regression) as an Earth Engine image (1 = crop, 0 = not crop)."""
+    img = feature_img.select(ruleset["features"]).unmask(ee.Image.constant([ruleset["fill"][f] for f in ruleset["features"]])
                              .rename(ruleset["features"]).float())
+    if is_linear(ruleset):
+        z = ee.Image.constant(ruleset["intercept"])
+        for f in ruleset["features"]:
+            z = z.add(img.select(f).subtract(ruleset["mean"][f]).divide(ruleset["sd"][f]).multiply(ruleset["coef_per_sd"][f]))
+        return z.gt(0).rename("crop").toByte()
     out = ee.Image.constant(ruleset["else"])
     for r in reversed(ruleset["rules"]):                 # reversed where() = first rule wins
         cond = ee.Image.constant(1)

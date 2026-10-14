@@ -177,19 +177,19 @@ Whose farmland is seen & recall per map; errors by homestead distance and field 
 
 \idea{If space is short, keep the Bor South sentence: it explains why its area interval will be wide and its map scores only indicative.}
 
-\paragraph{Cropland area.} \ph{Table~\ref{tab:area}: Aweil X ha (95\% interval Y--Z), Bor South ...; cropped in 2025; upper bound; against CFSAM \AwCfsamTwentyFive.}
+\paragraph{Cropland area.} \ph{Table~\ref{tab:area} and Figure~\ref{fig:areamaps}: Aweil 3.8\% of the land is cropland (116,500 ha; 95\% interval 76,700--183,100 with the adjusted upper bound); every public map counts 0.2--1.9\%, i.e. 6--51\% of it. Bor South 0.4\% (5,400 ha; 1,000--16,500); maps 0.0--9.0\% (Dynamic World 23 times the sample). Cropped in 2025 within 0.1 point of cropland (fallow used 7 times in 900 labels). Against CFSAM \AwCfsamTwentyFive.}
 
-\paragraph{Map accuracy.} \ph{Figure~\ref{fig:scorecard}: precision and recall per map and area; which maps can be told apart; Rule 1 against the best public map and the black box; ours against the published range.}
+\paragraph{Map accuracy.} \ph{Figure~\ref{fig:scorecard} (Aweil, 186 test points): F1 from 0.03 (Dynamic World 2025) and 0.06 (Esri 2025) to 0.55 (WorldCereal 2021); Rule 1 0.72 (precision 0.70, recall 0.75); logistic regression 0.61--0.66; random forests 0.71--0.76; two labellers agree at 0.86. Esri, WorldCover, GLAD and ASAP: precision 1.00 but recall 0.03--0.28 (right when they say crop, miss most fields). Rule 1's interval overlaps five public maps: not ranked above them; clearly above Esri, Dynamic World and GFSAD. Bor South: no agreed crop test point, so no recall; Dynamic World calls crop on 44 of 74 empty boxes. Recall of WorldCover, GLAD, GFSAD and Dynamic World falls below every published value (notes 07, R3).}
 
-\paragraph{Where maps fail.} \ph{error analysis: false crop on grass / wetland (expected: Dynamic World in Bor South), missed crop near homesteads or in small fields; one sentence per pattern.}
+\paragraph{Where maps fail.} \ph{Rule 1's false crop lies within 250 m of buildings and its missed crop farther away: a ``fields around homesteads'' rule. The logistic models make more false crop in stratum A (9--12 of 122 boxes against 5), where most of the land is. Dynamic World's false crop in Bor South is wetland (notes 07, R4).}
 
-\paragraph{Flooded cropland and the trigger.} \ph{flooded cropland 2025 per map against the sample's interval; at which thresholds each map agrees with the sample; the ``cannot tell'' band.}
+\paragraph{Flooded cropland and the trigger.} \ph{2025: maps 10--307 ha (Aweil), 0--10 ha and Dynamic World 1,606 ha (Bor South); the sample has 1 and 2 points on flooded land and cannot tell (negative result). Past floods on today's cropland (Figure~\ref{fig:floods}, a scenario): in Aweil's 9 big flood years the sample puts 4--16 times more cropland under water than the median map (2022: 7,263 ha, 639--14,336, against 331--3,572); a 500 ha trigger would have stayed silent in 2022 with Esri, GLAD or WorldCover. Where: figure 13 (our map adds 3,627 flooded cells to WorldCereal's 1,646). Notes 07, R5 and R5b.}
 
 \idea{Report negative results plainly (rubric): e.g. ``Rule 1 does not beat WorldCover in Aweil (F1 X vs Y, intervals overlap)''. Branches to prepare are in notes/07.}
 
 \begin{table}[t]
 \centering
-\caption{\ph{Cropland area, 2025, with 95\% intervals (usual; adjusted upper bound).}}\label{tab:area}
+\caption{Cropland area in 2025 from the labelled sample: estimate and 95\% interval (lower bound as usual, upper bound adjusted).}\label{tab:area}
 %TC:ignore
 \small
 \begin{tabular}{@{}lcccc@{}}
@@ -197,9 +197,9 @@ Whose farmland is seen & recall per map; errors by homestead distance and field 
  & \multicolumn{2}{c}{Aweil counties (\AwLandHa{} ha)} & \multicolumn{2}{c}{Bor South (\BsLandHa{} ha)} \\
  & share of land & ha & share of land & ha \\
 \midrule
-Cropland (cropped or fallow) & \ph{} & \ph{} & \ph{} & \ph{} \\
-Cropped in 2025 & \ph{} & \ph{} & \ph{} & \ph{} \\
-Upper bound: box holds cropland & \ph{} & \ph{} & \ph{} & \ph{} \\
+Cropland (cropped or fallow) & 3.8\% (2.5--5.9) & 116\,500 & 0.38\% (0.07--1.2) & 5\,400 \\
+Cropped in 2025 & 3.7\% (2.4--5.8) & 114\,600 & 0.34\% (0.03--1.2) & 4\,800 \\
+Upper bound: box holds cropland & 14.3\% (10.0--19.3) & 441\,300 & 1.5\% (0.00--3.9) & 21\,500 \\
 CFSAM 2025 cereal area (modelled) & \AwCfsamTwentyFive & & & \\
 \bottomrule
 \end{tabular}
@@ -208,9 +208,23 @@ CFSAM 2025 cereal area (modelled) & \AwCfsamTwentyFive & & & \\
 
 \begin{figure}[t]
 \centering
-\figslot{figures/scorecard.png}{scorecard: precision and recall with intervals, per map and area}
-\caption{\ph{Precision and recall of every map on the test points, Aweil and Bor South, with 95\% intervals.}}\label{fig:scorecard}
+\figslot{figures/15_scorecard.png}{scorecard: precision, recall and F1 with intervals}
+\caption{Precision, recall and F1 of every map on the Aweil test points, with 95\% intervals; orange: our models, blue: public maps; dashed: agreement between the two labellers.}\label{fig:scorecard}
 \end{figure}
+
+\begin{figure}[t]
+\centering
+\figslot{figures/14_area_vs_maps.png}{cropland share: each map against the sample}
+\caption{Share of the land that is cropland: each public map (pixel count) against our labelled sample (estimate and 95\% interval).}\label{fig:areamaps}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\figslot{figures/12_flood_history.png}{flooded cropland 2000--2025}
+\caption{Cropland under water in every flood of 2000--2025, on today's cropland: public maps as a range, our labelled sample with 95\% intervals where at least 5 sample points lay on flooded land.}\label{fig:floods}
+\end{figure}
+
+\idea{Captions count towards the 2,000 words. If space is short, keep figures 15 and 12 and show 14 on the poster only; figure 13 (before/after map) is poster material.}
 
 % =============================================================================
 \section{Discussion}

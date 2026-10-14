@@ -318,6 +318,34 @@ def write_model_numbers(m):
     return m
 
 
+def embed_in_draft():
+    """Make report_draft.tex self-contained for Overleaf: numbers, appendix tables and the bibliography are
+    written into the file between marked lines (rewritten on every run); only the figures stay separate files."""
+    p = HERE / "report_draft.tex"
+    s = p.read_text(encoding="utf-8")
+    strip = lambda t: "\n".join(l for l in t.splitlines() if not l.startswith("% Written by")).strip()
+    blocks = {"numbers": (strip((HERE / "numbers.tex").read_text(encoding="utf-8")) + "\n"
+                          + strip((HERE / "results.tex").read_text(encoding="utf-8")), "\\input{numbers}\n\\input{results}"),
+              "bib": ("\\begin{filecontents*}[overwrite]{references.bib}\n"
+                      + (HERE / "references.bib").read_text(encoding="utf-8").strip() + "\n\\end{filecontents*}", None)}
+    for name in ("app_sample", "app_models", "app_accuracy", "app_floods"):
+        blocks[name] = (strip((HERE / f"{name}.tex").read_text(encoding="utf-8")), f"\\input{{{name}}}")
+    for name, (content, old_input) in blocks.items():
+        start, end = f"%% <<{name}>> written by build_report_inputs.py: do not edit between these lines", f"%% <</{name}>>"
+        block = f"{start}\n{content}\n{end}"
+        if start in s:                                                   # refresh
+            i, j = s.index(start), s.index(end) + len(end)
+            s = s[:i] + block + s[j:]
+        elif old_input and old_input in s:                               # first time: replace the \input
+            s = s.replace(old_input, block)
+        elif name == "bib":                                              # first time: at the very top
+            s = block + "\n" + s
+        else:
+            raise SystemExit(f"report_draft.tex: no place for {name}")
+    p.write_text(s, encoding="utf-8")
+    print("report_draft.tex: numbers, appendix tables and references embedded (self-contained except figures/)")
+
+
 def copy_figures():
     out = HERE / "figures"
     out.mkdir(exist_ok=True)
@@ -327,18 +355,19 @@ def copy_figures():
 
 
 def make_zip():
+    """overleaf_upload.zip: the self-contained draft and its figures, nothing else, so Overleaf opens the draft."""
     z = HERE / "overleaf_upload.zip"
     with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED) as zf:
-        for name in ("report.tex", "report_draft.tex", "references.bib", "numbers.tex", "results.tex", "app_sample.tex", "app_models.tex", "app_accuracy.tex", "app_floods.tex"):
-            zf.write(HERE / name, name)
+        zf.write(HERE / "report_draft.tex", "report_draft.tex")
         for f in sorted((HERE / "figures").glob("*.png")):
             zf.write(f, f"figures/{f.name}")
-    print(f"{z.name}: ready for Overleaf (New project > Upload project)")
+    print(f"{z.name}: report_draft.tex + figures/ (Overleaf: New project > Upload project > this zip)")
 
 
 if __name__ == "__main__":
     write_numbers()
     write_results()
     write_appendix_tables()
+    embed_in_draft()
     copy_figures()
     make_zip()

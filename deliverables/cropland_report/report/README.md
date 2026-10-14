@@ -10,16 +10,22 @@ Two versions, same template, same figures and references:
 
 The long notes behind each section are in `deliverables/cropland_report/notes/` (01-08); the results with every number are in notes 07, section 7.0.
 
+## Read and edit it on Overleaf
+
+`report_draft.tex` is **self-contained**: every number, the appendix tables and the reference list are inside the file. Only the images are separate.
+
+1. Overleaf > New project > **Upload project** > `overleaf_upload.zip` (in this folder, made by the build script: `report_draft.tex` + `figures/`).
+   Or: New project > Blank project, delete `main.tex`, upload `report_draft.tex` and drag in the folder `deliverables/cropland_report/figures/` as `figures`.
+2. Compile (pdfLaTeX, the default). Without the `figures/` folder it still compiles; each figure shows as a grey box naming the figure.
+
 ## Numbers are never typed by hand
 
-`python deliverables/cropland_report/report/build_report_inputs.py` writes:
-- `numbers.tex`: the EDA numbers (from `tables/key_numbers.csv`, written by `cropland/eda_public_maps.ipynb`), e.g. `\AwCropMin` = 0.22\%;
-- `results.tex`: the results (from `cropland/results/`, steps 09-12): area, F1, precision and recall of every map, flooded cropland, the 2000-2025 floods, e.g. `\AwAreaHa` = 116,500, `\RuleOneFone` = 0.72;
-- `app_sample.tex`, `app_models.tex`, `app_accuracy.tex`, `app_floods.tex`: the appendix tables (features, strata, label agreement, full accuracy, models, published scores, flood years, trigger hindcast), each read from a CSV;
-- `figures/`: copies of all figures (not in git);
-- `overleaf_upload.zip`: both .tex files, references, numbers, results and figures. Overleaf: New project > Upload project > the zip, then compile `report_draft.tex`.
+`python deliverables/cropland_report/report/build_report_inputs.py` reads the CSVs and rewrites the blocks inside `report_draft.tex` between lines like `%% <<numbers>> ...` and `%% <</numbers>>` (numbers, the four appendix tables, the bibliography). **Do not edit between those lines**: edit the CSV or the script, then rebuild. Everything outside the blocks is ordinary text to edit. It also writes:
+- `numbers.tex` and `results.tex` (the same macros, used by the skeleton `report.tex` and the Markdown copy), e.g. `\AwAreaHa` = 116,500, `\RuleOneFone` = 0.72;
+- `app_sample.tex`, `app_models.tex`, `app_accuracy.tex`, `app_floods.tex` (the appendix tables, also embedded in the draft);
+- `figures/` (copies of all figures, not in git) and `overleaf_upload.zip`.
 
-After any rerun of the pipeline, rerun the build script (and the Markdown converter): the text follows the new numbers.
+If you edit the draft on Overleaf, copy it back to `report_draft.tex` before the next rebuild, or the build script's blocks will replace only the generated parts and keep your text.
 
 ## Word limit (2,000 words, captions included, words in tables and figures not)
 

@@ -25,7 +25,7 @@ The long notes behind each section are in `deliverables/cropland_report/notes/` 
 - `app_sample.tex`, `app_models.tex`, `app_accuracy.tex`, `app_floods.tex` (the appendix tables, also embedded in the draft);
 - `figures/` (copies of all figures, not in git) and `overleaf_upload.zip`.
 
-If you edit the draft on Overleaf, copy it back to `report_draft.tex` before the next rebuild, or the build script's blocks will replace only the generated parts and keep your text.
+Edits made on Overleaf live only on Overleaf: copy the file back into the repo to keep them. A rebuild rewrites only the generated blocks, never the text around them.
 
 ## Word limit (2,000 words, captions included, words in tables and figures not)
 

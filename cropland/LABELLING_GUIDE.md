@@ -53,3 +53,11 @@ Crop season in Northern Bahr el Ghazal (FEWS NET): sowing done by late May; grou
 - **Small fields count.** One small cropped plot in a box of grass makes the box **crop**. Look at the edges of the box too, not only the centre. A cropped field and a fallow one in the same box: **crop**.
 
 When unsure, say `unsure`. That is useful information, not a failure.
+
+## Clarified 14 Oct, for any future labelling
+
+After the sample, the labellers described how they worked. Three things are now explicit (the report lists them as known errors of the first round):
+
+- **Only the yellow box counts.** A field just outside the box does not make it crop, however close. A field that crosses the edge counts with the part inside, and the share is the share of the box. "Look at the edges of the box" means the edges inside it.
+- **Undated images decide nothing about 2025.** Google Maps / Google Earth show no capture date, Wayback shows older years: use them for field shapes only. The 2025 answer comes from the Sentinel-2 months (bare in spring, green-up, early harvest).
+- **Write down extra sources.** If you used Google, Wayback (with its date) or single scenes in the Copernicus Browser, say so in the notes field, so we know which evidence a label rests on.

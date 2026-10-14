@@ -3,6 +3,9 @@ Our map over the whole country: how much it marks, counted from its native pixel
 and how its state ranking compares with the FAO/WFP crop assessment (CFSAM 2025).
 
     python cropland/national_map.py summary cropland/rule1_2026-10-12.json      (Earth Engine, about a minute)
+    python cropland/national_map.py score cropland/rule1_2026-10-12.json        (Earth Engine: the 30 m map on our test points)
+    python cropland/national_map.py compare                                     (no Earth Engine: our map against the public maps
+                                                                                 at the 20,000 random points of national_check.py)
     python cropland/national_map.py fetch cropland/rule1_2026-10-12.json        (Earth Engine: ~1 km map, cached)
     python cropland/national_map.py figure                                      (figure 27, no Earth Engine)
 
@@ -72,6 +75,72 @@ def summary(rule_file: Path) -> None:
     t.drop(columns="map_share").round(2).to_csv(RES / "rule1_national_by_state.csv", index=False)
     print(t[["state", "map_pct", "cfsam_pct"]].round(1).sort_values("map_pct", ascending=False).to_string(index=False))
     print(f"South Sudan: {100 * t.map_ha.sum() / t.ha.sum():.1f}% of the land, {t.map_ha.sum():,.0f} ha; rank correlation with CFSAM {rho:.2f}")
+
+
+def score(rule_file: Path) -> None:
+    """Does the 30 m national map keep Rule 1's accuracy? Its value at every test point (and the 10 m map's) against
+    the labels, scored like 09_score.py, next to Rule 1 from the point features and the public maps."""
+    ee = C.ee_init()
+    stem, name = rule_file.stem, R.load(rule_file)["name"]
+    d = pd.read_csv(RES / "map_values.csv")
+    W = pd.read_csv(C.HERE / "strata_areas.csv")
+    got = {}
+    for label, img in [("map_30m_national", ee.Image(f"{C.ASSETS}/{stem}_south_sudan"))] + \
+                      [(f"map_10m_{a}", ee.Image(f"{C.ASSETS}/{stem}_{a}")) for a in C.AREAS]:
+        pts = d if label == "map_30m_national" else d[d.area == label.removeprefix("map_10m_")]
+        rows = []
+        for i in range(0, len(pts), 200):
+            part = pts.iloc[i:i + 200]
+            fc = ee.FeatureCollection([ee.Feature(ee.Geometry.Point([r.lon, r.lat]), {"id": r.id}) for r in part.itertuples()])
+            out = img.unmask(0).rename("v").reduceRegions(fc, ee.Reducer.first(), scale=30 if label == "map_30m_national" else 10)
+            rows += [(f["properties"]["id"], f["properties"].get("first")) for f in out.getInfo()["features"]]
+        got[label] = dict(rows)
+    d["map_30m_national"] = d.id.map(got["map_30m_national"]).fillna(0).astype(int)
+    d["map_10m"] = d.id.map({k: v for a in C.AREAS for k, v in got[f"map_10m_{a}"].items()}).fillna(0).astype(int)
+    d[["id", "area", "stratum", "split", name, "map_10m", "map_30m_national"]].to_csv(RES / "rule1_map_at_points.csv", index=False)
+    public = [m for m in C.CONFIG["strata"]["maps"] + ["asap_v04"] if m in d]
+    rows = []
+    for area in C.AREAS:
+        w = W[W.area == area].set_index("stratum").share.to_dict()
+        a = d[d.area == area]
+        rows.append({"area": area, "definition": "agreement with Rule 1 at the points", "map": "map_10m",
+                     "test_points": len(a), "f1": (a.map_10m == a[name]).mean()})
+        rows.append({"area": area, "definition": "agreement with Rule 1 at the points", "map": "map_30m_national",
+                     "test_points": len(a), "f1": (a.map_30m_national == a[name]).mean()})
+        for ref_name, agreed in (("cropland", "cropland"), ("cropped_2025", "crop")):
+            t = a[(a.split == "test") & a[agreed].notna()]
+            ref = t[agreed].astype(int).to_numpy()
+            for m in [name, "map_10m", "map_30m_national"] + public:
+                rows.append({"area": area, "definition": ref_name, "map": m, "test_points": len(t),
+                             **E.accuracy(t[m].to_numpy(), ref, t.stratum.to_numpy(), w)})
+    out = pd.DataFrame(rows)
+    out.round(4).to_csv(RES / "rule1_national_test_points.csv", index=False)
+    print(out[["area", "definition", "map", "test_points", "ua", "pa", "f1", "f1_se"]].round(3).to_string(index=False))
+
+
+def compare() -> None:
+    """Without labels: how our national map relates to the public maps outside the study areas, at the 20,000 uniform
+    random points of national_check.py (our map's 30 m pixel, each public map's 10 m pixel at the point). Agreement, not
+    accuracy: our map means "a field within 210 m", the public maps "this pixel is crop", so ours marks more by design."""
+    c = pd.read_csv(C.HERE / "national_check" / "candidates.csv")
+    maps = C.CONFIG["strata"]["maps"]
+    c[maps] = c[maps].fillna(0)
+    c["any_public"] = (c[maps].sum(axis=1) >= 1).astype(int)
+    c["two_public"] = (c[maps].sum(axis=1) >= 2).astype(int)
+    rows = []
+    for state, g in [("South Sudan without the study areas", c)] + sorted(c.groupby("state")):
+        r = {"state": state, "points": len(g), "ours_pct": 100 * g.ours.mean(), "any_public_pct": 100 * g.any_public.mean(),
+             "two_public_pct": 100 * g.two_public.mean(),
+             "ours_marks_of_any_public_pct": 100 * g[g.any_public == 1].ours.mean() if g.any_public.sum() else None,
+             "ours_marks_of_two_public_pct": 100 * g[g.two_public == 1].ours.mean() if g.two_public.sum() >= 5 else None,
+             "any_public_of_ours_pct": 100 * g[g.ours == 1].any_public.mean() if g.ours.sum() else None}
+        r |= {f"{m}_pct": 100 * g[m].mean() for m in maps}
+        r |= {f"ours_marks_of_{m}_pct": 100 * g[g[m] == 1].ours.mean() if g[m].sum() >= 5 else None for m in maps}
+        rows.append(r)
+    out = pd.DataFrame(rows).round(2)
+    out.to_csv(RES / "rule1_national_vs_public.csv", index=False)
+    print(out[["state", "points", "ours_pct", "any_public_pct", "ours_marks_of_any_public_pct", "ours_marks_of_two_public_pct",
+               "any_public_of_ours_pct"]].round(1).to_string(index=False))
 
 
 CELL, BBOX = 0.01, (23.4, 3.4, 36.0, 12.3)              # ~1.1 km cells over South Sudan (west, south, east, north)
@@ -148,6 +217,10 @@ def figure():
 if __name__ == "__main__":
     if sys.argv[1:2] == ["summary"] and len(sys.argv) == 3:
         summary(Path(sys.argv[2]))
+    elif sys.argv[1:2] == ["compare"]:
+        compare()
+    elif sys.argv[1:2] == ["score"] and len(sys.argv) == 3:
+        score(Path(sys.argv[2]))
     elif sys.argv[1:2] == ["fetch"] and len(sys.argv) == 3:
         fetch(Path(sys.argv[2]))
     elif sys.argv[1:2] == ["figure"]:

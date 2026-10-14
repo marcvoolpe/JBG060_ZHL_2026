@@ -2,6 +2,30 @@
 
 \begin{table}[tbp]
 \centering
+\caption{Our map at 10 m and its 30 m national run on the 186 Aweil test points, next to the public maps (cropland; stratified estimators; $\pm$ one standard error).}\label{tab:nattest}
+%TC:ignore
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Map & Precision & Recall & F1 \\
+\midrule
+Rule 1, 10 m map & 0.70 $\pm$ 0.12 & 0.75 $\pm$ 0.12 & 0.72 $\pm$ 0.09 \\
+Rule 1, 30 m national run & 0.50 $\pm$ 0.10 & 0.75 $\pm$ 0.12 & 0.60 $\pm$ 0.09 \\
+WorldCereal 2021 & 0.83 $\pm$ 0.14 & 0.41 $\pm$ 0.11 & 0.55 $\pm$ 0.11 \\
+DE Africa 2019 & 0.40 $\pm$ 0.09 & 0.66 $\pm$ 0.12 & 0.50 $\pm$ 0.08 \\
+ASAP v04 & 1.00 $\pm$ 0.00 & 0.28 $\pm$ 0.09 & 0.43 $\pm$ 0.11 \\
+GLAD 2019 & 1.00 $\pm$ 0.00 & 0.26 $\pm$ 0.09 & 0.41 $\pm$ 0.10 \\
+WorldCover 2021 & 1.00 $\pm$ 0.00 & 0.22 $\pm$ 0.08 & 0.36 $\pm$ 0.11 \\
+GFSAD 2015 & 0.48 $\pm$ 0.16 & 0.18 $\pm$ 0.05 & 0.26 $\pm$ 0.06 \\
+Esri 2025 & 1.00 $\pm$ 0.00 & 0.03 $\pm$ 0.02 & 0.06 $\pm$ 0.03 \\
+Dynamic World 2025 & 0.10 $\pm$ 0.08 & 0.02 $\pm$ 0.01 & 0.03 $\pm$ 0.02 \\
+\bottomrule
+\end{tabular}
+%TC:endignore
+\end{table}
+
+\begin{table}[tbp]
+\centering
 \caption{Our map over South Sudan per state (land whose 210 m box holds a field; an upper bound, not checked outside Aweil and Bor South) against the 2025 crop assessment's modelled cereal area.}\label{tab:national}
 %TC:ignore
 \small
@@ -19,6 +43,31 @@ Upper Nile & 4.0 & 310,106 & 1.1 & 88,816 \\
 Western Bahr el Ghazal & 3.6 & 331,245 & 1.0 & 91,504 \\
 Jonglei & 3.2 & 393,768 & 0.6 & 70,829 \\
 Western Equatoria & 2.7 & 215,620 & 2.5 & 196,380 \\
+\bottomrule
+\end{tabular}
+%TC:endignore
+\end{table}
+
+\begin{table}[tbp]
+\centering
+\caption{Without labels: our national map against the public maps at 20,000 uniform random points outside the study areas (our map's 30 m pixel; each public map's 10 m pixel at the point). Agreement, not accuracy. Shares in \% of the land; ``of 2+ maps'': of the land at least two public maps call crop, the share our map marks (-- with fewer than five such points).}\label{tab:natvspub}
+%TC:ignore
+\footnotesize
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+State & Points & Our map & Any public map & Ours, of any & Ours, of 2+ maps & Any, of ours \\
+\midrule
+All (outside our areas) & 20,000 & 5.7 & 5.5 & 21 & 29 & 21 \\
+Abyei Region & 338 & 0.0 & 2.4 & 0 & -- & -- \\
+Central Equatoria & 1,432 & 6.6 & 4.7 & 33 & 67 & 23 \\
+Eastern Equatoria & 2,447 & 4.2 & 8.4 & 11 & 7 & 21 \\
+Jonglei & 3,630 & 3.2 & 6.2 & 8 & -- & 17 \\
+Lakes & 1,442 & 7.8 & 2.6 & 63 & 83 & 21 \\
+Unity & 1,212 & 9.2 & 4.5 & 28 & 60 & 13 \\
+Upper Nile & 2,626 & 3.1 & 13.3 & 5 & 2 & 21 \\
+Warrap & 1,188 & 29.6 & 9.2 & 87 & 96 & 27 \\
+Western Bahr el Ghazal & 3,010 & 3.5 & 0.8 & 56 & 71 & 13 \\
+Western Equatoria & 2,675 & 2.5 & 0.5 & 54 & -- & 10 \\
 \bottomrule
 \end{tabular}
 %TC:endignore

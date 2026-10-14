@@ -189,6 +189,12 @@ def write_results():
           "NatMapPct": f"{100 * st.map_ha.sum() / st.ha.sum():.1f}\\%", "NatMapHa": f"{round(st.map_ha.sum(), -4):,.0f}",
           "NatMapRho": f"{spearmanr(s2.map_pct, s2.cfsam_pct)[0]:.2f}", "PubRhoMin": f"{pub.min():.2f}", "PubRhoMax": f"{pub.max():.2f}",
           "GfsadRho": f"{rc['gfsad_2015']:.2f}"}
+    ar = R("area.csv")
+    b = ar[(ar.area == "aweil") & (ar.definition == "cropland") & (ar.measure == "box holds it (upper bound)")].iloc[0]
+    m |= {"AwSplitPoints": f"{int(b.points_split)}", "AwBoxIfSplitNo": f"{100 * b.share_if_split_all_no:.1f}\\%",
+          "AwBoxIfSplitYes": f"{100 * b.share_if_split_all_yes:.1f}\\%"}
+    m = write_national_check_numbers(m)
+    m = write_household_numbers(m)
     m = write_model_numbers(m)
     lines = ["% Written by build_report_inputs.py from cropland/results/ (steps 09-12). Do not edit by hand."]
     lines += [f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in m.items()]
@@ -220,13 +226,45 @@ NICE = {"worldcover_2021": "WorldCover 2021", "glad_2019": "GLAD 2019", "deafric
         "rf_features": "random forest, 18 inputs", "rf_embedding": "random forest, embedding"}
 
 
-def _table(caption, label, colspec, header, rows, note="", wide=False, size="small"):
+def _table(caption, label, colspec, header, rows, note="", wide=False, size="small", sep=None):
     body = "\n".join(" & ".join(str(c) for c in r) + r" \\" for r in rows)
     env = ("tabularx", "{\\linewidth}") if wide else ("tabular", "")         # tabularx: a column that wraps
     return ("\\begin{table}[tbp]\n\\centering\n\\caption{" + caption + "}\\label{" + label + "}\n%TC:ignore\n\\" + size + "\n"
-            "\\begin{" + env[0] + "}" + env[1] + "{@{}" + colspec + "@{}}\n\\toprule\n" + " & ".join(header) + r" \\" + "\n\\midrule\n" + body +
+            + (f"\\setlength{{\\tabcolsep}}{{{sep}}}\n" if sep else "")
+            + "\\begin{" + env[0] + "}" + env[1] + "{@{}" + colspec + "@{}}\n\\toprule\n" + " & ".join(header) + r" \\" + "\n\\midrule\n" + body +
             "\n\\bottomrule\n\\end{" + env[0] + "}\n" + (f"\\par\\smallskip{{\\footnotesize {note}}}\n" if note else "") +
             "%TC:endignore\n\\end{table}\n")
+
+
+def exposure_table(R):
+    """Before (public maps) and after (labelled sample) for flooded cropland, with households and a 500 ha trigger."""
+    h = R("flood_history.csv")
+    h1 = h[h.min_days == 1]
+    t = R("trigger_hindcast.csv")
+    t = t[(t.min_days == 1) & (t.threshold_ha == 500)]
+    rows = []
+    for area, year in (("aweil", 2008), ("aweil", 2022), ("aweil", 2025), ("bor_south", 2007), ("bor_south", 2025)):
+        g = h1[(h1.area == area) & (h1.year == year)]
+        mp = g[g.layer.isin(ORDER)].set_index("layer").flooded_crop_ha
+        smp = g[(g.layer == "sample (ratio)") & (g.measure == "share of box")].iloc[0]
+        hh = ha_per_household(area)
+        pts = 0 if pd.isna(smp.points_in_flood) else int(smp.points_in_flood)
+        ok = pd.notna(smp.flooded_crop_ha) and pts >= 5
+        tt = t[(t.area == area) & (t.year == year) & t.layer.isin(ORDER)]
+        says = t[(t.area == area) & (t.year == year) & (t.compared_with == "share of box")].sample_says.iloc[0]
+        rows.append(("Aweil" if area == "aweil" else "Bor South", year, f"{g.flooded_land_ha.iloc[0]:,.0f}",
+                     f"{mp.min():,.0f}--{mp.max():,.0f}",
+                     f"{smp.flooded_crop_ha:,.0f} ({smp.low_ha:,.0f}--{smp.high_ha:,.0f})" if ok else f"cannot tell ({pts} point{'' if pts == 1 else 's'})",
+                     f"{round(mp.min() / hh, -1):,.0f}--{round(mp.max() / hh, -1):,.0f}",
+                     f"{round(smp.flooded_crop_ha / hh, -1):,.0f}" if ok else "--",
+                     f"{int((tt.layer_says == 'fire').sum())} of {len(tt)}",
+                     "fire" if says == "fire" else "cannot tell" if says == "cannot tell" else "no fire"))
+    return _table("Flooded cropland before and after our check, on today's cropland: the public maps against the labelled sample (ratio estimator, "
+                  "95\\% interval; judged only with at least five sample points on flooded land). Households: hectares divided by the cereal "
+                  "hectares per farming household in the 2025 crop assessment (illustrative and an upper bound: every flooded field counted as lost). "
+                  "Trigger: flooded cropland of at least 500 ha.", "tab:exposure", "llrrrrrrr",
+                  ["Area", "Year", "Flooded", "Maps, ha", "Sample, ha", "Hh., maps", "Hh., sample", "Maps fire", "Sample"],
+                  rows, size="footnotesize", sep="4pt")
 
 
 def write_appendix_tables():
@@ -312,11 +350,76 @@ def write_appendix_tables():
                       ["State", "Our map, \\%", "Our map, ha", "CFSAM cereal, \\%", "CFSAM cereal, ha"],
                       [(r.state, f"{r.map_pct:.1f}", f"{r.map_ha:,.0f}", "--" if pd.isna(r.cfsam_pct) else f"{r.cfsam_pct:.1f}",
                         "--" if pd.isna(r.cfsam_2025_cereal_ha) else f"{r.cfsam_2025_cereal_ha:,.0f}") for r in st.itertuples()]))
-    groups = {"app_sample": [1, 2], "app_models": [0, 4], "app_accuracy": [3, 5], "app_floods": [6, 7], "app_national": [8]}   # one file per appendix section
+    out.append(exposure_table(R))                                                               # 9: Results section
+    t = R("rule1_national_test_points.csv")
+    a = t[(t.area == "aweil") & (t.definition == "cropland")].set_index("map")
+    keep = ["rule1", "map_30m_national"] + [k for k in ORDER if k in a.index]
+    nice = NICE | {"rule1": "Rule 1, 10 m map", "map_30m_national": "Rule 1, 30 m national run"}
+    out.append(_table("Our map at 10 m and its 30 m national run on the 186 Aweil test points, next to the public maps (cropland; "
+                      "stratified estimators; $\\pm$ one standard error).", "tab:nattest", "lrrr", ["Map", "Precision", "Recall", "F1"],
+                      [(nice[k], pm(a.loc[k, "ua"], a.loc[k, "ua_se"]), pm(a.loc[k, "pa"], a.loc[k, "pa_se"]), pm(a.loc[k, "f1"], a.loc[k, "f1_se"]))
+                       for k in sorted(keep, key=lambda k: -a.loc[k, "f1"])]))                      # 10
+    v = R("rule1_national_vs_public.csv")
+    f = lambda x: "--" if pd.isna(x) else f"{x:.0f}"
+    out.append(_table("Without labels: our national map against the public maps at 20,000 uniform random points outside the study areas "
+                      "(our map's 30 m pixel; each public map's 10 m pixel at the point). Agreement, not accuracy. Shares in \\% of the land; "
+                      "``of 2+ maps'': of the land at least two public maps call crop, the share our map marks (-- with fewer than five such points).",
+                      "tab:natvspub", "lrrrrrr", ["State", "Points", "Our map", "Any public map", "Ours, of any", "Ours, of 2+ maps", "Any, of ours"],
+                      [(r.state.replace("South Sudan without the study areas", "All (outside our areas)"), f"{r.points:,}", f"{r.ours_pct:.1f}",
+                        f"{r.any_public_pct:.1f}", f(r.ours_marks_of_any_public_pct), f(r.ours_marks_of_two_public_pct), f(r.any_public_of_ours_pct))
+                       for r in v.itertuples()], size="footnotesize"))                       # 11
+    groups = {"app_sample": [1, 2], "app_models": [0, 4], "app_accuracy": [3, 5], "app_floods": [6, 7], "app_national": [10, 8, 11],
+              "res_exposure": [9]}   # one file per appendix section (res_exposure: in the Results section)
     for name, idx in groups.items():
         (HERE / f"{name}.tex").write_text("% Written by build_report_inputs.py from CSVs. Do not edit by hand.\n\n"
                                           + "\n".join(out[i] for i in idx), encoding="utf-8")
     print(f"appendix tables: {len(out)} tables in {len(groups)} files")
+
+
+CROPLAND = HERE.parents[2] / "cropland"
+
+
+def ha_per_household(area):
+    """Cereal hectares per farming household in the study area's counties, CFSAM 2025 (illustrative conversion)."""
+    import tomllib
+    cfg = tomllib.loads((CROPLAND / "config" / "south_sudan_2025.toml").read_text(encoding="utf-8"))
+    c = pd.read_csv(CROPLAND / "reference_statistics.csv").drop_duplicates()
+    c = c[(c.source == "CFSAM") & (c.year == 2025) & (c.level == "county") & c.name.isin(cfg["areas"][area])]
+    return c.cereal_harvested_ha.sum() / c.farming_households.sum()
+
+
+def write_national_check_numbers(m):
+    """The 30 m national run on our test points (national_map.py score) and its agreement with the public maps (national_map.py compare)."""
+    t = pd.read_csv(RESULTS / "rule1_national_test_points.csv")
+    a = t[(t.area == "aweil") & (t.definition == "cropland")].set_index("map")
+    agree = t[(t.area == "aweil") & (t.definition == "agreement with Rule 1 at the points")].set_index("map")
+    n = a.loc["map_30m_national"]
+    m |= {"NatThirtyFone": f"{n.f1:.2f}", "NatThirtyFoneSe": f"{n.f1_se:.2f}", "NatThirtyPrec": f"{n.ua:.2f}",
+          "NatThirtyRec": f"{n.pa:.2f}", "NatAgreeAw": f"{100 * agree.loc['map_30m_national', 'f1']:.0f}\\%"}
+    v = pd.read_csv(RESULTS / "rule1_national_vs_public.csv").set_index("state")     # national_map.py compare
+    al = v.loc["South Sudan without the study areas"]
+    p1 = lambda x: f"{x:.0f}\\%"
+    m |= {"NatOursOfAny": p1(al.ours_marks_of_any_public_pct), "NatOursOfTwo": p1(al.ours_marks_of_two_public_pct),
+          "NatAnyOfOurs": p1(al.any_public_of_ours_pct), "NatVsPoints": f"{int(al.points):,}",
+          "NatWarrapOfTwo": p1(v.loc["Warrap", "ours_marks_of_two_public_pct"]),
+          "NatLakesOfTwo": p1(v.loc["Lakes", "ours_marks_of_two_public_pct"]),
+          "NatUpperNileOfTwo": p1(v.loc["Upper Nile", "ours_marks_of_two_public_pct"]),
+          "NatUpperNilePublic": p1(v.loc["Upper Nile", "any_public_pct"]),
+          "NatEastEqOfTwo": p1(v.loc["Eastern Equatoria", "ours_marks_of_two_public_pct"])}
+    return m
+
+
+def write_household_numbers(m):
+    """Illustrative: flooded hectares as farming households (CFSAM 2025 cereal ha per farming household)."""
+    hh = ha_per_household("aweil")
+    h = pd.read_csv(RESULTS / "flood_history.csv")
+    h1 = h[(h.min_days == 1) & (h.area == "aweil") & (h.year == 2022)]
+    smp = h1[(h1.layer == "sample (ratio)") & (h1.measure == "share of box")].iloc[0]
+    mp = h1[h1.layer.isin(ORDER)].flooded_crop_ha
+    r10 = lambda v: f"{round(v / hh, -1):,.0f}"
+    m |= {"HaPerHhAw": f"{hh:.2f}", "HhTwentyTwoMapsMin": r10(mp.min()), "HhTwentyTwoMapsMax": r10(mp.max()),
+          "HhTwentyTwoEst": r10(smp.flooded_crop_ha), "HhTwentyTwoLow": r10(smp.low_ha), "HhTwentyTwoHigh": r10(smp.high_ha)}
+    return m
 
 
 def write_model_numbers(m):
@@ -344,7 +447,7 @@ def embed_in_draft():
                           + strip((HERE / "results.tex").read_text(encoding="utf-8")), "\\input{numbers}\n\\input{results}"),
               "bib": ("\\begin{filecontents*}[overwrite]{references.bib}\n"
                       + (HERE / "references.bib").read_text(encoding="utf-8").strip() + "\n\\end{filecontents*}", None)}
-    for name in ("app_sample", "app_models", "app_accuracy", "app_floods", "app_national"):
+    for name in ("app_sample", "app_models", "app_accuracy", "app_floods", "app_national", "res_exposure"):
         blocks[name] = (strip((HERE / f"{name}.tex").read_text(encoding="utf-8")), f"\\input{{{name}}}")
     for name, (content, old_input) in blocks.items():
         start, end = f"%% <<{name}>> written by build_report_inputs.py: do not edit between these lines", f"%% <</{name}>>"

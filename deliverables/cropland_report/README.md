@@ -23,7 +23,9 @@ Group 1, JBG060. Everything for the methodological report (max 2,000 words, due 
 | **Report draft** | **written 14 Oct from the results**: `report/report_draft.md` (read it on GitHub) and `report/report_draft.tex` (edit it; Overleaf). About 4,100 words, so the group cuts to 2,000; pending decisions tagged |
 | Our map over the whole country | **done 14 Oct** (`cropland/national_map.py`, figure 27, notes 07 R7): 6.8% of South Sudan marked (upper bound, not checked outside our areas); state ranking like CFSAM (0.52). Correction: in Aweil our map marks 22.6%, above the sample's 14.3%: it over-marks |
 | Poster | plan rewritten 14 Oct against the Canvas requirements and rubric (notes 08): A0 portrait, 20 pt minimum, 300-400 words, panels A-I, pitch and questions |
-| Dashboard | plan revised 12 Oct ([`DASHBOARD_PLAN.md`](DASHBOARD_PLAN.md), in this folder): five-page results story, no general course data |
+| Dashboard | **first version 14 Oct**: [`dashboard.html`](dashboard.html) (open with a double click, works offline), built by `python cropland/14_dashboard.py` from the result tables; seven sections: area, maps, flood exposure 2000-2025 with the 2022 before/after map, trigger hindcast with households, the whole country, what we hand over, limits. Page code in `cropland/dashboard/template.html`, plan in [`DASHBOARD_PLAN.md`](DASHBOARD_PLAN.md) |
+| National check | **14 Oct**: the 30 m national map keeps recall 0.75 on our test points but precision falls to 0.50 (F1 0.60 against 0.72 at 10 m); A labelled check sample was planned and **dropped: the group does not label further** (14 Oct). Instead, without labels (`national_map.py compare`): of the land 2+ public maps call crop, our map marks 29% outside our areas (Warrap 96%, Lakes 83%, Upper Nile 2%) |
+| Labelling errors | **reported 14 Oct** by the labellers: undated Google imagery, Wayback, extra Sentinel scenes, a few early labels counting crop just outside the box. In the report (Discussion, appendix "Known errors in the data"); guide clarified for the national round. Decision 11 |
 | Own trees (Wei, Matei) | open: `cropland/tree_workbench.ipynb` (calibration points only; retrains Rule 1 exactly; writes nothing until `FREEZE = True`) |
 | Reuse for other areas / countries | **done 12 Oct**: `cropland/config/*.toml`, `cropland/REUSE.md`, `cropland/make_new_area.py` |
 
@@ -69,6 +71,7 @@ deliverables/cropland_report/
   REVIEW_PLAN.md   how we go through all of this before 14 Oct, and the decisions for that meeting
   REVIEW_NOTES.md  everyone's comments, one section per person
   DASHBOARD_PLAN.md  the dashboard: five pages, code, who, when
+  dashboard.html   the results dashboard (one file, opens offline; rebuild: python cropland/14_dashboard.py)
   notes/           long notes per rubric heading (01-08)
   report/          LaTeX skeleton for Overleaf: report.tex, references.bib, numbers.tex (macros), build_report_inputs.py
   submission/      README_DRAFT.md: draft of the code-submission README and the outline of the single final notebook
@@ -126,6 +129,7 @@ python -m pip install -r cropland/requirements-cropland.txt
 set CROPLAND_EE_PROJECT=<your Earth Engine project>     (only for Earth Engine steps)
 # open cropland/eda_public_maps.ipynb and run all cells (writes tables/ and figures/ here)
 python deliverables/cropland_report/report/build_report_inputs.py   (numbers.tex, Overleaf zip)
+python cropland/14_dashboard.py                                      (dashboard.html, no Earth Engine)
 python cropland/test_cropland.py && python cropland/test_evaluation.py
 ```
 The notebook needs the course data next to the repo (`data-JBG060-2026/`) or in `raw_data/`, and the cached Earth Engine counts in `raw_data/cropland/eda/`. Those are in git since 14 Oct except `national.npz` (51 MB, only for figures 4-5: ask Yassin, or rerun `python cropland/eda_maps.py export`, which takes hours). The random-forest benchmarks (`raw_data/cropland/benchmarks.joblib`, needed by step 09) and Rule 1 per flood cell (needed by step 10b) are in git too.

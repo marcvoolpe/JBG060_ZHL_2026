@@ -10,6 +10,8 @@ frozen models.
 - The **labelling system becomes reusable** for other areas and countries: one config file per area plus a guide (section 5).
 - Label statistics and the per-point model plots move to the report and the SLE essay; the dashboard keeps one "how sure are we" box.
 
+**Status 14 Oct (evening): a first full version exists** (`dashboard.html` in this folder, built by `cropland/14_dashboard.py` from `cropland/dashboard/template.html`). It covers pages 1-5 below and adds page 6, "What we hand over" (labelling tool, reuse kit, pipeline, model workbench, flood overlay, national map, dashboard, report kit, labelled data) and page 7, limits. It needs no Earth Engine and no server: plain JavaScript and SVG, the 2022 before/after map drawn on a canvas from `results/flood_cells_aweil_2022.csv`, so it opens offline. Not yet built: `13_dashboard_data.py` (10 m layer images and the county choropleth), Bor South and other years in the map view. Each page is one JavaScript function in the template (`pageHeadline`, `pageMaps`, `pageExposure`, `pageAction`, `pageCountry`, `pageHandover`, `pageLimits`), so people can restyle pages in parallel.
+
 ## 1. The question it answers
 
 **How much cropland is there in ZOA's areas, how much of it flooded in 2025, and how much does the answer depend on which cropland map you use?** For ZOA: which number to put in a trigger or a proposal, which public map to trust (or avoid) where, and how to repeat the check.

@@ -137,7 +137,7 @@ def convert():
     s = re.sub(r"\\textbf\{([^}]*)\}", r"**\1**", s)
     s = re.sub(r"\\texttt\{([^}]*)\}", r"`\1`", s)
     s = re.sub(r"\\(\w+)(\{\})?", lambda m: M.get(m.group(1), m.group(0)), s)
-    for a, b in ((r"$\pm", "±"), (r"\pm", "±"), (r"$\le", "≤"), (r"$\rightarrow$", "->"), ("$", ""), ("``", '"'), ("''", '"'),
+    for a, b in ((r"\textdegree{}", "°"), (r"\textdegree", "°"), (r"$\pm", "±"), (r"\pm", "±"), (r"$\le", "≤"), (r"$\rightarrow$", "->"), ("$", ""), ("``", '"'), ("''", '"'),
                  ("---", "-"), ("--", "-"), (r"\%", "%"), (r"\&", "&"), (r"\_", "_"), (r"\,", ","), ("~", " "), (r"\maketitle", ""),
                  ("\\\\", " ")):
         s = s.replace(a, b)

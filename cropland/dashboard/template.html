@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Which Cropland Is Under Water?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: a field report. A sticky index of the seven questions on the left (a scrolling bar on phones); each
+   section opens with its question and a one-sentence answer, then the evidence at full content width.
+   Colour carries one meaning everywhere: blue = a public map, orange = our map and models, ink = the labelled sample. */
+:root {
+  --bg: #fafaf8; --panel: #ffffff; --ink: #151514; --ink2: #4f4e4a; --muted: #6f6d66; --line: #e2e1db; --grid: #ecebe6;
+  --public: #2a78d6; --public-soft: #d3e3f7; --ours: #eb6834; --ours-soft: #fbdfd1; --sample: #151514; --none: #d6d4cc;
+  --miss: #c2362b; --focus: #2a78d6;
+  --display: "Barlow Semi Condensed", "Arial Narrow", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: ui-monospace, "Cascadia Mono", Consolas, "Liberation Mono", monospace;
+  --step--1: 0.84rem; --step-0: 1rem; --step-1: 1.2rem; --step-2: 1.5rem; --step-3: 2.1rem; --step-4: 2.9rem;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #171716; --panel: #1f1f1e; --ink: #efeee9; --ink2: #c4c3b9; --muted: #a09e95; --line: #383834; --grid: #2b2b29;
+  --public: #3987e5; --public-soft: #1e3858; --ours: #d95926; --ours-soft: #4a2818; --sample: #efeee9; --none: #4d4c47;
+  --miss: #ec6a5c; --focus: #6da7ec; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #171716; --panel: #1f1f1e; --ink: #efeee9; --ink2: #c4c3b9; --muted: #a09e95; --line: #383834; --grid: #2b2b29;
+  --public: #3987e5; --public-soft: #1e3858; --ours: #d95926; --ours-soft: #4a2818; --sample: #efeee9; --none: #4d4c47;
+  --miss: #ec6a5c; --focus: #6da7ec; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 var(--step-0)/1.5 var(--body); }
+a { color: var(--public); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.shell { display: grid; grid-template-columns: 13.5rem minmax(0, 1fr); gap: 2.5rem; max-width: 82rem; margin: 0 auto;
+         padding-inline: clamp(16px, 3vw, 40px); padding-block: 0 4rem; }
+nav.index { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; padding-block: 2rem; }
+nav.index ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.15rem; counter-reset: q; }
+nav.index a { display: grid; grid-template-columns: 1.4rem 1fr; gap: 0.3rem; padding: 0.35rem 0.5rem; border-radius: 6px;
+              color: var(--ink2); text-decoration: none; font-size: var(--step--1); line-height: 1.3; }
+nav.index a b { font: 600 var(--step--1) var(--display); color: var(--muted); }
+nav.index a:hover, nav.index a.on { background: var(--panel); color: var(--ink); }
+nav.index a.on b { color: var(--ours); }
+nav.index .meta { margin-top: 1.5rem; font-size: 0.78rem; color: var(--muted); line-height: 1.45; }
+main { min-width: 0; }
+header.top { padding-block: 2.5rem 1.5rem; border-bottom: 1px solid var(--line); }
+.eyebrow { font: 600 0.8rem/1.2 var(--display); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 0.6rem; }
+h1 { font: 700 var(--step-4)/1.02 var(--display); margin: 0 0 0.9rem; text-wrap: balance; letter-spacing: -0.01em; }
+h2 { font: 700 var(--step-3)/1.08 var(--display); margin: 0 0 0.6rem; text-wrap: balance; }
+h3 { font: 600 var(--step-1)/1.2 var(--display); margin: 0 0 0.4rem; }
+.lead { font-size: var(--step-1); line-height: 1.45; max-width: 44rem; color: var(--ink); margin: 0 0 1rem; }
+.lead b { font-weight: 600; }
+p { max-width: 42rem; }
+.muted { color: var(--muted); }
+.small { font-size: var(--step--1); }
+.key { display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem; margin: 1rem 0 0; font-size: var(--step--1); color: var(--ink2); }
+.key span { display: inline-flex; align-items: center; gap: 0.45rem; }
+.sw { width: 0.8rem; height: 0.8rem; border-radius: 3px; display: inline-block; flex: none; }
+.sw.public { background: var(--public); } .sw.ours { background: var(--ours); } .sw.none { background: var(--none); }
+.sw.sample { background: var(--sample); border-radius: 50%; } .sw.ring { border: 2px solid var(--ours); background: transparent; border-radius: 50%; }
+section.q { padding-block: 3rem 1rem; border-bottom: 1px solid var(--line); scroll-margin-top: 1rem; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: 1.25rem; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: 1rem; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 1.1rem 1.2rem; min-width: 0; }
+.figure { margin: 1.25rem 0 0.5rem; min-width: 0; }
+.figure .chart { width: 100%; }
+.figure .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.source { font: 0.74rem/1.4 var(--mono); color: var(--muted); margin: 0.5rem 0 0; overflow-wrap: anywhere; }
+.big { font: 700 var(--step-3)/1 var(--display); font-variant-numeric: tabular-nums; }
+.big small { font: 600 var(--step-1) var(--display); color: var(--ink2); }
+.range { font-variant-numeric: tabular-nums; color: var(--ink2); }
+.controls { display: flex; flex-wrap: wrap; gap: 0.6rem 1.2rem; align-items: center; margin: 1rem 0 0.25rem; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; background: var(--panel); }
+.seg button { font: 600 var(--step--1) var(--body); border: 0; background: transparent; color: var(--ink2); padding: 0.35rem 0.75rem;
+              cursor: pointer; border-right: 1px solid var(--line); }
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.ctl-label { font-size: var(--step--1); color: var(--muted); margin-right: 0.35rem; }
+select { font: inherit; font-size: var(--step--1); padding: 0.3rem 0.4rem; border: 1px solid var(--line); border-radius: 6px;
+         background: var(--panel); color: var(--ink); max-width: 100%; }
+label.check { font-size: var(--step--1); color: var(--ink2); display: inline-flex; gap: 0.35rem; align-items: center; }
+details { margin: 0.4rem 0 0; }
+details summary { cursor: pointer; font-size: var(--step--1); color: var(--ink2); }
+.tablewrap { overflow-x: auto; margin-top: 0.5rem; }
+table { border-collapse: collapse; font-size: var(--step--1); font-variant-numeric: tabular-nums; min-width: 100%; }
+th, td { text-align: left; padding: 0.3rem 0.6rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-weight: 600; color: var(--ink2); }
+td.n, th.n { text-align: right; }
+.pill { display: inline-block; font: 600 0.72rem/1 var(--display); letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3rem 0.5rem;
+        border-radius: 99px; border: 1px solid var(--line); color: var(--ink2); background: var(--bg); vertical-align: middle; }
+.pill.wait { border-color: var(--ours); color: var(--ours); }
+.pill.done { border-color: var(--public); color: var(--public); }
+.note { border-left: 3px solid var(--line); padding: 0.2rem 0 0.2rem 0.8rem; color: var(--ink2); font-size: var(--step--1); max-width: 44rem; }
+.mapbox { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.mapbox canvas { display: block; width: 100%; }
+.mapside { display: grid; grid-template-columns: minmax(0, 1fr) 17rem; gap: 1.25rem; align-items: start; }
+.counts { display: grid; gap: 0.35rem; font-size: var(--step--1); }
+.counts div { display: flex; align-items: center; gap: 0.5rem; }
+.counts .v { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; text-align: right; }
+.tool h3 { display: flex; justify-content: space-between; gap: 0.5rem; align-items: baseline; }
+.tool code, code { font: 0.8rem var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 0.05rem 0.3rem;
+                   overflow-wrap: anywhere; }
+.tool p { margin: 0.35rem 0; font-size: var(--step--1); color: var(--ink2); }
+.tool .files { font: 0.74rem/1.5 var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+ol.steps { padding-left: 1.3rem; max-width: 46rem; } ol.steps li { margin: 0.4rem 0; }
+ul.plain { padding-left: 1.1rem; max-width: 46rem; } ul.plain li { margin: 0.35rem 0; }
+#tip { position: fixed; z-index: 50; pointer-events: none; background: var(--panel); color: var(--ink); border: 1px solid var(--line);
+       border-radius: 8px; padding: 0.5rem 0.65rem; font-size: 0.8rem; line-height: 1.4; box-shadow: 0 4px 16px rgba(0,0,0,.14);
+       max-width: 19rem; font-variant-numeric: tabular-nums; }
+#tip b { font-weight: 600; }
+.axis text, .lbl { fill: var(--ink2); font: 12px var(--body); }
+.axis .t { fill: var(--muted); font-size: 11px; }
+.axis line { stroke: var(--grid); }
+.lbl.strong { fill: var(--ink); font-weight: 600; }
+footer { padding-block: 2rem; color: var(--muted); font-size: var(--step--1); }
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  nav.index { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); padding-block: 0.5rem;
+              border-bottom: 1px solid var(--line); margin-inline: calc(-1 * clamp(16px, 3vw, 40px)); padding-inline: clamp(16px, 3vw, 40px); }
+  nav.index ol { grid-auto-flow: column; overflow-x: auto; gap: 0.25rem; }
+  nav.index a { white-space: nowrap; grid-template-columns: auto auto; }
+  nav.index .meta { display: none; }
+  .mapside { grid-template-columns: minmax(0, 1fr); }
+  h1 { font-size: var(--step-3); }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<nav class="index" aria-label="Sections">
+  <ol id="navlist">
+    <li><a href="#cropland"><b>1</b>How much cropland?</a></li>
+    <li><a href="#maps"><b>2</b>Which map finds the fields?</a></li>
+    <li><a href="#exposure"><b>3</b>Cropland under water</a></li>
+    <li><a href="#action"><b>4</b>Would a trigger fire?</a></li>
+    <li><a href="#country"><b>5</b>The whole country</a></li>
+    <li><a href="#handover"><b>6</b>What we hand over</a></li>
+    <li><a href="#limits"><b>7</b>How sure, and limits</a></li>
+  </ol>
+  <p class="meta" id="built"></p>
+</nav>
+<main>
+<header class="top">
+  <p class="eyebrow">JBG060 group 1 · for ZOA and Zero Hunger Lab · South Sudan, season 2025</p>
+  <h1>Which cropland is under water?</h1>
+  <p class="lead">A flood trigger multiplies two maps: where the water is, and where the fields are. Seven free cropland maps
+    disagree about the fields. We labelled <b>450 boxes of 210 m</b>, each twice and blind, checked every map against them,
+    and built a map of our own. This page shows what the checked numbers change for flood exposure and for anticipatory action.</p>
+  <div class="key" aria-label="Colour key">
+    <span><i class="sw public"></i>a public map (as ZOA would use it today)</span>
+    <span><i class="sw ours"></i>our map and our models</span>
+    <span><i class="sw sample"></i>the labelled sample, with its 95% interval</span>
+  </div>
+</header>
+
+<section class="q" id="cropland">
+  <p class="eyebrow">1 · Before and after: the area</p>
+  <h2>How much cropland is there?</h2>
+  <p class="lead" id="crop-lead"></p>
+  <div class="grid2" id="crop-cards"></div>
+  <p class="note" id="crop-ours"></p>
+  <p class="source">results/area_adjusted.csv · results/pixel_count_bias.csv · results/rule1_map_share.csv · reference_statistics.csv (CFSAM 2025)</p>
+</section>
+
+<section class="q" id="maps">
+  <p class="eyebrow">2 · Before and after: the maps</p>
+  <h2>Which map finds the fields?</h2>
+  <p class="lead" id="maps-lead"></p>
+  <div class="controls"><span class="ctl-label">Score</span>
+    <div class="seg" id="metric-seg" role="group" aria-label="Score">
+      <button type="button" data-v="f1" aria-pressed="true">F1</button>
+      <button type="button" data-v="pa" aria-pressed="false">Recall: fields found</button>
+      <button type="button" data-v="ua" aria-pressed="false">Precision: crop calls right</button>
+    </div></div>
+  <div class="figure"><div class="chart" id="score-chart"></div>
+    <div class="key"><span><i class="sw public"></i>public map</span><span><i class="sw ours"></i>our map</span>
+      <span><i class="sw ring"></i>our other models and benchmarks</span><span class="muted">line: 95% interval (± 1.96 SE)</span></div>
+    <p class="note">Aweil counties, 186 test points the two labellers agree on, weighted by stratum. Maps whose intervals overlap are not ranked against each other.</p>
+    <details><summary>Show the numbers</summary><div class="tablewrap" id="score-table"></div></details>
+    <p class="source">results/accuracy.csv · results/rule1_national_test_points.csv (30 m run)</p></div>
+  <div class="grid2" style="margin-top:1.5rem">
+    <div class="card"><h3>Bor South: false crop</h3>
+      <p class="small muted">No test point in Bor South holds cropland both labellers agree on, so recall cannot be measured there. What can be counted: how often a map calls crop in a box both labellers saw no field in.</p>
+      <div class="chart" id="bor-chart"></div>
+      <p class="source">results/map_values.csv (74 agreed empty test boxes)</p></div>
+    <div class="card"><h3>Our map in two questions</h3>
+      <p class="small">Rule 1, a decision tree of depth 2 fitted on the 125 calibration points, frozen before any test label was read:</p>
+      <ol class="steps small"><li>Is there a building within <b>333 m</b> of the box (Google Open Buildings)?</li>
+        <li>Does the box show <b>field edges</b> in the green season (edge density of Sentinel-2)?</li></ol>
+      <p class="small">Both yes: the box holds a field. A person can check it on an image. It finds more fields than any public map, and it also marks some boxes next to homesteads that have no field.</p>
+      <p class="source">rule1_2026-10-12.json · results/rule_complexity.csv</p></div>
+  </div>
+</section>
+
+<section class="q" id="exposure">
+  <p class="eyebrow">3 · Before and after: flood exposure</p>
+  <h2>How much cropland was under water?</h2>
+  <p class="lead" id="exp-lead"></p>
+  <div class="controls">
+    <span><span class="ctl-label">Area</span><span class="seg" id="exp-area" role="group" aria-label="Area">
+      <button type="button" data-v="aweil" aria-pressed="true">Aweil counties</button><button type="button" data-v="bor_south" aria-pressed="false">Bor South</button></span></span>
+    <span><span class="ctl-label">Flooded at least</span><span class="seg" id="exp-days" role="group" aria-label="Flood days">
+      <button type="button" data-v="1" aria-pressed="true">1 day</button><button type="button" data-v="10" aria-pressed="false">10 days</button></span></span>
+    <span><span class="ctl-label">Measure</span><span class="seg" id="exp-measure" role="group" aria-label="Measure">
+      <button type="button" data-v="share" aria-pressed="true">Cropland under water</button><button type="button" data-v="box" aria-pressed="false">Land near fields (our map)</button></span></span>
+  </div>
+  <div class="figure"><div class="chart" id="hist-chart"></div>
+    <div class="key" id="hist-key"></div>
+    <p class="note" id="hist-note"></p>
+    <details><summary>Show the numbers</summary><div class="tablewrap" id="hist-table"></div></details>
+    <p class="source">results/flood_history.csv (NASA MCDWD flood cells, June to December; today's cropland, so earlier years are a scenario)</p></div>
+  <div class="figure"><h3 id="year-title"></h3><div class="chart" id="year-chart"></div>
+    <p class="note" id="year-note"></p></div>
+  <div class="figure" style="margin-top:2rem"><h3>Where: the 2022 flood in Aweil, before and after</h3>
+    <p class="small" style="max-width:46rem">Every NASA flood cell (232 m) under water at least one day, June to December 2022. Pick the public map you would use today; orange cells are flooded cropland only our map shows. Hover a cell for every map's value; click the map to zoom in on a spot, click again to zoom out.</p>
+    <div class="mapside">
+      <div class="mapbox"><canvas id="fmap" role="img" aria-label="Map of flooded cells in the Aweil counties, 2022"></canvas></div>
+      <div class="card">
+        <label class="ctl-label" for="before">Before: the public map</label>
+        <select id="before"></select>
+        <div class="counts" style="margin-top:0.8rem">
+          <div><i class="sw public"></i>crop shown by the map<span class="v" id="n-shown"></span></div>
+          <div><i class="sw ours"></i>added by our map<span class="v" id="n-added"></span></div>
+          <div><i class="sw none"></i>flooded, no crop in either<span class="v" id="n-none"></span></div>
+          <div class="muted">of the shown cells, our map sees none in<span class="v" id="n-maponly"></span></div>
+        </div>
+        <label class="check" style="margin-top:0.7rem"><input type="checkbox" id="fpts" checked> labelled points on flooded land</label>
+        <div class="counts" style="margin-top:0.8rem;border-top:1px solid var(--line);padding-top:0.7rem">
+          <div>cropland under water, by the map<span class="v" id="ha-map"></span></div>
+          <div>by our labelled sample<span class="v" id="ha-sample"></span></div>
+        </div>
+        <p class="small muted" style="margin:0.7rem 0 0">Our map shows <b>where</b> cropland lies under water; <b>how much</b> comes from the labelled sample.</p>
+      </div>
+    </div>
+    <p class="source">results/flood_cells_aweil_2022.csv · tables/flood_map_aweil_2022.csv · county borders: OCHA COD-AB · Lol river: OpenStreetMap</p>
+  </div>
+</section>
+
+<section class="q" id="action">
+  <p class="eyebrow">4 · What it changes for anticipatory action</p>
+  <h2>Would a trigger have fired?</h2>
+  <p class="lead" id="act-lead"></p>
+  <div class="controls">
+    <span><span class="ctl-label">Area</span><span class="seg" id="act-area" role="group" aria-label="Area">
+      <button type="button" data-v="aweil" aria-pressed="true">Aweil counties</button><button type="button" data-v="bor_south" aria-pressed="false">Bor South</button></span></span>
+    <span><span class="ctl-label">Trigger: flooded cropland of at least</span><span class="seg" id="act-thr" role="group" aria-label="Threshold">
+      <button type="button" data-v="100" aria-pressed="false">100 ha</button><button type="button" data-v="500" aria-pressed="true">500 ha</button>
+      <button type="button" data-v="1000" aria-pressed="false">1,000 ha</button><button type="button" data-v="5000" aria-pressed="false">5,000 ha</button></span></span>
+    <span><span class="ctl-label">Flooded at least</span><span class="seg" id="act-days" role="group" aria-label="Flood days">
+      <button type="button" data-v="1" aria-pressed="true">1 day</button><button type="button" data-v="10" aria-pressed="false">10 days</button></span></span>
+  </div>
+  <div class="figure"><div class="tablewrap"><div class="chart" id="trig-chart" style="min-width:680px"></div></div>
+    <div class="key"><span><i class="sw public"></i><i class="sw ours"></i>filled: the map would fire</span>
+      <span><i class="sw" style="border:1.5px solid var(--muted)"></i>empty: it stays silent</span>
+      <span><i class="sw sample"></i>sample row: should fire · empty: should not · dot: cannot tell</span>
+      <span><i class="sw" style="border:2px solid var(--miss)"></i>the map contradicts the sample</span></div>
+    <p class="note" id="trig-note"></p>
+    <p class="source">results/trigger_hindcast.csv · the sample judges a year only when at least 5 of its points lie on flooded land, or the flooded land itself is below the threshold</p></div>
+  <h3 style="margin-top:2rem">What it changes for ZOA</h3>
+  <div class="grid3" id="zoa-boxes"></div>
+  <div class="card" style="margin-top:1.25rem"><h3>Which map to use where</h3>
+    <ul class="plain small">
+      <li><b>Aweil:</b> WorldCereal 2021 or our map. Avoid Esri and Dynamic World: they miss almost every field (recall 0.03 and 0.02).</li>
+      <li><b>Bor South:</b> avoid Dynamic World, which calls open grassland crop (44 of 74 empty boxes). Only the labelled sample gives a reliable number there, and it is wide.</li>
+      <li><b>Anywhere:</b> never choose a map by its overall accuracy. Where crop is rare, a map that finds nothing still scores 90% or more.</li>
+    </ul></div>
+</section>
+
+<section class="q" id="country">
+  <p class="eyebrow">5 · Learn on two areas, apply to the country</p>
+  <h2>Our map over the whole country</h2>
+  <p class="lead" id="nat-lead"></p>
+  <div class="grid2">
+    <div class="card"><h3>Is the national run as good as the 10 m map?</h3>
+      <p class="small muted">The national map runs at 30 m to fit Earth Engine's limits. Same rule, scored on the same Aweil test points.</p>
+      <div class="tablewrap" id="nat-acc"></div>
+      <p class="small" id="nat-acc-note"></p>
+      <p class="source">results/rule1_national_test_points.csv · results/rule1_map_at_points.csv</p></div>
+    <div class="card"><h3>States: our map against the crop assessment</h3>
+      <div class="chart" id="state-chart"></div>
+      <p class="small muted" id="state-note"></p>
+      <p class="source">results/rule1_national_by_state.csv · CFSAM 2025 (cereal area, modelled from population and household figures)</p></div>
+  </div>
+  <div class="card" style="margin-top:1.25rem" id="vs-card"><h3>Without labels: where does our map agree with the public maps?</h3>
+    <p class="small muted">20,000 random points over the rest of the country. Bars: of the land where at least two public maps call crop, the share our map marks.</p>
+    <div class="chart" id="vs-chart"></div><p class="small muted" id="vs-note"></p>
+    <p class="source">results/rule1_national_vs_public.csv · national_map.py compare</p></div>
+</section>
+
+<section class="q" id="handover">
+  <p class="eyebrow">6 · For ZOA and the next group</p>
+  <h2>What we hand over</h2>
+  <p class="lead">Every step behind these numbers can be run again: label more boxes, fit a better model, map a new area or season, and rebuild this page. All of it is in the repository, folder <code>cropland/</code>, with the protocol in <code>METHODOLOGY.md</code>.</p>
+  <div class="grid3" id="tools"></div>
+  <h3 style="margin-top:2rem">How a next group builds on this</h3>
+  <ol class="steps" id="next-steps"></ol>
+  <p class="note">What stays fixed, because it makes the numbers trustworthy: two blind labellers per box, nobody settling their disagreements, the presence rule on the 210 m box, models fitted on calibration points only and frozen before the test labels are read, and stratified estimators with an interval for every number.</p>
+</section>
+
+<section class="q" id="limits">
+  <p class="eyebrow">7 · How sure are we</p>
+  <h2>How sure, and what the numbers cannot say</h2>
+  <div class="grid2">
+    <div class="card"><h3>How sure</h3><ul class="plain small" id="sure"></ul></div>
+    <div class="card"><h3>Limits</h3><ul class="plain small">
+      <li>One season (2025) and two areas. Cropland in earlier flood years is today's, so those years are a scenario.</li>
+      <li>The reference is what two people see on satellite images, not a field visit.</li>
+      <li>Bor South holds almost no cropland in the sample (120 boxes), so its numbers are wide and no recall can be computed there.</li>
+      <li>Random boxes hardly touch flooded land: in 2025 only 1 Aweil and 2 Bor South boxes lay in a flood cell, so the sample cannot judge the 2025 flood. A flood-prone stratum fixes this next season.</li>
+      <li>County and national numbers from maps are map estimates, not checked. Our national map is not checked outside Aweil and Bor South: there are no labels there.</li>
+      <li>Exposure is an upper bound on damage: flood timing, duration and crop stage decide the loss. No forecast is used here.</li>
+    </ul></div>
+  </div>
+</section>
+<footer id="foot"></footer>
+</main>
+</div>
+<div id="tip" hidden></div>
+
+<script>const DATA = /*__DATA__*/null;</script>
+<script>
+(function () {
+"use strict";
+const D = DATA, NS = "http://www.w3.org/2000/svg";
+const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const NAME = m => D.names[m] || m;
+const SHORT = { rf_features: "Random forest (bench.)", rf_embedding: "RF, embeddings (bench.)", logistic_l2: "Logistic, 18 inputs",
+  logistic_rule1_inputs: "Logistic, 2 inputs", map_30m_national: "Our map, 30 m run", dynamicworld_2025: "Dyn. World 2025", dynamicworld_2022: "Dyn. World 2022" };
+const LABEL = (m, w) => w < 560 && SHORT[m] ? SHORT[m] : NAME(m);   // shorter names on phones
+const nf = (x, d = 0) => x == null || isNaN(x) ? "–" : Number(x).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+const ha = x => x == null ? "–" : nf(x >= 10000 ? Math.round(x / 100) * 100 : x >= 1000 ? Math.round(x / 10) * 10 : Math.round(x));
+const pct = (x, d = 1) => x == null ? "–" : nf(x, d) + "%";
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const median = a => { const s = a.filter(v => v != null).sort((x, y) => x - y), n = s.length; return n ? (n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2) : null; };
+
+// ---------- small SVG kit ----------
+function E(tag, attrs, parent, text) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) if (attrs[k] != null) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function svgIn(box, w, h) { box.innerHTML = ""; return E("svg", { viewBox: `0 0 ${w} ${h}`, width: w, height: h, role: "img" }, box); }
+const lin = (d0, d1, r0, r1) => v => r0 + (v - d0) / ((d1 - d0) || 1) * (r1 - r0);
+function niceMax(v) { if (!(v > 0)) return 1; const p = Math.pow(10, Math.floor(Math.log10(v))), f = v / p; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 4 ? 4 : f <= 5 ? 5 : f <= 6 ? 6 : f <= 8 ? 8 : 10) * p; }
+const tl = t => nf(t, Number.isInteger(t) ? 0 : 1);
+function ticks(max, n = 4) { const step = niceMax(max / n); const t = []; for (let v = 0; v <= max + 1e-9; v += step) t.push(v); return t; }
+const tip = $("tip");
+function showTip(html, ev) {
+  tip.innerHTML = html; tip.hidden = false;
+  const r = tip.getBoundingClientRect(), pad = 14;
+  let x = ev.clientX + pad, y = ev.clientY + pad;
+  if (x + r.width > innerWidth - 8) x = ev.clientX - r.width - pad;
+  if (y + r.height > innerHeight - 8) y = ev.clientY - r.height - pad;
+  tip.style.left = Math.max(8, x) + "px"; tip.style.top = Math.max(8, y) + "px";
+}
+const hideTip = () => { tip.hidden = true; };
+function hover(node, html) { node.addEventListener("pointermove", e => showTip(typeof html === "function" ? html() : html, e)); node.addEventListener("pointerleave", hideTip); }
+function seg(id, onChange) {
+  const box = $(id);
+  box.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    box.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+    onChange(b.dataset.v);
+  }));
+  return () => box.querySelector('[aria-pressed="true"]').dataset.v;
+}
+const widthOf = el => Math.max(300, Math.floor(el.getBoundingClientRect().width));
+function table(rows, cols) {
+  return `<table><thead><tr>${cols.map(c => `<th class="${c.n ? "n" : ""}">${c.h}</th>`).join("")}</tr></thead><tbody>` +
+    rows.map(r => `<tr>${cols.map(c => `<td class="${c.n ? "n" : ""}">${c.f(r)}</td>`).join("")}</tr>`).join("") + "</tbody></table>";
+}
+
+// ---------- 1. headline ----------
+function pageHeadline() {
+  const A = D.headline.aweil, B = D.headline.bor_south;
+  const ra = A.maps.map(m => m.ratio), rb = B.maps.map(m => m.pct);
+  $("crop-lead").innerHTML = `In the Aweil counties <b>${pct(A.sample.pct)} of the land is cropland</b> (${ha(A.sample.ha)} ha). ` +
+    `Every public map shows less: ${nf(100 * Math.min(...ra))}–${nf(100 * Math.max(...ra))}% of what the labelled sample finds. ` +
+    `In Bor South the maps range from ${pct(Math.min(...rb))} to ${pct(Math.max(...rb))} of the land, around a sample estimate of ${pct(B.sample.pct, 1)}.`;
+  const cards = $("crop-cards"); cards.innerHTML = "";
+  for (const key of ["aweil", "bor_south"]) {
+    const a = D.headline[key], c = document.createElement("div");
+    c.className = "card";
+    c.innerHTML = `<p class="eyebrow">${a.title} · ${nf(a.land_ha / 1e6, 2)} million ha · ${a.points} labelled boxes</p>
+      <div class="big">${pct(a.sample.pct)} <small>${ha(a.sample.ha)} ha</small></div>
+      <p class="range small" style="margin:0.3rem 0 0">95% interval ${ha(a.sample.low_ha)}–${ha(a.sample.high_ha)} ha · adjusted upper bound ${ha(a.sample.high_adj_ha)} ha</p>
+      <div class="chart" style="margin-top:0.6rem"></div>
+      <div class="key" style="margin-top:0.2rem;font-size:0.78rem"><span><i class="sw sample"></i>sample, box: 95% interval, dashes: adjusted upper bound</span>
+        <span><i class="sw public"></i>public maps (pixels)</span><span><i class="sw" style="border-left:2px dotted var(--muted);border-radius:0;width:2px"></i>crop assessment 2025</span></div>`;
+    cards.appendChild(c);
+  }
+  ["aweil", "bor_south"].forEach((key, i) => strip(cards.children[i].querySelector(".chart"), D.headline[key]));   // after both cards are laid out
+  $("crop-ours").innerHTML = `Our map is drawn on the 210 m box: a pixel means "a field lies within the box around it". It marks ` +
+    `${pct(A.ours_pct)} of Aweil, against ${pct(A.box.pct)} of boxes that hold cropland in the sample (${pct(A.box.low)}–${pct(A.box.high)}). ` +
+    `It over-marks, mostly boxes near homesteads without a field, so the area ZOA should use is the sample's, not the map's.`;
+}
+function strip(box, a) {
+  const w = widthOf(box), h = 112, m = { l: 12, r: 16, t: 8, b: 26 };
+  const max = niceMax(Math.max(a.sample.high_adj, ...a.maps.map(x => x.pct), a.cfsam_pct) * 1.05);
+  const x = lin(0, max, m.l, w - m.r), s = svgIn(box, w, h), y = 24;
+  const ax = E("g", { class: "axis" }, s);
+  for (const t of ticks(max, 4)) { E("line", { x1: x(t), x2: x(t), y1: m.t, y2: h - m.b }, ax); E("text", { x: x(t), y: h - 8, "text-anchor": "middle", class: "t" }, ax, tl(t) + "%"); }
+  // the sample: interval band, adjusted upper bound dashed, estimate
+  E("rect", { x: x(a.sample.low), y: y - 9, width: Math.max(1, x(a.sample.high) - x(a.sample.low)), height: 18, rx: 3, fill: css("--grid"), stroke: css("--sample"), "stroke-width": 1 }, s);
+  E("line", { x1: x(a.sample.high), x2: x(a.sample.high_adj), y1: y, y2: y, stroke: css("--sample"), "stroke-width": 1.5, "stroke-dasharray": "3 3" }, s);
+  const est = E("circle", { cx: x(a.sample.pct), cy: y, r: 6, fill: css("--sample"), stroke: css("--panel"), "stroke-width": 2 }, s);
+  hover(est, `<b>Labelled sample</b><br>${pct(a.sample.pct, 2)} of the land (${pct(a.sample.low, 2)}–${pct(a.sample.high, 2)})<br>adjusted upper bound ${pct(a.sample.high_adj, 2)}`);
+  // CFSAM, modelled
+  const cf = E("line", { x1: x(a.cfsam_pct), x2: x(a.cfsam_pct), y1: y - 14, y2: y + 30, stroke: css("--muted"), "stroke-width": 1.5, "stroke-dasharray": "2 2" }, s);
+  hover(cf, `<b>FAO/WFP crop assessment 2025</b><br>cereal area ${pct(a.cfsam_pct, 2)} (${ha(a.cfsam_ha)} ha), modelled from population and household figures`);
+  // public maps on their own row, jittered so close dots stay apart
+  const y2 = y + 22, placed = [];
+  for (const mp of [...a.maps].sort((p, q) => p.pct - q.pct)) {
+    let yy = y2; while (yy < y2 + 36 && placed.some(p => Math.abs(p.x - x(mp.pct)) < 11 && p.y === yy)) yy += 12;   // close dots step down
+    const c = E("circle", { cx: x(mp.pct), cy: yy, r: 5.5, fill: css("--public"), stroke: css("--panel"), "stroke-width": 2 }, s);
+    placed.push({ x: x(mp.pct), y: yy });
+    hover(c, `<b>${esc(NAME(mp.map))}</b><br>${pct(mp.pct, 2)} of the land by pixels<br>${nf(mp.ratio, 2)} times the sample`);
+  }
+}
+
+// ---------- 2. maps ----------
+let metric = "f1";
+function pageMaps() {
+  const S = D.scores.aweil, get = k => S.find(s => s.map === k) || {};
+  const r1 = get("rule1"), wc = get("worldcereal_2021");
+  $("maps-lead").innerHTML = `On the Aweil test points our map finds <b>${nf(100 * r1.pa)}% of the fields</b> and is right in ${nf(100 * r1.ua)}% of its crop calls (F1 ${nf(r1.f1, 2)}). ` +
+    `The best public map, WorldCereal, finds ${nf(100 * wc.pa)}% (F1 ${nf(wc.f1, 2)}); Esri and Dynamic World find almost none.`;
+  scoreChart();
+  $("score-table").innerHTML = table([...S].sort((a, b) => b.f1 - a.f1), [
+    { h: "Map", f: r => esc(NAME(r.map)) }, { h: "F1", n: 1, f: r => nf(r.f1, 2) + " ± " + nf(1.96 * r.f1_se, 2) },
+    { h: "Recall", n: 1, f: r => nf(r.pa, 2) + " ± " + nf(1.96 * (r.pa_se || 0), 2) }, { h: "Precision", n: 1, f: r => nf(r.ua, 2) + " ± " + nf(1.96 * (r.ua_se || 0), 2) },
+    { h: "Test points", n: 1, f: r => r.points }]);
+  borChart();
+}
+function scoreChart() {
+  const box = $("score-chart"), S = [...D.scores.aweil].filter(s => s[metric] != null).sort((a, b) => b[metric] - a[metric]);
+  const w = widthOf(box), lab = Math.min(250, w * 0.4), row = 26, m = { l: lab, r: 20, t: 8, b: 30 }, h = m.t + m.b + row * S.length;
+  const x = lin(0, 1, m.l, w - m.r), s = svgIn(box, w, h), ax = E("g", { class: "axis" }, s);
+  for (const t of [0, 0.25, 0.5, 0.75, 1]) { E("line", { x1: x(t), x2: x(t), y1: m.t, y2: h - m.b }, ax); E("text", { x: x(t), y: h - 10, "text-anchor": "middle", class: "t" }, ax, nf(t, 2)); }
+  const se = { f1: "f1_se", pa: "pa_se", ua: "ua_se" }[metric];
+  S.forEach((d, i) => {
+    const y = m.t + row * (i + 0.5), col = d.kind === "public" ? css("--public") : css("--ours");
+    E("text", { x: m.l - 10, y: y + 4, "text-anchor": "end", class: "lbl" + (d.kind === "ours" ? " strong" : "") }, s, LABEL(d.map, w));
+    const lo = Math.max(0, d[metric] - 1.96 * (d[se] || 0)), hi = Math.min(1, d[metric] + 1.96 * (d[se] || 0));
+    E("line", { x1: x(lo), x2: x(hi), y1: y, y2: y, stroke: col, "stroke-width": 2, "stroke-linecap": "round" }, s);
+    const dot = E("circle", { cx: x(d[metric]), cy: y, r: 6, fill: d.kind === "model" ? css("--panel") : col, stroke: d.kind === "model" ? col : css("--panel"), "stroke-width": 2 }, s);
+    E("text", { x: x(hi) + 8, y: y + 4, class: "lbl" }, s, nf(d[metric], 2));
+    const hit = E("rect", { x: 0, y: y - row / 2, width: w, height: row, fill: "transparent" }, s);
+    hover(hit, `<b>${esc(NAME(d.map))}</b><br>F1 ${nf(d.f1, 2)} ± ${nf(1.96 * d.f1_se, 2)}<br>recall ${nf(d.pa, 2)} · precision ${nf(d.ua, 2)}<br>${d.points} test points`);
+  });
+}
+function borChart() {
+  const box = $("bor-chart"), S = [...D.scores.bor_south_false_crop].sort((a, b) => b.false_crop - a.false_crop);
+  const w = widthOf(box), lab = Math.min(210, w * 0.5), row = 22, m = { l: lab, r: 40, t: 4, b: 24 }, h = m.t + m.b + row * S.length;
+  const of = S[0].of, x = lin(0, of, m.l, w - m.r), s = svgIn(box, w, h), ax = E("g", { class: "axis" }, s);
+  for (const t of [0, 25, 50, 74].filter(t => t <= of)) { E("line", { x1: x(t), x2: x(t), y1: m.t, y2: h - m.b }, ax); E("text", { x: x(t), y: h - 6, "text-anchor": "middle", class: "t" }, ax, t); }
+  S.forEach((d, i) => {
+    const y = m.t + row * i, col = d.kind === "public" ? css("--public") : css("--ours");
+    E("text", { x: m.l - 8, y: y + row / 2 + 4, "text-anchor": "end", class: "lbl" }, s, LABEL(d.map, w));
+    if (d.false_crop > 0) E("rect", { x: x(0), y: y + 5, width: Math.max(3, x(d.false_crop) - x(0)), height: row - 10, rx: 3, fill: col }, s);
+    E("text", { x: x(d.false_crop) + 6, y: y + row / 2 + 4, class: "lbl" }, s, `${d.false_crop}`);
+  });
+}
+
+// ---------- 3. exposure ----------
+const st = { area: "aweil", days: "1", measure: "share", year: 2022 };
+function seriesFor(area, days) { return (D.history[area] || {})[days] || []; }
+function pageExposure() {
+  const A = seriesFor("aweil", "1").find(r => r.year === 2022), pub = D.public.map(m => A.maps[m]).filter(v => v != null), s = A.sample.share;
+  const ratios = seriesFor("aweil", "1").filter(r => r.sample.share && r.sample.share.est != null && r.sample.share.points >= 5)
+    .map(r => r.sample.share.est / median(D.public.map(m => r.maps[m])));
+  $("exp-lead").innerHTML = `In the 2022 flood the public maps put <b>${ha(Math.min(...pub))}–${ha(Math.max(...pub))} ha</b> of Aweil's cropland under water. ` +
+    `The labelled sample puts <b>${ha(s.est)} ha</b> there (${ha(s.low)}–${ha(s.high)}). In every big flood year the sample can judge, it finds ` +
+    `${nf(Math.min(...ratios))} to ${nf(Math.max(...ratios))} times more flooded cropland than the median map.`;
+  seg("exp-area", v => { st.area = v; drawExposure(); });
+  seg("exp-days", v => { st.days = v; drawExposure(); });
+  seg("exp-measure", v => { st.measure = v; drawExposure(); });
+  drawExposure();
+  floodMap();
+}
+function drawExposure() { histChart(); yearChart(); histTable(); }
+function histChart() {
+  const box = $("hist-chart"), rows = seriesFor(st.area, st.days), box_ = st.measure === "box";
+  const w = widthOf(box), h = Math.min(340, Math.max(240, w * 0.42)), m = { l: 58, r: 18, t: 14, b: 30 };
+  const years = rows.map(r => r.year), y0 = Math.min(...years), y1 = Math.max(...years);
+  const pubVals = r => D.public.map(k => r.maps[k]).filter(v => v != null);
+  const smp = r => r.sample[box_ ? "box" : "share"];
+  const ok = r => smp(r) && smp(r).est != null && smp(r).points >= 5;
+  let max = 0;
+  rows.forEach(r => { if (!box_) max = Math.max(max, ...pubVals(r)); else max = Math.max(max, r.maps.rule1 || 0); if (ok(r)) max = Math.max(max, smp(r).high); });
+  max = niceMax(max * 1.04);
+  const x = lin(y0 - 0.5, y1 + 0.5, m.l, w - m.r), y = lin(0, max, h - m.b, m.t), s = svgIn(box, w, h), ax = E("g", { class: "axis" }, s);
+  for (const t of ticks(max, 4)) { E("line", { x1: m.l, x2: w - m.r, y1: y(t), y2: y(t) }, ax); E("text", { x: m.l - 8, y: y(t) + 4, "text-anchor": "end", class: "t" }, ax, nf(t)); }
+  E("text", { x: m.l - 8, y: m.t - 2, "text-anchor": "end", class: "t" }, ax, "ha");
+  for (const yr of years) if (yr % 5 === 0) E("text", { x: x(yr), y: h - 10, "text-anchor": "middle", class: "t" }, ax, yr);
+  const sel = E("rect", { x: x(st.year) - (x(1) - x(0)) / 2, y: m.t, width: x(1) - x(0), height: h - m.t - m.b, fill: css("--grid") }, s);
+  if (!box_) {   // public maps: range as a band, the median as a line
+    const top = rows.map(r => [x(r.year), y(Math.max(...pubVals(r)))]), bot = rows.map(r => [x(r.year), y(Math.min(...pubVals(r)))]).reverse();
+    E("path", { d: "M" + [...top, ...bot].map(p => p.join(",")).join("L") + "Z", fill: css("--public-soft"), stroke: "none" }, s);
+    E("path", { d: "M" + rows.map(r => [x(r.year), y(median(pubVals(r)))].join(",")).join("L"), fill: "none", stroke: css("--public"), "stroke-width": 2 }, s);
+  } else {
+    E("path", { d: "M" + rows.map(r => [x(r.year), y(r.maps.rule1 || 0)].join(",")).join("L"), fill: "none", stroke: css("--ours"), "stroke-width": 2 }, s);
+  }
+  rows.filter(ok).forEach(r => {
+    const v = smp(r);
+    E("line", { x1: x(r.year), x2: x(r.year), y1: y(v.low), y2: y(v.high), stroke: css("--sample"), "stroke-width": 2, "stroke-linecap": "round" }, s);
+    E("circle", { cx: x(r.year), cy: y(v.est), r: 5, fill: css("--sample"), stroke: css("--panel"), "stroke-width": 2 }, s);
+  });
+  const cross = E("line", { y1: m.t, y2: h - m.b, stroke: css("--muted"), "stroke-width": 1, visibility: "hidden" }, s);
+  const hit = E("rect", { x: m.l, y: m.t, width: w - m.l - m.r, height: h - m.t - m.b, fill: "transparent", style: "cursor:pointer" }, s);
+  const step = (w - m.l - m.r) / (y1 - y0 + 1);
+  const yearAt = ev => { const b = s.getBoundingClientRect(), px = (ev.clientX - b.left) * w / b.width; return Math.max(y0, Math.min(y1, Math.round(y0 + (px - m.l) / step - 0.5))); };
+  hit.addEventListener("pointermove", ev => {
+    const yr = yearAt(ev), r = rows.find(q => q.year === yr); if (!r) return;
+    cross.setAttribute("x1", x(yr)); cross.setAttribute("x2", x(yr)); cross.setAttribute("visibility", "visible");
+    const p = pubVals(r), v = smp(r);
+    showTip(`<b>${yr}</b> · ${ha(r.land)} ha flooded<br>` + (box_ ? `<span style="color:var(--ours)">●</span> our map: ${ha(r.maps.rule1)} ha of land near fields<br>`
+      : `<span style="color:var(--public)">●</span> public maps: ${ha(Math.min(...p))}–${ha(Math.max(...p))} ha (median ${ha(median(p))})<br>`) +
+      (ok(r) ? `● sample: ${ha(v.est)} ha (${ha(v.low)}–${ha(v.high)}), ${v.points} points on flooded land` : `sample: too few points on flooded land (${v && v.points != null ? v.points : 0})`) +
+      `<br><span class="muted">click for this year in detail</span>`, ev);
+  });
+  hit.addEventListener("pointerleave", () => { hideTip(); cross.setAttribute("visibility", "hidden"); });
+  hit.addEventListener("click", ev => { st.year = yearAt(ev); drawExposure(); });
+  $("hist-key").innerHTML = box_ ? `<span><i class="sw ours"></i>our map: land whose 210 m box holds a field, under water</span><span><i class="sw sample"></i>sample, same measure ("box holds it"), with 95% interval</span>`
+    : `<span><i class="sw" style="background:var(--public-soft)"></i>range of the 8 public maps</span><span><i class="sw public"></i>their median</span><span><i class="sw sample"></i>sample (share of each box), with 95% interval, where 5 or more points lie on flooded land</span>`;
+  $("hist-note").textContent = box_ ? "Our map's hectares are land near fields, an upper bound by design, so they are compared with the sample's \"box holds it\" measure, never with cropland area. Its job is to show where cropland lies under water."
+    : "Public maps count their pixels; the sample counts the labelled share of each 210 m box. Dots appear only in years with at least 5 sample points on flooded land.";
+}
+function yearChart() {
+  const rows = seriesFor(st.area, st.days), r = rows.find(q => q.year === st.year) || rows[rows.length - 1], box_ = st.measure === "box";
+  const hh = D.headline[st.area].ha_per_household, v = r.sample[box_ ? "box" : "share"], ok = v && v.est != null && v.points >= 5;
+  $("year-title").textContent = `${r.year} in detail: ${ha(r.land)} ha of ${D.headline[st.area].title} flooded at least ${st.days} day${st.days === "1" ? "" : "s"}`;
+  const items = box_ ? [{ k: "rule1", v: r.maps.rule1, kind: "ours" }] : D.public.map(k => ({ k, v: r.maps[k], kind: "public" })).filter(i => i.v != null).sort((a, b) => b.v - a.v);
+  const box = $("year-chart"), w = widthOf(box), lab = Math.min(230, w * 0.38), hhCol = box_ ? 0 : Math.min(150, w * 0.22), row = 24;
+  const m = { l: lab, r: 16 + hhCol, t: 26, b: 26 }, n = items.length + 1, h = m.t + m.b + row * n;
+  const max = niceMax(Math.max(...items.map(i => i.v), ok ? v.high : 0) * 1.03);
+  const x = lin(0, max, m.l, w - m.r), s = svgIn(box, w, h), ax = E("g", { class: "axis" }, s);
+  for (const t of ticks(max, 4)) { E("line", { x1: x(t), x2: x(t), y1: m.t - 4, y2: h - m.b }, ax); E("text", { x: x(t), y: h - 8, "text-anchor": "middle", class: "t" }, ax, nf(t)); }
+  E("text", { x: m.l, y: 14, class: "t" }, ax, "hectares under water");
+  if (hhCol) E("text", { x: w - 8, y: 14, "text-anchor": "end", class: "t" }, ax, "farming households*");
+  const yS = m.t + row / 2;
+  E("text", { x: m.l - 8, y: yS + 4, "text-anchor": "end", class: "lbl strong" }, s, box_ ? "sample (box holds it)" : "labelled sample");
+  if (ok) {
+    E("line", { x1: x(v.low), x2: x(v.high), y1: yS, y2: yS, stroke: css("--sample"), "stroke-width": 2, "stroke-linecap": "round" }, s);
+    E("circle", { cx: x(v.est), cy: yS, r: 6, fill: css("--sample"), stroke: css("--panel"), "stroke-width": 2 }, s);
+    if (hhCol) E("text", { x: w - 8, y: yS + 4, "text-anchor": "end", class: "lbl strong" }, s, `${nf(v.est / hh, 0)} (${nf(v.low / hh)}–${nf(v.high / hh)})`);
+  } else E("text", { x: m.l + 4, y: yS + 4, class: "lbl" }, s, `cannot tell: ${v && v.points != null ? v.points : 0} of its points lie on flooded land (needs 5)`);
+  items.forEach((it, i) => {
+    const y = m.t + row * (i + 1), col = it.kind === "public" ? css("--public") : css("--ours");
+    E("text", { x: m.l - 8, y: y + row / 2 + 4, "text-anchor": "end", class: "lbl" }, s, LABEL(it.k, w));
+    const bar = E("rect", { x: x(0), y: y + 5, width: Math.max(2, x(it.v) - x(0)), height: row - 10, rx: 3, fill: col }, s);
+    E("text", { x: x(it.v) + 6, y: y + row / 2 + 4, class: "lbl" }, s, ha(it.v));
+    if (hhCol) E("text", { x: w - 8, y: y + row / 2 + 4, "text-anchor": "end", class: "lbl" }, s, nf(it.v / hh));
+    hover(bar, `<b>${esc(NAME(it.k))}</b><br>${ha(it.v)} ha under water` + (hhCol ? `<br>about ${nf(it.v / hh)} farming households` : ""));
+  });
+  $("year-note").innerHTML = box_ ? `Households are not shown for our map: its hectares are land near fields, not cropland area.`
+    : `*Illustrative: hectares divided by ${nf(hh, 2)} ha of cereal per farming household (CFSAM 2025, ${D.headline[st.area].title}). An upper bound on who is hit: it assumes every flooded field is lost, while flood timing and crop stage decide the real loss. Click another year in the chart above.`;
+}
+function histTable() {
+  const rows = seriesFor(st.area, st.days), box_ = st.measure === "box", k = box_ ? "box" : "share";
+  const cols = [{ h: "Year", f: r => r.year }, { h: "Flooded land, ha", n: 1, f: r => ha(r.land) }];
+  if (box_) cols.push({ h: "Our map, ha", n: 1, f: r => ha(r.maps.rule1) });
+  else D.public.forEach(m => cols.push({ h: esc(NAME(m)), n: 1, f: r => ha(r.maps[m]) }));
+  cols.push({ h: "Sample, ha (95%)", n: 1, f: r => { const v = r.sample[k]; return v && v.est != null && v.points >= 5 ? `${ha(v.est)} (${ha(v.low)}–${ha(v.high)})` : "too few points"; } });
+  cols.push({ h: "Points on flooded land", n: 1, f: r => (r.sample[k] && r.sample[k].points) ?? 0 });
+  $("hist-table").innerHTML = table(rows, cols);
+}
+
+// before / after map on a canvas: no tiles, so it works offline
+const FM = { before: D.floodmap.best, pts: true };
+function floodMap() {
+  const F = D.floodmap, sel = $("before");
+  F.layers.forEach((k, i) => sel.add(new Option(NAME(k), i, false, i === F.best)));
+  sel.addEventListener("change", () => { FM.before = +sel.value; drawFloodMap(); });
+  $("fpts").addEventListener("change", e => { FM.pts = e.target.checked; drawFloodMap(); });
+  const hs = seriesFor("aweil", "1").find(r => r.year === F.year).sample.share;
+  $("ha-sample").textContent = `${ha(hs.est)} ha (${ha(hs.low)}–${ha(hs.high)})`;
+  const cv = $("fmap");
+  cv.addEventListener("pointermove", ev => { const c = cellAt(ev); c ? showTip(cellTip(c), ev) : hideTip(); });
+  cv.addEventListener("pointerleave", hideTip);
+  cv.style.cursor = "zoom-in";
+  cv.addEventListener("click", ev => {
+    if (FM.view) { FM.view = null; cv.style.cursor = "zoom-in"; }
+    else { const b = cv.getBoundingClientRect(), px = ev.clientX - b.left, py = ev.clientY - b.top;
+           FM.view = { lon: geo.west + (px - geo.pad) / (geo.k * geo.sx), lat: geo.north - (py - geo.pad) / geo.sx, f: 4 }; cv.style.cursor = "zoom-out"; }
+    hideTip(); drawFloodMap();
+  });
+  drawFloodMap();
+}
+let geo = null;
+function drawFloodMap() {
+  const F = D.floodmap, cv = $("fmap"), wrap = cv.parentElement, W = widthOf(wrap);
+  // extent: the flooded cells (Aweil Centre hardly floods), or a zoomed window around a clicked spot
+  const G0 = F.grid, rs = F.cells.map(c => c[0]), cs = F.cells.map(c => c[1]), m0 = 0.04;
+  let west = (F.c0 + Math.min(...cs)) * G0 - 180 - m0, east = (F.c0 + Math.max(...cs) + 1) * G0 - 180 + m0;
+  let north = 90 - (F.g0 + Math.min(...rs)) * G0 + m0, south = 90 - (F.g0 + Math.max(...rs) + 1) * G0 - m0;
+  if (FM.view) {
+    const hw = (east - west) / 2 / FM.view.f, hh = (north - south) / 2 / FM.view.f;
+    west = FM.view.lon - hw; east = FM.view.lon + hw; south = FM.view.lat - hh; north = FM.view.lat + hh;
+  }
+  const k = Math.cos((south + north) / 2 * Math.PI / 180), pad = 10;
+  const sx = (W - 2 * pad) / ((east - west) * k), Hh = Math.round((north - south) * sx + 2 * pad);
+  const dpr = window.devicePixelRatio || 1;
+  cv.width = W * dpr; cv.height = Hh * dpr; cv.style.height = Hh + "px";
+  const g = cv.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, Hh);
+  const X = lo => pad + (lo - west) * k * sx, Y = la => pad + (north - la) * sx;
+  geo = { X, Y, west, north, k, sx, pad };
+  const G = F.grid, lonOf = c => (F.c0 + c + 0.5) * G - 180, latOf = r => 90 - (F.g0 + r + 0.5) * G;
+  const cw = G * k * sx, chh = G * sx, L = F.layers.length, col = { s: css("--public"), a: css("--ours"), n: css("--none") };
+  const n = { shown: 0, added: 0, none: 0, maponly: 0 }; let haMap = 0;
+  for (const c of F.cells) {
+    const s = c[6 + FM.before] > 0, o = c[6 + L] > 0;
+    if (s) n.shown++; else if (o) n.added++; else n.none++;
+    if (s && !o) n.maponly++;
+    haMap += c[6 + FM.before] / 1e4 * c[4] * c[5];
+    g.fillStyle = s ? col.s : o ? col.a : col.n;
+    g.fillRect(X(lonOf(c[1])) - cw / 2, Y(latOf(c[0])) - chh / 2, Math.max(1, cw), Math.max(1, chh));
+  }
+  const line = (gj, stroke, width, dash) => {
+    g.strokeStyle = stroke; g.lineWidth = width; g.setLineDash(dash || []);
+    gj.features.forEach(ft => {
+      const draw = ring => { g.beginPath(); ring.forEach(([lo, la], i) => i ? g.lineTo(X(lo), Y(la)) : g.moveTo(X(lo), Y(la))); g.stroke(); };
+      const t = ft.geometry.type, cs = ft.geometry.coordinates;
+      if (t === "Polygon") cs.forEach(draw); else if (t === "MultiPolygon") cs.forEach(p => p.forEach(draw));
+      else if (t === "LineString") draw(cs); else if (t === "MultiLineString") cs.forEach(draw);
+    });
+    g.setLineDash([]);
+  };
+  if (F.river) line(F.river, css("--public"), 1, [3, 3]);
+  line(F.borders, css("--muted"), 1.2);
+  g.fillStyle = css("--ink2"); g.font = "12px " + css("--body"); g.textAlign = "center";
+  F.borders.features.forEach(ft => {   // label at the middle of each county's outer ring
+    const ring = ft.geometry.type === "Polygon" ? ft.geometry.coordinates[0] : ft.geometry.coordinates[0][0];
+    const lo = ring.reduce((a, p) => a + p[0], 0) / ring.length, la = ring.reduce((a, p) => a + p[1], 0) / ring.length;
+    g.fillText(ft.properties.name, X(lo), Y(la));
+  });
+  if (FM.pts) for (const p of F.points) {
+    g.beginPath(); g.arc(X(p[1]), Y(p[0]), 5, 0, 2 * Math.PI);
+    g.fillStyle = p[3] > 0 ? css("--sample") : css("--panel"); g.fill(); g.lineWidth = 2; g.strokeStyle = p[3] > 0 ? css("--panel") : css("--sample"); g.stroke();
+  }
+  for (const key in n) $("n-" + key).textContent = n[key].toLocaleString("en-US");
+  $("ha-map").textContent = ha(haMap) + " ha";
+  F._index = F._index || new Map(F.cells.map(c => [c[0] + "," + c[1], c]));
+}
+function cellAt(ev) {
+  if (!geo) return null;
+  const F = D.floodmap, b = $("fmap").getBoundingClientRect(), px = ev.clientX - b.left, py = ev.clientY - b.top;
+  const lon = geo.west + (px - geo.pad) / (geo.k * geo.sx), lat = geo.north - (py - geo.pad) / geo.sx;
+  const r = Math.round((90 - lat) / F.grid - 0.5) - F.g0, c = Math.round((lon + 180) / F.grid - 0.5) - F.c0;
+  return F._index.get(r + "," + c) || null;
+}
+function cellTip(c) {
+  const F = D.floodmap, L = F.layers.length;
+  const rows = F.layers.map((k, i) => `${i === FM.before ? "<b>" : ""}${esc(NAME(k))}: ${pct(c[6 + i] / 100, 1)}${i === FM.before ? "</b>" : ""}`).join("<br>");
+  return `<b>${esc(F.counties[c[2]])}</b> · flooded ${c[3]} day${c[3] === 1 ? "" : "s"} · ${nf(c[4], 1)} ha<br>crop share of the cell:<br>${rows}<br>` +
+    `<b style="color:var(--ours)">our map: ${pct(c[6 + L] / 100, 1)}</b> of its pixels have a field in their box`;
+}
+
+// ---------- 4. anticipatory action ----------
+const at = { area: "aweil", thr: "500", days: "1" };
+function pageAction() {
+  const h = D.hindcast.aweil["1"]["500"], i22 = h.years.indexOf(2022);
+  const silent = D.public.concat(D.extra).filter(m => h.layers[m] && h.layers[m][i22] === "no fire").map(NAME);
+  $("act-lead").innerHTML = `With a 500 ha trigger, <b>${silent.join(", ").replace(/, ([^,]*)$/, " and $1")}</b> would have stayed silent in the 2022 flood, ` +
+    `a year in which the labelled sample says the trigger should fire. The map you choose, more than the flood, decides whether ZOA acts.`;
+  seg("act-area", v => { at.area = v; trigChart(); });
+  seg("act-thr", v => { at.thr = v; trigChart(); });
+  seg("act-days", v => { at.days = v; trigChart(); });
+  trigChart();
+  zoaBoxes();
+}
+function judge(says) { return says === "fire" ? 1 : (says === "no fire" || (says || "").startsWith("no fire")) ? 0 : null; }
+function trigChart() {
+  const H = D.hindcast[at.area][at.days][at.thr], years = H.years, order = D.public.concat(D.extra).filter(m => H.layers[m]).concat(["rule1"]);
+  const box = $("trig-chart"), w = Math.max(680, widthOf(box)), lab = 190, sum = 170, cell = Math.min(22, (w - lab - sum) / years.length), gap = 2;
+  const m = { t: 28, b: 8 }, rows = order.length + 1, rowH = cell + 4, h = m.t + m.b + rows * rowH + 10;
+  const s = svgIn(box, w, h), ax = E("g", { class: "axis" }, s);
+  const X = i => lab + i * cell;
+  years.forEach((y, i) => { if (y % 5 === 0 || i === years.length - 1) E("text", { x: X(i) + cell / 2, y: 16, "text-anchor": "middle", class: "t" }, ax, y); });
+  E("text", { x: lab + years.length * cell + 12, y: 16, class: "t" }, ax, "in the years the sample judges");
+  // sample row
+  const samp = H.sample.share || [], y0 = m.t;
+  E("text", { x: lab - 10, y: y0 + cell / 2 + 4, "text-anchor": "end", class: "lbl strong" }, s, "labelled sample");
+  years.forEach((y, i) => {
+    const j = judge(samp[i]), x = X(i) + gap / 2, sz = cell - gap;
+    let node;
+    if (j === 1) node = E("rect", { x, y: y0, width: sz, height: sz, rx: 3, fill: css("--sample") }, s);
+    else if (j === 0) node = E("rect", { x: x + 1, y: y0 + 1, width: sz - 2, height: sz - 2, rx: 3, fill: "none", stroke: css("--sample"), "stroke-width": 1.5 }, s);
+    else node = E("circle", { cx: x + sz / 2, cy: y0 + sz / 2, r: 1.8, fill: css("--muted") }, s);
+    const hit = E("rect", { x: X(i), y: y0, width: cell, height: cell, fill: "transparent" }, s);
+    hover(hit, `<b>${y}</b> · sample: ${samp[i] === "fire" ? "should fire" : j === 0 ? "should not fire" + (String(samp[i]).includes("below") ? " (less land flooded than the threshold)" : "") : "cannot tell (too few points on flooded land)"}`);
+  });
+  E("line", { x1: lab - 4, x2: lab + years.length * cell, y1: y0 + rowH + 1, y2: y0 + rowH + 1, stroke: css("--line") }, s);
+  order.forEach((k, r) => {
+    const y = m.t + (r + 1) * rowH + 6, says = H.layers[k], ours = k === "rule1", col = ours ? css("--ours") : css("--public");
+    const ref = ours ? (H.sample.box || []) : samp;
+    E("text", { x: lab - 10, y: y + cell / 2 + 4, "text-anchor": "end", class: "lbl" + (ours ? " strong" : "") }, s, NAME(k));
+    let miss = 0, fa = 0, agree = 0;
+    years.forEach((yr, i) => {
+      const f = says[i] === "fire", j = judge(ref[i]), x = X(i) + gap / 2, sz = cell - gap;
+      E("rect", f ? { x, y, width: sz, height: sz, rx: 3, fill: col } : { x: x + 1, y: y + 1, width: sz - 2, height: sz - 2, rx: 3, fill: "none", stroke: css("--muted"), "stroke-width": 1 }, s);
+      let verdict = "";
+      if (j != null) {
+        if (j === 1 && !f) { miss++; verdict = "missed: the sample says fire"; }
+        else if (j === 0 && f) { fa++; verdict = "false alarm: the sample says no"; }
+        else { agree++; verdict = "agrees with the sample"; }
+        if (verdict !== "agrees with the sample") E("rect", { x: x - 1.5, y: y - 1.5, width: sz + 3, height: sz + 3, rx: 4, fill: "none", stroke: css("--miss"), "stroke-width": 2 }, s);
+      }
+      const hit = E("rect", { x: X(i), y, width: cell, height: cell, fill: "transparent" }, s);
+      hover(hit, `<b>${esc(NAME(k))}, ${yr}</b><br>${f ? "fires" : "stays silent"} at ${nf(+at.thr)} ha${verdict ? "<br>" + verdict : ""}`);
+    });
+    const judged = miss + fa + agree;
+    E("text", { x: lab + years.length * cell + 12, y: y + cell / 2 + 4, class: "lbl" + (miss + fa ? " strong" : "") }, s,
+      judged ? (miss + fa ? `${miss ? miss + " missed" : ""}${miss && fa ? ", " : ""}${fa ? fa + " false alarm" + (fa > 1 ? "s" : "") : ""} of ${judged}` : `agrees in all ${judged}`) : "no year to judge");
+  });
+  const fires = order.filter(k => k !== "rule1").map(k => H.layers[k].filter(v => v === "fire").length);
+  $("trig-note").innerHTML = `${D.headline[at.area].title}, ${at.days}+ day flooding, trigger at ${nf(+at.thr)} ha of flooded cropland. Across 26 years the public maps would fire in ` +
+    `${Math.min(...fires)} to ${Math.max(...fires)} years. Our map is judged against the sample's "box holds it" measure, whose cautious interval cannot settle any year, so its row carries no verdict.`;
+}
+function zoaBoxes() {
+  const r = seriesFor("aweil", "1").find(q => q.year === 2022), p = D.public.map(m => r.maps[m]).filter(v => v != null), s = r.sample.share, hh = D.headline.aweil.ha_per_household;
+  const boxes = [
+    ["The trigger", `Which map ZOA picks can flip the decision in the same flood. In 2022 the public maps gave ${ha(Math.min(...p))} to ${ha(Math.max(...p))} ha of flooded cropland in Aweil: below and above any threshold in between.`],
+    ["Who is reached", `A field the map misses is a household outside map-based targeting. In Aweil 95% of the land has no crop in any public map, yet the sample finds cropland there. Recall is the share of farmers a map can see.`],
+    ["Sizing a request", `Illustrative, 2022 in Aweil: the public maps imply ${nf(Math.min(...p) / hh)} to ${nf(Math.max(...p) / hh)} farming households with a flooded field; the labelled sample ${nf(s.est / hh)} (${nf(s.low / hh)}–${nf(s.high / hh)}). A request sized on one map can be 10 or more times too small. Put the sample's interval in the budget.`],
+  ];
+  $("zoa-boxes").innerHTML = boxes.map(([t, b]) => `<div class="card"><h3>${t}</h3><p class="small" style="margin:0">${b}</p></div>`).join("");
+}
+
+// ---------- 5. country ----------
+function pageCountry() {
+  const C = D.country, S = D.scores.aweil, get = k => S.find(s => s.map === k) || {};
+  $("nat-lead").innerHTML = `Applied to all of South Sudan, our map marks <b>${pct(C.map_pct)} of the land</b> (about ${nf(C.map_ha / 1e6, 1)} million ha, land near fields, an upper bound). ` +
+    `It has been checked only in Aweil and Bor South. Elsewhere we can compare it with the public maps, which shows where the Aweil rule carries over and where it does not.`;
+  const rows = ["rule1", "map_30m_national", "worldcereal_2021", "deafrica_2019"].map(get);
+  $("nat-acc").innerHTML = table(rows, [{ h: "Map, Aweil test points", f: r => esc(NAME(r.map)) }, { h: "F1", n: 1, f: r => nf(r.f1, 2) + " ± " + nf(1.96 * r.f1_se, 2) },
+    { h: "Recall", n: 1, f: r => nf(r.pa, 2) }, { h: "Precision", n: 1, f: r => nf(r.ua, 2) }]);
+  $("nat-acc-note").innerHTML = `The 30 m run gives the same answer as the 10 m map at ${pct(D.scores.agree_30m.aweil, 0)} of the Aweil boxes and keeps its recall, but marks more empty boxes: precision falls from ${nf(get("rule1").ua, 2)} to ${nf(get("map_30m_national").ua, 2)}. ` +
+    `It marks ${pct(C.share_30m.aweil)} of Aweil against ${pct(C.share_10m.aweil)} at 10 m. The intervals overlap with the best public maps.`;
+  stateChart();
+  vsChart();
+}
+function vsChart() {
+  const V = (D.country.vs_public || []).filter(r => r.ours_marks_of_two_public_pct != null && r.state !== "South Sudan without the study areas")
+    .sort((a, b) => b.ours_marks_of_two_public_pct - a.ours_marks_of_two_public_pct);
+  const all = (D.country.vs_public || []).find(r => r.state === "South Sudan without the study areas"), box = $("vs-chart");
+  if (!V.length) { $("vs-card").hidden = true; return; }
+  const w = widthOf(box), lab = Math.min(190, w * 0.42), row = 24, m = { l: lab, r: 46, t: 6, b: 26 }, h = m.t + m.b + row * V.length;
+  const x = lin(0, 100, m.l, w - m.r), s = svgIn(box, w, h), ax = E("g", { class: "axis" }, s);
+  for (const t of [0, 25, 50, 75, 100]) { E("line", { x1: x(t), x2: x(t), y1: m.t, y2: h - m.b }, ax); E("text", { x: x(t), y: h - 8, "text-anchor": "middle", class: "t" }, ax, t + "%"); }
+  V.forEach((r, i) => {
+    const y = m.t + row * i, v = r.ours_marks_of_two_public_pct;
+    E("text", { x: m.l - 8, y: y + row / 2 + 4, "text-anchor": "end", class: "lbl" }, s, r.state);
+    const bar = E("rect", { x: x(0), y: y + 5, width: Math.max(2, x(v) - x(0)), height: row - 10, rx: 3, fill: css("--ours") }, s);
+    E("text", { x: x(v) + 6, y: y + row / 2 + 4, class: "lbl" }, s, nf(v) + "%");
+    hover(bar, `<b>${esc(r.state)}</b><br>public maps agree on crop (2+ maps) on ${pct(r.two_public_pct, 2)} of the land; our map marks ${nf(v)}% of it<br>our map marks ${pct(r.ours_pct)} of the state, any public map ${pct(r.any_public_pct)}`);
+  });
+  $("vs-note").textContent = `Of the land at least two public maps call crop, our map marks ${nf(all.ours_marks_of_two_public_pct)}% outside our areas. High where farming looks like Aweil's (Warrap, Lakes), low where fields lie far from homesteads (Upper Nile's large schemes) or follow two rainy seasons (Eastern Equatoria). Agreement between maps, not accuracy: no labels outside our areas.`;
+}
+function rank(a) { const s = a.map((v, i) => [v, i]).sort((p, q) => p[0] - q[0]), r = Array(a.length); s.forEach(([, i], k) => r[i] = k + 1); return r; }
+function spearman(a, b) { const ra = rank(a), rb = rank(b), n = a.length, ma = (n + 1) / 2; let num = 0, da = 0, db = 0; for (let i = 0; i < n; i++) { num += (ra[i] - ma) * (rb[i] - ma); da += (ra[i] - ma) ** 2; db += (rb[i] - ma) ** 2; } return num / Math.sqrt(da * db); }
+function stateChart() {
+  const T = D.country.states.filter(s => s.cfsam_pct != null), box = $("state-chart"), w = widthOf(box), h = Math.min(320, w * 0.75), m = { l: 44, r: 14, t: 10, b: 38 };
+  const mx = niceMax(Math.max(...T.map(t => t.map_pct)) * 1.05), my = niceMax(Math.max(...T.map(t => t.cfsam_pct)) * 1.08);
+  const x = lin(0, mx, m.l, w - m.r), y = lin(0, my, h - m.b, m.t), s = svgIn(box, w, h), ax = E("g", { class: "axis" }, s);
+  for (const t of ticks(mx, 4)) { E("line", { x1: x(t), x2: x(t), y1: m.t, y2: h - m.b }, ax); E("text", { x: x(t), y: h - m.b + 16, "text-anchor": "middle", class: "t" }, ax, tl(t) + "%"); }
+  for (const t of ticks(my, 4)) { E("line", { x1: m.l, x2: w - m.r, y1: y(t), y2: y(t) }, ax); E("text", { x: m.l - 6, y: y(t) + 4, "text-anchor": "end", class: "t" }, ax, tl(t) + "%"); }
+  E("text", { x: w - m.r, y: h - 4, "text-anchor": "end", class: "t" }, ax, "our map, % of the state (land near fields)");
+  E("text", { x: m.l, y: m.t - 0, class: "t" }, ax, "crop assessment, % (modelled)");
+  const label = new Set(["Northern Bahr el Ghazal", "Unity", "Western Equatoria", "Warrap"]);
+  T.forEach(t => {
+    const c = E("circle", { cx: x(t.map_pct), cy: y(t.cfsam_pct), r: 6, fill: css("--ours"), stroke: css("--panel"), "stroke-width": 2 }, s);
+    hover(c, `<b>${esc(t.state)}</b><br>our map ${pct(t.map_pct)} (${ha(t.map_ha)} ha)<br>crop assessment ${pct(t.cfsam_pct, 2)}`);
+    if (label.has(t.state)) E("text", { x: x(t.map_pct) + 9, y: y(t.cfsam_pct) + 4, class: "lbl", "text-anchor": x(t.map_pct) > w * 0.7 ? "end" : "start", dx: x(t.map_pct) > w * 0.7 ? -18 : 0 }, s, t.state);
+  });
+  const rho = spearman(T.map(t => t.map_pct), T.map(t => t.cfsam_pct));
+  $("state-note").textContent = `Rank correlation ${nf(rho, 2)} over ${T.length} states (the public maps: -0.36 to 0.25; GFSAD 0.59). Our map marks Unity high and Western Equatoria low: a rule learned around Aweil's homesteads, on a one-season calendar, fits those landscapes least.`;
+}
+// ---------- 6. hand-over ----------
+function pageHandover() {
+  const tools = [
+    ["Labelling tool", "in use", "Two people label each 210 m box blind, from monthly Sentinel-2 strips, a radar curve and a dated sub-metre image, with a written key and cue questions. Labels save as one CSV per person.",
+      "python cropland/label_server.py", "label_tool/ · label_server.py · LABELLING_GUIDE.md · labels/"],
+    ["Reuse kit", "ready", "One config file per area, country or season: boundaries, crop calendar, which maps build the strata, points per stratum, cue texts. A guide takes a new team through every step.",
+      "copy config/TEMPLATE.toml", "config/*.toml · REUSE.md · make_new_area.py"],
+    ["Sampling and estimates", "ready", "Strata from map agreement, the stratified sample, two labellers per point, and design-based estimators that give an interval for every area and every score.",
+      "python cropland/03_agreement_and_sample.py", "03-11 · estimators.py · evaluation.py · METHODOLOGY.md"],
+    ["Model workbench", "open for the group", "Fit a tree or a logistic model on calibration points only, freeze it as a JSON file, map it in Earth Engine and score it once on the test points.",
+      "open tree_workbench.ipynb", "tree_workbench.ipynb · 07_fit_rules.py · 12_other_models.py · rules.py · model_table.csv"],
+    ["Flood overlay", "ready", "Any frozen model against NASA's daily flood masks, 2000-2025: flooded cropland per year, a trigger hindcast and the before / after map.",
+      "python cropland/10b_flood_history.py summary", "10_flood.py · 10b_flood_history.py · 10c_flood_map.py"],
+    ["National map", "ready", "Our map over South Sudan at 30 m, its accuracy on our test points, and its agreement with the public maps at 20,000 random points (no labels outside our areas).",
+      "python cropland/national_map.py compare", "national_map.py · national_check.py (random points)"],
+    ["This dashboard", "ready", "One HTML file built from the result tables. It opens with a double click and works without internet. Rebuild it after any new result.",
+      "python cropland/14_dashboard.py", "14_dashboard.py · dashboard/template.html"],
+    ["Report kit", "ready", "Every number and table in the LaTeX report is generated from the result files, so a rerun cannot leave a stale number in the text.",
+      "python deliverables/cropland_report/report/build_report_inputs.py", "report_draft.tex · build_report_inputs.py"],
+    ["The labelled data", "450 boxes", "450 boxes with two blind labels each (crop, fallow, not crop, the share of the box), 18 features per box and every map's value: the training and test set for the next model.",
+      "read model_table.csv", "sample.csv · labels_final.csv · features_sample.csv · model_table.csv"],
+  ];
+  $("tools").innerHTML = tools.map(([t, s, d, run, files]) => `<div class="card tool"><h3>${t}<span class="pill">${s}</span></h3><p>${d}</p>
+    <p><code>${esc(run)}</code></p><p class="files">${esc(files)}</p></div>`).join("");
+  const steps = [
+    "<b>Label boxes outside our two areas</b> (a stratified sample, same tool and key) before our map is used there: the first accuracy of our map and of every public map elsewhere.",
+    "<b>Add a flood-prone stratum</b> (about 100 boxes on land that floods often) so that flooded cropland gets its own estimate instead of \"cannot tell\".",
+    "<b>Fit better models</b> on the larger set of calibration points, for example one per region with a two-season calendar for Greater Equatoria. Freeze each before scoring it, and log it in the change log.",
+    "<b>Repeat each season</b>: about 150 boxes, one working day for two people, gives a fresh area and a fresh check of every map.",
+    "<b>Rebuild</b> the dashboard and the report tables from the new results with one command each.",
+  ];
+  $("next-steps").innerHTML = steps.map(s => `<li>${s}</li>`).join("");
+}
+
+// ---------- 7. limits ----------
+function pageLimits() {
+  const A = D.headline.aweil;
+  $("sure").innerHTML = [
+    "450 boxes of 210 m, each labelled by two of five people, blind to every map; their answers agree on 85.6% of the boxes (Cohen's kappa 0.70). Disagreements are kept, not settled.",
+    "Every area and every score has a 95% interval from the stratified design. Maps whose intervals overlap are not ranked.",
+    `The usual interval is too narrow when crop is rare; we checked it by simulation and give an adjusted upper bound as well (Aweil: ${ha(A.sample.high_adj_ha)} ha).`,
+    "Our model was fitted on 125 calibration points and frozen before any of the 260 test labels was read.",
+    `The FAO/WFP crop assessment, built from other data, gives ${ha(A.cfsam_ha)} ha for Aweil: inside our interval.`,
+  ].map(s => `<li>${s}</li>`).join("");
+  $("built").innerHTML = `Built ${D.built} from <code>cropland/results/</code>.<br>Rebuild: <code>python cropland/14_dashboard.py</code>`;
+  $("foot").innerHTML = `JBG060 Data Challenge 3, group 1 (TU Eindhoven), for ZOA and Zero Hunger Lab. Map data: ESA WorldCover and WorldCereal, GLAD, Digital Earth Africa, Esri / Impact Observatory, Google Dynamic World, GFSAD, ASAP (JRC); NASA MCDWD flood masks; Google Open Buildings; OCHA COD-AB borders; FAO/WFP CFSAM. Built ${D.built}.`;
+}
+
+// ---------- wiring ----------
+function renderAll() { pageHeadline(); scoreChart(); borChart(); drawExposure(); drawFloodMap(); trigChart(); stateChart(); }
+pageHeadline(); pageMaps(); pageExposure(); pageAction(); pageCountry(); pageHandover(); pageLimits();
+seg("metric-seg", v => { metric = v; scoreChart(); });
+let t0; new ResizeObserver(() => { clearTimeout(t0); t0 = setTimeout(renderAll, 120); }).observe(document.querySelector("main"));
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderAll);
+new MutationObserver(renderAll).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+const links = [...document.querySelectorAll("nav.index a")];
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) links.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id)); }), { rootMargin: "-40% 0px -55% 0px" });
+document.querySelectorAll("section.q").forEach(s => io.observe(s));
+})();
+</script>
+</body>
+</html>

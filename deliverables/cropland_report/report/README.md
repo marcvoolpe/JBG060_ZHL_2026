@@ -27,6 +27,12 @@ The long notes behind each section are in `deliverables/cropland_report/notes/` 
 
 Edits made on Overleaf live only on Overleaf: copy the file back into the repo to keep them. A rebuild rewrites only the generated blocks, never the text around them.
 
+**Since 14 Oct the shared Overleaf project is the master copy of the text.** It is synced to a local folder with the VS Code extension Overleaf Workshop (Local Replica). To refresh numbers or tables without losing anyone's edits, always go in this order:
+1. copy the Overleaf `report_draft.tex` (from the replica folder, or Overleaf > Menu > Download source) over `report/report_draft.tex` in the repo;
+2. run `build_report_inputs.py` (it rewrites only the `%% <<...>>` blocks);
+3. copy `report_draft.tex` (and any new figure) back into the replica folder; the extension uploads it.
+Never copy the repo file to Overleaf without step 1: it would overwrite the group's edits.
+
 ## Word limit (2,000 words, captions included, words in tables and figures not)
 
 - Switch `\drafttrue` to `\draftfalse`: tags, placeholders and idea boxes disappear.

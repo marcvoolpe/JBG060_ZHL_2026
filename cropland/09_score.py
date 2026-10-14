@@ -107,10 +107,10 @@ def main() -> None:
         for ref_name, (agreed, avg, share) in DEFS.items():
             a = d[(d.area == area) & d[avg].notna()]                      # labelled (not both unsure)
             left_out = int((d.area == area).sum() - len(a))
-            row = lambda measure, est, se, n, **extra: {
+            row = lambda measure, est, se, n, **extra: {                    # a share cannot be negative: the lower bound stops at 0
                 "area": area, "definition": ref_name, "measure": measure, "points": n, "left_out": left_out,
-                "share": est, "ci_low": est - 1.96 * se, "ci_high": est + 1.96 * se,
-                "ha": est * ha, "ci_low_ha": (est - 1.96 * se) * ha, "ci_high_ha": (est + 1.96 * se) * ha, **extra}
+                "share": est, "ci_low": max(0.0, est - 1.96 * se), "ci_high": est + 1.96 * se,
+                "ha": est * ha, "ci_low_ha": max(0.0, est - 1.96 * se) * ha, "ci_high_ha": (est + 1.96 * se) * ha, **extra}
             # main: the share of each box that is cropland
             s_ok = a[a[share].notna()]
             est, se = E.area(s_ok[share].to_numpy(float), s_ok.stratum.to_numpy(), w)

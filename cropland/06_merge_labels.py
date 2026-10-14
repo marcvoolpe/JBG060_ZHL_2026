@@ -9,9 +9,15 @@ Reads every sample_labels_<name>.csv saved by the labelling tool and matches
 the two labels per point (the two labellers in sample.csv). Nobody settles a
 disagreement: both labels are kept and the disagreement is reported.
   - agreed:            same label from both people -> that label.
-  - disagreed:         cropland vs not cropland, or one "unsure" -> final
-                       "disagreed". Left out of fitting; in the area estimates
-                       it is bounded (all cropland / all not, 09_score.py).
+  - disagreed:         cropland vs not cropland, or one "unsure" and the other
+                       anything else -> final "disagreed". Left out of fitting
+                       and of the accuracy scores. In the area estimates it is
+                       NOT left out: it takes the mean of the two labels (a
+                       cropland vs not split counts half; with one "unsure",
+                       the other label alone counts). 09_score.py adds a
+                       sensitivity check: every cropland vs not split counted
+                       as cropland, then every one as not cropland.
+  - unsure:            both "unsure" -> final "unsure", left out everywhere.
   - crop_fallow_only:  both say cropland, one crop and the other fallow ->
                        final "crop/fallow": cropland for sure, cropped in 2025
                        not agreed.

@@ -1,0 +1,49 @@
+area,definition,map,test_points,f1,ua,ua_se,pa,pa_se,oa,oa_se,f1_se,map_crop_share
+aweil,agreement with Rule 1 at the points,map_10m,330,1.0,,,,,,,,
+aweil,agreement with Rule 1 at the points,map_30m_national,330,0.9606,,,,,,,,
+aweil,cropland,rule1,186,0.7239,0.6967,0.1179,0.7535,0.1166,0.9269,0.0267,0.0897,0.1376
+aweil,cropland,map_10m,186,0.7239,0.6967,0.1179,0.7535,0.1166,0.9269,0.0267,0.0897,0.1376
+aweil,cropland,map_30m_national,186,0.6002,0.5024,0.1037,0.7453,0.1165,0.8737,0.0339,0.0897,0.1888
+aweil,cropland,worldcover_2021,186,0.3564,1.0,0.0,0.2168,0.0838,0.9003,0.0269,0.1061,0.0276
+aweil,cropland,glad_2019,186,0.4113,1.0,0.0,0.2589,0.087,0.9057,0.0269,0.105,0.0329
+aweil,cropland,deafrica_2019,186,0.497,0.3979,0.0904,0.6619,0.1225,0.8296,0.0382,0.0845,0.2116
+aweil,cropland,worldcereal_2021,186,0.5513,0.8339,0.1447,0.4117,0.1101,0.9147,0.0269,0.1054,0.0628
+aweil,cropland,esri_2025,186,0.0632,1.0,0.0,0.0326,0.0163,0.8769,0.0285,0.0319,0.0042
+aweil,cropland,dynamicworld_2025,186,0.0343,0.1022,0.0798,0.0206,0.0129,0.8523,0.0314,0.0219,0.0257
+aweil,cropland,gfsad_2015,186,0.2574,0.4807,0.1593,0.1757,0.0478,0.871,0.0315,0.0626,0.0465
+aweil,cropland,asap_v04,186,0.4327,1.0,0.0,0.2761,0.0884,0.9079,0.0269,0.1075,0.0351
+aweil,cropped_2025,rule1,182,0.7236,0.6963,0.118,0.7531,0.1167,0.9269,0.0267,0.0887,0.1375
+aweil,cropped_2025,map_10m,182,0.7236,0.6963,0.118,0.7531,0.1167,0.9269,0.0267,0.0887,0.1375
+aweil,cropped_2025,map_30m_national,182,0.5997,0.5019,0.1038,0.7448,0.1166,0.8736,0.0339,0.0895,0.1886
+aweil,cropped_2025,worldcover_2021,182,0.3601,1.0,0.0,0.2196,0.0842,0.9008,0.0269,0.1112,0.0279
+aweil,cropped_2025,glad_2019,182,0.4062,1.0,0.0,0.2549,0.0868,0.9053,0.0269,0.1074,0.0324
+aweil,cropped_2025,deafrica_2019,182,0.4966,0.3975,0.0904,0.6617,0.1227,0.8295,0.0382,0.0861,0.2116
+aweil,cropped_2025,worldcereal_2021,182,0.5487,0.8329,0.1456,0.4092,0.1101,0.9145,0.0269,0.1085,0.0624
+aweil,cropped_2025,esri_2025,182,0.0633,1.0,0.0,0.0327,0.0166,0.8771,0.0285,0.0326,0.0042
+aweil,cropped_2025,dynamicworld_2025,182,0.0345,0.1024,0.0806,0.0208,0.0132,0.8524,0.0314,0.0228,0.0258
+aweil,cropped_2025,gfsad_2015,182,0.2502,0.4716,0.1591,0.1702,0.047,0.8703,0.0315,0.0638,0.0459
+aweil,cropped_2025,asap_v04,182,0.4392,1.0,0.0,0.2814,0.089,0.9087,0.0269,0.1043,0.0358
+bor_south,agreement with Rule 1 at the points,map_10m,120,1.0,,,,,,,,
+bor_south,agreement with Rule 1 at the points,map_30m_national,120,1.0,,,,,,,,
+bor_south,cropland,rule1,74,,0.0,0.0,,,0.9768,0.0232,,0.0232
+bor_south,cropland,map_10m,74,,0.0,0.0,,,0.9768,0.0232,,0.0232
+bor_south,cropland,map_30m_national,74,,0.0,0.0,,,0.9768,0.0232,,0.0232
+bor_south,cropland,worldcover_2021,74,,,,,,1.0,0.0,,0.0
+bor_south,cropland,glad_2019,74,,,,,,1.0,0.0,,0.0
+bor_south,cropland,deafrica_2019,74,,,,,,1.0,0.0,,0.0
+bor_south,cropland,worldcereal_2021,74,,,,,,1.0,0.0,,0.0
+bor_south,cropland,esri_2025,74,,,,,,1.0,0.0,,0.0
+bor_south,cropland,dynamicworld_2025,74,,0.0,0.0,,,0.6966,0.0619,,0.3034
+bor_south,cropland,gfsad_2015,74,,0.0,0.0,,,0.9768,0.0232,,0.0232
+bor_south,cropland,asap_v04,74,,,,,,1.0,0.0,,0.0
+bor_south,cropped_2025,rule1,74,,0.0,0.0,,,0.9768,0.0232,,0.0232
+bor_south,cropped_2025,map_10m,74,,0.0,0.0,,,0.9768,0.0232,,0.0232
+bor_south,cropped_2025,map_30m_national,74,,0.0,0.0,,,0.9768,0.0232,,0.0232
+bor_south,cropped_2025,worldcover_2021,74,,,,,,1.0,0.0,,0.0
+bor_south,cropped_2025,glad_2019,74,,,,,,1.0,0.0,,0.0
+bor_south,cropped_2025,deafrica_2019,74,,,,,,1.0,0.0,,0.0
+bor_south,cropped_2025,worldcereal_2021,74,,,,,,1.0,0.0,,0.0
+bor_south,cropped_2025,esri_2025,74,,,,,,1.0,0.0,,0.0
+bor_south,cropped_2025,dynamicworld_2025,74,,0.0,0.0,,,0.6966,0.0619,,0.3034
+bor_south,cropped_2025,gfsad_2015,74,,0.0,0.0,,,0.9768,0.0232,,0.0232
+bor_south,cropped_2025,asap_v04,74,,,,,,1.0,0.0,,0.0

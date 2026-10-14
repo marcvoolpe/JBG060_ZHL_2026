@@ -35,6 +35,23 @@ Tables in `cropland/results/`. Accuracy on test points both labellers agree on, 
 - **What we can still say:** which maps are accurate on cropland in general (R3), and that Dynamic World's flooded cropland in Bor South comes from a class that is wrong on dry test boxes. **Next time:** a stratum on flood-prone land (e.g. the recurring flood mask) with its own points, so flooded cropland gets its own estimate (Discussion; REUSE).
 - Our map's 3,588 ha in Aweil counts land whose 210 m box holds crop near a flood cell, so it is an upper bound; it is not comparable with the public maps' pixel counts.
 
+**R5b. Past floods on today's cropland, 2000-2025** (`flood_history.csv`, `trigger_hindcast.csv`, figure 12; added 14 Oct). A scenario: "how much of today's cropland would a flood like that one put under water?" (labels and Rule 1 are 2025; maps as they are). In big flood years enough sample points land on flooded land for an estimate (ratio estimator, at least 5 points):
+
+| Aweil, flood year | flooded land | points on it | public maps (8): min / median / max | our sample, 95% interval | sample / median |
+|---|---|---|---|---|---|
+| 2008 | 83,017 ha | 17 | 585 / 1,226 / 4,335 | **10,795** (1,862-19,729) | 8.8 |
+| 2010 | 58,939 ha | 12 | 225 / 585 / 3,215 | 6,093 (0-15,419) | 10.4 |
+| 2020 | 62,569 ha | 9 | 186 / 417 / 1,645 | 6,817 (0-16,978) | 16.3 |
+| 2022 | 53,646 ha | 11 | 331 / 869 / 3,572 | **7,263** (639-14,336) | 8.4 |
+| all 9 informative years | | 5-17 | | | 3.8-16.3 |
+
+- **The maps under-count flooded cropland, as they under-count cropland.** In all 9 Aweil years with enough points, the sample's estimate is 4-16 times the maps' median and above all 8 maps in 5 years (2007, 2008, 2010, 2020, 2022; level with the highest in 2013). Intervals are wide (lower bounds above zero only in 2008 and 2022), so state the direction, not a factor.
+- **Trigger hindcast** (`trigger_hindcast.csv`): the sample can confirm a trigger at 100-500 ha in 2008 and 2022, and at 1,000 ha in 2008. In those floods, **Esri, GLAD and WorldCover would have stayed silent** (500 ha in 2022; 1,000 ha in 2008): missed triggers in the two biggest floods. In the other years the sample cannot tell.
+- **Bor South**: only 2007 and 2010 have 5+ points on flooded land, with almost no cropland (0 and 358 ha). In 2007 the sample's upper bound (2,096 ha) is below a 5,000 ha trigger, while both Dynamic World versions would have fired: a false alarm on wetland.
+- **10+ flood days** (closer to crop damage): only 2008 has enough points: 6,711 ha (5,175-12,019).
+- **Our map** (box holds crop, compared with the sample's "box holds it"): close to the sample in 2007, 2010, 2019 and 2020 (e.g. 2010: 11,709 against 11,366 ha), higher in 2013, 2014 and 2021, lower in 2008 and 2022; never outside the sample's (wide) interval.
+- **Limits:** cropland moves between years (Dynamic World swings by a factor of 10); the 2025 labels stand for today, not for 2008. One sample of 330 points; 5-17 of them on flooded land.
+
 **R6. Sampling design** (`design_efficiency.csv`, points for a 20% CV of the area): agreement strata 124 points in Aweil; one-map strata 112 (WorldCereal) to 149 (Dynamic World): **our design is not clearly more efficient than stratifying on the best single map**, but it never depends on picking that map beforehand. Bor South needs about 1,240 points for 20% CV under any design: cropland is too rare there for a sample of 120.
 
 **Models, "logistic regression or trees"** (`model_cv.csv`, 12 Oct): chosen without test labels. In cross-validation on the 125 calibration points, logistic regression (F1 0.87-0.88) and trees (0.85-0.86) were close, and the random forest was higher (0.92). On the test points the order changed (tree 0.72, logistic 0.61-0.66). All intervals overlap. Conclusion for the report: with 41 crop calibration points, the model family matters less than the inputs (distance to buildings is the strongest input of the tree and of the logistic models). The readable tree is as good as the alternatives we tried.

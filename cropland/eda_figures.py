@@ -161,6 +161,50 @@ def flooded(tab, refs=None):
     return _save(fig, "07_flooded_cropland_per_map")
 
 
+def flood_history(h, min_days=1):
+    """Past floods on today's cropland: the public maps as one range band, our sample as dots with 95% intervals.
+
+    h: results/flood_history.csv (10b_flood_history.py). Rule 1 is left out on purpose: its hectares
+    count land whose 210 m box holds crop, not comparable with the maps' pixels (it is in the table).
+    Writes the figure and its CSV twin (tables/flood_history.csv).
+    """
+    h = h[h.min_days == min_days]
+    maps = h[h.layer.isin(ORDER)].pivot_table(index=["area", "year"], columns="layer", values="flooded_crop_ha")
+    s = h[(h.layer == "sample (ratio)") & (h.measure == "share of box")].set_index(["area", "year"])
+    twin = pd.DataFrame({"maps_min": maps.min(axis=1), "maps_median": maps.median(axis=1), "maps_max": maps.max(axis=1)}) \
+        .join(s[["flooded_land_ha", "points_in_flood", "of_them_cropland", "flooded_crop_ha", "low_ha", "high_ha"]]
+              .rename(columns={"flooded_crop_ha": "sample_ha", "low_ha": "sample_low_ha", "high_ha": "sample_high_ha"}))
+    D.TABLES.mkdir(parents=True, exist_ok=True)
+    twin.round(0).to_csv(D.TABLES / "flood_history.csv")
+    areas = {"aweil": "Aweil counties", "bor_south": "Bor South"}
+    fig, axes = plt.subplots(1, 2, figsize=(10, 3.4))
+    for ax, (area, title) in zip(axes, areas.items()):
+        t = twin.loc[area]
+        yrs = t.index.to_numpy()
+        ax.fill_between(yrs, t.maps_min, t.maps_max, color=GRID_C, linewidth=0, label="public maps, range of 8")
+        ax.plot(yrs, t.maps_median, color=MUTED, linewidth=1.5, label="public maps, median")
+        ok = t.sample_ha.notna()
+        ax.vlines(yrs[ok], t.sample_low_ha[ok], t.sample_high_ha[ok], color=SERIES[0], linewidth=2)
+        ax.plot(yrs[ok], t.sample_ha[ok], "o", color=SERIES[0], markersize=6, markeredgecolor=SURFACE, markeredgewidth=1.5,
+                label="our sample, 95% interval (5+ points on flooded land)")
+        ax.set_title(f"{title}: {int(ok.sum())} of {len(t)} years with enough sample points", loc="left")
+        ax.set_xlim(1999.5, 2025.5)
+        ax.set_ylim(0, None)
+        ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:,.0f}"))
+        ax.yaxis.grid(True, color=GRID_C, linewidth=0.8)
+        ax.set_axisbelow(True)
+        ax.set_ylabel("cropland under water, ha")
+    top = h[h.layer.isin(ORDER)].loc[lambda d: d.groupby(["area", "year"]).flooded_crop_ha.idxmax()]
+    if (top[top.area == "bor_south"].layer == "dynamicworld_2025").mean() > 0.9:        # name the edge where one map is it
+        t = twin.loc["bor_south"]
+        axes[1].annotate("upper edge: Dynamic World 2025", (2010, t.maps_max.loc[2010]), xytext=(2012, t.maps_max.loc[2010] * 0.9),
+                         fontsize=7.5, color=INK2, arrowprops=dict(arrowstyle="-", color=MUTED, linewidth=0.8))
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, frameon=False, fontsize=8, loc="lower center", ncol=3, bbox_to_anchor=(0.5, -0.02))
+    fig.tight_layout(rect=(0, 0.07, 1, 1))
+    return _save(fig, "12_flood_history")
+
+
 def states_vs_cfsam(st, cfsam, maps, year):
     """Small multiples: crop area per state, each map against CFSAM's cereal harvested area (log-log)."""
     from scipy.stats import spearmanr

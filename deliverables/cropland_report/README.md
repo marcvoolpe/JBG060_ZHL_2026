@@ -18,6 +18,7 @@ Group 1, JBG060. Everything for the methodological report (max 2,000 words, due 
 | 11 evaluation additions | **done 12 Oct** (`cropland/11_evaluate.py`): adjusted interval, where maps fail, ours vs published, points needed, pixel-count bias |
 | 12 logistic regression vs trees | **done 12 Oct** (`cropland/12_other_models.py`): chosen by cross-validation on calibration points, two logistic models frozen and scored (F1 0.61-0.66); no model ranked above another |
 | 10 flood overlay + trigger agreement | **done 14 Oct**: the maps disagree (Aweil 10-307 ha flooded cropland; Bor South 0-10 ha, Dynamic World 1,606); the sample has only 1-2 points in flood cells, so it **cannot tell** flooded cropland (notes 07, R5) |
+| 10b past floods 2000-2025 on today's cropland | **done 14 Oct** (`cropland/10b_flood_history.py`, figure 12): in Aweil's 9 big flood years the sample puts 4-16 times more cropland under water than the median map; Esri, GLAD and WorldCover would have missed a 500 ha trigger in 2022 (notes 07, R5b) |
 | Dashboard | plan revised 12 Oct ([`DASHBOARD_PLAN.md`](DASHBOARD_PLAN.md), in this folder): five-page results story, no general course data |
 | Own trees (Wei, Matei) | open: `cropland/tree_workbench.ipynb` (calibration points only; retrains Rule 1 exactly; writes nothing until `FREEZE = True`) |
 | Reuse for other areas / countries | **done 12 Oct**: `cropland/config/*.toml`, `cropland/REUSE.md`, `cropland/make_new_area.py` |
@@ -90,7 +91,9 @@ Code added in this round (in `cropland/`): `eda_public_maps.ipynb` (the EDA, run
 10. `10_published_recall_vs_crop_share.png`. **Published recall predicts Aweil, not Bor South.**
 11. `11_annotation_statistics.png`. **Our labels.** 900 labels; agreement between the two labellers per area and stratum; which answers differ when they split (mostly field shape).
 
-Suggested use: report = 1, 3 (or 2), 7, 9 + a method diagram; poster = 1, 4, 7, 9, 11 (+ 8).
+12. `12_flood_history.png`. **Past floods on today's cropland.** Cropland under water in each year's flood (2000-2025, June-December), Aweil counties and Bor South: the 8 public maps as a range with their median, our labelled sample as dots with 95% intervals in the years where at least 5 sample points lay on flooded land. A scenario: the 2025 cropland under each past flood.
+
+Suggested use: report = 1, 3 (or 2), 7, 9 (+ 12) + a method diagram; poster = 1, 4, 7, 9, 11, 12 (+ 8).
 
 ## 7. How to regenerate everything
 

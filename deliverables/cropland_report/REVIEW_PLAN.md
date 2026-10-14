@@ -63,6 +63,7 @@ and push to the same branch (`git pull` first). Start each comment with a tag:
 | 7 | Poster: panels and owners (`notes/08`) | per panel | figures 1, 4, 7, 9, 11 + scorecard | Yassin |
 | 8 | Bor South: how to present it | | area 0.4% with a wide interval; no recall possible (no agreed crop test point); Dynamic World paints wetland as crop | Marc |
 | 8b | Flooded cropland (added 14 Oct): the sample has 1-2 points in flood cells and cannot tell; keep the cautious bound ("cannot tell") and say so, or present the map numbers only | cautious bound / maps only | cautious bound, reported as a negative result plus the lesson (a flood stratum next season) | Yassin |
+| 8c | Past floods on today's cropland (added 14 Oct, figure 12, notes 07 R5b): use in the report and on the poster? It is an analysis added after the results, a scenario (2025 cropland), with two rules set after a first look (5+ points; trivial years not counted) | use as scenario / appendix only / drop | use, as the anticipatory-action result, with its limits stated | Yassin |
 | 9 | Merge `cropland-review-12oct` into `main` | now / after fixes | after the [fix] comments are done | whoever is last |
 
 ## 5. After the meeting

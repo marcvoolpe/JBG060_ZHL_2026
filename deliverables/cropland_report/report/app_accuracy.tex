@@ -1,0 +1,49 @@
+% Written by build_report_inputs.py from CSVs. Do not edit by hand.
+
+\begin{table}[tbp]
+\centering
+\caption{Accuracy of every map on the Aweil test points (cropland; stratified estimators; $\pm$ one standard error).}\label{tab:accuracy}
+%TC:ignore
+\small
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Map & Year & Precision & Recall & F1 & Overall acc. \\
+\midrule
+random forest, 18 inputs & 2025 (benchmark) & 0.88 $\pm$ 0.10 & 0.67 $\pm$ 0.12 & 0.76 $\pm$ 0.09 & 0.95 \\
+Rule 1 (ours) & 2025 (ours) & 0.70 $\pm$ 0.12 & 0.75 $\pm$ 0.12 & 0.72 $\pm$ 0.09 & 0.93 \\
+random forest, embedding & 2025 (benchmark) & 0.77 $\pm$ 0.11 & 0.66 $\pm$ 0.12 & 0.71 $\pm$ 0.09 & 0.93 \\
+logistic regression, 18 inputs & 2025 (model) & 0.54 $\pm$ 0.10 & 0.84 $\pm$ 0.10 & 0.66 $\pm$ 0.09 & 0.89 \\
+logistic regression, 2 inputs & 2025 (model) & 0.48 $\pm$ 0.10 & 0.84 $\pm$ 0.10 & 0.61 $\pm$ 0.09 & 0.86 \\
+WorldCereal 2021 & 2021 & 0.83 $\pm$ 0.14 & 0.41 $\pm$ 0.11 & 0.55 $\pm$ 0.11 & 0.91 \\
+DE Africa 2019 & 2019 & 0.40 $\pm$ 0.09 & 0.66 $\pm$ 0.12 & 0.50 $\pm$ 0.08 & 0.83 \\
+ASAP v04 & 2017-23 & 1.00 $\pm$ 0.00 & 0.28 $\pm$ 0.09 & 0.43 $\pm$ 0.11 & 0.91 \\
+GLAD 2019 & 2019 & 1.00 $\pm$ 0.00 & 0.26 $\pm$ 0.09 & 0.41 $\pm$ 0.10 & 0.91 \\
+WorldCover 2021 & 2021 & 1.00 $\pm$ 0.00 & 0.22 $\pm$ 0.08 & 0.36 $\pm$ 0.11 & 0.90 \\
+GFSAD 2015 & 2015 & 0.48 $\pm$ 0.16 & 0.18 $\pm$ 0.05 & 0.26 $\pm$ 0.06 & 0.87 \\
+Esri 2025 & 2025 & 1.00 $\pm$ 0.00 & 0.03 $\pm$ 0.02 & 0.06 $\pm$ 0.03 & 0.88 \\
+Dynamic World 2025 & 2025 & 0.10 $\pm$ 0.08 & 0.02 $\pm$ 0.01 & 0.03 $\pm$ 0.02 & 0.85 \\
+\bottomrule
+\end{tabular}
+%TC:endignore
+\end{table}
+
+\begin{table}[tbp]
+\centering
+\caption{Our scores in Aweil against the range published for the same maps in other African countries (Kerner et al.\ 2024; Adebayo et al.\ 2026).}\label{tab:published}
+%TC:ignore
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Map & Recall, ours & Recall, published & F1, ours & F1, published \\
+\midrule
+ASAP v04 & 0.28 & 0.27--0.92 & 0.43 & 0.21--0.74 \\
+DE Africa 2019 & 0.66 & 0.59--0.96 & 0.50 & 0.43--0.85 \\
+Dynamic World 2025 & 0.02 & 0.12--0.65 & 0.03 & 0.12--0.63 \\
+Esri 2025 & 0.03 & 0.00--0.73 & 0.06 & 0.00--0.75 \\
+GFSAD 2015 & 0.18 & 0.37--0.95 & 0.26 & 0.15--0.76 \\
+GLAD 2019 & 0.26 & 0.52--0.83 & 0.41 & 0.33--0.75 \\
+WorldCover 2021 & 0.22 & 0.34--0.83 & 0.36 & 0.43--0.82 \\
+\bottomrule
+\end{tabular}
+%TC:endignore
+\end{table}

@@ -101,8 +101,20 @@ Code added in this round (in `cropland/`): `eda_public_maps.ipynb` (the EDA, run
 14. `14_area_vs_maps.png`. **The maps under-count cropland.** Share of the land that is cropland per public map (pixel count) against our labelled sample with its 95% interval, Aweil counties and Bor South (log scale).
 15. `15_scorecard.png`. **Which map to trust.** Precision, recall and F1 of every map on the Aweil test points, with 95% intervals; our models orange, public maps blue; dashed line: how well the two labellers agree (0.86).
 16. `16_same_window_every_map.png`. **The same window in every map.** A 6 x 6 km window north of Aweil town in Sentinel-2 (October-December 2025), the seven public maps (blue) and our map (orange), with the labelled points; each title gives the map's crop share of the window and how many of the labelled fields it finds. The updated version of the Sprint 2 slide "seven maps, seven answers" (Twic county, before labelling). The window has the most labelled points, all cropland, near town where several maps see crop, so the maps look better here than over Aweil as a whole. Made by `cropland/eda_window.py`.
+17. `17_method_diagram.png`. **The approach.** Strata from the seven maps, 450 random points split before labelling, two blind labels per 210 m box; the labels give the area, train our models (calibration points) and score every map (test points); flood masks over all of them.
+18. `18_rule1_tree.png`. **Rule 1 as a tree.** Two questions (a building within 333 m; field edges), with the calibration and test points in every leaf.
+19. `19_rule1_decision_space.png`. **Why Rule 1 works.** Every agreed point on its two inputs, calibration and test, with the region Rule 1 calls crop.
+20. `20_models_cv_vs_test.png`. **Trees or logistic regression?** Every model's F1 in repeated cross-validation (calibration) and on the Aweil test points.
+21. `21_what_models_learned.png`. **What the models learned.** Logistic coefficients per standard deviation and random-forest importances, same 18 inputs.
+22. `22_feature_distributions.png`. **The 18 features**, boxes with and without cropland.
+23. `23_strata_and_sample.png`. **Strata and sample.** Share of each cell where at least one map sees crop, and the 450 points by stratum.
+24. `24_labelling_examples.png`. **What the labellers see.** Twelve monthly images of 2025 for an agreed crop box, an agreed not-crop box and a disputed box.
+25. `25_interval_simulation.png`. **The interval check.** Coverage of the usual and the adjusted interval in simulations of our design, per area and measure.
+26. `26_points_per_design.png`. **Points needed** for a 20% CV: our strata against strata from one map.
 
-Suggested use: report = 15, 12, 14 (or table 1), 16 + a method diagram; poster = 14, 15, 13, 12 + method diagram (notes 08: A0 portrait, 20 pt minimum, also inside figures).
+Figures 17-26 are drawn by `cropland/report_figures.py` (no Earth Engine).
+
+Suggested use: report = 17 (method), 15, 18, 12 + table 1 in the text, the rest in the appendix (the draft does this); poster = 14, 15, 13, 12 + method diagram (notes 08: A0 portrait, 20 pt minimum, also inside figures).
 
 ## 7. How to regenerate everything
 

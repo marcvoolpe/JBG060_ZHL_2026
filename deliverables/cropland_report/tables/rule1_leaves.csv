@@ -1,0 +1,7 @@
+split,leaf,points,cropland
+calibration,far,79,2
+calibration,near_edges,40,39
+calibration,near_no_edges,6,0
+test,far,149,3
+test,near_edges,98,93
+test,near_no_edges,13,1

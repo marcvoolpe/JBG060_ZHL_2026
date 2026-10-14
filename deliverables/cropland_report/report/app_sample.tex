@@ -1,0 +1,42 @@
+% Written by build_report_inputs.py from CSVs. Do not edit by hand.
+
+\begin{table}[tbp]
+\centering
+\caption{Strata and sample. Cropland: points both labellers call cropland; split: the two labellers disagree.}\label{tab:strata}
+%TC:ignore
+\small
+\begin{tabular}{@{}llrrrrrrr@{}}
+\toprule
+Area & Stratum & ha & Share & Points & Calib. & Test & Cropland & Split \\
+\midrule
+Aweil & A & 2,929,918 & 95.0\% & 150 & 50 & 100 & 10 & 13 \\
+Aweil & B & 145,327 & 4.7\% & 90 & 30 & 60 & 53 & 26 \\
+Aweil & C & 9,934 & 0.3\% & 90 & 30 & 60 & 74 & 16 \\
+Bor South & A & 1,264,445 & 90.6\% & 60 & 20 & 40 & 0 & 1 \\
+Bor South & B & 131,838 & 9.4\% & 60 & 20 & 40 & 1 & 9 \\
+\bottomrule
+\end{tabular}
+%TC:endignore
+\end{table}
+
+\begin{table}[tbp]
+\centering
+\caption{Agreement between the two blind labellers on cropland versus not, per area and stratum.}\label{tab:agreement}
+%TC:ignore
+\small
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Group & Points & Agree & Kappa & Pos. agr. & Neg. agr. \\
+\midrule
+All & 450 & 85.6\% & 0.70 & 0.84 & 0.90 \\
+Aweil & 330 & 83.3\% & 0.68 & 0.86 & 0.86 \\
+Bor South & 120 & 91.7\% & 0.14 & 0.18 & 0.96 \\
+Aweil A & 150 & 91.3\% & 0.58 & 0.65 & 0.96 \\
+Aweil B & 90 & 71.1\% & 0.32 & 0.84 & 0.52 \\
+Aweil C & 90 & 82.2\% & -0.07 & 0.92 & 0.00 \\
+Bor South A & 60 & 98.3\% & 0.00 & 0.00 & 0.99 \\
+Bor South B & 60 & 85.0\% & 0.16 & 0.20 & 0.93 \\
+\bottomrule
+\end{tabular}
+%TC:endignore
+\end{table}

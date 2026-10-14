@@ -1,0 +1,10 @@
+model,cv_f1,cv_low,cv_high,test_f1,test_low,test_high
+"tree, depth 1",0.856,0.814,0.877,,,
+"tree, depth 2 (= Rule 1)",0.851,0.804,0.9,0.724,0.55,0.897
+"tree, depth 3",0.847,0.804,0.882,,,
+"tree, depth 4",0.847,0.804,0.882,,,
+"logistic regression, 18 inputs",0.878,0.849,0.91,0.659,0.49,0.827
+"logistic regression, L1 (not frozen)",0.874,0.827,0.916,,,
+"logistic regression, Rule 1's 2 inputs",0.87,0.852,0.886,0.608,0.437,0.78
+"random forest, 18 inputs (benchmark)",0.919,0.9,0.933,0.762,0.579,0.944
+"random forest, embedding (benchmark)",,,,0.712,0.529,0.894

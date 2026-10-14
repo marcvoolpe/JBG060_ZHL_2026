@@ -1,0 +1,4 @@
+id,shown_as
+S004,both labellers: crop (mean share of the box over half)
+S033,both labellers: not crop (open grassland)
+S003,labellers disagree: crop with field shapes vs not crop

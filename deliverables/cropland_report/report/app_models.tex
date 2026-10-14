@@ -1,0 +1,56 @@
+% Written by build_report_inputs.py from CSVs. Do not edit by hand.
+
+\begin{table}[tbp]
+\centering
+\caption{The 18 features. Each is computed per 10 m pixel for 2025 and summarised over the 210 m box by its most crop-like part.}\label{tab:features}
+%TC:ignore
+\small
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.4cm}l@{}}
+\toprule
+Feature & What it measures & Cue & Over the box \\
+\midrule
+ndvi\_min\_am & greenness, lowest April-May & a: bare soil before sowing & 10th pct. \\
+bsi\_max\_am & bare-soil index, highest April-May & a: bare soil before sowing & 90th pct. \\
+ndvi\_peak\_jja & greenness, peak June-August & b: green-up & mean \\
+greenup & peak minus spring greenness & b: green-up & 90th pct. \\
+drop\_son & drop from the peak to September-November & c: harvest & 90th pct. \\
+drop\_vs\_500m & that drop minus the 500 m surroundings' & c: harvest earlier than the grass & 90th pct. \\
+texture\_jja & texture (GLCM contrast) at the peak & d: field shape & 90th pct. \\
+edge\_density & edge density (Canny edges) at the peak & d: field shape & 90th pct. \\
+ndvi\_min\_jfm & greenness, lowest January-March & trees and shrub & mean \\
+water\_occurrence & JRC surface water occurrence & water & mean \\
+s1\_vv\_min & radar VV, lowest month & water & mean \\
+dist\_buildings\_m & distance to the nearest building (m) & homesteads & 10th pct. \\
+burned & burned November-April & burn scars & mean \\
+vh\_jun & radar VH, June & cloudy months & mean \\
+vh\_jul & radar VH, July & cloudy months & mean \\
+vh\_aug & radar VH, August & cloudy months & mean \\
+vh\_sep & radar VH, September & cloudy months & mean \\
+vh\_range & radar VH, range over the year & cloudy months & mean \\
+\bottomrule
+\end{tabularx}
+%TC:endignore
+\end{table}
+
+\begin{table}[tbp]
+\centering
+\caption{Models: F1 in repeated cross-validation on the 125 calibration points (every point alike; 2.5--97.5\% of 20 repeats) and on the Aweil test points (stratum weights; 95\% interval; frozen models only).}\label{tab:models}
+%TC:ignore
+\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Model & Cross-validation & Test \\
+\midrule
+tree, depth 1 & 0.86 (0.81--0.88) & -- \\
+tree, depth 2 (= Rule 1) & 0.85 (0.80--0.90) & 0.72 (0.55--0.90) \\
+tree, depth 3 & 0.85 (0.80--0.88) & -- \\
+tree, depth 4 & 0.85 (0.80--0.88) & -- \\
+logistic regression, 18 inputs & 0.88 (0.85--0.91) & 0.66 (0.49--0.83) \\
+logistic regression, L1 (not frozen) & 0.87 (0.83--0.92) & -- \\
+logistic regression, Rule 1's 2 inputs & 0.87 (0.85--0.89) & 0.61 (0.44--0.78) \\
+random forest, 18 inputs (benchmark) & 0.92 (0.90--0.93) & 0.76 (0.58--0.94) \\
+random forest, embedding (benchmark) & -- & 0.71 (0.53--0.89) \\
+\bottomrule
+\end{tabular}
+%TC:endignore
+\end{table}

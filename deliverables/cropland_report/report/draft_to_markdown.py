@@ -49,17 +49,25 @@ def convert():
     M, B = macros(), bibliography()
     title = re.search(r"\\title\{(.*?)\}\n", tex).group(1)
     date = re.search(r"\\date\{(.*?)\}", tex).group(1)
-    body = tex.split("\\begin{document}", 1)[1].split("\\bibliographystyle", 1)[0]
+    doc = tex.split("\\begin{document}", 1)[1].split("\\end{document}", 1)[0]
+    main, _, rest = doc.partition("\\bibliographystyle")
+    body = main + "\n@@APPENDIX@@\n" + (rest.split("\\appendix", 1)[1] if "\\appendix" in rest else "")
+    body = re.sub(r"\\input\{(\w+)\}", lambda m: (HERE / f"{m.group(1)}.tex").read_text(encoding="utf-8")
+                  if (HERE / f"{m.group(1)}.tex").exists() else "", body)          # the generated appendix tables
     body = "\n".join(l for l in body.splitlines() if not l.lstrip().startswith("%"))
     body = re.sub(r"(?<!\\)%.*", "", body)
 
-    # numbering of sections, figures and tables, in order of appearance
-    labels, sec, fig, tab = {}, 0, 0, 0
+    # numbering of sections (1, 2, ... then A, B, ... in the appendix), figures and tables, in order of appearance
+    labels, sec, asec, fig, tab = {}, 0, 0, 0, 0
+    apos = body.index("@@APPENDIX@@")
     for m in re.finditer(r"\\section\{[^}]*\}(\\label\{([^}]+)\})?|\\begin\{(figure|table)\}(.*?)\\end\{\3\}", body, re.S):
         if m.group(0).startswith("\\section"):
-            sec += 1
+            if m.start() > apos:
+                asec += 1
+            else:
+                sec += 1
             if m.group(2):
-                labels[m.group(2)] = str(sec)
+                labels[m.group(2)] = chr(64 + asec) if m.start() > apos else str(sec)
         else:
             kind = m.group(3)
             fig, tab = fig + (kind == "figure"), tab + (kind == "table")
@@ -111,11 +119,16 @@ def convert():
     s = re.sub(r"\\cite(t|p)\{([^}]+)\}", cite, s)
     s = re.sub(r"\\ref\{([^}]+)\}", lambda m: labels.get(m.group(1), "?"), s)
     s = re.sub(r"\\label\{[^}]+\}", "", s)
-    sec = [0]
+    sec, apos = [0, 0], s.index("@@APPENDIX@@")
     def section(m):
+        if m.start() > apos:
+            sec[1] += 1
+            return f"\n## Appendix {chr(64 + sec[1])}. {m.group(1)}\n"
         sec[0] += 1
         return f"\n## {sec[0]}. {m.group(1)}\n"
     s = re.sub(r"\\section\{([^}]+)\}", section, s)
+    s = s.replace("\\begin{itemize}", "").replace("\\end{itemize}", "")
+    s = re.sub(r"\\item\s*", "\n- ", s)
     s = re.sub(r"\\subsection\{([^}]+)\}", r"\n### \1\n", s)
     s = re.sub(r"\\paragraph\{([^}]+)\}\s*", r"**\1** ", s)
     s = re.sub(r"\\pending\{([^}]+)\}", r" *(pending decision \1)*", s)
@@ -128,8 +141,9 @@ def convert():
                  ("---", "-"), ("--", "-"), (r"\%", "%"), (r"\&", "&"), (r"\_", "_"), (r"\,", ","), ("~", " "), (r"\maketitle", ""),
                  ("\\\\", " ")):
         s = s.replace(a, b)
-    s = re.sub(r"\\(centering|small|footnotesize)\b", "", s)
+    s = re.sub(r"\\(centering|small|footnotesize|clearpage|par|smallskip)\b", "", s)
     s = re.sub(r"\n{3,}", "\n\n", s).strip()
+    s, appendix = s.split("@@APPENDIX@@", 1)
     refs = []
     for k in cited:
         e = B.get(k, {})
@@ -140,7 +154,7 @@ def convert():
             f"# {title.replace(chr(92) + 'ph{working title}', '').strip()}\n\n*Group 1, JBG060. {date}.* "
             f"Marks: **[...]** still to write or make; *(pending decision N)* waits for the group (REVIEW_PLAN.md); "
             f"> **Idea.** suggestions for cutting.\n\n")
-    out = (head + s + "\n\n## References\n\n" + "\n".join(refs) + "\n").replace("@@SEP@@", "---")
+    out = (head + s.strip() + "\n\n## References\n\n" + "\n".join(refs) + "\n\n" + appendix.strip() + "\n").replace("@@SEP@@", "---")
     leftover = sorted(set(re.findall(r"\\[A-Za-z]+", out)))
     (HERE / "report_draft.md").write_text(out, encoding="utf-8")
     text = re.sub(r"<!--.*?-->", "", out.split("\n## References")[0], flags=re.S)

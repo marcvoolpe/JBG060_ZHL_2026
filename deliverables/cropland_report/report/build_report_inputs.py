@@ -178,10 +178,144 @@ def write_results():
     w = pd.read_csv(TABLES / "window_aweil_s020.csv")                 # figure 16 (eda_window.py)
     pub = w[w["map"] != "rule1"].crop_share_of_window_pct
     m |= {"WindowMin": f"{pub.min():.1f}\\%", "WindowMax": f"{pub.max():.1f}\\%"}
+    m = write_model_numbers(m)
     lines = ["% Written by build_report_inputs.py from cropland/results/ (steps 09-12). Do not edit by hand."]
     lines += [f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in m.items()]
     (HERE / "results.tex").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"results.tex: {len(m)} numbers")
+
+
+FEATURE_ROWS = [   # input, the cue it measures (labelling key / METHODOLOGY section 5)
+    ("ndvi_min_am", "greenness, lowest April-May", "a: bare soil before sowing"),
+    ("bsi_max_am", "bare-soil index, highest April-May", "a: bare soil before sowing"),
+    ("ndvi_peak_jja", "greenness, peak June-August", "b: green-up"),
+    ("greenup", "peak minus spring greenness", "b: green-up"),
+    ("drop_son", "drop from the peak to September-November", "c: harvest"),
+    ("drop_vs_500m", "that drop minus the 500 m surroundings'", "c: harvest earlier than the grass"),
+    ("texture_jja", "texture (GLCM contrast) at the peak", "d: field shape"),
+    ("edge_density", "edge density (Canny edges) at the peak", "d: field shape"),
+    ("ndvi_min_jfm", "greenness, lowest January-March", "trees and shrub"),
+    ("water_occurrence", "JRC surface water occurrence", "water"),
+    ("s1_vv_min", "radar VV, lowest month", "water"),
+    ("dist_buildings_m", "distance to the nearest building (m)", "homesteads"),
+    ("burned", "burned November-April", "burn scars"),
+    ("vh_jun", "radar VH, June", "cloudy months"), ("vh_jul", "radar VH, July", "cloudy months"),
+    ("vh_aug", "radar VH, August", "cloudy months"), ("vh_sep", "radar VH, September", "cloudy months"),
+    ("vh_range", "radar VH, range over the year", "cloudy months")]
+NICE = {"worldcover_2021": "WorldCover 2021", "glad_2019": "GLAD 2019", "deafrica_2019": "DE Africa 2019",
+        "worldcereal_2021": "WorldCereal 2021", "esri_2025": "Esri 2025", "dynamicworld_2025": "Dynamic World 2025",
+        "gfsad_2015": "GFSAD 2015", "asap_v04": "ASAP v04", "esri_2022": "Esri 2022", "dynamicworld_2022": "Dynamic World 2022",
+        "rule1": "Rule 1 (ours)", "logistic_l2": "logistic regression, 18 inputs", "logistic_rule1_inputs": "logistic regression, 2 inputs",
+        "rf_features": "random forest, 18 inputs", "rf_embedding": "random forest, embedding"}
+
+
+def _table(caption, label, colspec, header, rows, note="", wide=False, size="small"):
+    body = "\n".join(" & ".join(str(c) for c in r) + r" \\" for r in rows)
+    env = ("tabularx", "{\\linewidth}") if wide else ("tabular", "")         # tabularx: a column that wraps
+    return ("\\begin{table}[tbp]\n\\centering\n\\caption{" + caption + "}\\label{" + label + "}\n%TC:ignore\n\\" + size + "\n"
+            "\\begin{" + env[0] + "}" + env[1] + "{@{}" + colspec + "@{}}\n\\toprule\n" + " & ".join(header) + r" \\" + "\n\\midrule\n" + body +
+            "\n\\bottomrule\n\\end{" + env[0] + "}\n" + (f"\\par\\smallskip{{\\footnotesize {note}}}\n" if note else "") +
+            "%TC:endignore\n\\end{table}\n")
+
+
+def write_appendix_tables():
+    """appendix_tables.tex: the detailed tables of the appendix, every number read from a CSV."""
+    import sys
+    sys.path.insert(0, str(HERE.parents[2] / "cropland"))
+    import features as F                               # which summary each feature takes over the box
+    R = lambda f: pd.read_csv(RESULTS / f)
+    pct = lambda v: f"{100 * v:.1f}\\%"
+    out = []
+    summ = {f: "10th pct." for f in F.BOX_LOW} | {f: "90th pct." for f in F.BOX_HIGH} | {f: "mean" for f in F.BOX_MEAN}
+    out.append(_table("The 18 features. Each is computed per 10 m pixel for 2025 and summarised over the 210 m box by its most crop-like part.",
+                      "tab:features", "l>{\\raggedright\\arraybackslash}X>{\\raggedright\\arraybackslash}p{3.4cm}l", ["Feature", "What it measures", "Cue", "Over the box"],
+                      [(f.replace("_", "\\_"), d, c, summ[f]) for f, d, c in FEATURE_ROWS], wide=True))
+    s = pd.read_csv(HERE.parents[2] / "cropland" / "model_table.csv")
+    W = pd.read_csv(HERE.parents[2] / "cropland" / "strata_areas.csv")
+    rows = []
+    for r in W.itertuples():
+        d = s[(s.area == r.area) & (s.stratum == r.stratum)]
+        rows.append(("Aweil" if r.area == "aweil" else "Bor South", r.stratum, f"{r.ha:,.0f}", pct(r.share), len(d),
+                     int((d.split == "calibration").sum()), int((d.split == "test").sum()), int((d.cropland == 1).sum()),
+                     int((d.final == "disagreed").sum())))
+    out.append(_table("Strata and sample. Cropland: points both labellers call cropland; split: the two labellers disagree.",
+                      "tab:strata", "llrrrrrrr", ["Area", "Stratum", "ha", "Share", "Points", "Calib.", "Test", "Cropland", "Split"], rows))
+    la = pd.read_csv(TABLES / "label_agreement.csv")
+    la = la[la.by.isin(["all", "area", "area x stratum"])]
+    nice_group = lambda g: g.replace("('aweil', ", "Aweil ").replace("('bor_south', ", "Bor South ").replace("')", "").replace("'", "") \
+        .replace("aweil", "Aweil").replace("bor_south", "Bor South").replace("all", "All")
+    out.append(_table("Agreement between the two blind labellers on cropland versus not, per area and stratum.", "tab:agreement",
+                      "lrrrrr", ["Group", "Points", "Agree", "Kappa", "Pos. agr.", "Neg. agr."],
+                      [(nice_group(r.group), r.points, pct(r.cropland_agree), f"{r.cropland_kappa:.2f}", f"{r.cropland_pos_agree:.2f}",
+                        f"{r.cropland_neg_agree:.2f}") for r in la.itertuples()]))
+    acc = R("accuracy.csv")
+    a = acc[(acc.area == "aweil") & (acc.definition == "cropland")].sort_values("f1", ascending=False)
+    pm = lambda v, se: "--" if pd.isna(v) else f"{v:.2f} $\\pm$ {se:.2f}"
+    out.append(_table("Accuracy of every map on the Aweil test points (cropland; stratified estimators; $\\pm$ one standard error).",
+                      "tab:accuracy", "lrrrrr", ["Map", "Year", "Precision", "Recall", "F1", "Overall acc."],
+                      [(NICE.get(r.map, r.map), r.year, pm(r.ua, r.ua_se), pm(r.pa, r.pa_se), pm(r.f1, r.f1_se), f"{r.oa:.2f}")
+                       for r in a.itertuples()]))
+    m = pd.read_csv(TABLES / "models_cv_vs_test.csv")
+    rng = lambda v, lo, hi: "--" if pd.isna(v) else f"{v:.2f} ({lo:.2f}--{hi:.2f})"
+    out.append(_table("Models: F1 in repeated cross-validation on the 125 calibration points (every point alike; 2.5--97.5\\% of 20 repeats) "
+                      "and on the Aweil test points (stratum weights; 95\\% interval; frozen models only).", "tab:models", "lrr",
+                      ["Model", "Cross-validation", "Test"],
+                      [(r.model, rng(r.cv_f1, r.cv_low, r.cv_high), rng(r.test_f1, r.test_low, r.test_high)) for r in m.itertuples()]))
+    pv = R("published_vs_ours.csv")
+    pv = pv[(pv.area == "aweil") & (pv.definition == "cropland") & pv.published_min.notna()]
+    pv = pv.pivot_table(index="map", columns="metric", values=["ours", "published_min", "published_max"])
+    out.append(_table("Our scores in Aweil against the range published for the same maps in other African countries "
+                      "(Kerner et al.\\ 2024; Adebayo et al.\\ 2026).", "tab:published", "lrrrr",
+                      ["Map", "Recall, ours", "Recall, published", "F1, ours", "F1, published"],
+                      [(NICE.get(k, k), f"{r[('ours', 'recall')]:.2f}", f"{r[('published_min', 'recall')]:.2f}--{r[('published_max', 'recall')]:.2f}",
+                        f"{r[('ours', 'f1')]:.2f}", f"{r[('published_min', 'f1')]:.2f}--{r[('published_max', 'f1')]:.2f}")
+                       for k, r in pv.iterrows()]))
+    h = R("flood_history.csv")
+    h1 = h[h.min_days == 1]
+    smp = h1[(h1.layer == "sample (ratio)") & (h1.measure == "share of box") & h1.flooded_crop_ha.notna()].set_index(["area", "year"])
+    mp = h1[h1.layer.isin(ORDER)].pivot_table(index=["area", "year"], columns="layer", values="flooded_crop_ha")
+    rows = [("Aweil" if a_ == "aweil" else "Bor South", y, f"{r.flooded_land_ha:,.0f}", int(r.points_in_flood), int(r.of_them_cropland),
+             f"{mp.loc[(a_, y)].min():,.0f} / {mp.loc[(a_, y)].median():,.0f} / {mp.loc[(a_, y)].max():,.0f}",
+             f"{r.flooded_crop_ha:,.0f} ({r.low_ha:,.0f}--{r.high_ha:,.0f})") for (a_, y), r in smp.iterrows()]
+    out.append(_table("Past floods on today's cropland: the years with at least five sample points on flooded land (1+ flood day, "
+                      "June--December). Maps: lowest / median / highest of the 8 public layers; sample: ratio estimator, 95\\% interval.",
+                      "tab:floodyears", "llrrrrr", ["Area", "Year", "Flooded ha", "Points", "Cropland", "Maps (ha)", "Sample (ha)"], rows, size="footnotesize"))
+    t = R("trigger_hindcast.csv")
+    t = t[(t.area == "aweil") & (t.min_days == 1)]
+    rows = []
+    for k, g in t.groupby("layer"):
+        if k not in NICE:
+            continue
+        cells = []
+        for thr in (100, 500, 1000):
+            x = g[g.threshold_ha == thr]
+            told = x[x.sample_says.isin(["fire", "no fire"])]
+            cells += [int((x.layer_says == "fire").sum()), f"{int(told.agrees.sum())}/{len(told)}" if len(told) else "--"]
+        rows.append((NICE[k], *cells))
+    out.append(_table("Trigger hindcast, Aweil, 2000--2025: years in which each layer's flooded cropland reaches the threshold "
+                      "(fires), and in how many of the years the sample can judge it agrees with the sample.", "tab:hindcast",
+                      "lrrrrrr", ["Layer", "100 ha: fires", "agrees", "500 ha: fires", "agrees", "1,000 ha: fires", "agrees"],
+                      sorted(rows), size="footnotesize"))
+    groups = {"app_sample": [1, 2], "app_models": [0, 4], "app_accuracy": [3, 5], "app_floods": [6, 7]}   # one file per appendix section
+    for name, idx in groups.items():
+        (HERE / f"{name}.tex").write_text("% Written by build_report_inputs.py from CSVs. Do not edit by hand.\n\n"
+                                          + "\n".join(out[i] for i in idx), encoding="utf-8")
+    print(f"appendix tables: {len(out)} tables in {len(groups)} files")
+
+
+def write_model_numbers(m):
+    """Numbers for the models part of the draft (Rule 1 leaves, what the models learned)."""
+    leaves = pd.read_csv(TABLES / "rule1_leaves.csv").set_index(["split", "leaf"])
+    for split, S in (("calibration", "Cal"), ("test", "Test")):
+        for leaf, L in (("near_edges", "Crop"), ("far", "Far"), ("near_no_edges", "NoEdge")):
+            r = leaves.loc[(split, leaf)]
+            m |= {f"Leaf{L}{S}N": f"{r.points}", f"Leaf{L}{S}Crop": f"{r.cropland}"}
+    lr = pd.read_csv(TABLES / "models_learned.csv", index_col=0)
+    m |= {"CoefBuildings": f"{lr.loc['dist_buildings_m', 'logistic_coef_per_sd']:.2f}",
+          "CoefVhJun": f"{lr.loc['vh_jun', 'logistic_coef_per_sd']:.2f}",
+          "CoefDrop": f"{lr.loc['drop_son', 'logistic_coef_per_sd']:.2f}",
+          "ImpBuildings": f"{lr.loc['dist_buildings_m', 'rf_importance']:.2f}", "ImpEdges": f"{lr.loc['edge_density', 'rf_importance']:.2f}"}
+    return m
 
 
 def copy_figures():
@@ -195,7 +329,7 @@ def copy_figures():
 def make_zip():
     z = HERE / "overleaf_upload.zip"
     with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED) as zf:
-        for name in ("report.tex", "report_draft.tex", "references.bib", "numbers.tex", "results.tex"):
+        for name in ("report.tex", "report_draft.tex", "references.bib", "numbers.tex", "results.tex", "app_sample.tex", "app_models.tex", "app_accuracy.tex", "app_floods.tex"):
             zf.write(HERE / name, name)
         for f in sorted((HERE / "figures").glob("*.png")):
             zf.write(f, f"figures/{f.name}")
@@ -205,5 +339,6 @@ def make_zip():
 if __name__ == "__main__":
     write_numbers()
     write_results()
+    write_appendix_tables()
     copy_figures()
     make_zip()

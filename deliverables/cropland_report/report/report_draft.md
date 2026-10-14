@@ -20,7 +20,7 @@ In ZOA's areas the maps disagree so much that the cropland map, not the flood, d
 
 **Data.** Table 1 lists the data. The course provided NASA MCDWD flood masks (NASA LANCE, 2025), the ASAP crop mask (Fritz et al., 2024) and county boundaries. We added seven public cropland maps (Zanaga et al., 2022; Potapov et al., 2022; Burton et al., 2022; Van Tricht et al., 2023; Karra et al., 2021; Brown et al., 2022; Thenkabail et al., 2021), Sentinel-1 and Sentinel-2 images and dated sub-metre imagery to label points, and the FAO/WFP crop assessments (FAO and WFP, 2023; FAO and WFP, 2026), whose cereal area is modelled from population and household figures, not observed.
 
-**What the data show.** The maps tell seven stories. In the Aweil counties they call between 0.22% and 1.92% of the land crop, all below the crop assessment's cereal area (3.6%). In Bor South, Dynamic World calls 9.0% crop while no other map exceeds 0.25%. Where two maps do call crop, it is mostly different land: the best pair shares 0.16 of its crop area, the median pair 0.04 (Figure 1), and all seven agree on about 0.5 ha out of 3,085,318 ha. In a single 6 by 6 km window north of Aweil town, the maps call between 0.0% and 21.7% of the land crop, each in different places (Figure 2). The same pairs agree on 97-99% of all pixels, because most land is "not crop" everywhere. This is the problem in one number: agreement on empty land hides disagreement on fields.
+**What the data show.** The maps tell seven stories. In the Aweil counties they call between 0.22% and 1.92% of the land crop, all below the crop assessment's cereal area (3.6%). In Bor South, Dynamic World calls 9.0% crop while no other map exceeds 0.25%. Where two maps do call crop, it is mostly different land: the best pair shares 0.16 of its crop area, the median pair 0.04 (Figure 1), and all seven agree on about 0.5 ha out of 3,085,318 ha. In a single 6 by 6 km window north of Aweil town, the maps call between 0.0% and 21.7% of the land crop, each in different places (Figure 2). The same pairs agree on 97-99% of all pixels, because most land is "not crop" everywhere. This is the problem in one number: agreement on empty land hides disagreement on fields. Appendix E shows the maps by county, by state against the crop assessment, and year by year.
 
 **Terms.** *Precision* (user's accuracy) is the share of a map's crop that is really crop; *recall* (producer's accuracy) is the share of real crop the map finds; *F1* combines the two. A *stratum* is a part of the area sampled separately. *Cropland* means a box with a cropped or a fallow field; *cropped in 2025* counts cropped fields only.
 
@@ -67,19 +67,29 @@ We stacked the seven public maps on a 10 m grid and split each area by how many 
 
 Each point stands for the 210 m box around it: in a pilot of 30 points, five labellers could not judge a single 10 m pixel (kappa 0.00-0.38). Two of the five group members label every box, independently and blind to all maps. They see monthly Sentinel-2 images of 2025, a radar curve for the cloudy months and the most recent sub-metre image with its date. A written key asks for four cues: bare soil before sowing, green-up, harvest earlier than the surrounding grass, and field shape. A box is *crop* if any field in it was cropped in 2025, *fallow* if it holds a field that was not, and *not crop* otherwise; the labeller also estimates the share of the box that is cropland (none, under 10%, 10-25%, 25-50%, over 50%). Disagreements are kept, not settled by a third person: a split point counts half in the area and is left out of accuracy.
 
-### Our readable map
+### Features
 
-For every box we computed 18 features in Google Earth Engine, each summarising the box by its most crop-like part: the cues above as numbers (minimum greenness and bare-soil index in April-May, green-up, the drop at harvest compared with the 500 m surroundings, texture and edge density), dry-season greenness for trees, water occurrence, four months of radar, burned area, and the distance to the nearest building from Google Open Buildings.
+For every box we computed 18 features in Google Earth Engine (Table 6). Each is computed per 10 m pixel for 2025, from cloud-masked monthly Sentinel-2 composites (Cloud Score+), Sentinel-1 radar (descending passes, the only ones over South Sudan in 2025), JRC surface water, MODIS burned area and Google Open Buildings, and then summarised over the 210 m box by its most crop-like part: the 10th percentile for the lowest spring greenness and the distance to buildings, the 90th percentile for bare soil, green-up, the harvest drops, texture and edges, and the mean for the rest. A feature thus describes the same box the labeller judged. The features turn the labelling cues into numbers (bare soil before sowing, green-up, a harvest earlier than the surroundings, field shape) and add trees, water, burn scars, radar for the cloudy months and the distance to homesteads. Figure 14 shows how they differ between boxes with and without cropland.
 
-*Rule 1* is a decision tree fitted on the 125 calibration points where both labellers agree (41 of them crop). Its depth (2, 3 or 4) was chosen by 5-fold cross-validation, taking the smallest depth within 0.02 F1 of the best; it was then frozen in a dated file before any test label was read. The result has one rule with two conditions: *crop if there is a building within 333 m and the box has field edges*. The same file is applied in Python for scoring and in Earth Engine for the map (10 m in the study areas, 30 m for the country); a test checks that both give the same label at every calibration point. Two random forests, on the 18 features and on Google's Satellite Embedding, show what a black box gains over readable rules. Two logistic regressions answer the group's question "trees or logistic regression?": they were chosen by repeated cross-validation on the calibration points only, frozen, and scored once. *(pending decision 2)*
+### Models
+
+*Training data.* Every model learns from the same points: the 125 calibration points where both labellers agree on whether a field was cropped in 2025 (41 of them crop), read with one shared loader. The target is "cropped in 2025", not "cropland": in 2025 a fallow field looks like grass from space, so no map can find it, and fallow enters the area through the sample only. Points where the labellers disagree, said crop versus fallow, or were unsure are left out of training. Missing feature values (radar in a few months) are filled with the calibration medians, which are stored with the model. The test points are never used to fit or to choose anything.
+
+*Rule 1, a decision tree.* A decision tree asks yes-or-no questions about the features, one after another, and ends in "crop" or "not crop". We fitted a tree with balanced class weights (crop is the minority) and at least five points per leaf, and chose its depth (2, 3 or 4) by 5-fold cross-validation on F1, taking the smallest depth within 0.02 of the best; the depths scored alike, so depth 2 was kept. The tree is written out as if-then rules in a dated file and frozen (Figure 7). The same file is applied in Python for scoring and in Earth Engine for the map; a test checks that both give the same label at all 150 calibration points.
+
+*Benchmarks.* Two random forests of 500 trees with balanced class weights, one on the 18 features and one on Google's Satellite Embedding (64 values per 10 m pixel, averaged over the box), show what a black box gains over two readable questions. They are scored but never mapped.
+
+*Trees or logistic regression?* *(pending decision 2)* To answer this question from the group, we compared trees of depth 1 to 4, logistic regression with an L2 and with an L1 penalty, a logistic regression on Rule 1's two inputs, and the random forest, all by 5-fold cross-validation repeated 20 times on the calibration points only, before any of them saw a test label. The logistic regressions standardise the inputs and choose the penalty strength by an inner 5-fold cross-validation. Two of them were frozen and scored once: one on all 18 features, and one on Rule 1's two inputs, which compares a linear rule with a tree on the same information. Further trees by group members (for example one per area, or other inputs) follow the same route: chosen on the calibration points, frozen, then scored once.**[Wei, Matei: your trees, if any, frozen by 16 Oct]**
+
+*Our map.* Rule 1 is applied in Earth Engine to every 10 m pixel of the two study areas and, at 30 m, to the whole country. Because the features summarise the 210 m box around a pixel, a pixel of our map means "the box around this pixel holds a cropped field". The map therefore shows where fields are near, not their edges, and its hectares are an upper bound: the cropland area always comes from the sample. Outside the two study areas the map is not checked.
 
 ### Estimation
 
 *Area*: the stratified mean of the labelled share of each box, weighted by stratum area (Olofsson et al., 2014), using the mean of the two labellers. The share of boxes that hold any cropland is reported as an upper bound. *Accuracy* of every map on the test points: precision, recall and F1 with standard errors, using estimators for strata that are not map classes (Stehman, 2014); a public map says crop at a point when any pixel of the box is crop. *Flooded cropland*: the 2025 flood extent (June-December) laid over every map and over the labelled sample. Because our labels describe today's cropland, we also laid the floods of 2000-2025 over it, as a scenario: how much of today's cropland would a flood like that one put under water? *(pending decision 8c)* For those years the sample's flooded cropland is estimated as the cropland share of the sample boxes on flooded land times the flooded area, which the flood mask gives exactly (a ratio estimator), and only when at least five points lie on flooded land.
 
-**[figure to make: method diagram: seven public maps, agreement strata, 450 random points, calibration and test split, two blind labels, then area with interval, scores of every map, Rule 1 and the flood overlay]**
+![Figure 3](../figures/17_method_diagram.png)
 
-*Figure 3. The approach, from the public maps to the area estimate, the scores and the flood overlay.*
+*Figure 3. The approach. The sample is drawn from strata of map agreement and labelled twice; the labels give the area, train our models (calibration points) and score every map (test points); flood masks are laid over all of them. The protocol was frozen before labelling; every later change is in a dated change log (Appendix G).*
 
 ## 5. Evaluation Methodology
 
@@ -112,11 +122,13 @@ Two further measures address ZOA's wish for a cheap, local check: the number of 
 
 **Map accuracy.** On the 186 Aweil test points (Figure 6), F1 ranges from 0.03 (Dynamic World 2025) and 0.06 (Esri 2025) to 0.55 (WorldCereal 2021). Esri, WorldCover, GLAD and ASAP have a precision of 1.00 but a recall of only 0.03-0.28: when they say crop they are right, but they miss most fields. Dynamic World is low on both (precision 0.10, recall 0.02). The recall of WorldCover, GLAD, GFSAD and Dynamic World is below every value published for them elsewhere in Africa. Rule 1 reaches an F1 of 0.72 (0.55-0.90; precision 0.70, recall 0.75). Its interval overlaps those of WorldCereal, DE Africa, ASAP, GLAD and WorldCover, so by our own rule it is not ranked above them; it is clearly above Esri, Dynamic World and GFSAD. The random forests (0.71-0.76) are not clearly better, and the logistic regressions are not better either (0.61-0.66): they find more fields (recall 0.84) but call more empty land crop (precision 0.48-0.54). *(pending decision 2)* In cross-validation on the calibration points, trees (0.85-0.86) and logistic regressions (0.87-0.88) were just as close. In Bor South none of the 74 test points both labellers agree on is cropland, so recall cannot be computed; Dynamic World calls crop on 44 of the 74 boxes where the labellers saw no field, and the other maps on at most one.
 
+**The models.** Rule 1 learned two questions (Figure 7): is there a building within 333 m of the box, and does the box show field edges? Of the 40 calibration boxes that pass both, 39 hold a cropped field; of the 79 boxes far from any building, 2. On the test points, which it had never seen, the questions hold up: 93 of the 98 boxes it calls crop are cropland, and only 3 of the 149 boxes far from buildings are (Figure 15). In cross-validation on the calibration points all models scored alike: trees 0.85-0.86, logistic regressions 0.87-0.88, the random forest 0.92 (Figure 8, Table 7). On the test points every model scores lower, between 0.61 and 0.76, with overlapping intervals. Two things explain the drop: cross-validation counts every point alike, while the test scores weigh each point by the land it stands for, so a false crop in stratum A (95% of Aweil) weighs heavily; and with 41 crop points the calibration scores are themselves uncertain. What the models learned agrees (Figure 16). Distance to the nearest building is the strongest input of the logistic model (-0.85 log-odds per standard deviation), followed by June radar (-0.85; lower over cropland, likely because fields are freshly sown and bare, Figure 14) and the harvest drop (+0.64). In the random forest, distance to buildings carries 0.23 of the importance and field edges 0.14. Cropland in Aweil is homestead cropland, and every model finds it there. Our answer to "trees or logistic regression?" is that it matters little here; we keep the two-question tree because local staff can read and check it. *(pending decision 2)*
+
 **Where maps fail.** Rule 1's false crop lies within 250 m of buildings and its missed crop mostly farther away: it is, in effect, a "fields around homesteads" rule. The logistic models make more false crop in stratum A (9-12 of 122 empty test boxes, against 5 for Rule 1), where most of the land is, which is why their precision drops. Dynamic World's false crop in Bor South is open land where the labellers saw no field: grassland.
 
 **Flooded cropland.** In 2025, 10,314 ha of the Aweil counties flooded at least one day, and the public maps put 10-307 ha of cropland under water. In Bor South 29,419 ha flooded; every public map shows at most 10 ha of flooded cropland except Dynamic World, with 1,606 ha. The sample cannot say which is right: only 1 of the 330 Aweil points and 2 of the 120 Bor South points lie on flooded land, so in 2025 it "cannot tell" at any trigger threshold from 100 to 5,000 ha. *(pending decision 8b)* This is a negative result about our design, not about the maps.
 
-Past floods give the sample more to work with (Figure 7). *(pending decision 8c)* In 9 of the 26 years enough sample points lie on flooded land in Aweil, and in every one of them the sample puts 4-16 times more of today's cropland under water than the median public map. For a flood like 2022 (53,646 ha flooded; 9 of the 11 sample points on flooded land hold cropland) the sample estimates 7,263 ha (639-14,336), against 331-3,572 ha by the public maps. Played back as a trigger, the sample confirms a 500 ha trigger in 2008 and 2022; with Esri, GLAD or WorldCover that trigger would have stayed silent in 2022. Figure 8 shows where: WorldCereal shows crop in 1,646 of the 10,184 flooded cells of 2022, and our map adds 3,627, along the Lol and in the east of the area.
+Past floods give the sample more to work with (Figure 9). *(pending decision 8c)* In 9 of the 26 years enough sample points lie on flooded land in Aweil, and in every one of them the sample puts 4-16 times more of today's cropland under water than the median public map. For a flood like 2022 (53,646 ha flooded; 9 of the 11 sample points on flooded land hold cropland) the sample estimates 7,263 ha (639-14,336), against 331-3,572 ha by the public maps. Played back as a trigger, the sample confirms a 500 ha trigger in 2008 and 2022; with Esri, GLAD or WorldCover that trigger would have stayed silent in 2022. Figure 10 shows where: WorldCereal shows crop in 1,646 of the 10,184 flooded cells of 2022, and our map adds 3,627, along the Lol and in the east of the area.
 
 **Cost of a check.** With our strata, a 20% coefficient of variation on Aweil's area needs about 124 points; strata from a single public map need 112-149, depending on the map. Our design is not clearly cheaper than one built on the best single map, but it does not depend on choosing that map beforehand. Bor South would need about 1,240 points under any design: cropland is too rare there for a sample of 120. Labelling took a median of 0.5-1.0 minutes per point and 2.7-7.3 hours per person for 180 points.
 
@@ -136,15 +148,23 @@ Past floods give the sample more to work with (Figure 7). *(pending decision 8c)
 
 *Figure 6. Precision, recall and F1 of every map on the Aweil test points, with 95% intervals. Orange: our models; blue: public maps; dashed: agreement between the two labellers (0.86).*
 
-![Figure 7](../figures/12_flood_history.png)
+![Figure 7](../figures/18_rule1_tree.png)
 
-*Figure 7. Today's cropland under every flood of 2000-2025: the public maps as a range with their median, our labelled sample with 95% intervals in the years with at least five sample points on flooded land.*
+*Figure 7. Rule 1 as a two-question tree, with the calibration points it learned from and the test points it was scored on (both areas; unweighted counts). Frozen on 12 October 2026, before any test label was read.*
 
-![Figure 8](../figures/13_flood_map_aweil_2022.png)
+![Figure 8](../figures/20_models_cv_vs_test.png)
 
-*Figure 8. The 2022 flood in the Aweil counties, cell by cell (232 m). Left: flooded cells where WorldCereal 2021, the best public map on our test points, shows crop. Right: the cells our map adds, and the sample points on flooded land.*
+*Figure 8. Every model's F1 in repeated cross-validation on the calibration points (blue) and on the Aweil test points (orange, frozen models only, 95% intervals). The two scores are not comparable in level: cross-validation counts every point alike, the test weighs points by the land they stand for.*
 
-> **Idea.** Too many figures for 2,000 words: keep 6 and 7, and Table 3; move 5 and 8 to the poster, 1 and 4 to the appendix or cut.
+![Figure 9](../figures/12_flood_history.png)
+
+*Figure 9. Today's cropland under every flood of 2000-2025: the public maps as a range with their median, our labelled sample with 95% intervals in the years with at least five sample points on flooded land.*
+
+![Figure 10](../figures/13_flood_map_aweil_2022.png)
+
+*Figure 10. The 2022 flood in the Aweil counties, cell by cell (232 m). Left: flooded cells where WorldCereal 2021, the best public map on our test points, shows crop. Right: the cells our map adds, and the sample points on flooded land.*
+
+> **Idea.** Too many figures for 2,000 words. Suggestion: keep Figures 3, 6, 7 and 9 and Table 3 in the text; move 5, 2 and 10 to the poster; move 1, 4 and 8 to the appendix (appendices do not count towards the words, check the course rule).
 
 ## 7. Discussion
 
@@ -186,3 +206,215 @@ We recommend that ZOA (1) base the cropland part of a trigger on a labelled samp
 - FAO; WFP (2026). Special Report: 2025 FAO/WFP Crop and Food Security Assessment Mission to the Republic of South Sudan. FAO
 - Cohen, Jacob (1960). A coefficient of agreement for nominal scales. Educational and Psychological Measurement
 - Cicchetti, Domenic V.; Feinstein, Alvan R. (1990). High agreement but low kappa: II. Resolving the paradoxes. Journal of Clinical Epidemiology
+
+## Appendix A. Data, sample and labels
+
+![Figure 11](../figures/23_strata_and_sample.png)
+
+*Figure 11. The strata and the 450 sample points. Shading: share of each 232 m cell where at least one of the seven public maps sees crop (stratum A where none does). Markers: sample points by stratum. In Bor South stratum C was smaller than 0.1% of the area and was merged into B before drawing.*
+
+![Figure 12](../figures/24_labelling_examples.png)
+
+*Figure 12. What the labellers see: twelve monthly Sentinel-2 images of 2025 around a point, with the 210 m box to label (yellow), for a box both called crop, a box both called not crop, and a box on which they disagreed. In the tool, each point also has a radar curve, a greenness curve per patch of the box and a dated sub-metre image.*
+
+![Figure 13](../figures/11_annotation_statistics.png)
+
+*Figure 13. Our labels: the 900 labels, agreement between the two labellers per area and stratum, and which answers differ when they split (mostly whether field shapes are visible).*
+
+*Table 4. Strata and sample. Cropland: points both labellers call cropland; split: the two labellers disagree.*
+
+| Area | Stratum | ha | Share | Points | Calib. | Test | Cropland | Split |
+|---|---|---|---|---|---|---|---|---|
+| Aweil | A | 2,929,918 | 95.0% | 150 | 50 | 100 | 10 | 13 |
+| Aweil | B | 145,327 | 4.7% | 90 | 30 | 60 | 53 | 26 |
+| Aweil | C | 9,934 | 0.3% | 90 | 30 | 60 | 74 | 16 |
+| Bor South | A | 1,264,445 | 90.6% | 60 | 20 | 40 | 0 | 1 |
+| Bor South | B | 131,838 | 9.4% | 60 | 20 | 40 | 1 | 9 |
+
+*Table 5. Agreement between the two blind labellers on cropland versus not, per area and stratum.*
+
+| Group | Points | Agree | Kappa | Pos. agr. | Neg. agr. |
+|---|---|---|---|---|---|
+| All | 450 | 85.6% | 0.70 | 0.84 | 0.90 |
+| Aweil | 330 | 83.3% | 0.68 | 0.86 | 0.86 |
+| Bor South | 120 | 91.7% | 0.14 | 0.18 | 0.96 |
+| Aweil A | 150 | 91.3% | 0.58 | 0.65 | 0.96 |
+| Aweil B | 90 | 71.1% | 0.32 | 0.84 | 0.52 |
+| Aweil C | 90 | 82.2% | -0.07 | 0.92 | 0.00 |
+| Bor South A | 60 | 98.3% | 0.00 | 0.00 | 0.99 |
+| Bor South B | 60 | 85.0% | 0.16 | 0.20 | 0.93 |
+
+## Appendix B. Features and models
+
+![Figure 14](../figures/22_feature_distributions.png)
+
+*Figure 14. The 18 features for boxes with and without cropland (all points both labellers agree on). Cropland boxes are near buildings, have field edges and texture, a stronger harvest drop and lower radar in June, and are rarely burned.*
+
+![Figure 15](../figures/19_rule1_decision_space.png)
+
+*Figure 15. Every agreed point on Rule 1's two inputs. Orange area: where Rule 1 says crop (a building within 333 m and field edges above 0.094). Left: the calibration points it was fitted on; right: the test points it was scored on after freezing.*
+
+![Figure 16](../figures/21_what_models_learned.png)
+
+*Figure 16. What the models learned from the same 18 inputs: the logistic regression's coefficients (change in log-odds of crop per standard deviation; orange: more crop) and the random forest's importances.*
+
+*Table 6. The 18 features. Each is computed per 10 m pixel for 2025 and summarised over the 210 m box by its most crop-like part.*
+
+| Feature | What it measures | Cue | Over the box |
+|---|---|---|---|
+| ndvi_min_am | greenness, lowest April-May | a: bare soil before sowing | 10th pct. |
+| bsi_max_am | bare-soil index, highest April-May | a: bare soil before sowing | 90th pct. |
+| ndvi_peak_jja | greenness, peak June-August | b: green-up | mean |
+| greenup | peak minus spring greenness | b: green-up | 90th pct. |
+| drop_son | drop from the peak to September-November | c: harvest | 90th pct. |
+| drop_vs_500m | that drop minus the 500 m surroundings' | c: harvest earlier than the grass | 90th pct. |
+| texture_jja | texture (GLCM contrast) at the peak | d: field shape | 90th pct. |
+| edge_density | edge density (Canny edges) at the peak | d: field shape | 90th pct. |
+| ndvi_min_jfm | greenness, lowest January-March | trees and shrub | mean |
+| water_occurrence | JRC surface water occurrence | water | mean |
+| s1_vv_min | radar VV, lowest month | water | mean |
+| dist_buildings_m | distance to the nearest building (m) | homesteads | 10th pct. |
+| burned | burned November-April | burn scars | mean |
+| vh_jun | radar VH, June | cloudy months | mean |
+| vh_jul | radar VH, July | cloudy months | mean |
+| vh_aug | radar VH, August | cloudy months | mean |
+| vh_sep | radar VH, September | cloudy months | mean |
+| vh_range | radar VH, range over the year | cloudy months | mean |
+
+*Table 7. Models: F1 in repeated cross-validation on the 125 calibration points (every point alike; 2.5-97.5% of 20 repeats) and on the Aweil test points (stratum weights; 95% interval; frozen models only).*
+
+| Model | Cross-validation | Test |
+|---|---|---|
+| tree, depth 1 | 0.86 (0.81-0.88) | - |
+| tree, depth 2 (= Rule 1) | 0.85 (0.80-0.90) | 0.72 (0.55-0.90) |
+| tree, depth 3 | 0.85 (0.80-0.88) | - |
+| tree, depth 4 | 0.85 (0.80-0.88) | - |
+| logistic regression, 18 inputs | 0.88 (0.85-0.91) | 0.66 (0.49-0.83) |
+| logistic regression, L1 (not frozen) | 0.87 (0.83-0.92) | - |
+| logistic regression, Rule 1's 2 inputs | 0.87 (0.85-0.89) | 0.61 (0.44-0.78) |
+| random forest, 18 inputs (benchmark) | 0.92 (0.90-0.93) | 0.76 (0.58-0.94) |
+| random forest, embedding (benchmark) | - | 0.71 (0.53-0.89) |
+
+## Appendix C. Map accuracy in detail
+
+![Figure 17](../figures/10_published_recall_vs_crop_share.png)
+
+*Figure 17. Published recall of each map against the crop share it shows in our areas. The published scores predict which maps show least crop in Aweil, not in Bor South.*
+
+*Table 8. Accuracy of every map on the Aweil test points (cropland; stratified estimators; ± one standard error).*
+
+| Map | Year | Precision | Recall | F1 | Overall acc. |
+|---|---|---|---|---|---|
+| random forest, 18 inputs | 2025 (benchmark) | 0.88 ± 0.10 | 0.67 ± 0.12 | 0.76 ± 0.09 | 0.95 |
+| Rule 1 (ours) | 2025 (ours) | 0.70 ± 0.12 | 0.75 ± 0.12 | 0.72 ± 0.09 | 0.93 |
+| random forest, embedding | 2025 (benchmark) | 0.77 ± 0.11 | 0.66 ± 0.12 | 0.71 ± 0.09 | 0.93 |
+| logistic regression, 18 inputs | 2025 (model) | 0.54 ± 0.10 | 0.84 ± 0.10 | 0.66 ± 0.09 | 0.89 |
+| logistic regression, 2 inputs | 2025 (model) | 0.48 ± 0.10 | 0.84 ± 0.10 | 0.61 ± 0.09 | 0.86 |
+| WorldCereal 2021 | 2021 | 0.83 ± 0.14 | 0.41 ± 0.11 | 0.55 ± 0.11 | 0.91 |
+| DE Africa 2019 | 2019 | 0.40 ± 0.09 | 0.66 ± 0.12 | 0.50 ± 0.08 | 0.83 |
+| ASAP v04 | 2017-23 | 1.00 ± 0.00 | 0.28 ± 0.09 | 0.43 ± 0.11 | 0.91 |
+| GLAD 2019 | 2019 | 1.00 ± 0.00 | 0.26 ± 0.09 | 0.41 ± 0.10 | 0.91 |
+| WorldCover 2021 | 2021 | 1.00 ± 0.00 | 0.22 ± 0.08 | 0.36 ± 0.11 | 0.90 |
+| GFSAD 2015 | 2015 | 0.48 ± 0.16 | 0.18 ± 0.05 | 0.26 ± 0.06 | 0.87 |
+| Esri 2025 | 2025 | 1.00 ± 0.00 | 0.03 ± 0.02 | 0.06 ± 0.03 | 0.88 |
+| Dynamic World 2025 | 2025 | 0.10 ± 0.08 | 0.02 ± 0.01 | 0.03 ± 0.02 | 0.85 |
+
+*Table 9. Our scores in Aweil against the range published for the same maps in other African countries (Kerner et al.\ 2024; Adebayo et al.\ 2026).*
+
+| Map | Recall, ours | Recall, published | F1, ours | F1, published |
+|---|---|---|---|---|
+| ASAP v04 | 0.28 | 0.27-0.92 | 0.43 | 0.21-0.74 |
+| DE Africa 2019 | 0.66 | 0.59-0.96 | 0.50 | 0.43-0.85 |
+| Dynamic World 2025 | 0.02 | 0.12-0.65 | 0.03 | 0.12-0.63 |
+| Esri 2025 | 0.03 | 0.00-0.73 | 0.06 | 0.00-0.75 |
+| GFSAD 2015 | 0.18 | 0.37-0.95 | 0.26 | 0.15-0.76 |
+| GLAD 2019 | 0.26 | 0.52-0.83 | 0.41 | 0.33-0.75 |
+| WorldCover 2021 | 0.22 | 0.34-0.83 | 0.36 | 0.43-0.82 |
+
+## Appendix D. Area, interval and sampling design
+
+![Figure 18](../figures/25_interval_simulation.png)
+
+*Figure 18. How often the interval holds the true area, in 20,000 simulated samples of our exact design per scenario. The usual interval falls short when cropland is rare in stratum A; with the adjusted upper bound coverage is close to or above 95%. *(pending decision 1)**
+
+![Figure 19](../figures/26_points_per_design.png)
+
+*Figure 19. Points needed for a 20% coefficient of variation of the area: our agreement strata (orange) against strata built from a single public map (blue), estimated from our sample.*
+
+## Appendix E. The public maps
+
+![Figure 20](../figures/01_crop_share_per_map.png)
+
+*Figure 20. Share of the land each public map calls crop, in the five Aweil counties, in Bor South and in South Sudan. Lines: FAO/WFP cereal harvested area (modelled) and FAOSTAT arable land.*
+
+![Figure 21](../figures/02_agreement_curve.png)
+
+*Figure 21. Share of the land that at least k of the seven maps call crop (log scale). Bor South has no land where four or more agree.*
+
+![Figure 22](../figures/04_national_crop_share_per_county.png)
+
+*Figure 22. Where each map puts South Sudan's cropland: crop share per county per map, and the crop assessment's 2025 cereal area per state.*
+
+![Figure 23](../figures/05_states_vs_cfsam_2025.png)
+
+*Figure 23. Crop area per state by each map against the 2025 crop assessment (line: 1 to 1), with each map's rank correlation.*
+
+![Figure 24](../figures/06_same_map_every_year.png)
+
+*Figure 24. The same product in different years: Esri (2017-2025) and Dynamic World (2016-2025). Dynamic World changes by a factor of 10 in Aweil and 37 in Bor South.*
+
+## Appendix F. Floods
+
+![Figure 25](../figures/07_flooded_cropland_per_map.png)
+
+*Figure 25. Cropland under the NASA flood extent (June-December) per map, 2022 and 2025; line: the 2022 crop assessment's flood-damaged area.*
+
+![Figure 26](../figures/08_lol_strip.png)
+
+*Figure 26. Along the Lol: crop share within 5 km of the river against the rest of the Aweil counties, per map.*
+
+*Table 10. Past floods on today's cropland: the years with at least five sample points on flooded land (1+ flood day, June-December). Maps: lowest / median / highest of the 8 public layers; sample: ratio estimator, 95% interval.*
+
+| Area | Year | Flooded ha | Points | Cropland | Maps (ha) | Sample (ha) |
+|---|---|---|---|---|---|---|
+| Aweil | 2007 | 43,871 | 6 | 4 | 122 / 364 / 2,900 | 4,811 (0-12,679) |
+| Aweil | 2008 | 83,017 | 17 | 13 | 585 / 1,226 / 4,335 | 10,795 (1,862-19,729) |
+| Aweil | 2010 | 58,939 | 12 | 10 | 225 / 585 / 3,215 | 6,093 (0-15,419) |
+| Aweil | 2013 | 23,991 | 7 | 3 | 9 / 151 / 817 | 818 (0-4,564) |
+| Aweil | 2014 | 31,438 | 5 | 3 | 51 / 215 / 1,068 | 913 (0-7,028) |
+| Aweil | 2019 | 16,787 | 6 | 3 | 15 / 87 / 2,604 | 1,105 (0-4,016) |
+| Aweil | 2020 | 62,569 | 9 | 5 | 186 / 417 / 1,645 | 6,817 (0-16,978) |
+| Aweil | 2021 | 41,636 | 9 | 6 | 169 / 489 / 2,123 | 1,879 (0-7,984) |
+| Aweil | 2022 | 53,646 | 11 | 9 | 331 / 869 / 3,572 | 7,263 (639-14,336) |
+| Bor South | 2007 | 35,057 | 5 | 0 | 0 / 1 / 9,479 | 0 (0-2,096) |
+| Bor South | 2010 | 115,198 | 11 | 1 | 0 / 0 / 18,094 | 358 (0-5,154) |
+
+*Table 11. Trigger hindcast, Aweil, 2000-2025: years in which each layer's flooded cropland reaches the threshold (fires), and in how many of the years the sample can judge it agrees with the sample.*
+
+| Layer | 100 ha: fires | agrees | 500 ha: fires | agrees | 1,000 ha: fires | agrees |
+|---|---|---|---|---|---|---|
+| ASAP v04 | 10 | 2/2 | 5 | 2/2 | 2 | 1/1 |
+| DE Africa 2019 | 12 | 2/2 | 5 | 2/2 | 1 | 1/1 |
+| Dynamic World 2022 | 24 | 2/2 | 20 | 2/2 | 20 | 1/1 |
+| Dynamic World 2025 | 19 | 2/2 | 7 | 2/2 | 2 | 1/1 |
+| Esri 2022 | 16 | 2/2 | 6 | 1/2 | 3 | 1/1 |
+| Esri 2025 | 14 | 2/2 | 4 | 1/2 | 0 | 0/1 |
+| GFSAD 2015 | 18 | 2/2 | 10 | 2/2 | 9 | 1/1 |
+| GLAD 2019 | 7 | 2/2 | 1 | 1/2 | 0 | 0/1 |
+| Rule 1 (ours) | 23 | - | 17 | - | 15 | - |
+| WorldCereal 2021 | 8 | 2/2 | 4 | 2/2 | 2 | 1/1 |
+| WorldCover 2021 | 8 | 2/2 | 1 | 1/2 | 0 | 0/1 |
+
+## Appendix G. Protocol and its changes
+
+The protocol (`cropland/METHODOLOGY.md`) was frozen before labelling on 3 October 2026. Every later change is dated there with its reason; in short:
+
+- 30 September (when the sample was drawn): season 2025; fallow counts as cropland; one readable model (Rule 1) instead of hand-written rules; strata from seven maps.
+
+- 4-5 October (before any point was labelled): the unit became the 210 m box; the share of the box was added; disagreements are kept, never settled by a third person; labeller pairs balanced per stratum and split.
+
+- 12 October, after Rule 1 was frozen and before any test label was read: the adjusted upper bound of the area interval *(pending decision 1)* and the evaluation additions (error analysis, trigger agreement, published scores, design efficiency).
+
+- 12 October, after the first test scores: the two logistic regressions, chosen on the calibration points only *(pending decision 2)*; a fix for months without radar passes, which changed no feature value; the configuration for other areas.
+
+- 14 October: the flood results; the cautious bound for the sample's flooded cropland *(pending decision 8b)*; past floods on today's cropland with a ratio estimator and at least five points on flooded land *(pending decision 8c)*.

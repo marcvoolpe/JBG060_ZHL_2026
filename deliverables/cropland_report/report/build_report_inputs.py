@@ -175,6 +175,9 @@ def write_results():
     fm = pd.read_csv(TABLES / "flood_map_aweil_2022.csv").set_index("before")
     m |= {"MapCellsTwentyTwo": hx(fm.flooded_cells.iloc[0]), "MapShownWc": hx(fm.loc["worldcereal_2021", "shown_before"]),
           "MapAddedWc": hx(fm.loc["worldcereal_2021", "added_by_our_map"]), "MapAddedEsri": hx(fm.loc["esri_2025", "added_by_our_map"])}
+    w = pd.read_csv(TABLES / "window_aweil_s020.csv")                 # figure 16 (eda_window.py)
+    pub = w[w["map"] != "rule1"].crop_share_of_window_pct
+    m |= {"WindowMin": f"{pub.min():.1f}\\%", "WindowMax": f"{pub.max():.1f}\\%"}
     lines = ["% Written by build_report_inputs.py from cropland/results/ (steps 09-12). Do not edit by hand."]
     lines += [f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in m.items()]
     (HERE / "results.tex").write_text("\n".join(lines) + "\n", encoding="utf-8")

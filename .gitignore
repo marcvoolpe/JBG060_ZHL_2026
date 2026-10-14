@@ -18,6 +18,7 @@ raw_data/cropland/eda/*
 !raw_data/cropland/eda/zoa_*.npz
 !raw_data/cropland/eda/stab_*.npz
 !raw_data/cropland/eda/national_by_county.pkl
+!raw_data/cropland/eda/window_*.npz
 eda/outputs/
 cache
 .idea

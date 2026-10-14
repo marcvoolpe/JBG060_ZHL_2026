@@ -1,0 +1,9 @@
+map,crop_share_of_window_pct,labelled_cropland_points,found
+gfsad_2015,0.01,7,0
+esri_2025,0.73,7,0
+dynamicworld_2025,3.57,7,2
+glad_2019,5.14,7,6
+deafrica_2019,17.15,7,7
+worldcereal_2021,20.19,7,7
+worldcover_2021,21.68,7,7
+rule1,74.28,7,7

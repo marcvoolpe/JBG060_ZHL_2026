@@ -25,12 +25,14 @@
 \usepackage[font=small,labelfont=bf]{caption}
 \usepackage[round,authoryear]{natbib}
 \usepackage[hidelinks]{hyperref}
+\renewcommand{\topfraction}{0.9}\renewcommand{\bottomfraction}{0.8}\renewcommand{\textfraction}{0.07}\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{5}   % let figures sit near their text
 
 \newif\ifdraft \drafttrue   % set to \draftfalse for the final version and the word count
 \DeclareRobustCommand{\ph}[1]{\ifdraft\textcolor{red!70!black}{[#1]}\fi}   % robust: also used in captions
 \newcommand{\idea}[1]{\ifdraft\par\smallskip\noindent\fcolorbox{blue!50!black}{blue!4}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\footnotesize\textbf{Idea.} #1}}\par\smallskip\fi}
 \newcommand{\budget}[1]{\ifdraft\noindent{\footnotesize\textcolor{gray}{[target about #1 words]}}\par\fi}
-\newcommand{\figslot}[2]{\IfFileExists{#1}{\includegraphics[width=\linewidth]{#1}}{\fbox{\parbox{0.95\linewidth}{\centering\vspace{1.5em}\ph{figure to make: #2}\vspace{1.5em}}}}}
+\newcommand{\figslot}[3][\linewidth]{\IfFileExists{#2}{\includegraphics[width=#1]{#2}}{\fbox{\parbox{0.95\linewidth}{\centering\vspace{1.5em}\ph{figure to make: #3}\vspace{1.5em}}}}}
 %TC:macro \ph [ignore]
 %TC:macro \idea [ignore]
 %TC:macro \budget [ignore]
@@ -38,7 +40,7 @@
 \input{numbers}
 
 \title{Counting South Sudan's cropland: how accurately do public maps show the farmland a flood trigger depends on?\ph{working title}}
-\author{Group 1: \ph{full names and student numbers}\\ \small JBG060 Capstone Data Challenge, TU/e and Tilburg University, with Zero Hunger Lab and ZOA International}
+\author{Group 1: \ph{full names and student numbers}\\ \small JBG060 Capstone Data Challenge, TU/e and Tilburg University\\ \small with Zero Hunger Lab and ZOA International}
 \date{\ph{25 October 2026}}
 
 \begin{document}
@@ -66,12 +68,12 @@ A flooded-cropland trigger multiplies a flood map by a cropland map \citep{pacet
 
 \idea{Terms to introduce here (rubric asks for it): precision = user's accuracy, recall = producer's accuracy, F1, stratum, probability sample, ``cropland'' (cropped or fallow) vs ``cropped in 2025''. One line each, or a small glossary table. Optional extra findings (pick one): the national pattern does not follow CFSAM (rank correlation $\le 0.25$ for most maps); Dynamic World changes by a factor 10 between years; published recall predicts which maps show least crop in Aweil (\RecallRhoAw) but not in Bor South (\RecallRhoBs).}
 
-\begin{table}[t]
+\begin{table}[tbp]
 \centering
 \caption{Data used. Course data from Zero Hunger Lab; the rest collected by us.}\label{tab:data}
 %TC:ignore
 \small
-\begin{tabularx}{\linewidth}{@{}lXl@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.40\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.17\linewidth}@{}}
 \toprule
 Data & Use & Source \\
 \midrule
@@ -87,13 +89,13 @@ FAO/WFP crop assessments 2022, 2025 & order of magnitude & FAO/WFP \\
 %TC:endignore
 \end{table}
 
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
 \figslot{figures/01_crop_share_per_map.png}{crop share per map}
 \caption{Share of the land each public cropland map calls crop, in the five Aweil counties, in Bor South and in South Sudan. Lines: FAO/WFP cereal harvested area (modelled) and FAOSTAT arable land.}\label{fig:share}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
 \figslot{figures/03_pairwise_iou_aweil.png}{pairwise overlap}
 \caption{Aweil counties: overlap of the crop class of every two maps (intersection over union). The same pairs agree on 97--99\% of all pixels, because most land is ``not crop'' in every map.}\label{fig:iou}
@@ -115,7 +117,7 @@ We estimate how much land in ZOA's two areas was cropland in the 2025 season, wi
 \section{Approach}
 \budget{450}
 
-\idea{One diagram (Figure~\ref{fig:method}) does a lot of words' work: maps $\rightarrow$ agreement strata $\rightarrow$ 450 points $\rightarrow$ split $\rightarrow$ two blind labels $\rightarrow$ (area; map scores; Rule 1; flood overlay). Make it in draw.io or PowerPoint, export as figures/method_diagram.png.}
+\idea{One diagram (Figure~\ref{fig:method}) does a lot of words' work: maps $\rightarrow$ agreement strata $\rightarrow$ 450 points $\rightarrow$ split $\rightarrow$ two blind labels $\rightarrow$ (area; map scores; Rule 1; flood overlay). Make it in draw.io or PowerPoint, export as \texttt{figures/method\_diagram.png}.}
 
 \subsection{Reference sample}
 We stack the seven public maps on a 10 m grid and split each area by how many call a pixel crop: no map (\AwNoMap{} of Aweil), one or two, three or more. Kerner et al.\ recommend such agreement strata; they put points where maps disagree and trust no single map. We drew 450 points (Aweil 150/90/90, Bor South 60/60) at least 100 m apart and split each stratum into one third calibration and two thirds test before anyone labelled.
@@ -129,7 +131,7 @@ Each point stands for the 210 m box around it: in a pilot, people could not judg
 \subsection{Estimation and flood overlay}
 Area: stratified mean of the labelled share of each box, weighted by stratum area \citep{olofsson2014}. Accuracy of every map on the test points: precision, recall and F1 with standard errors, using estimators for strata that are not map classes \citep{stehman2014}. Flooded cropland: the 2025 NASA flood extent over each map and over the labelled sample.
 
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
 \figslot{figures/method_diagram.png}{method diagram}
 \caption{\ph{The approach, from the public maps to the area estimate, the scores and the flood overlay.}}\label{fig:method}
@@ -143,12 +145,12 @@ Each part is judged on its own terms (Table~\ref{tab:criteria}). Labels: agreeme
 
 We checked the interval itself by simulating our design: the usual $\pm1.96$ SE interval holds the true area only \CovUsualMin--\CovUsualMax{} of the time, every miss below the truth, because the stratum where no map sees crop often holds no cropland point. We report an adjusted upper bound, which reaches \CovAdjMinAw--100\% in Aweil. Qualitatively, we break each map's errors down by what the labellers saw (land cover, crop cues, distance to homesteads) and inspect images of the worst errors.
 
-\begin{table}[t]
+\begin{table}[tbp]
 \centering
 \caption{Criteria for an adequate solution and how we measure them.}\label{tab:criteria}
 %TC:ignore
 \small
-\begin{tabularx}{\linewidth}{@{}XX@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
 \toprule
 Criterion (from ZOA and ZHL) & Measure \\
 \midrule
@@ -163,7 +165,7 @@ Whose farmland is seen & recall per map; errors by homestead distance and field 
 %TC:endignore
 \end{table}
 
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
 \figslot{figures/09_published_accuracy_of_our_maps.png}{published accuracy}
 \caption{F1 and recall of the maps we compare, as published for other African countries \citep{kerner2024,adebayo2026}. Ringed: Mali, where Esri has \EsriMaliAcc{} accuracy and an F1 of \EsriMaliFone.}\label{fig:published}
@@ -187,7 +189,7 @@ Whose farmland is seen & recall per map; errors by homestead distance and field 
 
 \idea{Report negative results plainly (rubric): e.g. ``Rule 1 does not beat WorldCover in Aweil (F1 X vs Y, intervals overlap)''. Branches to prepare are in notes/07.}
 
-\begin{table}[t]
+\begin{table}[tbp]
 \centering
 \caption{Cropland area in 2025 from the labelled sample: estimate and 95\% interval (lower bound as usual, upper bound adjusted).}\label{tab:area}
 %TC:ignore
@@ -206,19 +208,19 @@ CFSAM 2025 cereal area (modelled) & \AwCfsamTwentyFive & & & \\
 %TC:endignore
 \end{table}
 
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
 \figslot{figures/15_scorecard.png}{scorecard: precision, recall and F1 with intervals}
 \caption{Precision, recall and F1 of every map on the Aweil test points, with 95\% intervals; orange: our models, blue: public maps; dashed: agreement between the two labellers.}\label{fig:scorecard}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
 \figslot{figures/14_area_vs_maps.png}{cropland share: each map against the sample}
 \caption{Share of the land that is cropland: each public map (pixel count) against our labelled sample (estimate and 95\% interval).}\label{fig:areamaps}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
 \figslot{figures/12_flood_history.png}{flooded cropland 2000--2025}
 \caption{Cropland under water in every flood of 2000--2025, on today's cropland: public maps as a range, our labelled sample with 95\% intervals where at least 5 sample points lay on flooded land.}\label{fig:floods}

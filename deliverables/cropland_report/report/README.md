@@ -26,6 +26,6 @@ After any rerun of the pipeline, rerun the build script (and the Markdown conver
 - Overleaf: Menu > Word Count. Table bodies are wrapped in `%TC:ignore ... %TC:endignore`, and `\ph`, `\idea`, `\pending` are ignored by the counter. Add "words in headers" and "words in floats/captions" to the count.
 - The draft is about twice the limit. The idea box under Results suggests which figures to move to the poster; the Discussion and Approach have the most room to cut.
 
-## Not compiled locally
+## Compiled and checked (14 Oct)
 
-There is no LaTeX on the laptop where this was written. Both files were checked for balanced environments and braces, resolved references and citations, and every number macro defined. Compile once on Overleaf and fix anything it reports.
+Both files compile without errors, overfull lines or undefined references (Tectonic 0.15, a self-contained LaTeX engine: `tectonic report_draft.tex` in a copy of this folder with `figures/`). Fixed on 14 Oct: the data table (its first column did not wrap and pushed the others off the page), an underscore in the skeleton, the author line, and the float placement (figures now sit next to their text instead of after the references). The draft is 12 pages. Overleaf (pdfLaTeX + BibTeX) should give the same result.

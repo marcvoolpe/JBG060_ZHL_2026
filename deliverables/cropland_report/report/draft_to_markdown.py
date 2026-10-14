@@ -81,7 +81,7 @@ def convert():
         cap = re.search(r"\\caption\{(.*)\}\\label", inner, re.S)
         lab = re.search(r"\\label\{([^}]+)\}", inner)
         n = labels.get(lab.group(1), "?") if lab else "?"
-        slot = re.search(r"\\figslot\{([^}]+)\}\{([^}]+)\}", inner)
+        slot = re.search(r"\\figslot(?:\[[^\]]*\])?\{([^}]+)\}\{([^}]+)\}", inner)
         png = FIGURES / Path(slot.group(1)).name
         img = f"![Figure {n}](../figures/{png.name})" if png.exists() else f"**[figure to make: {slot.group(2)}]**"
         return f"\n\n{img}\n\n*Figure {n}. {cap.group(1).strip() if cap else ''}*\n\n"
@@ -105,8 +105,8 @@ def convert():
         return f"\n\n*Table {n}. {cap.group(1).strip() if cap else ''}*\n\n" + "\n".join(lines) + "\n\n"
 
     s = body
-    s = re.sub(r"\\begin\{figure\}\[?t?\]?(.*?)\\end\{figure\}", figure, s, flags=re.S)
-    s = re.sub(r"\\begin\{table\}\[?t?\]?(.*?)\\end\{table\}", table, s, flags=re.S)
+    s = re.sub(r"\\begin\{figure\}(?:\[[a-z!]*\])?(.*?)\\end\{figure\}", figure, s, flags=re.S)
+    s = re.sub(r"\\begin\{table\}(?:\[[a-z!]*\])?(.*?)\\end\{table\}", table, s, flags=re.S)
     s = re.sub(r"\\idea\{((?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*)\}", lambda m: f"\n\n> **Idea.** {m.group(1)}\n\n", s)
     s = re.sub(r"\\cite(t|p)\{([^}]+)\}", cite, s)
     s = re.sub(r"\\ref\{([^}]+)\}", lambda m: labels.get(m.group(1), "?"), s)

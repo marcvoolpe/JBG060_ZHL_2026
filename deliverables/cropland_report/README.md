@@ -74,7 +74,7 @@ deliverables/cropland_report/
   figures/         all figures (PNG, tracked in git): EDA 1-11, results 12-15
   maps/            interactive maps (HTML, open in a browser; needs internet for the satellite background)
   tables/          the CSV behind every figure and number; key_numbers.csv = the numbers the text quotes
-  sources/         Kerner 2024, Adebayo 2026, our plan (28 Sep), methodological feedback slides, sprint review (11 Oct)
+  sources/         Kerner 2024, Adebayo 2026, our plan (28 Sep), methodological feedback slides, Sprint 2 review, sprint review (11 Oct)
 cropland/          all code (pipeline steps 00-12, EDA and evaluation modules, tree_workbench.ipynb), METHODOLOGY.md,
                    labels, rules, results/ (accuracy, area, evaluation tables), config/ + REUSE.md (other areas)
 ```
@@ -100,8 +100,9 @@ Code added in this round (in `cropland/`): `eda_public_maps.ipynb` (the EDA, run
 13. `13_flood_map_aweil_2022.png`. **Same flood, different answer.** The 2022 flood in the Aweil counties, cell by cell (232 m): left, the flooded cells where WorldCereal 2021 (the best public map on our test points) shows crop; right, the cells our map adds (its 210 m box holds a field), with our sample points on flooded land. Our map shows where; how much comes from the sample (7,263 ha against WorldCereal's 1,002). Interactive version with every public map: `maps/flood_aweil_2022.html`.
 14. `14_area_vs_maps.png`. **The maps under-count cropland.** Share of the land that is cropland per public map (pixel count) against our labelled sample with its 95% interval, Aweil counties and Bor South (log scale).
 15. `15_scorecard.png`. **Which map to trust.** Precision, recall and F1 of every map on the Aweil test points, with 95% intervals; our models orange, public maps blue; dashed line: how well the two labellers agree (0.86).
+16. `16_same_window_every_map.png`. **The same window in every map.** A 6 x 6 km window north of Aweil town in Sentinel-2 (October-December 2025), the seven public maps (blue) and our map (orange), with the labelled points; each title gives the map's crop share of the window and how many of the labelled fields it finds. The updated version of the Sprint 2 slide "seven maps, seven answers" (Twic county, before labelling). The window has the most labelled points, all cropland, near town where several maps see crop, so the maps look better here than over Aweil as a whole. Made by `cropland/eda_window.py`.
 
-Suggested use: report = 15, 12, 14 (or table 1) + a method diagram; poster = 14, 15, 13, 12 + method diagram (notes 08: A0 portrait, 20 pt minimum, also inside figures).
+Suggested use: report = 15, 12, 14 (or table 1), 16 + a method diagram; poster = 14, 15, 13, 12 + method diagram (notes 08: A0 portrait, 20 pt minimum, also inside figures).
 
 ## 7. How to regenerate everything
 

@@ -20,7 +20,7 @@ In ZOA's areas the maps disagree so much that the cropland map, not the flood, d
 
 **Data.** Table 1 lists the data. The course provided NASA MCDWD flood masks (NASA LANCE, 2025), the ASAP crop mask (Fritz et al., 2024) and county boundaries. We added seven public cropland maps (Zanaga et al., 2022; Potapov et al., 2022; Burton et al., 2022; Van Tricht et al., 2023; Karra et al., 2021; Brown et al., 2022; Thenkabail et al., 2021), Sentinel-1 and Sentinel-2 images and dated sub-metre imagery to label points, and the FAO/WFP crop assessments (FAO and WFP, 2023; FAO and WFP, 2026), whose cereal area is modelled from population and household figures, not observed.
 
-**What the data show.** The maps tell seven stories. In the Aweil counties they call between 0.22% and 1.92% of the land crop, all below the crop assessment's cereal area (3.6%). In Bor South, Dynamic World calls 9.0% crop while no other map exceeds 0.25%. Where two maps do call crop, it is mostly different land: the best pair shares 0.16 of its crop area, the median pair 0.04 (Figure 1), and all seven agree on about 0.5 ha out of 3,085,318 ha. The same pairs agree on 97-99% of all pixels, because most land is "not crop" everywhere. This is the problem in one number: agreement on empty land hides disagreement on fields.
+**What the data show.** The maps tell seven stories. In the Aweil counties they call between 0.22% and 1.92% of the land crop, all below the crop assessment's cereal area (3.6%). In Bor South, Dynamic World calls 9.0% crop while no other map exceeds 0.25%. Where two maps do call crop, it is mostly different land: the best pair shares 0.16 of its crop area, the median pair 0.04 (Figure 1), and all seven agree on about 0.5 ha out of 3,085,318 ha. In a single 6 by 6 km window north of Aweil town, the maps call between 0.0% and 21.7% of the land crop, each in different places (Figure 2). The same pairs agree on 97-99% of all pixels, because most land is "not crop" everywhere. This is the problem in one number: agreement on empty land hides disagreement on fields.
 
 **Terms.** *Precision* (user's accuracy) is the share of a map's crop that is really crop; *recall* (producer's accuracy) is the share of real crop the map finds; *F1* combines the two. A *stratum* is a part of the area sampled separately. *Cropland* means a box with a cropped or a fallow field; *cropped in 2025* counts cropped fields only.
 
@@ -41,6 +41,10 @@ In ZOA's areas the maps disagree so much that the cropland map, not the flood, d
 
 *Figure 1. Aweil counties: overlap of the crop class of every two public maps (intersection over union). The same pairs agree on 97-99% of all pixels, because most land is "not crop" in every map.*
 
+![Figure 2](../figures/16_same_window_every_map.png)
+
+*Figure 2. The same 6 by 6 km window north of Aweil town in every map, 2025. Blue: the public map says crop; orange: our map (pixels whose 210 m box holds a field). Dots: the labelled points in the window, all with cropland. We chose the window with the most labelled points; it lies where several maps see crop, so the maps look better here than over Aweil as a whole (Figure 6).*
+
 ## 3. Research Objective
 
 We estimate how much land in ZOA's two areas was cropland in the 2025 season, with a 95% interval that does not depend on any map; measure how accurately seven public maps, the course's ASAP mask and a readable map of our own capture that cropland there; and show how the choice of map changes the flooded-cropland number a trigger would use.
@@ -53,7 +57,7 @@ This breaks down into four measurable sub-objectives: (1) the cropland area of e
 
 ## 4. Approach
 
-The approach has four steps (Figure 2): draw a probability sample where the maps disagree, label it twice, build a readable map from it, and estimate area, accuracy and flooded cropland. The protocol was written and frozen before labelling; every later change is dated, with its reason, in a change log.
+The approach has four steps (Figure 3): draw a probability sample where the maps disagree, label it twice, build a readable map from it, and estimate area, accuracy and flooded cropland. The protocol was written and frozen before labelling; every later change is dated, with its reason, in a change log.
 
 ### Reference sample
 
@@ -75,11 +79,11 @@ For every box we computed 18 features in Google Earth Engine, each summarising t
 
 **[figure to make: method diagram: seven public maps, agreement strata, 450 random points, calibration and test split, two blind labels, then area with interval, scores of every map, Rule 1 and the flood overlay]**
 
-*Figure 2. The approach, from the public maps to the area estimate, the scores and the flood overlay.*
+*Figure 3. The approach, from the public maps to the area estimate, the scores and the flood overlay.*
 
 ## 5. Evaluation Methodology
 
-Each part is judged on its own terms (Table 2). *Labels*: agreement and Cohen's kappa between the two labellers, with positive and negative specific agreement because crop is rare and kappa then misleads (Cohen, 1960; Cicchetti and Feinstein, 1990). *Area*: the estimate with its standard error and a 95% interval. *Maps*: precision, recall and F1 on test points only; maps whose intervals overlap are not ranked. Overall accuracy is never used to rank, because it rewards a map that finds nothing where crop is rare (Figure 3). *Use*: whether each map's flooded cropland gives the same trigger decision as the sample.
+Each part is judged on its own terms (Table 2). *Labels*: agreement and Cohen's kappa between the two labellers, with positive and negative specific agreement because crop is rare and kappa then misleads (Cohen, 1960; Cicchetti and Feinstein, 1990). *Area*: the estimate with its standard error and a 95% interval. *Maps*: precision, recall and F1 on test points only; maps whose intervals overlap are not ranked. Overall accuracy is never used to rank, because it rewards a map that finds nothing where crop is rare (Figure 4). *Use*: whether each map's flooded cropland gives the same trigger decision as the sample.
 
 We checked the interval itself by simulating our exact design. The usual ±1.96 SE interval held the true area only 47%-94% of the time, every miss below the truth, because stratum A often holds no cropland point at all. We therefore also report an adjusted upper bound: per stratum at least the variance the stratum would have with one more cropland and one more empty box. It reached 94%-100% coverage in Aweil. *(pending decision 1)* The trigger check uses the same cautious bound, capped at the land that flooded. *(pending decision 8b)*
 
@@ -96,23 +100,23 @@ Two further measures address ZOA's wish for a cheap, local check: the number of 
 | Local, and cheap to repeat | scores per area; points and hours a yearly check needs |
 | Whose farmland is seen | recall per map; errors by distance to buildings and field size |
 
-![Figure 3](../figures/09_published_accuracy_of_our_maps.png)
+![Figure 4](../figures/09_published_accuracy_of_our_maps.png)
 
-*Figure 3. F1 and recall of the maps we compare, as published for other African countries (Kerner et al., 2024; Adebayo et al., 2026). Ringed: Mali, where Esri has 0.97 accuracy and an F1 of 0.00.*
+*Figure 4. F1 and recall of the maps we compare, as published for other African countries (Kerner et al., 2024; Adebayo et al., 2026). Ringed: Mali, where Esri has 0.97 accuracy and an F1 of 0.00.*
 
 ## 6. Results
 
 **Labels.** On all 450 points the two blind labellers agreed on cropland versus not at 85.6% (Cohen's kappa 0.70; Aweil 83.3%, kappa 0.68). In Bor South agreement was high but almost only on "not crop" (kappa 0.14): the few boxes anyone called cropland were rarely confirmed. At 41 of the 53 points where they split, one labeller saw field shapes and the other did not. They disagreed about whether a field is there, hardly ever about the land cover. Fallow was used 7 times in 900 labels, so "cropland" and "cropped in 2025" differ by less than 0.1 percentage point; we report cropland.
 
-**Cropland area.** In the Aweil counties, 3.8% of the land is cropland: 116,500 ha, with a 95% interval of 76,700-183,100 ha (Table 3). Every public map counts less: between 0.22% and 1.92% of the land, or 6%-51% of the sample's estimate (Figure 4). In Bor South, cropland is rare: 0.38% of the land, 5,400 ha (1,000-16,500). There the maps scatter around it, from almost none to Dynamic World's 9.0%, 23 times the sample's estimate. Boxes that hold any cropland cover 14.3% of Aweil and 1.5% of Bor South: fields are small and scattered, which is why pixel counts and box counts differ so much.
+**Cropland area.** In the Aweil counties, 3.8% of the land is cropland: 116,500 ha, with a 95% interval of 76,700-183,100 ha (Table 3). Every public map counts less: between 0.22% and 1.92% of the land, or 6%-51% of the sample's estimate (Figure 5). In Bor South, cropland is rare: 0.38% of the land, 5,400 ha (1,000-16,500). There the maps scatter around it, from almost none to Dynamic World's 9.0%, 23 times the sample's estimate. Boxes that hold any cropland cover 14.3% of Aweil and 1.5% of Bor South: fields are small and scattered, which is why pixel counts and box counts differ so much.
 
-**Map accuracy.** On the 186 Aweil test points (Figure 5), F1 ranges from 0.03 (Dynamic World 2025) and 0.06 (Esri 2025) to 0.55 (WorldCereal 2021). Esri, WorldCover, GLAD and ASAP have a precision of 1.00 but a recall of only 0.03-0.28: when they say crop they are right, but they miss most fields. Dynamic World is low on both (precision 0.10, recall 0.02). The recall of WorldCover, GLAD, GFSAD and Dynamic World is below every value published for them elsewhere in Africa. Rule 1 reaches an F1 of 0.72 (0.55-0.90; precision 0.70, recall 0.75). Its interval overlaps those of WorldCereal, DE Africa, ASAP, GLAD and WorldCover, so by our own rule it is not ranked above them; it is clearly above Esri, Dynamic World and GFSAD. The random forests (0.71-0.76) are not clearly better, and the logistic regressions are not better either (0.61-0.66): they find more fields (recall 0.84) but call more empty land crop (precision 0.48-0.54). *(pending decision 2)* In cross-validation on the calibration points, trees (0.85-0.86) and logistic regressions (0.87-0.88) were just as close. In Bor South none of the 74 test points both labellers agree on is cropland, so recall cannot be computed; Dynamic World calls crop on 44 of the 74 boxes where the labellers saw no field, and the other maps on at most one.
+**Map accuracy.** On the 186 Aweil test points (Figure 6), F1 ranges from 0.03 (Dynamic World 2025) and 0.06 (Esri 2025) to 0.55 (WorldCereal 2021). Esri, WorldCover, GLAD and ASAP have a precision of 1.00 but a recall of only 0.03-0.28: when they say crop they are right, but they miss most fields. Dynamic World is low on both (precision 0.10, recall 0.02). The recall of WorldCover, GLAD, GFSAD and Dynamic World is below every value published for them elsewhere in Africa. Rule 1 reaches an F1 of 0.72 (0.55-0.90; precision 0.70, recall 0.75). Its interval overlaps those of WorldCereal, DE Africa, ASAP, GLAD and WorldCover, so by our own rule it is not ranked above them; it is clearly above Esri, Dynamic World and GFSAD. The random forests (0.71-0.76) are not clearly better, and the logistic regressions are not better either (0.61-0.66): they find more fields (recall 0.84) but call more empty land crop (precision 0.48-0.54). *(pending decision 2)* In cross-validation on the calibration points, trees (0.85-0.86) and logistic regressions (0.87-0.88) were just as close. In Bor South none of the 74 test points both labellers agree on is cropland, so recall cannot be computed; Dynamic World calls crop on 44 of the 74 boxes where the labellers saw no field, and the other maps on at most one.
 
 **Where maps fail.** Rule 1's false crop lies within 250 m of buildings and its missed crop mostly farther away: it is, in effect, a "fields around homesteads" rule. The logistic models make more false crop in stratum A (9-12 of 122 empty test boxes, against 5 for Rule 1), where most of the land is, which is why their precision drops. Dynamic World's false crop in Bor South is open land where the labellers saw no field: grassland.
 
 **Flooded cropland.** In 2025, 10,314 ha of the Aweil counties flooded at least one day, and the public maps put 10-307 ha of cropland under water. In Bor South 29,419 ha flooded; every public map shows at most 10 ha of flooded cropland except Dynamic World, with 1,606 ha. The sample cannot say which is right: only 1 of the 330 Aweil points and 2 of the 120 Bor South points lie on flooded land, so in 2025 it "cannot tell" at any trigger threshold from 100 to 5,000 ha. *(pending decision 8b)* This is a negative result about our design, not about the maps.
 
-Past floods give the sample more to work with (Figure 6). *(pending decision 8c)* In 9 of the 26 years enough sample points lie on flooded land in Aweil, and in every one of them the sample puts 4-16 times more of today's cropland under water than the median public map. For a flood like 2022 (53,646 ha flooded; 9 of the 11 sample points on flooded land hold cropland) the sample estimates 7,263 ha (639-14,336), against 331-3,572 ha by the public maps. Played back as a trigger, the sample confirms a 500 ha trigger in 2008 and 2022; with Esri, GLAD or WorldCover that trigger would have stayed silent in 2022. Figure 7 shows where: WorldCereal shows crop in 1,646 of the 10,184 flooded cells of 2022, and our map adds 3,627, along the Lol and in the east of the area.
+Past floods give the sample more to work with (Figure 7). *(pending decision 8c)* In 9 of the 26 years enough sample points lie on flooded land in Aweil, and in every one of them the sample puts 4-16 times more of today's cropland under water than the median public map. For a flood like 2022 (53,646 ha flooded; 9 of the 11 sample points on flooded land hold cropland) the sample estimates 7,263 ha (639-14,336), against 331-3,572 ha by the public maps. Played back as a trigger, the sample confirms a 500 ha trigger in 2008 and 2022; with Esri, GLAD or WorldCover that trigger would have stayed silent in 2022. Figure 8 shows where: WorldCereal shows crop in 1,646 of the 10,184 flooded cells of 2022, and our map adds 3,627, along the Lol and in the east of the area.
 
 **Cost of a check.** With our strata, a 20% coefficient of variation on Aweil's area needs about 124 points; strata from a single public map need 112-149, depending on the map. Our design is not clearly cheaper than one built on the best single map, but it does not depend on choosing that map beforehand. Bor South would need about 1,240 points under any design: cropland is too rare there for a sample of 120. Labelling took a median of 0.5-1.0 minutes per point and 2.7-7.3 hours per person for 180 points.
 
@@ -124,23 +128,23 @@ Past floods give the sample more to work with (Figure 6). *(pending decision 8c)
 | Upper bound: box holds cropland | 14.3% |  | 1.5% |  |
 | CFSAM 2025 cereal area (modelled) | 3.6% | 111,500 | 1.9% | 26,000 |
 
-![Figure 4](../figures/14_area_vs_maps.png)
+![Figure 5](../figures/14_area_vs_maps.png)
 
-*Figure 4. Share of the land that is cropland: each public map (pixel count, blue) against our labelled sample (estimate and 95% interval, orange).*
+*Figure 5. Share of the land that is cropland: each public map (pixel count, blue) against our labelled sample (estimate and 95% interval, orange).*
 
-![Figure 5](../figures/15_scorecard.png)
+![Figure 6](../figures/15_scorecard.png)
 
-*Figure 5. Precision, recall and F1 of every map on the Aweil test points, with 95% intervals. Orange: our models; blue: public maps; dashed: agreement between the two labellers (0.86).*
+*Figure 6. Precision, recall and F1 of every map on the Aweil test points, with 95% intervals. Orange: our models; blue: public maps; dashed: agreement between the two labellers (0.86).*
 
-![Figure 6](../figures/12_flood_history.png)
+![Figure 7](../figures/12_flood_history.png)
 
-*Figure 6. Today's cropland under every flood of 2000-2025: the public maps as a range with their median, our labelled sample with 95% intervals in the years with at least five sample points on flooded land.*
+*Figure 7. Today's cropland under every flood of 2000-2025: the public maps as a range with their median, our labelled sample with 95% intervals in the years with at least five sample points on flooded land.*
 
-![Figure 7](../figures/13_flood_map_aweil_2022.png)
+![Figure 8](../figures/13_flood_map_aweil_2022.png)
 
-*Figure 7. The 2022 flood in the Aweil counties, cell by cell (232 m). Left: flooded cells where WorldCereal 2021, the best public map on our test points, shows crop. Right: the cells our map adds, and the sample points on flooded land.*
+*Figure 8. The 2022 flood in the Aweil counties, cell by cell (232 m). Left: flooded cells where WorldCereal 2021, the best public map on our test points, shows crop. Right: the cells our map adds, and the sample points on flooded land.*
 
-> **Idea.** Too many figures for 2,000 words: keep 5 and 6, and Table 3; move 4 and 7 to the poster, 1 and 3 to the appendix or cut.
+> **Idea.** Too many figures for 2,000 words: keep 6 and 7, and Table 3; move 5 and 8 to the poster, 1 and 4 to the appendix or cut.
 
 ## 7. Discussion
 

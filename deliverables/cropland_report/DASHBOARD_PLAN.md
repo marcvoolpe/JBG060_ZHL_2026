@@ -51,14 +51,14 @@ Sources: `results/area_adjusted.csv`, `results/pixel_count_bias.csv`, `results/f
 Sources: `results/accuracy.csv`, `results/published_vs_ours.csv`, `rule1_2026-10-12.json`.
 
 ### Page 3. Flood exposure
-- Per study area: flooded cropland 2025 (ha) under each map, as dots against the sample's interval band. Shows the size of the error in the unit ZOA plans in.
+- Per study area: flooded cropland 2025 (ha) under each map, as dots on one axis (Aweil: 10-307 ha among the public maps; Bor South: 0-10 ha, Dynamic World 1,606 ha). **Not against a sample band**: only 1 (Aweil) and 2 (Bor South) sample points fall in a flood cell, so the sample cannot measure flooded cropland in 2025 (notes 07, R5). Say so on the page; it is a finding, and the reason for a flood stratum next season.
 - **Our map works on the 210 m box**: a pixel means "the 210 m box around it holds a cropped field". Its hectares are land whose box holds crop, so they are drawn against the sample's upper bound ("box holds it"), and the public maps (pixel counts) against the sample's share of box. Say this in the legend; the area figure ZOA should use is the sample's.
 - Per county: choropleth of flooded cropland with a selector for the map used, and the county rank under each map: the map you pick changes which county looks worst. Labelled "map estimate, not checked".
 - Note on 2025: Aweil flooded little and Bor South widely, so one area shows a season where the map hardly matters and one where it decides the answer.
 Sources: `results/flooded_cropland.csv`, county table from `13_dashboard_data.py`.
 
 ### Page 4. Anticipatory action
-- **Trigger check** with a threshold slider (flooded cropland in ha, e.g. 100-5,000): per map, does the trigger fire, and does the sample say fire, no fire or cannot tell? Count of maps that would get it wrong. Source: `results/trigger_agreement.csv`.
+- **Trigger check** with a threshold slider (flooded cropland in ha, e.g. 100-5,000): per map, does the trigger fire? The maps alone already disagree (in Bor South only Dynamic World would fire). The sample says "cannot tell" at every threshold in 2025 (`results/trigger_agreement.csv`), so the page shows the disagreement between maps plus each map's general accuracy (page 2), not a right or wrong per map.
 - **What changes for ZOA**, three short boxes from report notes 05 (5.3-5.7): the trigger (map choice can flip it), targeting (missed fields are missed households), sizing a proposal (the honest range belongs in the budget). An illustrative conversion of flooded hectares to farming households (0.76 ha per household, CFSAM 2022) can sit here, marked "illustrative". No population, income or IPC layers.
 - **Which map to use where**: Aweil: WorldCereal 2021 or our Rule 1 map; avoid Esri and Dynamic World (they miss almost all fields). Bor South: avoid Dynamic World (paints wetland as crop); the sample is the only reliable number there.
 
@@ -121,7 +121,7 @@ cropland/
 
 ## 7. Risks
 
-- **Flood overlay late** (needs the Rule 1 map assets): pages 3 and 4 wait for `10_flood.py`; pages 1, 2 and 5 can be built now.
+- **Flood overlay**: done 14 Oct (`results/flooded_cropland.csv`, `flooded_cropland_bounds.csv`, `trigger_agreement.csv`).
 - **Map scores read as a ranking**: overlapping intervals are not ranked; write it under the scorecard.
 - **County numbers read as fact**: every county value says "map estimate, not checked"; only the study-area totals carry an interval.
 - **Bor South over-read**: almost no cropland in the sample; show its interval, say no recall can be computed there.

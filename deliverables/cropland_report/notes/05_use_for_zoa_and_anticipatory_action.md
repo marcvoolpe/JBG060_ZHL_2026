@@ -42,7 +42,7 @@ From `trigger_check.csv` (observed floods June-December, cells flooded at least 
 
 - The relative form (y% of the yield) is no safer: the share of a map's cropland that flooded in Aweil in 2022 runs from 1.6% to 23.7% between maps.
 - So for the same flood, **whether the trigger fires is decided by the map**, not by the water. A trigger built on a map with low recall stays silent (a miss: "vulnerable people did not receive critical assistance on time", slide 10); one built on a map that calls wetland crop fires on grass (a false alarm: "critical resources spent ... decreased trust", slide 10).
-- What we add: the labelled sample gives flooded cropland **with a 95% interval** (10_flood.py, "reference" rows), independent of any map, so ZOA can set "x% certainty" on the cropland part too, and the scorecard tells which map's hectares are closest to it in each area.
+- What we planned to add: flooded cropland from the labelled sample, with a 95% interval and independent of any map, so ZOA could set "x% certainty" on the cropland part too. **In 2025 this did not work** (step 10, 14 Oct): only 1 of 330 Aweil points and 2 of 120 Bor South points fall in a flood cell, because flooded land is 0.3% and 2.1% of the areas, so the sample "cannot tell" at any threshold (notes 07, R5). What we do add: which maps are accurate on cropland in each area (scorecard; Dynamic World's 1,600 ha in Bor South comes from a class that is wrong on dry test boxes), and the design that would fix it: a stratum on flood-prone land with its own points next season.
 
 ## 5.4 Route 2: who is seen (targeting and exclusion)
 

@@ -17,7 +17,7 @@ Group 1, JBG060. Everything for the methodological report (max 2,000 words, due 
 | 09 scores and area | **done 12 Oct**: Aweil 3.8% cropland (116,500 ha, 76,700-156,400); Rule 1 F1 0.72 vs public maps 0.03-0.55 (notes 07, section 7.0) |
 | 11 evaluation additions | **done 12 Oct** (`cropland/11_evaluate.py`): adjusted interval, where maps fail, ours vs published, points needed, pixel-count bias |
 | 12 logistic regression vs trees | **done 12 Oct** (`cropland/12_other_models.py`): chosen by cross-validation on calibration points, two logistic models frozen and scored (F1 0.61-0.66); no model ranked above another |
-| 10 flood overlay + trigger agreement | runs automatically when the Rule 1 map assets finish; then 11 again |
+| 10 flood overlay + trigger agreement | **done 14 Oct**: the maps disagree (Aweil 10-307 ha flooded cropland; Bor South 0-10 ha, Dynamic World 1,606); the sample has only 1-2 points in flood cells, so it **cannot tell** flooded cropland (notes 07, R5) |
 | Dashboard | plan revised 12 Oct ([`DASHBOARD_PLAN.md`](DASHBOARD_PLAN.md), in this folder): five-page results story, no general course data |
 | Own trees (Wei, Matei) | open: `cropland/tree_workbench.ipynb` (calibration points only; retrains Rule 1 exactly; writes nothing until `FREEZE = True`) |
 | Reuse for other areas / countries | **done 12 Oct**: `cropland/config/*.toml`, `cropland/REUSE.md`, `cropland/make_new_area.py` |

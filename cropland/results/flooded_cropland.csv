@@ -1,0 +1,29 @@
+area,map,flooded_crop_ha,ci_low_ha,ci_high_ha
+aweil,worldcover_2021,41.067745806283796,,
+aweil,glad_2019,97.084759786831,,
+aweil,deafrica_2019,306.71188091859676,,
+aweil,worldcereal_2021,77.49173290074202,,
+aweil,esri_2025,9.74330441052668,,
+aweil,dynamicworld_2025,237.17460588780702,,
+aweil,gfsad_2015,140.4080763847704,,
+aweil,rule1,3588.1463882036155,,
+aweil,asap_v04,76.7941165753092,,
+aweil,reference: cropland (share of box),605.5292136124621,0.0,1792.366472292888
+aweil,"reference: cropland, upper bound (box holds it)",1614.744569633232,0.0,4779.643926114367
+aweil,reference: cropped 2025 (share of box),605.5292136124621,0.0,1792.366472292888
+aweil,"reference: cropped 2025, upper bound (box holds it)",1614.744569633232,0.0,4779.643926114367
+aweil,all flooded land,10313.800287514474,,
+bor_south,worldcover_2021,0.0,,
+bor_south,glad_2019,0.12792076906682767,,
+bor_south,deafrica_2019,0.7503040862543767,,
+bor_south,worldcereal_2021,0.0,,
+bor_south,esri_2025,0.009740445806554138,,
+bor_south,dynamicworld_2025,1606.2256051811844,,
+bor_south,gfsad_2015,9.816231473545743,,
+bor_south,rule1,126.10030951404961,,
+bor_south,asap_v04,0.0,,
+bor_south,reference: cropland (share of box),0.0,0.0,0.0
+bor_south,"reference: cropland, upper bound (box holds it)",0.0,0.0,0.0
+bor_south,reference: cropped 2025 (share of box),0.0,0.0,0.0
+bor_south,"reference: cropped 2025, upper bound (box holds it)",0.0,0.0,0.0
+bor_south,all flooded land,29419.486967312056,,

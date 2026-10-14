@@ -10,13 +10,17 @@ outputs of 09_score.py and 10_flood.py. Writes into cropland/results/:
   rule_complexity.csv     how readable each frozen rule file is
   pixel_count_bias.csv    each map's pixel-counted crop share against the sample estimate
   trigger_agreement.csv   (if 10_flood.py has run) trigger decisions of every map against the sample
+  flooded_cropland_bounds.csv  the sample's flooded cropland: points in flood cells, usual and adjusted
+                          upper bound (capped at the flooded land), used by the trigger check
 
 Run from group_repo: python cropland/11_evaluate.py cropland/rule1_<date>.json
 """
 
+import importlib
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 import common as C
@@ -92,6 +96,37 @@ def main() -> None:
     print("written to", RES)
 
 
+def flooded_bounds() -> pd.DataFrame:
+    """The sample's flooded cropland with the adjusted upper bound, capped at the land that flooded.
+
+    The sample points are spread over the whole study area, so very few fall in a flood cell
+    (2025: 1 of 330 in Aweil, 2 of 120 in Bor South). The usual interval then looks precise
+    without being so (Bor South: 0 to 0 ha); the adjusted upper bound cannot exceed the flooded land.
+    """
+    fl = importlib.import_module("10_flood")
+    s, lab = pd.read_csv(C.HERE / "sample.csv"), pd.read_csv(C.HERE / "labels_final.csv")
+    W = pd.read_csv(C.HERE / "strata_areas.csv")
+    rows = []
+    for area in C.AREAS:
+        cells = fl.in_area(None, fl.flood_cells(area), area)
+        pts = s[s.area == area].merge(lab, on="id")
+        pts = pts[pts.cropland_avg.notna()]
+        near = np.array([((abs(cells.lat - r.lat) <= fl.CELL / 2) & (abs(cells.lon - r.lon) <= fl.CELL / 2)).any()
+                         for r in pts.itertuples()])
+        w, total, flooded = W[W.area == area].set_index("stratum").share.to_dict(), W[W.area == area].ha.sum(), cells.ha.sum()
+        for name, avg, share in (("reference: cropland", "cropland_avg", "share_avg"),
+                                 ("reference: cropped 2025", "crop_avg", "share_crop_avg")):
+            for label, col in ((f"{name} (share of box)", share), (f"{name}, upper bound (box holds it)", avg)):
+                ok = pts[col].notna().to_numpy()
+                y = pts[col].fillna(0).to_numpy() * near
+                r = V.area_interval(y[ok], pts.stratum.to_numpy()[ok], w)
+                rows.append({"area": area, "map": label, "points_in_flood_cells": int(near[ok].sum()),
+                             "of_them_cropland": int((y[ok] > 0).sum()), "estimate_ha": r["estimate"] * total,
+                             "high_usual_ha": r["high"] * total, "high_adjusted_ha": r["high_adjusted"] * total,
+                             "flooded_land_ha": flooded, "upper_used_ha": min(r["high_adjusted"] * total, flooded)})
+    return pd.DataFrame(rows)
+
+
 def trigger() -> None:
     """Pixel maps against the sample's share of box; our map against the sample's 'box holds it'.
 
@@ -102,7 +137,12 @@ def trigger() -> None:
     if not flood.exists():
         print("no flooded_cropland.csv yet: run 10_flood.py, then this step again")
         return
-    f = pd.read_csv(flood)
+    b = flooded_bounds()
+    b.to_csv(RES / "flooded_cropland_bounds.csv", index=False)
+    print(b[["area", "map", "points_in_flood_cells", "of_them_cropland", "estimate_ha", "high_usual_ha",
+             "high_adjusted_ha", "flooded_land_ha"]].round(0).to_string(index=False))
+    f = pd.read_csv(flood).merge(b[["area", "map", "upper_used_ha"]], on=["area", "map"], how="left")
+    f["ci_high_ha"] = f.upper_used_ha.fillna(f.ci_high_ha)          # the sample's cautious upper bound
     ref, ours = f["map"].str.startswith(("reference", "all flooded")), f["map"].isin(["rule1"])
     thr = [100, 500, 1000, 5000]
     upper = "reference: cropland, upper bound (box holds it)"

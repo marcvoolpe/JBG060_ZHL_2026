@@ -160,5 +160,5 @@ Generalisation: the method (agreement strata, blind double labelling, design-bas
 3. **Labeller disagreement kept and measured**, with kappa and specific agreement per pair, area and stratum, where both earlier studies dropped or settled it.
 4. **Open imagery only** (Sentinel-1/2, Esri), so the labels can be repeated after NICFI's end, which Adebayo et al. name as a need.
 5. **A recent season (2025)** and the yearly products of that year, where both studies used 2019.
-6. **From accuracy to a decision**: the same sample gives flooded cropland with a confidence interval, so the trigger quantity ZOA would use gets an error bar (file 05).
+6. **From accuracy to a decision**: the plan was that the same sample gives flooded cropland with a confidence interval, so the trigger quantity ZOA would use gets an error bar (file 05). In 2025 too few points fell on flooded land for that (1 in Aweil, 2 in Bor South; notes 07, R5); a stratum on flood-prone land would make it work.
 7. **A test of whether published accuracy transfers**: the same maps, the same metrics, a new country, set against the 14 countries of the two papers.

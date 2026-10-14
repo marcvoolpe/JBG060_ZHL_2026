@@ -23,6 +23,18 @@ Tables in `cropland/results/`. Accuracy on test points both labellers agree on, 
 
 **R4. Where maps fail** (`error_analysis.csv`, unweighted counts, Aweil test): Rule 1's 5 false-crop boxes are all within 250 m of a building (5 of 15 such boxes); its missed crop is mostly far from buildings (3 of 4 boxes over 250 m). Rule 1 is in effect a "fields around homesteads" rule. The logistic models make more false crop in stratum A (9-12 of 122 against 5), which costs them precision where most of the land is.
 
+**R5. Flooded cropland 2025** (`flooded_cropland.csv`, `flooded_cropland_bounds.csv`, `trigger_agreement.csv`; added 14 Oct):
+
+| area | flooded land (June-Dec 2025) | public maps | our map (box holds crop) | sample |
+|---|---|---|---|---|
+| Aweil counties | 10,314 ha (0.3% of the area) | 10 (Esri 2025) to 307 ha (Digital Earth Africa); ASAP 77 | 3,588 ha | 606 ha, but from **1** point in a flood cell: cannot tell |
+| Bor South | 29,419 ha (2.1%) | 0-10 ha, except Dynamic World 1,606 ha | 126 ha | 0 ha from **2** points in flood cells, neither with cropland: cannot tell |
+
+- **The maps disagree by a factor of 30 in Aweil** (10 to 307 ha among the public maps). In Bor South Dynamic World alone puts 1,606 ha of cropland under water, where every other map sees almost none: the same wetland it calls crop at 44 of 74 empty test boxes. So "the map decides the trigger" (notes 01, finding 5) holds for 2025 too.
+- **The sample cannot say which map is right about the flooded part.** A random sample over the whole area puts almost no points on the 0.3-2.1% of land that floods. The usual interval (Bor South "0 to 0 ha") would look precise without being so; with the cautious upper bound, capped at the flooded land, the sample says "cannot tell" at every trigger threshold from 100 to 5,000 ha. This is a negative result to report plainly.
+- **What we can still say:** which maps are accurate on cropland in general (R3), and that Dynamic World's flooded cropland in Bor South comes from a class that is wrong on dry test boxes. **Next time:** a stratum on flood-prone land (e.g. the recurring flood mask) with its own points, so flooded cropland gets its own estimate (Discussion; REUSE).
+- Our map's 3,588 ha in Aweil counts land whose 210 m box holds crop near a flood cell, so it is an upper bound; it is not comparable with the public maps' pixel counts.
+
 **R6. Sampling design** (`design_efficiency.csv`, points for a 20% CV of the area): agreement strata 124 points in Aweil; one-map strata 112 (WorldCereal) to 149 (Dynamic World): **our design is not clearly more efficient than stratifying on the best single map**, but it never depends on picking that map beforehand. Bor South needs about 1,240 points for 20% CV under any design: cropland is too rare there for a sample of 120.
 
 **Models, "logistic regression or trees"** (`model_cv.csv`, 12 Oct): chosen without test labels. In cross-validation on the 125 calibration points, logistic regression (F1 0.87-0.88) and trees (0.85-0.86) were close, and the random forest was higher (0.92). On the test points the order changed (tree 0.72, logistic 0.61-0.66). All intervals overlap. Conclusion for the report: with 41 crop calibration points, the model family matters less than the inputs (distance to buildings is the strongest input of the tree and of the logistic models). The readable tree is as good as the alternatives we tried.

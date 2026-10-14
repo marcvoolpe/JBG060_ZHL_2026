@@ -62,6 +62,11 @@ Not included in the copy: the flood overlay (`10_flood.py` reads the course's NA
 for South Sudan), ASAP (course data; scoring skips it when the file is missing), the pilot steps
 00-02 and the EDA notebook. Bring your own flood layer for the overlay.
 
+**If you need flooded cropland** (for a flood trigger), plan for it in the sample. Random points over a
+whole area hardly touch the land that floods: in 2025 only 1 of our 330 Aweil points and 2 of 120 Bor South
+points fell in a flood cell, so the sample could not estimate flooded cropland at all. Add a stratum on
+flood-prone land (e.g. the recurring flood mask) with its own points.
+
 ## What it costs (our study)
 
 450 points, 900 labels; median 0.5-1.0 minutes per label, 2.7-7.3 hours per person. Earth Engine

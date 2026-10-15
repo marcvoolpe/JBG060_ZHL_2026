@@ -6,9 +6,11 @@ dashboard, poster and report from 15 Oct.
 
 ## 0. Get the work (5 minutes)
 
+Since 15 Oct everything is on `main` (the review branch `cropland-review-12oct` was merged):
+
 ```
-git fetch
-git checkout cropland-review-12oct
+git checkout main
+git pull
 ```
 
 Everything to read is in `deliverables/cropland_report/` (this folder). Code is in `cropland/`. You need Python
@@ -67,7 +69,7 @@ and push to the same branch (`git pull` first). Start each comment with a tag:
 | 8c | Past floods on today's cropland (added 14 Oct, figure 12, notes 07 R5b): use in the report and on the poster? It is an analysis added after the results, a scenario (2025 cropland), with two rules set after a first look (5+ points; trivial years not counted) | use as scenario / appendix only / drop | use, as the anticipatory-action result, with its limits stated | Yassin |
 | 10 | National check (added 14 Oct evening): 200 boxes over the rest of South Sudan, drawn and frozen (`cropland/national_check.py`, set "national" in the tool, report appendix G). Label it, so our map and every public map get an accuracy outside our two areas? | label 16-18 Oct / after the poster / leave to a next group | **decided 14 Oct: the group does not label further, and the sample is not handed over either.** Instead our map is compared with the public maps without labels (`national_map.py compare`): of land 2+ public maps call crop it marks 29% outside our areas, 96% in Warrap, 2% in Upper Nile | Yassin |
 | 11 | Labelling errors reported by the labellers (14 Oct): undated Google imagery, Wayback, extra Sentinel scenes, a few early labels counting crop just outside the box (S019, S400) | report as limits / relabel | report as limits (report appendix "Known errors in the data", Discussion paragraph); no relabelling after the scores are known; the guide is clarified for any future labelling | Yassin |
-| 9 | Merge `cropland-review-12oct` into `main` | now / after fixes | after the [fix] comments are done | whoever is last |
+| 9 | Merge `cropland-review-12oct` into `main` | now / after fixes | **done 15 Oct**: merged into `main` (fast-forward, no open [fix] comments left) | Yassin |
 
 ## 5. After the meeting
 

@@ -36,7 +36,7 @@ Never copy the repo file to Overleaf without step 1: it would overwrite the grou
 
 ## Word limit (2,000 words, captions included, words in tables and figures not)
 
-- `python deliverables/cropland_report/report/word_count.py report_final.tex` counts the title, headings, text and captions (not tables, references or appendices), per section, two ways: like Overleaf (citations count as nothing) and as printed (each citation counts as the words it prints). On 15 Oct: **1,951 like Overleaf, 1,987 as printed**. Keep both under 2,000 after every edit.
+- On 15 Oct the final version had **1,951 words** counted the way Overleaf does (about 1,990 if every citation is counted as the words it prints). Keep it under 2,000 after every edit.
 - Overleaf: Menu > Word Count. Table bodies are wrapped in `%TC:ignore ... %TC:endignore`, and `\ph`, `\idea`, `\pending` are ignored by the counter. Add "words in headers" and "words in floats/captions" to the count.
 - Whether appendices count is set on Canvas; the final version has none, so it stands on its own either way.
 

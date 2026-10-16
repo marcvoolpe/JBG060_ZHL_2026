@@ -46,9 +46,13 @@ def tree(depth):
 
 
 def logistic(penalty):
-    """Standardised features; the penalty strength C is chosen by an inner 5-fold cross-validation (F1)."""
+    """Standardised features; the penalty strength C is chosen by an inner 5-fold cross-validation (F1).
+
+    liblinear shuffles the data while it fits: seeded since 16 Oct, so `compare` gives the same numbers on
+    every run (before, the L1 model's penalty and coefficients changed from run to run)."""
     return make_pipeline(StandardScaler(), LogisticRegressionCV(
-        Cs=10, cv=5, penalty=penalty, solver="liblinear", scoring="f1", class_weight="balanced", max_iter=5000))
+        Cs=10, cv=5, penalty=penalty, solver="liblinear", scoring="f1", class_weight="balanced", max_iter=5000,
+        random_state=C.SEED))
 
 
 CANDIDATES = {                       # name: (model, inputs)

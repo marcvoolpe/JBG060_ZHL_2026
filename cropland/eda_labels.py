@@ -43,7 +43,7 @@ def kappa(a, b):
     a, b = pd.Series(list(a)), pd.Series(list(b))
     po = (a == b).mean()
     pa, pb = a.value_counts(normalize=True), b.value_counts(normalize=True)
-    pe = sum(pa.get(c, 0) * pb.get(c, 0) for c in set(pa.index) | set(pb.index))
+    pe = sum(pa.get(c, 0) * pb.get(c, 0) for c in sorted(set(pa.index) | set(pb.index)))   # sorted: same sum order every run
     return (po - pe) / (1 - pe) if pe < 1 else np.nan
 
 

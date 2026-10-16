@@ -1,6 +1,8 @@
 # JBG060-2026: Flood Dynamics in South Sudan
 
 > **Cropland project (group 1): start at [`deliverables/cropland_report/README.md`](deliverables/cropland_report/README.md)** for the report notes, LaTeX report, figures, tables and what to review. Code: [`cropland/`](cropland/).
+>
+> **Code submission:** [`cropland/pipeline.ipynb`](cropland/pipeline.ipynb) runs the whole analysis. Software and versions, code organisation, input and output folders and how to run it: [`deliverables/cropland_report/submission/README.md`](deliverables/cropland_report/submission/README.md).
 
 ## Introduction and overview
 

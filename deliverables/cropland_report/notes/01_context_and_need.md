@@ -1,6 +1,6 @@
 # 1. Context, problem and the need (report: "Context / Problem Background / Motivation", 3 points)
 
-Long notes, 10 Oct 2026. Every number comes from `cropland/eda_public_maps.ipynb`; the CSV next to each claim is in `deliverables/cropland_report/tables/`. Figure numbers refer to `deliverables/cropland_report/figures/` (captions in `README.md`).
+Long notes, 10 Oct 2026. Every number comes from the EDA (`cropland/eda_public_maps.ipynb`, since 16 Oct part 1 of `cropland/pipeline.ipynb`); the CSV next to each claim is in `deliverables/cropland_report/tables/`. Figure numbers refer to `deliverables/cropland_report/figures/` (captions in `README.md`).
 
 > Labelling finished on 12 Oct 2026 (all 450 points labelled twice), so this folder can be shared with the whole group.
 

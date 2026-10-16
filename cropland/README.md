@@ -114,11 +114,14 @@ How to label a point, the shortcuts and the traps: `LABELLING_GUIDE.md`. The sho
 
 ## 3. Running the pipeline (Matteo / whoever runs the analysis)
 
+**Everything in one go: `pipeline.ipynb`** runs the steps below in order, from the saved Earth Engine outputs (no Earth Engine needed), and checks that refitting Rule 1 gives the frozen file. Software, input and output folders and how to run it: `deliverables/cropland_report/submission/README.md` (the code-submission README). Step 09 without Earth Engine: `python cropland/09_score.py --cached cropland/rule1_2026-10-12.json` (the maps' values at the points from `results/map_values.csv`).
+
 Setup:
-- `pip install -r requirements.txt earthengine-api`
+- `python -m pip install -r cropland/requirements-cropland.txt`
 - `earthengine authenticate` once, with a Google account added to the Cloud project `grand-loop-457810-a1`.
 - Or use your own Earth Engine project: `set CROPLAND_EE_PROJECT=<project-id>` (Windows; `export` on macOS/Linux) before running. Steps 4 and 5 only need public data; steps 3, 8 and 10 read our assets in `grand-loop-457810-a1`, so they need access there.
 - Run every script from `group_repo`.
+- Course data: `raw_data/`, `data-JBG060-2026/` next to the repo, or any folder named by `CROPLAND_COURSE_DATA` (`common.py`).
 
 | step | command | what it does | output |
 |---|---|---|---|
@@ -150,7 +153,7 @@ Shared code:
 
 Checks: `python cropland/test_cropland.py`, with `--ee` to also check that Earth Engine and Python agree, and the building-distance feature.
 
-EDA of the public maps (report context, data understanding, labeller agreement, sample size): `eda_public_maps.ipynb`, with `eda_maps.py`, `eda_figures.py`, `eda_labels.py`, `efficiency.py`; `eda_window.py` (figure 16: the same window in every map, `fetch` once in Earth Engine, then `figure`); `sensitivity.py` (checks after the scores, changing nothing frozen: labellers scored like the maps, three-way scoring, precision bounds, share-class worst cases, where Rule 1 errs, past-flood intervals, the stability of Rule 1's recipe; redraws figure 15); `national_check.py` (20,000 random points outside the study areas with every map's value, for `national_map.py compare`); `14_dashboard.py` (the results dashboard, one offline HTML file from the result tables; page code in `dashboard/template.html`); `national_map.py` (our map over the whole country: `summary` counts it per area and state from native pixels, `fetch` + `figure` draw figure 27); `report_figures.py` (figures 17-26: method diagram, Rule 1 tree and decision space, models, features, strata map, labelling examples, interval simulation, points per design); reference statistics in `reference_statistics.csv` / `reference_national.csv`; published accuracy of the same maps (Kerner et al. 2024, Adebayo et al. 2026) in `reference_accuracy_literature.csv`. Results and report notes: `deliverables/cropland_report/README.md`.
+EDA of the public maps (report context, data understanding, labeller agreement, sample size): part 1 of `pipeline.ipynb`, with `eda_maps.py`, `eda_figures.py`, `eda_labels.py`, `efficiency.py`; `eda_window.py` (figure 16: the same window in every map, `fetch` once in Earth Engine, then `figure`); `sensitivity.py` (checks after the scores, changing nothing frozen: labellers scored like the maps, three-way scoring, precision bounds, share-class worst cases, where Rule 1 errs, past-flood intervals, the stability of Rule 1's recipe; redraws figure 15); `national_check.py` (20,000 random points outside the study areas with every map's value, for `national_map.py compare`); `14_dashboard.py` (the results dashboard, one offline HTML file from the result tables; page code in `dashboard/template.html`); `national_map.py` (our map over the whole country: `summary` counts it per area and state from native pixels, `fetch` + `figure` draw figure 27); `report_figures.py` (figures 17-26: method diagram, Rule 1 tree and decision space, models, features, strata map, labelling examples, interval simulation, points per design); reference statistics in `reference_statistics.csv` / `reference_national.csv`; published accuracy of the same maps (Kerner et al. 2024, Adebayo et al. 2026) in `reference_accuracy_literature.csv`. Results and report notes: `deliverables/cropland_report/README.md`.
 
 Evaluation additions on top of steps 09-10 (proposed, see `deliverables/cropland_report/notes/06_evaluation_methodology.md`): `evaluation.py` (adjusted area interval and its coverage simulation, error analysis, trigger agreement, ours vs published, design efficiency, rule readability), checked by `python cropland/test_evaluation.py`. Versions this ran with: `requirements-cropland.txt`.
 

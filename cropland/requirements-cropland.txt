@@ -1,5 +1,5 @@
 # Cropland pipeline and EDA notebook: the versions they ran with.
-# Tested: Python 3.12.5, Windows 11, 11 Oct 2026 (eda_public_maps.ipynb end to end, test_evaluation.py).
+# Tested: Python 3.12.5, Windows 11, 16 Oct 2026 (pipeline.ipynb end to end, test_cropland.py, test_evaluation.py).
 # Install: python -m pip install -r cropland/requirements-cropland.txt
 # Earth Engine also needs a Google account and a Cloud project registered for Earth Engine (see the README).
 earthengine-api==1.7.46

@@ -32,6 +32,9 @@ Step 9 - Scores and the area estimate (METHODOLOGY.md section 7).
 
 Outputs (cropland/results/): map_values.csv, accuracy.csv, area.csv
 Run from group_repo: python cropland/09_score.py cropland/rule1_<date>.json
+Without Earth Engine (pipeline.ipynb): python cropland/09_score.py --cached cropland/rule1_<date>.json
+  reads the public maps' values at the points from results/map_values.csv (the last Earth Engine
+  run) and recomputes everything else: Rule 1, the benchmarks, the other models, scores and areas.
 """
 
 import sys
@@ -72,15 +75,28 @@ def public_values(ee, s):
     return df, {k: y for k, (_, y) in maps.items()} | {"asap_v04": "2017-23"}
 
 
+def cached_values(s):
+    """What public_values returned in the last Earth Engine run, read back from results/map_values.csv.
+
+    Same columns in the same order; round_trip reads every share exactly as Earth Engine gave it.
+    The year of a public map is the end of its name (worldcover_2021 -> 2021)."""
+    old = pd.read_csv(RES / "map_values.csv", float_precision="round_trip")
+    maps = [c.removesuffix("_share") for c in old.columns                # not crop_share: that is a label
+            if c.endswith("_share") and c.removesuffix("_share") in C.CONFIG["strata"]["maps"]]
+    keep = [c for c in old.columns if c in maps or c.removesuffix("_share") in maps or c == "asap_v04"]
+    years = {k: int(k.rsplit("_", 1)[1]) for k in maps} | ({"asap_v04": "2017-23"} if "asap_v04" in old else {})
+    return old.loc[old.id.isin(s.id), ["id", *keep]], years
+
+
 def main() -> None:
-    rule_files = sys.argv[1:]
+    cached = "--cached" in sys.argv                     # no Earth Engine: the maps' values from the last run
+    rule_files = [a for a in sys.argv[1:] if a != "--cached"]
     RES.mkdir(exist_ok=True)
     s = pd.read_csv(C.HERE / "sample.csv")
     lab = pd.read_csv(C.HERE / "labels_final.csv")
     feats = pd.read_csv(C.HERE / "features_sample.csv")
-    ee = C.ee_init()
 
-    vals, years = public_values(ee, s)
+    vals, years = cached_values(s) if cached else public_values(C.ee_init(), s)
     d = s.merge(feats, on="id").merge(vals, on="id")
     for f in rule_files:
         rs = R.load(f)

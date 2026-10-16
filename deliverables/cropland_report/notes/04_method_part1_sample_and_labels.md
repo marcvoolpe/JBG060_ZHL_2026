@@ -22,7 +22,7 @@ Long notes, 10 Oct 2026. Part 1 = everything up to the labelled reference set: a
 
 | step | script | input | output | key parameters |
 |---|---|---|---|---|
-| E. EDA of the maps | `eda_public_maps.ipynb` (`eda_maps.py`, `eda_figures.py`) | 7 maps + ASAP, flood masks, CFSAM, FAOSTAT | tables and figures in `deliverables/` (file 01) | fine grid 1/11520 degree (~10 m), flood grid 1/480 degree |
+| E. EDA of the maps | `pipeline.ipynb`, part 1 (`eda_maps.py`, `eda_figures.py`) | 7 maps + ASAP, flood masks, CFSAM, FAOSTAT | tables and figures in `deliverables/` (file 01) | fine grid 1/11520 degree (~10 m), flood grid 1/480 degree |
 | 0. Pilot points | `00_pilot_points.py` | Twic county (outside the study areas) | 30 points, KML, label template | seed 42 |
 | 1. Pilot check | `01_compare_pilot.py` | 5 x 30 pilot labels | agreement, kappa, share confident | go if at least 70% of points get confident labels |
 | 3. Strata and sample | `03_agreement_and_sample.py` | 7 public maps (Earth Engine), county boundaries | `strata_areas.csv`, `sample.csv` (id, area, stratum, lat, lon, split, labeller_1, labeller_2) | strata A = 0, B = 1-2, C = 3+ maps; merge a stratum under 0.1% of its area; 150 / 90 / 90 and 60 / 30 / 30 points; at least 100 m apart; 1/3 calibration; seed 42; 10 balanced pairs |

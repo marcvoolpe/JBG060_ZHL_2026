@@ -29,6 +29,7 @@ Group 1, JBG060. Everything for the methodological report (max 2,000 words, due 
 | Labelling errors | **reported 14 Oct** by the labellers: undated Google imagery, Wayback, extra Sentinel scenes, a few early labels counting crop just outside the box. In the report (Discussion, appendix "Known errors in the data"); guide clarified for the national round. Decision 11 |
 | Own trees (Wei, Matei) | open: `cropland/tree_workbench.ipynb` (calibration points only; retrains Rule 1 exactly; writes nothing until `FREEZE = True`) |
 | Reuse for other areas / countries | **done 12 Oct**: `cropland/config/*.toml`, `cropland/REUSE.md`, `cropland/make_new_area.py` |
+| Code submission | **done 16 Oct**: one notebook, `cropland/pipeline.ipynb`, runs the whole analysis without Earth Engine (it replaces `eda_public_maps.ipynb`, now its part 1); the README the course asks for is `submission/README.md`; `submission/make_submission_zip.py` packs both with the code and data into one zip |
 
 ## 2. Reading order
 
@@ -75,7 +76,8 @@ deliverables/cropland_report/
   dashboard.html   the results dashboard (one file, opens offline; rebuild: python cropland/14_dashboard.py)
   notes/           long notes per rubric heading (01-08)
   report/          LaTeX skeleton for Overleaf: report.tex, references.bib, numbers.tex (macros), build_report_inputs.py
-  submission/      README_DRAFT.md: draft of the code-submission README and the outline of the single final notebook
+  submission/      README.md: the code-submission README (software, code organisation, folders, how to run);
+                   make_submission_zip.py: the code submission as one zip
   figures/         all figures (PNG, tracked in git): EDA 1-11, results 12-15
   maps/            interactive maps (HTML, open in a browser; needs internet for the satellite background)
   tables/          the CSV behind every figure and number; key_numbers.csv = the numbers the text quotes
@@ -84,7 +86,7 @@ cropland/          all code (pipeline steps 00-12, EDA and evaluation modules, t
                    labels, rules, results/ (accuracy, area, evaluation tables), config/ + REUSE.md (other areas)
 ```
 
-Code added in this round (in `cropland/`): `eda_public_maps.ipynb` (the EDA, runs in about 2-5 minutes), `eda_maps.py`, `eda_figures.py`, `eda_labels.py`, `efficiency.py`, `evaluation.py`, `test_evaluation.py`, `reference_statistics.csv`, `reference_national.csv`, `reference_accuracy_literature.csv`, `lol_river_osm.geojson`, `requirements-cropland.txt`.
+Code added in this round (in `cropland/`): `eda_public_maps.ipynb` (the EDA; since 16 Oct part 1 of `pipeline.ipynb`), `eda_maps.py`, `eda_figures.py`, `eda_labels.py`, `efficiency.py`, `evaluation.py`, `test_evaluation.py`, `reference_statistics.csv`, `reference_national.csv`, `reference_accuracy_literature.csv`, `lol_river_osm.geojson`, `requirements-cropland.txt`.
 
 ## 6. Figures (draft captions; captions count towards the 2,000 words)
 
@@ -125,15 +127,15 @@ Suggested use: report = 17 (method), 15, 18, 12 + table 1 in the text, the rest 
 
 ## 7. How to regenerate everything
 
+Since 16 Oct one notebook does it all: **`cropland/pipeline.ipynb`** runs every step in order without Earth Engine (about 8 minutes): the EDA, the label merge, Rule 1 refitted and checked against the frozen file, the scores and areas, floods, evaluation, robustness checks, all 27 figures, the dashboard, the report's numbers and the tests. The code-submission README, `submission/README.md`, says how (software, input and output folders, the Earth Engine steps).
+
 ```
 python -m pip install -r cropland/requirements-cropland.txt
-set CROPLAND_EE_PROJECT=<your Earth Engine project>     (only for Earth Engine steps)
-# open cropland/eda_public_maps.ipynb and run all cells (writes tables/ and figures/ here)
-python deliverables/cropland_report/report/build_report_inputs.py   (numbers.tex, Overleaf zip)
-python cropland/14_dashboard.py                                      (dashboard.html, no Earth Engine)
-python cropland/test_cropland.py && python cropland/test_evaluation.py
+# open cropland/pipeline.ipynb and run all cells (writes results/, tables/, figures/, dashboard.html, the report's numbers)
+python cropland/test_cropland.py && python cropland/test_evaluation.py      (also part 9 of the notebook)
+python deliverables/cropland_report/submission/make_submission_zip.py      (the code submission as one zip)
 ```
-The notebook needs the course data next to the repo (`data-JBG060-2026/`) or in `raw_data/`, and the cached Earth Engine counts in `raw_data/cropland/eda/`. Those are in git since 14 Oct except `national.npz` (51 MB, only for figures 4-5: ask Yassin, or rerun `python cropland/eda_maps.py export`, which takes hours). The random-forest benchmarks (`raw_data/cropland/benchmarks.joblib`, needed by step 09) and Rule 1 per flood cell (needed by step 10b) are in git too.
+The notebook needs the course data (`raw_data/`, `data-JBG060-2026/` next to the repo, or a folder named by `CROPLAND_COURSE_DATA`) and the saved Earth Engine outputs in `raw_data/cropland/`, in git since 14 Oct except `eda/national.npz` (51 MB). Without that file it reads the national flood rows of figure 7 back from their table (ask Yassin for it, or rerun `python cropland/eda_maps.py export`, which takes hours).
 
 ## 8. Open points
 

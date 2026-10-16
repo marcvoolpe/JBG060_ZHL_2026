@@ -21,7 +21,7 @@ project (batch tasks, no time limit), downloaded once into
 raw_data/cropland/eda/ (not in git), and everything after that runs locally.
 Because the counts sit on the flood grid, the flood overlay is a plain join.
 
-Run order (eda_public_maps.ipynb does it):
+Run order (part 1 of pipeline.ipynb does it):
     python cropland/eda_maps.py export [zoa stab national]   start the export tasks
                                        (7 batch tasks; on a free project they can queue for hours)
     python cropland/eda_maps.py status                       see whether they are done
@@ -50,8 +50,7 @@ ASSETS = f"projects/{PROJECT}/assets/cropland_eda"
 CACHE = C.OUT / "eda"                               # downloaded counts, not in git
 CACHE.mkdir(parents=True, exist_ok=True)
 
-# course data: raw_data/ in the repo, or the course folder next to the repo
-COURSE = next((p for p in (C.RAW, C.REPO.parent / "data-JBG060-2026") if (p / "flood_masks").exists()), C.RAW)
+COURSE = C.COURSE                                   # course data (common.py: raw_data/, next to the repo, or CROPLAND_COURSE_DATA)
 ADMIN = COURSE / "Administrative boundaries"
 
 GRID = 1 / 480                                       # NASA MCDWD cell, degrees (~232 m)

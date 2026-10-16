@@ -22,8 +22,10 @@ REPO = HERE.parent
 RAW = REPO / "raw_data"
 OUT = RAW / "cropland"                      # large outputs, not in git
 OUT.mkdir(parents=True, exist_ok=True)
-# course data: raw_data/ in the repo, or the course folder next to the repo when raw_data/ only holds outputs
-COURSE = next((p for p in (RAW, REPO.parent / "data-JBG060-2026") if (p / "flood_masks").exists()), RAW)
+# course data: raw_data/ in the repo, or the course folder next to the repo when raw_data/ only holds outputs;
+# anywhere else: set CROPLAND_COURSE_DATA=<folder> (the folder that holds flood_masks/, farmland/, Administrative boundaries/)
+COURSE = (Path(os.environ["CROPLAND_COURSE_DATA"]) if os.environ.get("CROPLAND_COURSE_DATA") else
+          next((p for p in (RAW, REPO.parent / "data-JBG060-2026") if (p / "flood_masks").exists()), RAW))
 
 
 def load_config(name: str | None = None) -> dict:

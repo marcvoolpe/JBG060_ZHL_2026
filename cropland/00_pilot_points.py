@@ -24,8 +24,10 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 
+import common as C
+
 HERE = Path(__file__).resolve().parent
-ADMIN2 = HERE.parent / "raw_data" / "Administrative boundaries" / "ssd_admin2.geojson"
+ADMIN2 = C.COURSE / "Administrative boundaries" / "ssd_admin2.geojson"     # course data (common.py)
 COUNTY = "Twic"          # Warrap state; not Twic East (Jonglei)
 N_POINTS = 30
 SEED = 42

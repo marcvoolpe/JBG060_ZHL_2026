@@ -18,8 +18,10 @@ import pandas as pd
 import rasterio
 from rasterio.mask import mask
 
+import common as C
+
 HERE = Path(__file__).resolve().parent
-RAW = HERE.parent / "raw_data"
+RAW = C.COURSE                                     # the course data (raw_data/ or next to the repo, common.py)
 COUNTIES = ["Aweil North", "Aweil East", "Aweil Centre", "Aweil South", "Aweil West", "Bor South"]
 
 

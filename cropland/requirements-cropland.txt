@@ -16,6 +16,7 @@ pyogrio==0.13.0
 pyproj==3.8.0
 affine==3.0.1
 joblib==1.4.2
+pillow==11.0.0
 # to run the notebook from the command line (python -m nbclient) or in Jupyter / VS Code
 nbformat==5.11.1
 nbclient==0.11.0

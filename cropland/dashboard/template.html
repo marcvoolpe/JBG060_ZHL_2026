@@ -335,6 +335,7 @@ const nf = (x, d = 0) => x == null || isNaN(x) ? "–" : Number(x).toLocaleStrin
 const ha = x => x == null ? "–" : nf(x >= 10000 ? Math.round(x / 100) * 100 : x >= 1000 ? Math.round(x / 10) * 10 : Math.round(x));
 const pct = (x, d = 1) => x == null ? "–" : nf(x, d) + "%";
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const list = (a, and = "and") => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + ` ${and} ` + a[a.length - 1];
 const median = a => { const s = a.filter(v => v != null).sort((x, y) => x - y), n = s.length; return n ? (n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2) : null; };
 
 // ---------- small SVG kit ----------
@@ -472,11 +473,13 @@ const st = { area: "aweil", days: "1", measure: "share", year: 2022 };
 function seriesFor(area, days) { return (D.history[area] || {})[days] || []; }
 function pageExposure() {
   const A = seriesFor("aweil", "1").find(r => r.year === 2022), pub = D.public.map(m => A.maps[m]).filter(v => v != null), s = A.sample.share;
-  const ratios = seriesFor("aweil", "1").filter(r => r.sample.share && r.sample.share.est != null && r.sample.share.points >= 5)
-    .map(r => r.sample.share.est / median(D.public.map(m => r.maps[m])));
+  const judged = seriesFor("aweil", "1").filter(r => r.sample.share && r.sample.share.est != null && r.sample.share.points >= 5);
+  const inside = judged.filter(r => { const m = median(D.public.map(k => r.maps[k])); return r.sample.share.low <= m && m <= r.sample.share.high; }).length;
+  const pts = judged.map(r => r.sample.share.points), below = D.public.filter(k => A.maps[k] != null && A.maps[k] < s.low).map(NAME);
   $("exp-lead").innerHTML = `In the 2022 flood the public maps put <b>${ha(Math.min(...pub))}–${ha(Math.max(...pub))} ha</b> of Aweil's cropland under water. ` +
-    `The labelled sample puts <b>${ha(s.est)} ha</b> there (${ha(s.low)}–${ha(s.high)}). In every big flood year the sample can judge, it finds ` +
-    `${nf(Math.min(...ratios))} to ${nf(Math.max(...ratios))} times more flooded cropland than the median map.`;
+    `The labelled sample puts <b>${ha(s.est)} ha</b> there (${ha(s.low)}–${ha(s.high)}): even its lower end is above ${list(below)}. ` +
+    `Its estimate is higher than the median map in every big flood year it can judge, but with only ${Math.min(...pts)} to ${Math.max(...pts)} points ` +
+    `on flooded land its interval includes the median map in ${inside} of those ${judged.length} years.`;
   seg("exp-area", v => { st.area = v; drawExposure(); });
   seg("exp-days", v => { st.days = v; drawExposure(); });
   seg("exp-measure", v => { st.measure = v; drawExposure(); });
@@ -724,10 +727,11 @@ function trigChart() {
 }
 function zoaBoxes() {
   const r = seriesFor("aweil", "1").find(q => q.year === 2022), p = D.public.map(m => r.maps[m]).filter(v => v != null), s = r.sample.share, hh = D.headline.aweil.ha_per_household;
+  const below = D.public.filter(k => r.maps[k] != null && r.maps[k] < s.low).map(NAME);
   const boxes = [
     ["The trigger", `Which map ZOA picks can flip the decision in the same flood. In 2022 the public maps gave ${ha(Math.min(...p))} to ${ha(Math.max(...p))} ha of flooded cropland in Aweil: below and above any threshold in between.`],
     ["Who is reached", `A field the map misses is a household outside map-based targeting. In Aweil 95% of the land has no crop in any public map, yet the sample finds cropland there. Recall is the share of farmers a map can see.`],
-    ["Sizing a request", `Illustrative, 2022 in Aweil: the public maps imply ${nf(Math.min(...p) / hh)} to ${nf(Math.max(...p) / hh)} farming households with a flooded field; the labelled sample ${nf(s.est / hh)} (${nf(s.low / hh)}–${nf(s.high / hh)}). A request sized on one map can be 10 or more times too small. Put the sample's interval in the budget.`],
+    ["Sizing a request", `Illustrative, 2022 in Aweil: the public maps imply ${nf(Math.min(...p) / hh)} to ${nf(Math.max(...p) / hh)} farming households with a flooded field; the labelled sample ${nf(s.est / hh)} (${nf(s.low / hh)}–${nf(s.high / hh)}). A request sized on ${list(below, "or")} would have been too small even against the lower end of the sample's interval; for the other maps the interval is too wide to tell. Put the sample's interval in the budget.`],
   ];
   $("zoa-boxes").innerHTML = boxes.map(([t, b]) => `<div class="card"><h3>${t}</h3><p class="small" style="margin:0">${b}</p></div>`).join("");
 }
@@ -779,7 +783,9 @@ function stateChart() {
     if (label.has(t.state)) E("text", { x: x(t.map_pct) + 9, y: y(t.cfsam_pct) + 4, class: "lbl", "text-anchor": x(t.map_pct) > w * 0.7 ? "end" : "start", dx: x(t.map_pct) > w * 0.7 ? -18 : 0 }, s, t.state);
   });
   const rho = spearman(T.map(t => t.map_pct), T.map(t => t.cfsam_pct));
-  $("state-note").textContent = `Rank correlation ${nf(rho, 2)} over ${T.length} states (the public maps: -0.36 to 0.25; GFSAD 0.59). Our map marks Unity high and Western Equatoria low: a rule learned around Aweil's homesteads, on a one-season calendar, fits those landscapes least.`;
+  const R_ = D.country.rho || {};
+  $("state-note").textContent = `Rank correlation ${nf(rho, 2)} over ${T.length} states: second to GFSAD (${nf(R_.gfsad, 2)}); the other public maps ${nf(R_.public_min, 2)} to ${nf(R_.public_max, 2)}. ` +
+    `With ten states none of these is precise. Our map marks Unity high and Western Equatoria low: a rule learned around Aweil's homesteads, on a one-season calendar, fits those landscapes least.`;
 }
 // ---------- 6. hand-over ----------
 function pageHandover() {

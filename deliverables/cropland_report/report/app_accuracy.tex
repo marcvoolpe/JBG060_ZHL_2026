@@ -2,7 +2,7 @@
 
 \begin{table}[tbp]
 \centering
-\caption{Accuracy of every map on the Aweil test points (cropland; stratified estimators; $\pm$ one standard error).}\label{tab:accuracy}
+\caption{Accuracy of every map on the Aweil test points (cropland; stratified estimators; $\pm$ one standard error). Precision 1.00 means right on every crop call; in brackets the 95\% Clopper-Pearson lower bound, because a standard error of 0 would overstate the certainty.}\label{tab:accuracy}
 %TC:ignore
 \small
 \begin{tabular}{@{}lrrrrr@{}}
@@ -16,12 +16,39 @@ logistic regression, 18 inputs & 2025 (model) & 0.54 $\pm$ 0.10 & 0.84 $\pm$ 0.1
 logistic regression, 2 inputs & 2025 (model) & 0.48 $\pm$ 0.10 & 0.84 $\pm$ 0.10 & 0.61 $\pm$ 0.09 & 0.86 \\
 WorldCereal 2021 & 2021 & 0.83 $\pm$ 0.14 & 0.41 $\pm$ 0.11 & 0.55 $\pm$ 0.11 & 0.91 \\
 DE Africa 2019 & 2019 & 0.40 $\pm$ 0.09 & 0.66 $\pm$ 0.12 & 0.50 $\pm$ 0.08 & 0.83 \\
-ASAP v04 & 2017-23 & 1.00 $\pm$ 0.00 & 0.28 $\pm$ 0.09 & 0.43 $\pm$ 0.11 & 0.91 \\
-GLAD 2019 & 2019 & 1.00 $\pm$ 0.00 & 0.26 $\pm$ 0.09 & 0.41 $\pm$ 0.10 & 0.91 \\
-WorldCover 2021 & 2021 & 1.00 $\pm$ 0.00 & 0.22 $\pm$ 0.08 & 0.36 $\pm$ 0.11 & 0.90 \\
+ASAP v04 & 2017-23 & 1.00 ($\geq$0.94) & 0.28 $\pm$ 0.09 & 0.43 $\pm$ 0.11 & 0.91 \\
+GLAD 2019 & 2019 & 1.00 ($\geq$0.94) & 0.26 $\pm$ 0.09 & 0.41 $\pm$ 0.10 & 0.91 \\
+WorldCover 2021 & 2021 & 1.00 ($\geq$0.94) & 0.22 $\pm$ 0.08 & 0.36 $\pm$ 0.11 & 0.90 \\
 GFSAD 2015 & 2015 & 0.48 $\pm$ 0.16 & 0.18 $\pm$ 0.05 & 0.26 $\pm$ 0.06 & 0.87 \\
-Esri 2025 & 2025 & 1.00 $\pm$ 0.00 & 0.03 $\pm$ 0.02 & 0.06 $\pm$ 0.03 & 0.88 \\
+Esri 2025 & 2025 & 1.00 ($\geq$0.80) & 0.03 $\pm$ 0.02 & 0.06 $\pm$ 0.03 & 0.88 \\
 Dynamic World 2025 & 2025 & 0.10 $\pm$ 0.08 & 0.02 $\pm$ 0.01 & 0.03 $\pm$ 0.02 & 0.85 \\
+\bottomrule
+\end{tabular}
+%TC:endignore
+\end{table}
+
+\begin{table}[tbp]
+\centering
+\caption{Every map on the Aweil test points, F1 three ways: on the points both labellers agree on (the main score), and with the 29 test points they split on counted all as cropland, or all as not cropland. Our models stay above every public map in each reading.}\label{tab:threeways}
+%TC:ignore
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Map & Agreed points only & Splits as cropland & Splits as not cropland \\
+\midrule
+random forest, 18 inputs & 0.76 & 0.62 & 0.62 \\
+Rule 1 (ours) & 0.72 & 0.72 & 0.61 \\
+random forest, embedding & 0.71 & 0.55 & 0.61 \\
+logistic regression, 18 inputs & 0.66 & 0.71 & 0.56 \\
+logistic regression, 2 inputs & 0.61 & 0.67 & 0.52 \\
+WorldCereal 2021 & 0.55 & 0.52 & 0.51 \\
+DE Africa 2019 & 0.50 & 0.54 & 0.40 \\
+ASAP v04 & 0.43 & 0.39 & 0.44 \\
+GLAD 2019 & 0.41 & 0.27 & 0.36 \\
+WorldCover 2021 & 0.36 & 0.30 & 0.41 \\
+GFSAD 2015 & 0.26 & 0.24 & 0.30 \\
+Esri 2025 & 0.06 & 0.04 & 0.06 \\
+Dynamic World 2025 & 0.03 & 0.03 & 0.03 \\
 \bottomrule
 \end{tabular}
 %TC:endignore

@@ -93,8 +93,11 @@ def main() -> None:
         bias.append(b.assign(area=area, sample_pct=100 * ref.estimate).reset_index())
     pd.concat(bias).to_csv(RES / "pixel_count_bias.csv", index=False)
     import eda_figures as FG                         # figures 14 (area vs maps) and 15 (scorecard)
-    agree = pd.read_csv(EDA / "label_agreement.csv").set_index("group").cropland_pos_agree
-    print("figures:", FG.area_vs_maps(pd.concat(bias), a), FG.scorecard(accuracy, agreement=agree["aweil"]))
+    lab = V.labeller_f1(pd.read_csv(C.HERE / "labels_merged.csv"), pd.read_csv(C.HERE / "sample.csv"),
+                        W[W.area == "aweil"].set_index("stratum").share.to_dict())   # scored like the maps (15 Oct)
+    pb = RES / "precision_bounds.csv"                                                   # from sensitivity.py
+    low = pd.read_csv(pb).set_index("map").lower_95.to_dict() if pb.exists() else None
+    print("figures:", FG.area_vs_maps(pd.concat(bias), a), FG.scorecard(accuracy, agreement=lab["weighted_f1"], precision_lower=low))
     trigger()
     print("written to", RES)
 

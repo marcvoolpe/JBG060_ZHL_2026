@@ -246,10 +246,11 @@ def area_vs_maps(bias, area_adj):
     return _save(fig, "14_area_vs_maps")
 
 
-def scorecard(acc, area="aweil", definition="cropland", agreement=None):
+def scorecard(acc, area="aweil", definition="cropland", agreement=None, precision_lower=None):
     """Precision, recall and F1 of every map on the test points, 95% intervals; public maps blue, ours orange.
 
-    acc: results/accuracy.csv. agreement: positive agreement of the two labellers (a ceiling for F1).
+    acc: results/accuracy.csv. agreement: F1 of one labeller scored against the other with the same stratum
+    weights (evaluation.labeller_f1). Not a ceiling: the maps are scored only on points both labellers agree on.
     Maps whose intervals overlap are not ranked (METHODOLOGY section 7). Writes figure 15 and its CSV twin.
     """
     a = acc[(acc.area == area) & (acc.definition == definition)].sort_values("f1").reset_index(drop=True)
@@ -260,20 +261,27 @@ def scorecard(acc, area="aweil", definition="cropland", agreement=None):
                                        ("pa", "Recall: share of the fields it finds"), ("f1", "F1: both together"))):
         v, se = a[col].to_numpy(), a[f"{col}_se"].to_numpy()
         ax.hlines(y, np.clip(v - 1.96 * se, 0, 1), np.clip(v + 1.96 * se, 0, 1), color=colours, linewidth=2)
+        if col == "ua" and precision_lower:            # right on every crop call: SE 0, so draw the exact lower bound
+            for i, m in enumerate(a["map"]):
+                if m in precision_lower:
+                    ax.hlines(i, precision_lower[m], 1, color=colours[i], linewidth=1.2, linestyle=(0, (2, 1.5)))
         ax.scatter(v, y, s=40, color=colours, zorder=3, edgecolor=SURFACE, linewidth=1)
         ax.set_xlim(0, 1)
         ax.set_title(title, loc="left", fontsize=9)
         _hgrid(ax)
     if agreement is not None:
         axes[2].axvline(agreement, color=INK2, linewidth=1, linestyle=(0, (3, 2)))
-        axes[2].text(agreement + 0.02, -0.4, f"two labellers\nagree: {agreement:.2f}", fontsize=7.5, color=INK2, ha="left", va="bottom")
+        axes[2].text(agreement + 0.02, -0.4, f"labeller against\nlabeller: {agreement:.2f}", fontsize=7.5, color=INK2, ha="left", va="bottom")
     axes[0].set_yticks(y, [OURS.get(m, _name(m).replace(" (course data)", "")) for m in a["map"]], fontsize=8)
     for t, c in zip(axes[0].get_yticklabels(), colours):
         t.set_color(INK if c == SERIES[1] else INK2)
     fig.text(0.01, 0.005, f"{area.replace('_', ' ').title()}, {definition}, test points both labellers agree on; lines: 95% intervals. "
-             "Orange: our models; blue: public maps. Overlapping intervals are not ranked.", fontsize=7.5, color=INK2)
+             "Orange: our models; blue: public maps. Overlapping intervals are not ranked. Dashed: one labeller scored against "
+             "the other with the same weights (all test points, so not a ceiling)."
+             + ("\nPrecision 1.00: right on every crop call; the thin dashes reach the 95% lower bound (Clopper-Pearson)."
+                if precision_lower else ""), fontsize=7.5, color=INK2)
     a[["map", "test_points", "ua", "ua_se", "pa", "pa_se", "f1", "f1_se"]].round(3).to_csv(D.TABLES / "scorecard.csv", index=False)
-    fig.tight_layout(rect=(0, 0.04, 1, 1))
+    fig.tight_layout(rect=(0, 0.07 if precision_lower else 0.04, 1, 1))
     return _save(fig, "15_scorecard")
 
 

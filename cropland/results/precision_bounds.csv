@@ -1,0 +1,5 @@
+map,crop_calls,right,lower_95,calls_by_stratum
+worldcover_2021,61,61,0.941,A:1 B:13 C:47
+glad_2019,64,64,0.944,A:1 B:18 C:45
+esri_2025,17,17,0.805,B:3 C:14
+asap_v04,66,66,0.946,A:1 B:20 C:45

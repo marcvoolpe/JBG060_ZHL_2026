@@ -1,11 +1,12 @@
 # Methodological report (LaTeX)
 
-Two versions, same template, same figures and references:
+Two versions of the same story (rewritten 15 Oct for readability), same template, numbers, figures and references:
 
 | file | what it is |
 |---|---|
-| `report_draft.tex` | **the full draft written from our results (14 Oct)**: about 5,000 words with captions in the main text plus an appendix A-G (all 26 figures and 11 tables, 31 pages), so the group cuts rather than writes. Results waiting for a group decision carry an orange `[pending decision N]` tag (REVIEW_PLAN.md, section 4); red `[...]` marks what is still to write or make (names, the method diagram); blue "Idea" boxes suggest what to cut. |
-| `report_draft.md` | **a reading copy of the draft for GitHub**, with the numbers filled in, the figures shown and a reference list. Generated: do not edit it; edit `report_draft.tex` and run `python deliverables/cropland_report/report/draft_to_markdown.py`. |
+| `report_draft.tex` | **the long version**: the whole story with every detail, about 6,300 words with captions in the main text, plus appendices A-J (35 pages). Results waiting for a group decision carry an orange `[pending decision N]` tag (REVIEW_PLAN.md, section 4); red `[...]` marks what is still to write. Change the story here first. |
+| `report_final.tex` | **the version to submit, within 2,000 words**: the same story and order, cut to the essentials, with 4 figures and 2 tables (7 pages). Draft marks are switched off (`\draftfalse`), so it shows the group's proposals for the pending decisions. Before submitting: full names and student numbers in the author line. |
+| `report_draft.md`, `report_final.md` | **reading copies for GitHub**, numbers filled in, figures shown. Generated: do not edit them; run `python deliverables/cropland_report/report/draft_to_markdown.py` (long) and `... draft_to_markdown.py report_final` (final). |
 | `report.tex` | the earlier skeleton: the eight rubric headings with placeholders, idea boxes and a word target per section. Kept for its notes; the draft supersedes it. |
 
 The long notes behind each section are in `deliverables/cropland_report/notes/` (01-08); the results with every number are in notes 07, section 7.0.
@@ -35,9 +36,16 @@ Never copy the repo file to Overleaf without step 1: it would overwrite the grou
 
 ## Word limit (2,000 words, captions included, words in tables and figures not)
 
-- Switch `\drafttrue` to `\draftfalse`: tags, placeholders and idea boxes disappear.
+- `python deliverables/cropland_report/report/word_count.py report_final.tex` counts the title, headings, text and captions (not tables, references or appendices), per section, two ways: like Overleaf (citations count as nothing) and as printed (each citation counts as the words it prints). On 15 Oct: **1,951 like Overleaf, 1,987 as printed**. Keep both under 2,000 after every edit.
 - Overleaf: Menu > Word Count. Table bodies are wrapped in `%TC:ignore ... %TC:endignore`, and `\ph`, `\idea`, `\pending` are ignored by the counter. Add "words in headers" and "words in floats/captions" to the count.
-- The draft is about twice the limit. The idea box under Results suggests which figures to move to the poster; the Discussion and Approach have the most room to cut.
+- Whether appendices count is set on Canvas; the final version has none, so it stands on its own either way.
+
+## How the text is written (15 Oct, from report_readability_plan.md and Mensh and Kording 2017)
+
+- One message: the map, not the flood, decides whether a trigger fires; a labelled sample measures cropland honestly and shows which map to trust.
+- One arc: Context (and: floods, ZOA's trigger) -> but (the maps disagree, nobody checked them) -> therefore (we measure, score, and follow the answer to the trigger). Each section opens by linking to the one before and ends by handing over to the next.
+- Results follow the four sub-objectives, each paragraph headed by its finding, then the number, then at most one caveat. The Discussion answers the sub-objectives in the same order; all other caveats sit in one Limits paragraph.
+- Plain words and "we": missed fields, false alarms, boxes the labellers saw as empty. Captions say what the figure shows, never how the review went.
 
 ## Compiled and checked (14 Oct)
 

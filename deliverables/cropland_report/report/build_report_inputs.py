@@ -195,6 +195,7 @@ def write_results():
           "AwBoxIfSplitYes": f"{100 * b.share_if_split_all_yes:.1f}\\%"}
     m = write_national_check_numbers(m)
     m = write_household_numbers(m)
+    m = write_sensitivity_numbers(m)
     m = write_model_numbers(m)
     lines = ["% Written by build_report_inputs.py from cropland/results/ (steps 09-12). Do not edit by hand."]
     lines += [f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in m.items()]
@@ -236,8 +237,9 @@ def _table(caption, label, colspec, header, rows, note="", wide=False, size="sma
             "%TC:endignore\n\\end{table}\n")
 
 
-def exposure_table(R):
-    """Before (public maps) and after (labelled sample) for flooded cropland, with households and a 500 ha trigger."""
+def exposure_table(R, short=False):
+    """Before (public maps) and after (labelled sample) for flooded cropland, with households and a 500 ha trigger.
+    short: the caption for the 2,000-word version, where captions count."""
     h = R("flood_history.csv")
     h1 = h[h.min_days == 1]
     t = R("trigger_hindcast.csv")
@@ -259,6 +261,11 @@ def exposure_table(R):
                      f"{round(smp.flooded_crop_ha / hh, -1):,.0f}" if ok else "--",
                      f"{int((tt.layer_says == 'fire').sum())} of {len(tt)}",
                      "fire" if says == "fire" else "cannot tell" if says == "cannot tell" else "no fire"))
+    if short:
+        return _table("Flooded cropland under the public maps and the sample (95\\% interval). Hh.: farming households if every "
+                      "flooded field were lost. Trigger: 500 ha.", "tab:exposure", "llrrrrrrr",
+                      ["Area", "Year", "Flooded", "Maps, ha", "Sample, ha", "Hh., maps", "Hh., sample", "Maps fire", "Sample"],
+                      rows, size="footnotesize", sep="4pt")
     return _table("Flooded cropland before and after our check, on today's cropland: the public maps against the labelled sample (ratio estimator, "
                   "95\\% interval; judged only with at least five sample points on flooded land). Households: hectares divided by the cereal "
                   "hectares per farming household in the 2025 crop assessment (illustrative and an upper bound: every flooded field counted as lost). "
@@ -276,7 +283,8 @@ def write_appendix_tables():
     pct = lambda v: f"{100 * v:.1f}\\%"
     out = []
     summ = {f: "10th pct." for f in F.BOX_LOW} | {f: "90th pct." for f in F.BOX_HIGH} | {f: "mean" for f in F.BOX_MEAN}
-    out.append(_table("The 18 features. Each is computed per 10 m pixel for 2025 and summarised over the 210 m box by its most crop-like part.",
+    out.append(_table("The 18 features of a 210 m box. Each is first computed for every 10 m pixel of 2025 and then summarised over the "
+                      "box's $21 \\times 21$ pixels by its most crop-like part (last column), so the model sees one value per feature per box.",
                       "tab:features", "l>{\\raggedright\\arraybackslash}X>{\\raggedright\\arraybackslash}p{3.4cm}l", ["Feature", "What it measures", "Cue", "Over the box"],
                       [(f.replace("_", "\\_"), d, c, summ[f]) for f, d, c in FEATURE_ROWS], wide=True))
     s = pd.read_csv(HERE.parents[2] / "cropland" / "model_table.csv")
@@ -300,9 +308,13 @@ def write_appendix_tables():
     acc = R("accuracy.csv")
     a = acc[(acc.area == "aweil") & (acc.definition == "cropland")].sort_values("f1", ascending=False)
     pm = lambda v, se: "--" if pd.isna(v) else f"{v:.2f} $\\pm$ {se:.2f}"
-    out.append(_table("Accuracy of every map on the Aweil test points (cropland; stratified estimators; $\\pm$ one standard error).",
+    low = pd.read_csv(RESULTS / "precision_bounds.csv").set_index("map").lower_95.to_dict()      # sensitivity.py
+    prec = lambda r: f"1.00 ($\\geq${int(low[r.map] * 100) / 100:.2f})" if r.map in low else pm(r.ua, r.ua_se)   # a lower bound rounds down
+    out.append(_table("Accuracy of every map on the Aweil test points (cropland; stratified estimators; $\\pm$ one standard error). "
+                      "Precision 1.00 means right on every crop call; in brackets the 95\\% Clopper-Pearson lower bound, because a "
+                      "standard error of 0 would overstate the certainty.",
                       "tab:accuracy", "lrrrrr", ["Map", "Year", "Precision", "Recall", "F1", "Overall acc."],
-                      [(NICE.get(r.map, r.map), r.year, pm(r.ua, r.ua_se), pm(r.pa, r.pa_se), pm(r.f1, r.f1_se), f"{r.oa:.2f}")
+                      [(NICE.get(r.map, r.map), r.year, prec(r), pm(r.pa, r.pa_se), pm(r.f1, r.f1_se), f"{r.oa:.2f}")
                        for r in a.itertuples()]))
     m = pd.read_csv(TABLES / "models_cv_vs_test.csv")
     rng = lambda v, lo, hi: "--" if pd.isna(v) else f"{v:.2f} ({lo:.2f}--{hi:.2f})"
@@ -323,12 +335,16 @@ def write_appendix_tables():
     h1 = h[h.min_days == 1]
     smp = h1[(h1.layer == "sample (ratio)") & (h1.measure == "share of box") & h1.flooded_crop_ha.notna()].set_index(["area", "year"])
     mp = h1[h1.layer.isin(ORDER)].pivot_table(index=["area", "year"], columns="layer", values="flooded_crop_ha")
+    fic = R("flood_interval_check.csv")                                                         # sensitivity.py
+    below = fic[fic.min_days == 1].set_index(["area", "year"]).n_maps_below_low
     rows = [("Aweil" if a_ == "aweil" else "Bor South", y, f"{r.flooded_land_ha:,.0f}", int(r.points_in_flood), int(r.of_them_cropland),
              f"{mp.loc[(a_, y)].min():,.0f} / {mp.loc[(a_, y)].median():,.0f} / {mp.loc[(a_, y)].max():,.0f}",
-             f"{r.flooded_crop_ha:,.0f} ({r.low_ha:,.0f}--{r.high_ha:,.0f})") for (a_, y), r in smp.iterrows()]
+             f"{r.flooded_crop_ha:,.0f} ({r.low_ha:,.0f}--{r.high_ha:,.0f})", int(below.get((a_, y), 0))) for (a_, y), r in smp.iterrows()]
     out.append(_table("Past floods on today's cropland: the years with at least five sample points on flooded land (1+ flood day, "
-                      "June--December). Maps: lowest / median / highest of the 8 public layers; sample: ratio estimator, 95\\% interval.",
-                      "tab:floodyears", "llrrrrr", ["Area", "Year", "Flooded ha", "Points", "Cropland", "Maps (ha)", "Sample (ha)"], rows, size="footnotesize"))
+                      "June--December). Maps: lowest / median / highest of the 8 public layers; sample: ratio estimator, 95\\% interval. "
+                      "Below: how many of the 8 maps lie below the sample's interval; in all other cases the interval is too wide to tell.",
+                      "tab:floodyears", "llrrrrrr", ["Area", "Year", "Flooded ha", "Points", "Cropland", "Maps (ha)", "Sample (ha)", "Below"],
+                      rows, size="footnotesize", sep="4pt"))
     t = R("trigger_hindcast.csv")
     t = t[(t.area == "aweil") & (t.min_days == 1)]
     rows = []
@@ -359,6 +375,14 @@ def write_appendix_tables():
                       "stratified estimators; $\\pm$ one standard error).", "tab:nattest", "lrrr", ["Map", "Precision", "Recall", "F1"],
                       [(nice[k], pm(a.loc[k, "ua"], a.loc[k, "ua_se"]), pm(a.loc[k, "pa"], a.loc[k, "pa_se"]), pm(a.loc[k, "f1"], a.loc[k, "f1_se"]))
                        for k in sorted(keep, key=lambda k: -a.loc[k, "f1"])]))                      # 10
+    tw = R("sensitivity_three_ways.csv")
+    nice3 = NICE | {"rf_features": "random forest, 18 inputs", "rf_embedding": "random forest, embedding"}
+    out.append(_table(f"Every map on the Aweil test points, F1 three ways: on the points both labellers agree on (the main score), and with the "
+                      f"{int(tw.splits.iloc[0])} test points they split on counted all as cropland, or all as not cropland. Our models stay "
+                      "above every public map in each reading.", "tab:threeways", "lrrr",
+                      ["Map", "Agreed points only", "Splits as cropland", "Splits as not cropland"],
+                      [(nice3.get(r.map, r.map), f"{r.f1_agreed_only:.2f}", f"{r.f1_splits_as_cropland:.2f}", f"{r.f1_splits_as_not:.2f}")
+                       for r in tw.sort_values("f1_agreed_only", ascending=False).itertuples()]))     # 11
     v = R("rule1_national_vs_public.csv")
     f = lambda x: "--" if pd.isna(x) else f"{x:.0f}"
     out.append(_table("Without labels: our national map against the public maps at 20,000 uniform random points outside the study areas "
@@ -367,12 +391,14 @@ def write_appendix_tables():
                       "tab:natvspub", "lrrrrrr", ["State", "Points", "Our map", "Any public map", "Ours, of any", "Ours, of 2+ maps", "Any, of ours"],
                       [(r.state.replace("South Sudan without the study areas", "All (outside our areas)"), f"{r.points:,}", f"{r.ours_pct:.1f}",
                         f"{r.any_public_pct:.1f}", f(r.ours_marks_of_any_public_pct), f(r.ours_marks_of_two_public_pct), f(r.any_public_of_ours_pct))
-                       for r in v.itertuples()], size="footnotesize"))                       # 11
-    groups = {"app_sample": [1, 2], "app_models": [0, 4], "app_accuracy": [3, 5], "app_floods": [6, 7], "app_national": [10, 8, 11],
+                       for r in v.itertuples()], size="footnotesize"))                       # 12
+    groups = {"app_sample": [1, 2], "app_models": [0, 4], "app_accuracy": [3, 11, 5], "app_floods": [6, 7], "app_national": [10, 8, 12],
               "res_exposure": [9]}   # one file per appendix section (res_exposure: in the Results section)
     for name, idx in groups.items():
         (HERE / f"{name}.tex").write_text("% Written by build_report_inputs.py from CSVs. Do not edit by hand.\n\n"
                                           + "\n".join(out[i] for i in idx), encoding="utf-8")
+    (HERE / "res_exposure_final.tex").write_text("% Written by build_report_inputs.py from CSVs. Do not edit by hand.\n\n"
+                                                 + exposure_table(R, short=True), encoding="utf-8")   # report_final.tex
     print(f"appendix tables: {len(out)} tables in {len(groups)} files")
 
 
@@ -422,6 +448,35 @@ def write_household_numbers(m):
     return m
 
 
+def write_sensitivity_numbers(m):
+    """The checks of the feedback round (cropland/sensitivity.py, 15 Oct): no frozen result changes."""
+    v = pd.read_csv(RESULTS / "sensitivity_summary.csv").set_index("key").value
+    n = lambda k: float(v[k])
+    pc = lambda k: f"{n(k):.0f}\\%"
+    pb = pd.read_csv(RESULTS / "precision_bounds.csv")
+    a = pd.read_csv(RESULTS / "area_adjusted.csv")
+    a = a[(a.area == "aweil") & (a.measure == "share of box")].set_index("definition").estimate
+    m |= {"LabFoneAw": f"{n('labeller_f1_weighted_aweil_test'):.2f}", "ThreeWaySplits": f"{n('three_ways_splits'):.0f}",
+          "ShareLowPct": f"{n('share_class_lowest_pct'):.1f}\\%", "ShareLowHa": f"{round(n('share_class_lowest_ha'), -2):,.0f}",
+          "ShareHighPct": f"{n('share_class_highest_pct'):.1f}\\%", "ShareHighHa": f"{round(n('share_class_highest_ha'), -2):,.0f}",
+          "ShareSamePct": pc("share_class_same_pct"), "ShareWithinOnePct": pc("share_class_within_one_pct"),
+          "RuleOneErrors": f"{n('rule1_test_errors'):.0f}", "RuleOneErrorsAwA": f"{n('rule1_errors_aweil_A'):.0f}",
+          "RuleOneFoneUnw": f"{n('rule1_f1_unweighted_aweil_test'):.2f}", "CalCropAwA": f"{n('calibration_crop_boxes_aweil_A'):.0f}",
+          "HaPerBoxAwA": f"{round(n('ha_per_box_aweil_A'), -2):,.0f}", "HaPerBoxAwC": f"{n('ha_per_box_aweil_C'):,.0f}",
+          "BuildingThreshold": f"{n('rule1_building_threshold_m'):.0f}",
+          "FarBoxes": f"{n('agreed_cropland_boxes_far'):.0f}", "AgreedCroplandBoxes": f"{n('agreed_cropland_boxes'):.0f}",
+          "FarBoxesPct": pc("cropland_boxes_far_pct_aweil"), "FarAreaPct": pc("cropland_area_far_pct_aweil"),
+          "FloodMedianInside": f"{n('flood_years_median_inside_aweil'):.0f}", "FloodPointsMin": f"{n('flood_points_min_aweil'):.0f}",
+          "FloodPointsMax": f"{n('flood_points_max_aweil'):.0f}", "FloodZeroEightBelow": f"{n('flood_2008_maps_below_low'):.0f}",
+          "FloodTwentyTwoBelow": f"{n('flood_2022_maps_below_low'):.0f}",
+          "RecipeFone": f"{n('recipe_f1_mean'):.2f}", "RecipeLow": f"{n('recipe_f1_min'):.2f}", "RecipeHigh": f"{n('recipe_f1_max'):.2f}",
+          "RecipePoints": f"{n('recipe_points'):.0f}", "ClosestPointsAw": f"{n('closest_points_m_aweil'):.0f}",
+          "PrecLowMin": f"{int(pb.lower_95.min() * 100) / 100:.2f}", "PrecLowMax": f"{int(pb.lower_95.max() * 100) / 100:.2f}",   # round down
+          "PrecCallsMin": f"{pb.crop_calls.min()}", "PrecCallsMax": f"{pb.crop_calls.max()}",
+          "AwAreaPctTwo": f"{100 * a['cropland']:.2f}\\%", "AwCroppedPctTwo": f"{100 * a['cropped_2025']:.2f}\\%"}
+    return m
+
+
 def write_model_numbers(m):
     """Numbers for the models part of the draft (Rule 1 leaves, what the models learned)."""
     leaves = pd.read_csv(TABLES / "rule1_leaves.csv").set_index(["split", "leaf"])
@@ -438,16 +493,22 @@ def write_model_numbers(m):
 
 
 def embed_in_draft():
-    """Make report_draft.tex self-contained for Overleaf: numbers, appendix tables and the bibliography are
-    written into the file between marked lines (rewritten on every run); only the figures stay separate files."""
-    p = HERE / "report_draft.tex"
+    """Make report_draft.tex (long version) and report_final.tex (2,000 words) self-contained for Overleaf: numbers,
+    tables and the bibliography are written into each file between marked lines (rewritten on every run); only the
+    figures stay separate files. The long version must have every block; the final one gets those it asks for."""
+    for name in ("report_draft.tex", "report_final.tex"):
+        if (HERE / name).exists():
+            embed_into(HERE / name, strict=name == "report_draft.tex")
+
+
+def embed_into(p, strict):
     s = p.read_text(encoding="utf-8")
     strip = lambda t: "\n".join(l for l in t.splitlines() if not l.startswith("% Written by")).strip()
     blocks = {"numbers": (strip((HERE / "numbers.tex").read_text(encoding="utf-8")) + "\n"
                           + strip((HERE / "results.tex").read_text(encoding="utf-8")), "\\input{numbers}\n\\input{results}"),
               "bib": ("\\begin{filecontents*}[overwrite]{references.bib}\n"
                       + (HERE / "references.bib").read_text(encoding="utf-8").strip() + "\n\\end{filecontents*}", None)}
-    for name in ("app_sample", "app_models", "app_accuracy", "app_floods", "app_national", "res_exposure"):
+    for name in ("app_sample", "app_models", "app_accuracy", "app_floods", "app_national", "res_exposure", "res_exposure_final"):
         blocks[name] = (strip((HERE / f"{name}.tex").read_text(encoding="utf-8")), f"\\input{{{name}}}")
     for name, (content, old_input) in blocks.items():
         start, end = f"%% <<{name}>> written by build_report_inputs.py: do not edit between these lines", f"%% <</{name}>>"
@@ -459,10 +520,10 @@ def embed_in_draft():
             s = s.replace(old_input, block)
         elif name == "bib":                                              # first time: at the very top
             s = block + "\n" + s
-        else:
-            raise SystemExit(f"report_draft.tex: no place for {name}")
+        elif strict and name != "res_exposure_final":
+            raise SystemExit(f"{p.name}: no place for {name}")
     p.write_text(s, encoding="utf-8")
-    print("report_draft.tex: numbers, appendix tables and references embedded (self-contained except figures/)")
+    print(f"{p.name}: numbers, tables and references embedded (self-contained except figures/)")
 
 
 def copy_figures():
@@ -474,13 +535,15 @@ def copy_figures():
 
 
 def make_zip():
-    """overleaf_upload.zip: the self-contained draft and its figures, nothing else, so Overleaf opens the draft."""
+    """overleaf_upload.zip: both self-contained versions and their figures, nothing else."""
     z = HERE / "overleaf_upload.zip"
     with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED) as zf:
         zf.write(HERE / "report_draft.tex", "report_draft.tex")
+        if (HERE / "report_final.tex").exists():
+            zf.write(HERE / "report_final.tex", "report_final.tex")
         for f in sorted((HERE / "figures").glob("*.png")):
             zf.write(f, f"figures/{f.name}")
-    print(f"{z.name}: report_draft.tex + figures/ (Overleaf: New project > Upload project > this zip)")
+    print(f"{z.name}: report_draft.tex, report_final.tex + figures/ (Overleaf: New project > Upload project > this zip)")
 
 
 if __name__ == "__main__":

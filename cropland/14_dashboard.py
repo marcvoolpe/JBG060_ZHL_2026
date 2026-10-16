@@ -179,8 +179,11 @@ def flood_map(area="aweil", year=2022, model="rule1"):
 def country():
     st = pd.read_csv(RES / "rule1_national_by_state.csv")
     ms = pd.read_csv(RES / "rule1_map_share.csv").set_index("area")
+    rc = pd.read_csv(TABLES / "state_rank_correlation_with_cfsam.csv", index_col=0)["2025"]          # the public maps, per state
+    pub = rc[[k for k in PUBLIC if k in rc.index and k != "gfsad_2015"]]
     return {"states": [{"state": x.state, "map_pct": r(x.map_pct, 1), "map_ha": r(x.map_ha, -2), "cfsam_pct": r(x.cfsam_pct, 2)}
                        for x in st.itertuples()],
+            "rho": {"gfsad": r(rc["gfsad_2015"], 2), "public_min": r(pub.min(), 2), "public_max": r(pub.max(), 2)},
             "map_pct": r(100 * st.map_ha.sum() / st.ha.sum(), 1), "map_ha": r(st.map_ha.sum(), -4),
             "share_10m": {a: r(ms.loc[a, "map_10m_pct"], 1) for a in C.AREAS},
             "share_30m": {a: r(ms.loc[a, "map_30m_national_pct"], 1) for a in C.AREAS},

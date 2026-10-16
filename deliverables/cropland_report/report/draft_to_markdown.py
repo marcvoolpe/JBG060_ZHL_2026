@@ -6,10 +6,12 @@ citations as (Author, year) with a reference list, and the draft marks kept visi
 report_draft.tex is the text to edit; rerun this after every change (do not edit the .md).
 It understands the LaTeX the draft uses, not LaTeX in general.
 
-Run from the repo root: python deliverables/cropland_report/report/draft_to_markdown.py
+Run from the repo root: python deliverables/cropland_report/report/draft_to_markdown.py [report_final]
+(default report_draft; report_final makes report_final.md from the 2,000-word version)
 """
 
 import re
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -44,8 +46,8 @@ def who(e):
     return last if len(authors) == 1 else (f"{last} and {authors[1].split(',')[0].strip()}" if len(authors) == 2 else f"{last} et al.")
 
 
-def convert():
-    tex = (HERE / "report_draft.tex").read_text(encoding="utf-8")
+def convert(stem="report_draft"):
+    tex = (HERE / f"{stem}.tex").read_text(encoding="utf-8")
     M, B = macros(), bibliography()
     title = re.search(r"\\title\{(.*?)\}\n", tex).group(1)
     date = re.search(r"\\date\{(.*?)\}", tex).group(1)
@@ -127,7 +129,7 @@ def convert():
         sec[0] += 1
         return f"\n## {sec[0]}. {m.group(1)}\n"
     s = re.sub(r"\\section\{([^}]+)\}", section, s)
-    s = s.replace("\\begin{itemize}", "").replace("\\end{itemize}", "")
+    s = s.replace("\\begin{itemize}", "").replace("\\end{itemize}", "").replace("\\begin{enumerate}", "").replace("\\end{enumerate}", "")
     s = re.sub(r"\\item\s*", "\n- ", s)
     s = re.sub(r"\\subsection\{([^}]+)\}", r"\n### \1\n", s)
     s = re.sub(r"\\paragraph\{([^}]+)\}\s*", r"**\1** ", s)
@@ -137,7 +139,7 @@ def convert():
     s = re.sub(r"\\textbf\{([^}]*)\}", r"**\1**", s)
     s = re.sub(r"\\texttt\{([^}]*)\}", r"`\1`", s)
     s = re.sub(r"\\(\w+)(\{\})?", lambda m: M.get(m.group(1), m.group(0)), s)
-    for a, b in ((r"\textdegree{}", "°"), (r"\textdegree", "°"), (r"$\pm", "±"), (r"\pm", "±"), (r"$\le", "≤"), (r"$\rightarrow$", "->"), ("$", ""), ("``", '"'), ("''", '"'),
+    for a, b in ((r"\textdegree{}", "°"), (r"\textdegree", "°"), (r"$\geq$", "≥"), (r"\geq", "≥"), (r"\times", "×"), (r"$\pm", "±"), (r"\pm", "±"), (r"$\le", "≤"), (r"$\rightarrow$", "->"), ("$", ""), ("``", '"'), ("''", '"'),
                  ("---", "-"), ("--", "-"), (r"\%", "%"), (r"\&", "&"), (r"\_", "_"), (r"\,", ","), ("~", " "), (r"\maketitle", ""),
                  ("\\\\", " ")):
         s = s.replace(a, b)
@@ -150,19 +152,19 @@ def convert():
         where = e.get("journal") or e.get("howpublished") or e.get("publisher") or e.get("institution") or e.get("url", "")
         authors = e.get("author", who(e)).replace(" and others", " et al.").replace(" and ", "; ")
         refs.append(f"- {authors} ({e.get('year', '')}). {e.get('title', k)}. {where}".strip().replace("\\&", "&"))
-    head = (f"<!-- Generated from report_draft.tex by draft_to_markdown.py: edit the .tex, then rerun. -->\n\n"
+    head = (f"<!-- Generated from {stem}.tex by draft_to_markdown.py: edit the .tex, then rerun. -->\n\n"
             f"# {title.replace(chr(92) + 'ph{working title}', '').strip()}\n\n*Group 1, JBG060. {date}.* "
             f"Marks: **[...]** still to write or make; *(pending decision N)* waits for the group (REVIEW_PLAN.md); "
             f"> **Idea.** suggestions for cutting.\n\n")
     out = (head + s.strip() + "\n\n## References\n\n" + "\n".join(refs) + "\n\n" + appendix.strip() + "\n").replace("@@SEP@@", "---")
     leftover = sorted(set(re.findall(r"\\[A-Za-z]+", out)))
-    (HERE / "report_draft.md").write_text(out, encoding="utf-8")
+    (HERE / f"{stem}.md").write_text(out, encoding="utf-8")
     text = re.sub(r"<!--.*?-->", "", out.split("\n## References")[0], flags=re.S)
     text = "\n".join(l for l in text.splitlines() if not l.startswith("|") and not l.startswith("!["))
     words = len(re.findall(r"[A-Za-z0-9][A-Za-z0-9,.%'-]*", text))
-    print(f"report_draft.md written: about {words:,} words (body and captions, without tables and references)"
+    print(f"{stem}.md written: about {words:,} words (body and captions, without tables and references)"
           + (f"; LaTeX left over: {leftover}" if leftover else ""))
 
 
 if __name__ == "__main__":
-    convert()
+    convert(sys.argv[1] if len(sys.argv) > 1 else "report_draft")

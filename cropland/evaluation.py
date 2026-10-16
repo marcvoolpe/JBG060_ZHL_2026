@@ -252,3 +252,20 @@ def rule_complexity(ruleset):
     used = sorted({f for c in conds for f, _, _ in c})
     return {"rules": len(conds), "longest_rule_conditions": max((len(c) for c in conds), default=0),
             "features_used": len(used), "which": ", ".join(used)}
+
+
+def labeller_f1(merged, sample, W, area="aweil", split="test"):
+    """The two labellers scored like a map: one against the other on cropland vs not, with the same stratum weights
+    and estimators as the maps. F1 is symmetric in the two labellers. Points where either said "unsure" are left out.
+
+    merged: labels_merged.csv (label_1, label_2); sample: sample.csv; W: stratum shares of the area.
+    Returns the weighted F1, the unweighted positive agreement and the number of points. The weighted value is the
+    one to set beside the maps' F1; it is no ceiling, because the maps are scored only on points both agree on.
+    """
+    code = {"crop": 1, "fallow": 1, "not crop": 0}
+    d = merged.merge(sample[["id", "area", "stratum", "split"]], on="id")
+    d = d.assign(c1=d.label_1.map(code), c2=d.label_2.map(code))
+    d = d[(d.area == area) & d.c1.notna() & d.c2.notna() & ((d.split == split) if split else True)]
+    r = ES.accuracy(d.c1.astype(int).to_numpy(), d.c2.astype(int).to_numpy(), d.stratum.to_numpy(), W, n_boot=200)
+    both = int(((d.c1 == 1) & (d.c2 == 1)).sum())
+    return {"weighted_f1": r["f1"], "unweighted_pos_agree": 2 * both / int(d.c1.sum() + d.c2.sum()), "points": len(d)}

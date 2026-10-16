@@ -204,10 +204,12 @@ def figure():
         off = (4, -10) if r.state == "Western Bahr el Ghazal" else (4, 3)        # keep it clear of Upper Nile
         bx.annotate(r.state, (r.map_pct, r.cfsam_pct), xytext=off, textcoords="offset points", fontsize=7.5, color=FG.INK2)
     rho = spearmanr(t.map_pct, t.cfsam_pct)[0]
+    rc = pd.read_csv(FG.D.TABLES / "state_rank_correlation_with_cfsam.csv", index_col=0)["2025"]     # the public maps
+    others = rc[[k for k in FG.ORDER if k in rc.index and k != "gfsad_2015"]]
     bx.set_xlabel("our map: land whose 210 m box holds a field, % of the state")
     bx.set_ylabel("CFSAM 2025 cereal area, % of the state (modelled)")
-    bx.set_title(f"States: our map against the crop assessment\nrank correlation {rho:.2f} (public maps -0.36 to 0.25; GFSAD 0.59)",
-                 loc="left", fontsize=9)
+    bx.set_title(f"States: our map against the crop assessment ({len(t)} states)\nrank correlation {rho:.2f}: second to GFSAD "
+                 f"({rc['gfsad_2015']:.2f}); other public maps {others.min():.2f} to {others.max():.2f}", loc="left", fontsize=9)
     bx.set_xlim(0, None), bx.set_ylim(0, None)
     bx.grid(True, color=FG.GRID_C, linewidth=0.8), bx.set_axisbelow(True)
     fig.tight_layout()

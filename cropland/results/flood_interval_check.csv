@@ -1,0 +1,13 @@
+area,min_days,year,points,sample_ha,low_ha,high_ha,median_map_ha,ratio_to_median,median_inside,maps_below_low,n_maps_below_low,maps_above_high
+aweil,1,2007,6,4811.3,0.0,12678.7,364.3,13.2,True,,0,0
+aweil,1,2008,17,10795.4,1861.6,19729.2,1225.8,8.8,False,asap_v04 deafrica_2019 dynamicworld_2025 esri_2025 glad_2019 worldcereal_2021 worldcover_2021,7,0
+aweil,1,2010,12,6092.6,0.0,15418.7,585.3,10.4,True,,0,0
+aweil,1,2013,7,817.6,0.0,4563.8,150.8,5.4,True,,0,0
+aweil,1,2014,5,913.2,0.0,7028.3,215.0,4.2,True,,0,0
+aweil,1,2019,6,1104.6,0.0,4015.6,86.9,12.7,True,,0,0
+aweil,1,2020,9,6817.3,0.0,16977.7,416.5,16.4,True,,0,0
+aweil,1,2021,9,1879.3,0.0,7983.5,489.3,3.8,True,,0,0
+aweil,1,2022,11,7262.8,638.7,14335.9,868.5,8.4,True,esri_2025 glad_2019 worldcover_2021,3,0
+aweil,10,2008,10,6710.7,5174.6,12018.6,519.4,12.9,False,asap_v04 deafrica_2019 dynamicworld_2025 esri_2025 gfsad_2015 glad_2019 worldcereal_2021 worldcover_2021,8,0
+bor_south,1,2007,5,0.0,0.0,2096.2,0.5,0.0,True,,0,1
+bor_south,1,2010,11,357.7,0.0,5153.6,0.1,4311.5,True,,0,1

@@ -3,11 +3,11 @@ window.TOOL_CONFIG = {
  "year": 2025,
  "box_m": 210,
  "labellers": [
-  "Matteo",
-  "Marc",
-  "Yassin",
-  "Wei",
-  "Matei"
+  "B",
+  "C",
+  "D",
+  "E",
+  "A"
  ],
  "image_month": 9,
  "after_harvest_until": "04-01",

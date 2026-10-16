@@ -27,7 +27,7 @@ bor_south = { A = 60, B = 30, C = 30 }
 calibration_share = 0.3333333333333333   # one third of each stratum fits the rules, two thirds test them
 min_distance_m = 100
 min_stratum_share = 0.001         # strata under 0.1% of their area merge into the next one down
-labellers = ["Matteo", "Marc", "Yassin", "Wei", "Matei"]   # every point goes to two of them
+labellers = ["B", "C", "D", "E", "A"]   # every point goes to two of them
 
 [strata]
 maps = ["worldcover_2021", "glad_2019", "deafrica_2019", "worldcereal_2021", "esri_2025", "dynamicworld_2025", "gfsad_2015"]

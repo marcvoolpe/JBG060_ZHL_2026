@@ -11,6 +11,7 @@ Run from the repo root: python deliverables/cropland_report/report/build_report_
 """
 
 import shutil
+import sys
 import zipfile
 from pathlib import Path
 
@@ -19,6 +20,8 @@ import pandas as pd
 HERE = Path(__file__).resolve().parent
 TABLES = HERE.parent / "tables"
 FIGURES = HERE.parent / "figures"
+sys.path.insert(0, str(HERE.parents[2] / "cropland"))
+import key_results as K      # noqa: E402  the exposure table and the households, computed once (cropland/key_results.py)
 
 pct2, pct1, pct0 = "{:.2f}\\%", "{:.1f}\\%", "{:.0f}\\%"
 ha, two, sign, one = "{:,.0f}", "{:.2f}", "{:+.2f}", "{:.1f}"
@@ -240,27 +243,16 @@ def _table(caption, label, colspec, header, rows, note="", wide=False, size="sma
 def exposure_table(R, short=False):
     """Before (public maps) and after (labelled sample) for flooded cropland, with households and a 500 ha trigger.
     short: the caption for the 2,000-word version, where captions count."""
-    h = R("flood_history.csv")
-    h1 = h[h.min_days == 1]
-    t = R("trigger_hindcast.csv")
-    t = t[(t.min_days == 1) & (t.threshold_ha == 500)]
     rows = []
-    for area, year in (("aweil", 2008), ("aweil", 2022), ("aweil", 2025), ("bor_south", 2007), ("bor_south", 2025)):
-        g = h1[(h1.area == area) & (h1.year == year)]
-        mp = g[g.layer.isin(ORDER)].set_index("layer").flooded_crop_ha
-        smp = g[(g.layer == "sample (ratio)") & (g.measure == "share of box")].iloc[0]
-        hh = ha_per_household(area)
-        pts = 0 if pd.isna(smp.points_in_flood) else int(smp.points_in_flood)
-        ok = pd.notna(smp.flooded_crop_ha) and pts >= 5
-        tt = t[(t.area == area) & (t.year == year) & t.layer.isin(ORDER)]
-        says = t[(t.area == area) & (t.year == year) & (t.compared_with == "share of box")].sample_says.iloc[0]
-        rows.append(("Aweil" if area == "aweil" else "Bor South", year, f"{g.flooded_land_ha.iloc[0]:,.0f}",
-                     f"{mp.min():,.0f}--{mp.max():,.0f}",
-                     f"{smp.flooded_crop_ha:,.0f} ({smp.low_ha:,.0f}--{smp.high_ha:,.0f})" if ok else f"cannot tell ({pts} point{'' if pts == 1 else 's'})",
-                     f"{round(mp.min() / hh, -1):,.0f}--{round(mp.max() / hh, -1):,.0f}",
-                     f"{round(smp.flooded_crop_ha / hh, -1):,.0f}" if ok else "--",
-                     f"{int((tt.layer_says == 'fire').sum())} of {len(tt)}",
-                     "fire" if says == "fire" else "cannot tell" if says == "cannot tell" else "no fire"))
+    for r in K.exposure().itertuples():          # computed in cropland/key_results.py, only formatted here
+        ok, pts = pd.notna(r.sample_ha), r.sample_points_on_flooded_land
+        rows.append(("Aweil" if r.area == "aweil" else "Bor South", r.year, f"{r.flooded_land_ha:,.0f}",
+                     f"{r.maps_min_ha:,.0f}--{r.maps_max_ha:,.0f}",
+                     f"{r.sample_ha:,.0f} ({r.sample_low_ha:,.0f}--{r.sample_high_ha:,.0f})" if ok else f"cannot tell ({pts} point{'' if pts == 1 else 's'})",
+                     f"{round(r.households_maps_min, -1):,.0f}--{round(r.households_maps_max, -1):,.0f}",
+                     f"{round(r.households_sample, -1):,.0f}" if ok else "--",
+                     f"{r.maps_firing_500_ha} of {r.maps_scored}",
+                     "fire" if r.sample_says == "fire" else "cannot tell" if r.sample_says == "cannot tell" else "no fire"))
     if short:
         return _table("Flooded cropland under the public maps and the sample (95\\% interval). Hh.: farming households if every "
                       "flooded field were lost. Trigger: 500 ha.", "tab:exposure", "llrrrrrrr",
@@ -402,18 +394,6 @@ def write_appendix_tables():
     print(f"appendix tables: {len(out)} tables in {len(groups)} files")
 
 
-CROPLAND = HERE.parents[2] / "cropland"
-
-
-def ha_per_household(area):
-    """Cereal hectares per farming household in the study area's counties, CFSAM 2025 (illustrative conversion)."""
-    import tomllib
-    cfg = tomllib.loads((CROPLAND / "config" / "south_sudan_2025.toml").read_text(encoding="utf-8"))
-    c = pd.read_csv(CROPLAND / "reference_statistics.csv").drop_duplicates()
-    c = c[(c.source == "CFSAM") & (c.year == 2025) & (c.level == "county") & c.name.isin(cfg["areas"][area])]
-    return c.cereal_harvested_ha.sum() / c.farming_households.sum()
-
-
 def write_national_check_numbers(m):
     """The 30 m national run on our test points (national_map.py score) and its agreement with the public maps (national_map.py compare)."""
     t = pd.read_csv(RESULTS / "rule1_national_test_points.csv")
@@ -437,7 +417,7 @@ def write_national_check_numbers(m):
 
 def write_household_numbers(m):
     """Illustrative: flooded hectares as farming households (CFSAM 2025 cereal ha per farming household)."""
-    hh = ha_per_household("aweil")
+    hh = K.ha_per_household("aweil")
     h = pd.read_csv(RESULTS / "flood_history.csv")
     h1 = h[(h.min_days == 1) & (h.area == "aweil") & (h.year == 2022)]
     smp = h1[(h1.layer == "sample (ratio)") & (h1.measure == "share of box")].iloc[0]

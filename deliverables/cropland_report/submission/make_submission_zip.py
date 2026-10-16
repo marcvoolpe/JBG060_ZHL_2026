@@ -2,7 +2,8 @@
 The code submission as one zip: README.md at the top, then the files the notebook needs and writes.
 
 Takes only files git tracks, so no labelling images, no course data and no eda/national.npz (README,
-section 3): all of cropland/ and raw_data/cropland/, and the report outputs of deliverables/cropland_report/.
+section 3): all of cropland/ and raw_data/cropland/, and the outputs in deliverables/cropland_report/
+(figures, tables, maps, dashboard). The LaTeX report and its scripts (report/) are not part of it.
 This folder's README.md becomes the zip's README.md.
 
 Run from the repository root: python deliverables/cropland_report/submission/make_submission_zip.py
@@ -16,7 +17,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
 KEEP = ["cropland", "raw_data/cropland", "deliverables/cropland_report/dashboard.html"] + [
-    f"deliverables/cropland_report/{d}" for d in ("figures", "tables", "maps", "report")]
+    f"deliverables/cropland_report/{d}" for d in ("figures", "tables", "maps")]
 OUT = HERE / "group1_cropland_code.zip"
 
 

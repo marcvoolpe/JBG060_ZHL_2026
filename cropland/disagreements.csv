@@ -1,70 +1,70 @@
-id,confidence_Marc,confidence_Matei,confidence_Matteo,confidence_Wei,confidence_Yassin,cover_Marc,cover_Matei,cover_Matteo,cover_Wei,cover_Yassin,crop_share_Marc,crop_share_Matei,crop_share_Matteo,crop_share_Wei,crop_share_Yassin,cue_a_bare_Marc,cue_a_bare_Matei,cue_a_bare_Matteo,cue_a_bare_Wei,cue_a_bare_Yassin,cue_b_greenup_Marc,cue_b_greenup_Matei,cue_b_greenup_Matteo,cue_b_greenup_Wei,cue_b_greenup_Yassin,cue_c_harvest_Marc,cue_c_harvest_Matei,cue_c_harvest_Matteo,cue_c_harvest_Wei,cue_c_harvest_Yassin,cue_d_shape_Marc,cue_d_shape_Matei,cue_d_shape_Matteo,cue_d_shape_Wei,cue_d_shape_Yassin,cue_e_crop2024_Marc,cue_e_crop2024_Matei,cue_e_crop2024_Matteo,cue_e_crop2024_Wei,cue_e_crop2024_Yassin,label_Marc,label_Matei,label_Matteo,label_Wei,label_Yassin,notes_Marc,notes_Matteo,notes_Yassin,labeller_1,labeller_2,disagreed,crop_fallow_only
-S003,2.0,,3.0,,,open,,open,,,0,,>50,,,yes,,yes,,,yes,,yes,,,no,,yes,,,can't tell,,yes,,,can't tell,,,,,not crop,,crop,,,,,,Matteo,Marc,1,0
-S015,3.0,,1.0,,,trees,,open,,,0,,25-50,,,no,,can't tell,,,no,,yes,,,no,,no,,,no,,can't tell,,,no,,can't tell,,,not crop,,crop,,,,more chance to be crop than bush because of wayback,,Matteo,Marc,1,0
-S019,2.0,,,,3.0,open,,,,open,0,,,,25-50,can't tell,,,,yes,yes,,,,yes,no,,,,can't tell,no,,,,yes,no,,,,yes,not crop,,,,crop,,,Crop is outside the box.,Marc,Yassin,1,0
-S027,3.0,,,,1.0,open,,,,open,25-50,,,,0,yes,,,,no,yes,,,,yes,yes,,,,can't tell,yes,,,,can't tell,,,,,can't tell,crop,,,,not crop,,,,Marc,Yassin,1,0
-S032,3.0,2.0,,,,open,open,,,,10-25,0,,,,yes,yes,,,,yes,yes,,,,can't tell,no,,,,yes,can't tell,,,,,no,,,,crop,not crop,,,,,,,Marc,Matei,1,0
-S040,3.0,,,,1.0,trees,,,,open,0,,,,10-25,no,,,,no,no,,,,yes,no,,,,no,no,,,,can't tell,no,,,,can't tell,not crop,,,,crop,,,"Very unclear. It looks like grass, but in the wayback it seems that those brown patches might have been crop.",Marc,Yassin,1,0
-S041,,2.0,3.0,,,,open,open,,,,0,>50,,,,no,yes,,,,yes,yes,,,,no,no,,,,no,yes,,,,can't tell,yes,,,,not crop,crop,,,,,,Matteo,Matei,1,0
-S050,,,2.0,,2.0,,,open,,open,,,10-25,,0,,,can't tell,,can't tell,,,yes,,yes,,,can't tell,,can't tell,,,yes,,no,,,no,,can't tell,,,fallow,,not crop,,,,Matteo,Yassin,1,0
-S052,1.0,,,,2.0,open,,,,open,10-25,,,,0,yes,,,,yes,yes,,,,yes,can't tell,,,,can't tell,yes,,,,can't tell,,,,,can't tell,crop,,,,not crop,,,,Marc,Yassin,1,0
-S056,2.0,,,,3.0,open,,,,open,0,,,,>50,no,,,,yes,no,,,,yes,no,,,,no,no,,,,yes,no,,,,can't tell,not crop,,,,crop,,,,Marc,Yassin,1,0
-S057,1.0,,,3.0,,open,,,trees,,,,,0,,can't tell,,,no,,can't tell,,,no,,can't tell,,,no,,no,,,no,,can't tell,,,no,,unsure,,,not crop,,,,,Marc,Wei,1,0
-S060,,3.0,1.0,,,,trees,open,,,,0,<10,,,,no,no,,,,no,yes,,,,no,no,,,,no,yes,,,,no,can't tell,,,,not crop,crop,,,,could have little crops because of houses,,Matteo,Matei,1,0
-S062,2.0,,,2.0,,open,,,open,,<10,,,0,,yes,,,yes,,yes,,,yes,,no,,,no,,yes,,,no,,,,,no,,crop,,,not crop,,,,,Marc,Wei,1,0
-S068,1.0,,,3.0,,open,,,open,,0,,,>50,,can't tell,,,yes,,can't tell,,,yes,,can't tell,,,no,,can't tell,,,yes,,can't tell,,,yes,,unsure,,,crop,,,,,Marc,Wei,1,0
-S069,1.0,3.0,,,,open,open,,,,,10-25,,,,can't tell,yes,,,,can't tell,yes,,,,can't tell,yes,,,,can't tell,yes,,,,can't tell,yes,,,,unsure,crop,,,,,,,Marc,Matei,1,0
-S073,,2.0,,3.0,,,open,,open,,,0,,25-50,,,yes,,yes,,,yes,,yes,,,no,,yes,,,no,,yes,,,no,,yes,,,not crop,,crop,,,,,Wei,Matei,1,0
-S075,,,2.0,2.0,,,,open,open,,,,0,0,,,,no,yes,,,,yes,yes,,,,no,no,,,,no,no,,,,can't tell,no,,,,unsure,not crop,,,not sure on labeling,,Matteo,Wei,1,0
-S085,,2.0,,3.0,,,open,,open,,,0,,25-50,,,yes,,yes,,,yes,,yes,,,can't tell,,no,,,can't tell,,yes,,,can't tell,,yes,,,not crop,,crop,,,,,Wei,Matei,1,0
-S089,,,1.0,3.0,,,,open,open,,,,<10,>50,,,,yes,yes,,,,yes,yes,,,,no,can't tell,,,,can't tell,yes,,,,can't tell,,,,,unsure,crop,,,"could just be pathways, no clear pattern also from wayback",,Matteo,Wei,1,0
-S094,,,1.0,,2.0,,,open,,open,,,25-50,,0,,,yes,,yes,,,yes,,yes,,,no,,can't tell,,,yes,,can't tell,,,can't tell,,can't tell,,,crop,,not crop,,,,Matteo,Yassin,1,0
-S100,,2.0,,,2.0,,open,,,open,,0,,,25-50,,yes,,,yes,,yes,,,yes,,no,,,can't tell,,no,,,yes,,no,,,can't tell,,not crop,,,crop,,,,Yassin,Matei,1,0
-S115,,,3.0,,3.0,,,open,,open,,,25-50,,0,,,yes,,no,,,yes,,no,,,yes,,no,,,yes,,no,,,yes,,can't tell,,,crop,,not crop,,,,Matteo,Yassin,1,0
-S117,,,1.0,2.0,,,,open,open,,,,<10,0,,,,yes,yes,,,,yes,yes,,,,no,can't tell,,,,can't tell,no,,,,can't tell,no,,,,crop,not crop,,,Could have little crops around vegetation ,,Matteo,Wei,1,0
-S121,,3.0,2.0,,,,open,open,,,,0,>50,,,,yes,yes,,,,yes,yes,,,,no,no,,,,no,yes,,,,no,,,,,not crop,crop,,,,,,Matteo,Matei,1,0
-S132,1.0,3.0,,,,open,open,,,,,10-25,,,,can't tell,yes,,,,can't tell,yes,,,,can't tell,yes,,,,can't tell,yes,,,,can't tell,,,,,unsure,crop,,,,,,,Marc,Matei,1,0
-S136,,2.0,,3.0,,,open,,open,,,0,,25-50,,,yes,,yes,,,yes,,yes,,,no,,can't tell,,,no,,yes,,,no,,no,,,not crop,,crop,,,,,Wei,Matei,1,0
-S155,,3.0,,2.0,,,open,,open,,,10-25,,0,,,yes,,yes,,,yes,,yes,,,yes,,can't tell,,,yes,,can't tell,,,yes,,can't tell,,,crop,,not crop,,,,,Wei,Matei,1,0
-S159,2.0,,3.0,,,open,,open,,,0,,>50,,,yes,,yes,,,yes,,yes,,,no,,yes,,,no,,yes,,,no,,yes,,,not crop,,crop,,,,,,Matteo,Marc,1,0
-S170,,2.0,2.0,,,,open,open,,,,0,<10,,,,yes,yes,,,,yes,yes,,,,can't tell,can't tell,,,,no,yes,,,,no,can't tell,,,,not crop,crop,,,,,,Matteo,Matei,1,0
-S178,,3.0,3.0,,,,open,open,,,,0,>50,,,,no,yes,,,,yes,yes,,,,no,no,,,,no,yes,,,,no,yes,,,,not crop,crop,,,,,,Matteo,Matei,1,0
-S186,2.0,3.0,,,,open,trees,,,,10-25,0,,,,yes,no,,,,yes,no,,,,yes,no,,,,can't tell,no,,,,,no,,,,crop,not crop,,,,,,,Marc,Matei,1,0
-S187,2.0,,,2.0,,open,,,open,,10-25,,,0,,yes,,,yes,,yes,,,yes,,yes,,,can't tell,,can't tell,,,can't tell,,,,,can't tell,,crop,,,not crop,,,,,Marc,Wei,1,0
-S194,3.0,3.0,,,,open,open,,,,10-25,10-25,,,,yes,yes,,,,no,yes,,,,no,yes,,,,yes,yes,,,,yes,yes,,,,fallow,crop,,,,,,,Marc,Matei,0,1
-S213,,,1.0,,3.0,,,open,,open,,,25-50,,0,,,yes,,no,,,yes,,no,,,no,,no,,,no,,no,,,can't tell,,no,,,crop,,not crop,,,,Matteo,Yassin,1,0
-S218,1.0,,,,3.0,open,,,,open,,,,,10-25,yes,,,,yes,can't tell,,,,yes,can't tell,,,,yes,can't tell,,,,yes,,,,,,unsure,,,,crop,,,,Marc,Yassin,1,0
-S219,,,1.0,2.0,,,,open,open,,,,25-50,0,,,,yes,yes,,,,yes,yes,,,,no,no,,,,can't tell,no,,,,can't tell,no,,,,crop,not crop,,,i see some patches,,Matteo,Wei,1,0
-S220,,2.0,,,2.0,,open,,,open,,0,,,25-50,,yes,,,yes,,yes,,,yes,,no,,,yes,,no,,,yes,,no,,,,,not crop,,,crop,,,,Yassin,Matei,1,0
-S226,,3.0,2.0,,,,open,open,,,,0,10-25,,,,no,yes,,,,yes,yes,,,,no,no,,,,no,can't tell,,,,no,can't tell,,,,not crop,crop,,,,some patches possible,,Matteo,Matei,1,0
-S228,1.0,,,3.0,,open,,,open,,,,,25-50,,yes,,,yes,,can't tell,,,yes,,can't tell,,,can't tell,,can't tell,,,yes,,,,,can't tell,,unsure,,,crop,,,,,Marc,Wei,1,0
-S236,,2.0,2.0,,,,open,open,,,,0,25-50,,,,yes,yes,,,,yes,yes,,,,no,can't tell,,,,no,can't tell,,,,no,yes,,,,not crop,crop,,,,not precise patchwork but seems so,,Matteo,Matei,1,0
-S243,1.0,2.0,,,,open,open,,,,,<10,,,,yes,yes,,,,yes,yes,,,,can't tell,yes,,,,can't tell,yes,,,,can't tell,yes,,,,unsure,crop,,,,there could be some small crop,,,Marc,Matei,1,0
-S257,2.0,,1.0,,,open,,open,,,0,,25-50,,,no,,no,,,no,,yes,,,no,,no,,,no,,yes,,,no,,no,,,not crop,,fallow,,,,,,Matteo,Marc,1,0
-S259,,2.0,,,3.0,,open,,,open,,0,,,25-50,,yes,,,yes,,yes,,,yes,,no,,,yes,,no,,,yes,,no,,,,,not crop,,,crop,,,,Yassin,Matei,1,0
-S265,,2.0,2.0,,,,open,open,,,,0,10-25,,,,yes,yes,,,,yes,yes,,,,no,yes,,,,no,yes,,,,no,yes,,,,not crop,crop,,,,,,Matteo,Matei,1,0
-S270,3.0,3.0,,,,open,open,,,,25-50,0,,,,yes,yes,,,,yes,yes,,,,yes,no,,,,yes,no,,,,,no,,,,crop,not crop,,,,,,,Marc,Matei,1,0
-S281,,3.0,,,2.0,,open,,,open,,10-25,,,0,,yes,,,yes,,yes,,,yes,,yes,,,can't tell,,yes,,,can't tell,,yes,,,can't tell,,crop,,,not crop,,,,Yassin,Matei,1,0
-S282,,2.0,,3.0,,,open,,open,,,0,,25-50,,,yes,,yes,,,yes,,yes,,,no,,can't tell,,,no,,yes,,,no,,can't tell,,,not crop,,crop,,,,,Wei,Matei,1,0
-S291,,3.0,2.0,,,,open,open,,,,0,10-25,,,,no,yes,,,,yes,yes,,,,no,no,,,,no,yes,,,,no,can't tell,,,,not crop,crop,,,,,,Matteo,Matei,1,0
-S303,2.0,,,,2.0,open,,,,open,25-50,,,,0,yes,,,,yes,yes,,,,yes,yes,,,,no,can't tell,,,,can't tell,,,,,can't tell,crop,,,,not crop,,,,Marc,Yassin,1,0
-S330,2.0,,,3.0,,open,,,open,,,,,25-50,,yes,,,yes,,yes,,,yes,,can't tell,,,yes,,can't tell,,,yes,,can't tell,,,yes,,unsure,,,crop,,,,,Marc,Wei,1,0
-S333,3.0,2.0,,,,open,open,,,,>50,0,,,,yes,yes,,,,yes,yes,,,,yes,no,,,,yes,no,,,,,no,,,,crop,not crop,,,,,,,Marc,Matei,1,0
-S339,,3.0,,,1.0,,open,,,open,,10-25,,,0,,yes,,,yes,,yes,,,yes,,yes,,,no,,yes,,,can't tell,,yes,,,can't tell,,crop,,,not crop,,,Unsure about this one. I don't know what the boundaries are.,Yassin,Matei,1,0
-S343,,3.0,3.0,,,,open,open,,,,0,>50,,,,yes,yes,,,,yes,yes,,,,no,no,,,,no,yes,,,,no,,,,,not crop,crop,,,,,,Matteo,Matei,1,0
-S347,,,3.0,3.0,,,,trees,open,,,,0,10-25,,,,no,yes,,,,no,yes,,,,no,yes,,,,no,yes,,,,no,can't tell,,,,not crop,crop,,,,,Matteo,Wei,1,0
-S356,2.0,3.0,,,,open,trees,,,,<10,0,,,,yes,no,,,,yes,no,,,,yes,no,,,,can't tell,no,,,,,no,,,,crop,not crop,,,,,,,Marc,Matei,1,0
-S357,,,1.0,,2.0,,,open,,open,,,10-25,,10-25,,,yes,,can't tell,,,yes,,yes,,,yes,,can't tell,,,can't tell,,yes,,,,,can't tell,,,crop,,fallow,,,,Matteo,Yassin,0,1
-S362,2.0,,3.0,,,open,,open,,,0,,>50,,,yes,,yes,,,yes,,yes,,,no,,yes,,,no,,yes,,,can't tell,,yes,,,not crop,,crop,,,,,,Matteo,Marc,1,0
-S370,,,3.0,,2.0,,,open,,open,,,25-50,,0,,,yes,,yes,,,yes,,yes,,,yes,,can't tell,,,yes,,can't tell,,,yes,,can't tell,,,crop,,not crop,,,corpland could be outside the box.,Matteo,Yassin,1,0
-S391,2.0,,,3.0,,open,,,open,,0,,,10-25,,no,,,yes,,no,,,yes,,no,,,can't tell,,no,,,yes,,no,,,can't tell,,not crop,,,crop,,,,,Marc,Wei,1,0
-S392,2.0,2.0,,,,open,open,,,,25-50,<10,,,,yes,yes,,,,no,yes,,,,no,yes,,,,yes,yes,,,,yes,yes,,,,fallow,crop,,,,,,,Marc,Matei,0,1
-S393,,2.0,3.0,,,,open,open,,,,0,25-50,,,,yes,yes,,,,yes,yes,,,,no,yes,,,,no,yes,,,,no,yes,,,,not crop,crop,,,,,,Matteo,Matei,1,0
-S402,1.0,,,,2.0,open,,,,open,0,,,,0,can't tell,,,,yes,yes,,,,yes,can't tell,,,,can't tell,no,,,,no,no,,,,can't tell,unsure,,,,not crop,,,,Marc,Yassin,1,0
-S406,,3.0,,3.0,,,open,,open,,,0,,10-25,,,yes,,yes,,,yes,,yes,,,no,,can't tell,,,no,,yes,,,no,,can't tell,,,not crop,,crop,,,,,Wei,Matei,1,0
-S415,2.0,,,3.0,,open,,,open,,0,,,10-25,,no,,,yes,,no,,,yes,,no,,,can't tell,,no,,,yes,,no,,,can't tell,,not crop,,,crop,,,,,Marc,Wei,1,0
-S423,3.0,,,3.0,,open,,,open,,25-50,,,25-50,,yes,,,yes,,no,,,yes,,no,,,can't tell,,yes,,,yes,,yes,,,can't tell,,fallow,,,crop,,,,,Marc,Wei,0,1
-S425,,3.0,1.0,,,,open,open,,,,0,10-25,,,,yes,can't tell,,,,yes,yes,,,,no,no,,,,no,yes,,,,no,can't tell,,,,not crop,fallow,,,,,,Matteo,Matei,1,0
-S432,1.0,,,3.0,,open,,,open,,,,,10-25,,yes,,,yes,,yes,,,yes,,can't tell,,,yes,,can't tell,,,yes,,can't tell,,,can't tell,,unsure,,,crop,,,,,Marc,Wei,1,0
-S439,,2.0,,,2.0,,open,,,open,,0,,,10-25,,yes,,,yes,,yes,,,yes,,no,,,yes,,no,,,can't tell,,no,,,can't tell,,not crop,,,crop,,,,Yassin,Matei,1,0
-S447,,2.0,,3.0,,,open,,open,,,0,,10-25,,,yes,,yes,,,yes,,yes,,,no,,yes,,,can't tell,,yes,,,can't tell,,,,,not crop,,crop,,,,,Wei,Matei,1,0
+id,confidence_A,confidence_B,confidence_C,confidence_D,confidence_E,cover_A,cover_B,cover_C,cover_D,cover_E,crop_share_A,crop_share_B,crop_share_C,crop_share_D,crop_share_E,cue_a_bare_A,cue_a_bare_B,cue_a_bare_C,cue_a_bare_D,cue_a_bare_E,cue_b_greenup_A,cue_b_greenup_B,cue_b_greenup_C,cue_b_greenup_D,cue_b_greenup_E,cue_c_harvest_A,cue_c_harvest_B,cue_c_harvest_C,cue_c_harvest_D,cue_c_harvest_E,cue_d_shape_A,cue_d_shape_B,cue_d_shape_C,cue_d_shape_D,cue_d_shape_E,cue_e_crop2024_A,cue_e_crop2024_B,cue_e_crop2024_C,cue_e_crop2024_D,cue_e_crop2024_E,label_A,label_B,label_C,label_D,label_E,notes_B,notes_C,notes_D,labeller_1,labeller_2,disagreed,crop_fallow_only
+S003,,3.0,2.0,,,,open,open,,,,>50,0,,,,yes,yes,,,,yes,yes,,,,yes,no,,,,yes,can't tell,,,,,can't tell,,,,crop,not crop,,,,,,B,C,1,0
+S015,,1.0,3.0,,,,open,trees,,,,25-50,0,,,,can't tell,no,,,,yes,no,,,,no,no,,,,can't tell,no,,,,can't tell,no,,,,crop,not crop,,,more chance to be crop than bush because of wayback,,,B,C,1,0
+S019,,,2.0,3.0,,,,open,open,,,,0,25-50,,,,can't tell,yes,,,,yes,yes,,,,no,can't tell,,,,no,yes,,,,no,yes,,,,not crop,crop,,,,Crop is outside the box.,C,D,1,0
+S027,,,3.0,1.0,,,,open,open,,,,25-50,0,,,,yes,no,,,,yes,yes,,,,yes,can't tell,,,,yes,can't tell,,,,,can't tell,,,,crop,not crop,,,,,C,D,1,0
+S032,2.0,,3.0,,,open,,open,,,0,,10-25,,,yes,,yes,,,yes,,yes,,,no,,can't tell,,,can't tell,,yes,,,no,,,,,not crop,,crop,,,,,,C,A,1,0
+S040,,,3.0,1.0,,,,trees,open,,,,0,10-25,,,,no,no,,,,no,yes,,,,no,no,,,,no,can't tell,,,,no,can't tell,,,,not crop,crop,,,,"Very unclear. It looks like grass, but in the wayback it seems that those brown patches might have been crop.",C,D,1,0
+S041,2.0,3.0,,,,open,open,,,,0,>50,,,,no,yes,,,,yes,yes,,,,no,no,,,,no,yes,,,,can't tell,yes,,,,not crop,crop,,,,,,,B,A,1,0
+S050,,2.0,,2.0,,,open,,open,,,10-25,,0,,,can't tell,,can't tell,,,yes,,yes,,,can't tell,,can't tell,,,yes,,no,,,no,,can't tell,,,fallow,,not crop,,,,,B,D,1,0
+S052,,,1.0,2.0,,,,open,open,,,,10-25,0,,,,yes,yes,,,,yes,yes,,,,can't tell,can't tell,,,,yes,can't tell,,,,,can't tell,,,,crop,not crop,,,,,C,D,1,0
+S056,,,2.0,3.0,,,,open,open,,,,0,>50,,,,no,yes,,,,no,yes,,,,no,no,,,,no,yes,,,,no,can't tell,,,,not crop,crop,,,,,C,D,1,0
+S057,,,1.0,,3.0,,,open,,trees,,,,,0,,,can't tell,,no,,,can't tell,,no,,,can't tell,,no,,,no,,no,,,can't tell,,no,,,unsure,,not crop,,,,C,E,1,0
+S060,3.0,1.0,,,,trees,open,,,,0,<10,,,,no,no,,,,no,yes,,,,no,no,,,,no,yes,,,,no,can't tell,,,,not crop,crop,,,,could have little crops because of houses,,,B,A,1,0
+S062,,,2.0,,2.0,,,open,,open,,,<10,,0,,,yes,,yes,,,yes,,yes,,,no,,no,,,yes,,no,,,,,no,,,crop,,not crop,,,,C,E,1,0
+S068,,,1.0,,3.0,,,open,,open,,,0,,>50,,,can't tell,,yes,,,can't tell,,yes,,,can't tell,,no,,,can't tell,,yes,,,can't tell,,yes,,,unsure,,crop,,,,C,E,1,0
+S069,3.0,,1.0,,,open,,open,,,10-25,,,,,yes,,can't tell,,,yes,,can't tell,,,yes,,can't tell,,,yes,,can't tell,,,yes,,can't tell,,,crop,,unsure,,,,,,C,A,1,0
+S073,2.0,,,,3.0,open,,,,open,0,,,,25-50,yes,,,,yes,yes,,,,yes,no,,,,yes,no,,,,yes,no,,,,yes,not crop,,,,crop,,,,E,A,1,0
+S075,,2.0,,,2.0,,open,,,open,,0,,,0,,no,,,yes,,yes,,,yes,,no,,,no,,no,,,no,,can't tell,,,no,,unsure,,,not crop,not sure on labeling,,,B,E,1,0
+S085,2.0,,,,3.0,open,,,,open,0,,,,25-50,yes,,,,yes,yes,,,,yes,can't tell,,,,no,can't tell,,,,yes,can't tell,,,,yes,not crop,,,,crop,,,,E,A,1,0
+S089,,1.0,,,3.0,,open,,,open,,<10,,,>50,,yes,,,yes,,yes,,,yes,,no,,,can't tell,,can't tell,,,yes,,can't tell,,,,,unsure,,,crop,"could just be pathways, no clear pattern also from wayback",,,B,E,1,0
+S094,,1.0,,2.0,,,open,,open,,,25-50,,0,,,yes,,yes,,,yes,,yes,,,no,,can't tell,,,yes,,can't tell,,,can't tell,,can't tell,,,crop,,not crop,,,,,B,D,1,0
+S100,2.0,,,2.0,,open,,,open,,0,,,25-50,,yes,,,yes,,yes,,,yes,,no,,,can't tell,,no,,,yes,,no,,,can't tell,,not crop,,,crop,,,,,D,A,1,0
+S115,,3.0,,3.0,,,open,,open,,,25-50,,0,,,yes,,no,,,yes,,no,,,yes,,no,,,yes,,no,,,yes,,can't tell,,,crop,,not crop,,,,,B,D,1,0
+S117,,1.0,,,2.0,,open,,,open,,<10,,,0,,yes,,,yes,,yes,,,yes,,no,,,can't tell,,can't tell,,,no,,can't tell,,,no,,crop,,,not crop,Could have little crops around vegetation ,,,B,E,1,0
+S121,3.0,2.0,,,,open,open,,,,0,>50,,,,yes,yes,,,,yes,yes,,,,no,no,,,,no,yes,,,,no,,,,,not crop,crop,,,,,,,B,A,1,0
+S132,3.0,,1.0,,,open,,open,,,10-25,,,,,yes,,can't tell,,,yes,,can't tell,,,yes,,can't tell,,,yes,,can't tell,,,,,can't tell,,,crop,,unsure,,,,,,C,A,1,0
+S136,2.0,,,,3.0,open,,,,open,0,,,,25-50,yes,,,,yes,yes,,,,yes,no,,,,can't tell,no,,,,yes,no,,,,no,not crop,,,,crop,,,,E,A,1,0
+S155,3.0,,,,2.0,open,,,,open,10-25,,,,0,yes,,,,yes,yes,,,,yes,yes,,,,can't tell,yes,,,,can't tell,yes,,,,can't tell,crop,,,,not crop,,,,E,A,1,0
+S159,,3.0,2.0,,,,open,open,,,,>50,0,,,,yes,yes,,,,yes,yes,,,,yes,no,,,,yes,no,,,,yes,no,,,,crop,not crop,,,,,,B,C,1,0
+S170,2.0,2.0,,,,open,open,,,,0,<10,,,,yes,yes,,,,yes,yes,,,,can't tell,can't tell,,,,no,yes,,,,no,can't tell,,,,not crop,crop,,,,,,,B,A,1,0
+S178,3.0,3.0,,,,open,open,,,,0,>50,,,,no,yes,,,,yes,yes,,,,no,no,,,,no,yes,,,,no,yes,,,,not crop,crop,,,,,,,B,A,1,0
+S186,3.0,,2.0,,,trees,,open,,,0,,10-25,,,no,,yes,,,no,,yes,,,no,,yes,,,no,,can't tell,,,no,,,,,not crop,,crop,,,,,,C,A,1,0
+S187,,,2.0,,2.0,,,open,,open,,,10-25,,0,,,yes,,yes,,,yes,,yes,,,yes,,can't tell,,,can't tell,,can't tell,,,,,can't tell,,,crop,,not crop,,,,C,E,1,0
+S194,3.0,,3.0,,,open,,open,,,10-25,,10-25,,,yes,,yes,,,yes,,no,,,yes,,no,,,yes,,yes,,,yes,,yes,,,crop,,fallow,,,,,,C,A,0,1
+S213,,1.0,,3.0,,,open,,open,,,25-50,,0,,,yes,,no,,,yes,,no,,,no,,no,,,no,,no,,,can't tell,,no,,,crop,,not crop,,,,,B,D,1,0
+S218,,,1.0,3.0,,,,open,open,,,,,10-25,,,,yes,yes,,,,can't tell,yes,,,,can't tell,yes,,,,can't tell,yes,,,,,,,,,unsure,crop,,,,,C,D,1,0
+S219,,1.0,,,2.0,,open,,,open,,25-50,,,0,,yes,,,yes,,yes,,,yes,,no,,,no,,can't tell,,,no,,can't tell,,,no,,crop,,,not crop,i see some patches,,,B,E,1,0
+S220,2.0,,,2.0,,open,,,open,,0,,,25-50,,yes,,,yes,,yes,,,yes,,no,,,yes,,no,,,yes,,no,,,,,not crop,,,crop,,,,,D,A,1,0
+S226,3.0,2.0,,,,open,open,,,,0,10-25,,,,no,yes,,,,yes,yes,,,,no,no,,,,no,can't tell,,,,no,can't tell,,,,not crop,crop,,,,some patches possible,,,B,A,1,0
+S228,,,1.0,,3.0,,,open,,open,,,,,25-50,,,yes,,yes,,,can't tell,,yes,,,can't tell,,can't tell,,,can't tell,,yes,,,,,can't tell,,,unsure,,crop,,,,C,E,1,0
+S236,2.0,2.0,,,,open,open,,,,0,25-50,,,,yes,yes,,,,yes,yes,,,,no,can't tell,,,,no,can't tell,,,,no,yes,,,,not crop,crop,,,,not precise patchwork but seems so,,,B,A,1,0
+S243,2.0,,1.0,,,open,,open,,,<10,,,,,yes,,yes,,,yes,,yes,,,yes,,can't tell,,,yes,,can't tell,,,yes,,can't tell,,,crop,,unsure,,,,there could be some small crop,,C,A,1,0
+S257,,1.0,2.0,,,,open,open,,,,25-50,0,,,,no,no,,,,yes,no,,,,no,no,,,,yes,no,,,,no,no,,,,fallow,not crop,,,,,,B,C,1,0
+S259,2.0,,,3.0,,open,,,open,,0,,,25-50,,yes,,,yes,,yes,,,yes,,no,,,yes,,no,,,yes,,no,,,,,not crop,,,crop,,,,,D,A,1,0
+S265,2.0,2.0,,,,open,open,,,,0,10-25,,,,yes,yes,,,,yes,yes,,,,no,yes,,,,no,yes,,,,no,yes,,,,not crop,crop,,,,,,,B,A,1,0
+S270,3.0,,3.0,,,open,,open,,,0,,25-50,,,yes,,yes,,,yes,,yes,,,no,,yes,,,no,,yes,,,no,,,,,not crop,,crop,,,,,,C,A,1,0
+S281,3.0,,,2.0,,open,,,open,,10-25,,,0,,yes,,,yes,,yes,,,yes,,yes,,,can't tell,,yes,,,can't tell,,yes,,,can't tell,,crop,,,not crop,,,,,D,A,1,0
+S282,2.0,,,,3.0,open,,,,open,0,,,,25-50,yes,,,,yes,yes,,,,yes,no,,,,can't tell,no,,,,yes,no,,,,can't tell,not crop,,,,crop,,,,E,A,1,0
+S291,3.0,2.0,,,,open,open,,,,0,10-25,,,,no,yes,,,,yes,yes,,,,no,no,,,,no,yes,,,,no,can't tell,,,,not crop,crop,,,,,,,B,A,1,0
+S303,,,2.0,2.0,,,,open,open,,,,25-50,0,,,,yes,yes,,,,yes,yes,,,,yes,no,,,,can't tell,can't tell,,,,,can't tell,,,,crop,not crop,,,,,C,D,1,0
+S330,,,2.0,,3.0,,,open,,open,,,,,25-50,,,yes,,yes,,,yes,,yes,,,can't tell,,yes,,,can't tell,,yes,,,can't tell,,yes,,,unsure,,crop,,,,C,E,1,0
+S333,2.0,,3.0,,,open,,open,,,0,,>50,,,yes,,yes,,,yes,,yes,,,no,,yes,,,no,,yes,,,no,,,,,not crop,,crop,,,,,,C,A,1,0
+S339,3.0,,,1.0,,open,,,open,,10-25,,,0,,yes,,,yes,,yes,,,yes,,yes,,,no,,yes,,,can't tell,,yes,,,can't tell,,crop,,,not crop,,,,Unsure about this one. I don't know what the boundaries are.,D,A,1,0
+S343,3.0,3.0,,,,open,open,,,,0,>50,,,,yes,yes,,,,yes,yes,,,,no,no,,,,no,yes,,,,no,,,,,not crop,crop,,,,,,,B,A,1,0
+S347,,3.0,,,3.0,,trees,,,open,,0,,,10-25,,no,,,yes,,no,,,yes,,no,,,yes,,no,,,yes,,no,,,can't tell,,not crop,,,crop,,,,B,E,1,0
+S356,3.0,,2.0,,,trees,,open,,,0,,<10,,,no,,yes,,,no,,yes,,,no,,yes,,,no,,can't tell,,,no,,,,,not crop,,crop,,,,,,C,A,1,0
+S357,,1.0,,2.0,,,open,,open,,,10-25,,10-25,,,yes,,can't tell,,,yes,,yes,,,yes,,can't tell,,,can't tell,,yes,,,,,can't tell,,,crop,,fallow,,,,,B,D,0,1
+S362,,3.0,2.0,,,,open,open,,,,>50,0,,,,yes,yes,,,,yes,yes,,,,yes,no,,,,yes,no,,,,yes,can't tell,,,,crop,not crop,,,,,,B,C,1,0
+S370,,3.0,,2.0,,,open,,open,,,25-50,,0,,,yes,,yes,,,yes,,yes,,,yes,,can't tell,,,yes,,can't tell,,,yes,,can't tell,,,crop,,not crop,,,,corpland could be outside the box.,B,D,1,0
+S391,,,2.0,,3.0,,,open,,open,,,0,,10-25,,,no,,yes,,,no,,yes,,,no,,can't tell,,,no,,yes,,,no,,can't tell,,,not crop,,crop,,,,C,E,1,0
+S392,2.0,,2.0,,,open,,open,,,<10,,25-50,,,yes,,yes,,,yes,,no,,,yes,,no,,,yes,,yes,,,yes,,yes,,,crop,,fallow,,,,,,C,A,0,1
+S393,2.0,3.0,,,,open,open,,,,0,25-50,,,,yes,yes,,,,yes,yes,,,,no,yes,,,,no,yes,,,,no,yes,,,,not crop,crop,,,,,,,B,A,1,0
+S402,,,1.0,2.0,,,,open,open,,,,0,0,,,,can't tell,yes,,,,yes,yes,,,,can't tell,can't tell,,,,no,no,,,,no,can't tell,,,,unsure,not crop,,,,,C,D,1,0
+S406,3.0,,,,3.0,open,,,,open,0,,,,10-25,yes,,,,yes,yes,,,,yes,no,,,,can't tell,no,,,,yes,no,,,,can't tell,not crop,,,,crop,,,,E,A,1,0
+S415,,,2.0,,3.0,,,open,,open,,,0,,10-25,,,no,,yes,,,no,,yes,,,no,,can't tell,,,no,,yes,,,no,,can't tell,,,not crop,,crop,,,,C,E,1,0
+S423,,,3.0,,3.0,,,open,,open,,,25-50,,25-50,,,yes,,yes,,,no,,yes,,,no,,can't tell,,,yes,,yes,,,yes,,can't tell,,,fallow,,crop,,,,C,E,0,1
+S425,3.0,1.0,,,,open,open,,,,0,10-25,,,,yes,can't tell,,,,yes,yes,,,,no,no,,,,no,yes,,,,no,can't tell,,,,not crop,fallow,,,,,,,B,A,1,0
+S432,,,1.0,,3.0,,,open,,open,,,,,10-25,,,yes,,yes,,,yes,,yes,,,can't tell,,yes,,,can't tell,,yes,,,can't tell,,can't tell,,,unsure,,crop,,,,C,E,1,0
+S439,2.0,,,2.0,,open,,,open,,0,,,10-25,,yes,,,yes,,yes,,,yes,,no,,,yes,,no,,,can't tell,,no,,,can't tell,,not crop,,,crop,,,,,D,A,1,0
+S447,2.0,,,,3.0,open,,,,open,0,,,,10-25,yes,,,,yes,yes,,,,yes,no,,,,yes,can't tell,,,,yes,can't tell,,,,,not crop,,,,crop,,,,E,A,1,0

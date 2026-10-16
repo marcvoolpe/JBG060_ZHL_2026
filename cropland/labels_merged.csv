@@ -1,451 +1,451 @@
 id,labeller_1,label_1,labeller_2,label_2,final,disagreed,crop_fallow_only,confidence
-S001,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S002,Matteo,crop,Marc,crop,crop,0,0,3.0
-S003,Matteo,crop,Marc,not crop,disagreed,1,0,2.0
-S004,Matteo,crop,Yassin,crop,crop,0,0,2.0
-S005,Matteo,crop,Wei,crop,crop,0,0,3.0
-S006,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S007,Matteo,not crop,Marc,not crop,not crop,0,0,3.0
-S008,Matteo,crop,Yassin,crop,crop,0,0,3.0
-S009,Matteo,not crop,Marc,not crop,not crop,0,0,3.0
-S010,Matteo,crop,Wei,crop,crop,0,0,2.0
-S011,Matteo,crop,Matei,crop,crop,0,0,2.0
-S012,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S013,Matteo,not crop,Marc,not crop,not crop,0,0,3.0
-S014,Matteo,crop,Marc,crop,crop,0,0,3.0
-S015,Matteo,crop,Marc,not crop,disagreed,1,0,1.0
-S016,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S017,Matteo,crop,Marc,crop,crop,0,0,3.0
-S018,Matteo,not crop,Wei,not crop,not crop,0,0,2.0
-S019,Marc,not crop,Yassin,crop,disagreed,1,0,2.0
-S020,Matteo,crop,Matei,crop,crop,0,0,3.0
-S021,Matteo,crop,Yassin,crop,crop,0,0,2.0
-S022,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S023,Matteo,not crop,Wei,not crop,not crop,0,0,2.0
-S024,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S025,Matteo,crop,Wei,crop,crop,0,0,3.0
-S026,Matteo,crop,Yassin,crop,crop,0,0,3.0
-S027,Marc,crop,Yassin,not crop,disagreed,1,0,1.0
-S028,Marc,not crop,Wei,not crop,not crop,0,0,3.0
-S029,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S030,Matteo,crop,Matei,crop,crop,0,0,3.0
-S031,Marc,crop,Yassin,crop,crop,0,0,3.0
-S032,Marc,crop,Matei,not crop,disagreed,1,0,2.0
-S033,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S034,Marc,crop,Wei,crop,crop,0,0,3.0
-S035,Matteo,not crop,Wei,not crop,not crop,0,0,3.0
-S036,Yassin,not crop,Wei,not crop,not crop,0,0,3.0
-S037,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S038,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S039,Matteo,crop,Wei,crop,crop,0,0,3.0
-S040,Marc,not crop,Yassin,crop,disagreed,1,0,1.0
-S041,Matteo,crop,Matei,not crop,disagreed,1,0,2.0
-S042,Matteo,crop,Wei,crop,crop,0,0,3.0
-S043,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S044,Marc,not crop,Matei,not crop,not crop,0,0,3.0
-S045,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S046,Marc,not crop,Yassin,not crop,not crop,0,0,2.0
-S047,Wei,crop,Matei,crop,crop,0,0,3.0
-S048,Matteo,not crop,Marc,not crop,not crop,0,0,3.0
-S049,Matteo,not crop,Yassin,not crop,not crop,0,0,2.0
-S050,Matteo,fallow,Yassin,not crop,disagreed,1,0,2.0
-S051,Marc,crop,Matei,crop,crop,0,0,2.0
-S052,Marc,crop,Yassin,not crop,disagreed,1,0,1.0
-S053,Marc,crop,Matei,crop,crop,0,0,3.0
-S054,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S055,Yassin,crop,Wei,crop,crop,0,0,3.0
-S056,Marc,not crop,Yassin,crop,disagreed,1,0,2.0
-S057,Marc,unsure,Wei,not crop,disagreed,1,0,1.0
-S058,Matteo,not crop,Wei,not crop,not crop,0,0,3.0
-S059,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S060,Matteo,crop,Matei,not crop,disagreed,1,0,1.0
-S061,Yassin,crop,Matei,crop,crop,0,0,3.0
-S062,Marc,crop,Wei,not crop,disagreed,1,0,2.0
-S063,Marc,not crop,Yassin,not crop,not crop,0,0,3.0
-S064,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S065,Marc,not crop,Wei,not crop,not crop,0,0,3.0
-S066,Marc,not crop,Matei,not crop,not crop,0,0,3.0
-S067,Yassin,crop,Matei,crop,crop,0,0,3.0
-S068,Marc,unsure,Wei,crop,disagreed,1,0,1.0
-S069,Marc,unsure,Matei,crop,disagreed,1,0,1.0
-S070,Yassin,crop,Wei,crop,crop,0,0,3.0
-S071,Marc,crop,Matei,crop,crop,0,0,1.0
-S072,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S073,Wei,crop,Matei,not crop,disagreed,1,0,2.0
-S074,Yassin,not crop,Wei,not crop,not crop,0,0,3.0
-S075,Matteo,unsure,Wei,not crop,disagreed,1,0,2.0
-S076,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S077,Wei,not crop,Matei,not crop,not crop,0,0,3.0
-S078,Yassin,crop,Matei,crop,crop,0,0,3.0
-S079,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S080,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S081,Matteo,crop,Marc,crop,crop,0,0,3.0
-S082,Matteo,not crop,Marc,not crop,not crop,0,0,3.0
-S083,Matteo,crop,Yassin,crop,crop,0,0,2.0
-S084,Matteo,not crop,Wei,not crop,not crop,0,0,1.0
-S085,Wei,crop,Matei,not crop,disagreed,1,0,2.0
-S086,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S087,Matteo,not crop,Matei,not crop,not crop,0,0,2.0
-S088,Yassin,crop,Wei,crop,crop,0,0,3.0
-S089,Matteo,unsure,Wei,crop,disagreed,1,0,1.0
-S090,Marc,not crop,Yassin,not crop,not crop,0,0,2.0
-S091,Marc,not crop,Yassin,not crop,not crop,0,0,2.0
-S092,Matteo,crop,Marc,crop,crop,0,0,2.0
-S093,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S094,Matteo,crop,Yassin,not crop,disagreed,1,0,1.0
-S095,Matteo,crop,Wei,crop,crop,0,0,2.0
-S096,Yassin,not crop,Wei,not crop,not crop,0,0,3.0
-S097,Matteo,not crop,Wei,not crop,not crop,0,0,3.0
-S098,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S099,Matteo,not crop,Matei,not crop,not crop,0,0,2.0
-S100,Yassin,crop,Matei,not crop,disagreed,1,0,2.0
-S101,Marc,crop,Wei,crop,crop,0,0,2.0
-S102,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S103,Marc,not crop,Yassin,not crop,not crop,0,0,2.0
-S104,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S105,Matteo,crop,Marc,crop,crop,0,0,1.0
-S106,Marc,not crop,Yassin,not crop,not crop,0,0,3.0
-S107,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S108,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S109,Yassin,not crop,Matei,not crop,not crop,0,0,2.0
-S110,Marc,crop,Wei,crop,crop,0,0,2.0
-S111,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S112,Matteo,not crop,Marc,not crop,not crop,0,0,1.0
-S113,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S114,Matteo,crop,Yassin,crop,crop,0,0,2.0
-S115,Matteo,crop,Yassin,not crop,disagreed,1,0,3.0
-S116,Yassin,not crop,Matei,not crop,not crop,0,0,2.0
-S117,Matteo,crop,Wei,not crop,disagreed,1,0,1.0
-S118,Matteo,not crop,Wei,not crop,not crop,0,0,2.0
-S119,Marc,not crop,Matei,not crop,not crop,0,0,3.0
-S120,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S121,Matteo,crop,Matei,not crop,disagreed,1,0,2.0
-S122,Matteo,crop,Matei,crop,crop,0,0,2.0
-S123,Marc,crop,Yassin,crop,crop,0,0,2.0
-S124,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S125,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S126,Marc,crop,Wei,crop,crop,0,0,2.0
-S127,Wei,not crop,Matei,not crop,not crop,0,0,3.0
-S128,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S129,Marc,crop,Yassin,crop,crop,0,0,3.0
-S130,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S131,Marc,crop,Wei,crop,crop,0,0,2.0
-S132,Marc,unsure,Matei,crop,disagreed,1,0,1.0
-S133,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S134,Marc,not crop,Yassin,not crop,not crop,0,0,2.0
-S135,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S136,Wei,crop,Matei,not crop,disagreed,1,0,2.0
-S137,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S138,Marc,crop,Matei,crop,crop,0,0,3.0
-S139,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S140,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S141,Yassin,crop,Wei,crop,crop,0,0,3.0
-S142,Yassin,crop,Matei,crop,crop,0,0,1.0
-S143,Wei,not crop,Matei,not crop,not crop,0,0,3.0
-S144,Matteo,crop,Marc,crop,crop,0,0,3.0
-S145,Matteo,not crop,Marc,not crop,not crop,0,0,3.0
-S146,Yassin,crop,Matei,crop,crop,0,0,1.0
-S147,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S148,Matteo,crop,Yassin,crop,crop,0,0,3.0
-S149,Yassin,crop,Matei,crop,crop,0,0,2.0
-S150,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S151,Matteo,not crop,Wei,not crop,not crop,0,0,2.0
-S152,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S153,Wei,crop,Matei,crop,crop,0,0,2.0
-S154,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S155,Wei,not crop,Matei,crop,disagreed,1,0,2.0
-S156,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S157,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S158,Marc,not crop,Yassin,not crop,not crop,0,0,2.0
-S159,Matteo,crop,Marc,not crop,disagreed,1,0,2.0
-S160,Matteo,crop,Matei,crop,crop,0,0,3.0
-S161,Matteo,crop,Wei,crop,crop,0,0,3.0
-S162,Matteo,not crop,Wei,not crop,not crop,0,0,3.0
-S163,Matteo,crop,Yassin,crop,crop,0,0,3.0
-S164,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S165,Matteo,not crop,Wei,not crop,not crop,0,0,3.0
-S166,Matteo,crop,Matei,crop,crop,0,0,2.0
-S167,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S168,Marc,not crop,Yassin,not crop,not crop,0,0,2.0
-S169,Matteo,crop,Wei,crop,crop,0,0,3.0
-S170,Matteo,crop,Matei,not crop,disagreed,1,0,2.0
-S171,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S172,Marc,crop,Yassin,crop,crop,0,0,3.0
-S173,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S174,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S175,Matteo,crop,Marc,crop,crop,0,0,2.0
-S176,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S177,Marc,crop,Wei,crop,crop,0,0,2.0
-S178,Matteo,crop,Matei,not crop,disagreed,1,0,3.0
-S179,Marc,not crop,Yassin,not crop,not crop,0,0,2.0
-S180,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S181,Matteo,crop,Yassin,crop,crop,0,0,3.0
-S182,Matteo,crop,Wei,crop,crop,0,0,3.0
-S183,Marc,not crop,Yassin,not crop,not crop,0,0,3.0
-S184,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S185,Marc,not crop,Wei,not crop,not crop,0,0,3.0
-S186,Marc,crop,Matei,not crop,disagreed,1,0,2.0
-S187,Marc,crop,Wei,not crop,disagreed,1,0,2.0
-S188,Yassin,not crop,Wei,not crop,not crop,0,0,3.0
-S189,Yassin,not crop,Matei,not crop,not crop,0,0,2.0
-S190,Wei,not crop,Matei,not crop,not crop,0,0,3.0
-S191,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S192,Matteo,crop,Matei,crop,crop,0,0,2.0
-S193,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S194,Marc,fallow,Matei,crop,crop/fallow,0,1,3.0
-S195,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S196,Marc,crop,Yassin,crop,crop,0,0,2.0
-S197,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S198,Matteo,not crop,Wei,not crop,not crop,0,0,2.0
-S199,Matteo,not crop,Matei,not crop,not crop,0,0,2.0
-S200,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S201,Yassin,not crop,Matei,not crop,not crop,0,0,2.0
-S202,Marc,crop,Matei,crop,crop,0,0,3.0
-S203,Yassin,not crop,Wei,not crop,not crop,0,0,3.0
-S204,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S205,Yassin,crop,Wei,crop,crop,0,0,2.0
-S206,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S207,Yassin,crop,Matei,crop,crop,0,0,3.0
-S208,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S209,Marc,not crop,Yassin,not crop,not crop,0,0,2.0
-S210,Marc,crop,Wei,crop,crop,0,0,3.0
-S211,Matteo,not crop,Marc,not crop,not crop,0,0,1.0
-S212,Wei,crop,Matei,crop,crop,0,0,3.0
-S213,Matteo,crop,Yassin,not crop,disagreed,1,0,1.0
-S214,Yassin,crop,Wei,crop,crop,0,0,3.0
-S215,Matteo,crop,Marc,crop,crop,0,0,3.0
-S216,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S217,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S218,Marc,unsure,Yassin,crop,disagreed,1,0,1.0
-S219,Matteo,crop,Wei,not crop,disagreed,1,0,1.0
-S220,Yassin,crop,Matei,not crop,disagreed,1,0,2.0
-S221,Wei,crop,Matei,crop,crop,0,0,3.0
-S222,Marc,crop,Wei,crop,crop,0,0,1.0
-S223,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S224,Marc,crop,Matei,crop,crop,0,0,2.0
-S225,Matteo,crop,Yassin,crop,crop,0,0,3.0
-S226,Matteo,crop,Matei,not crop,disagreed,1,0,2.0
-S227,Yassin,not crop,Wei,not crop,not crop,0,0,3.0
-S228,Marc,unsure,Wei,crop,disagreed,1,0,1.0
-S229,Matteo,crop,Wei,crop,crop,0,0,3.0
-S230,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S231,Matteo,crop,Marc,crop,crop,0,0,3.0
-S232,Marc,not crop,Yassin,not crop,not crop,0,0,2.0
-S233,Matteo,crop,Yassin,crop,crop,0,0,3.0
-S234,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S235,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S236,Matteo,crop,Matei,not crop,disagreed,1,0,2.0
-S237,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S238,Wei,not crop,Matei,not crop,not crop,0,0,3.0
-S239,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S240,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S241,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S242,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S243,Marc,unsure,Matei,crop,disagreed,1,0,1.0
-S244,Matteo,not crop,Wei,not crop,not crop,0,0,2.0
-S245,Matteo,not crop,Wei,not crop,not crop,0,0,3.0
-S246,Yassin,crop,Wei,crop,crop,0,0,3.0
-S247,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S248,Matteo,crop,Matei,crop,crop,0,0,2.0
-S249,Marc,not crop,Yassin,not crop,not crop,0,0,3.0
-S250,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S251,Marc,crop,Yassin,crop,crop,0,0,2.0
-S252,Yassin,crop,Matei,crop,crop,0,0,3.0
-S253,Marc,not crop,Yassin,not crop,not crop,0,0,2.0
-S254,Wei,crop,Matei,crop,crop,0,0,3.0
-S255,Matteo,crop,Wei,crop,crop,0,0,2.0
-S256,Marc,crop,Wei,crop,crop,0,0,3.0
-S257,Matteo,fallow,Marc,not crop,disagreed,1,0,1.0
-S258,Matteo,not crop,Yassin,not crop,not crop,0,0,2.0
-S259,Yassin,crop,Matei,not crop,disagreed,1,0,2.0
-S260,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S261,Marc,not crop,Wei,not crop,not crop,0,0,3.0
-S262,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S263,Matteo,not crop,Wei,not crop,not crop,0,0,2.0
-S264,Marc,crop,Matei,crop,crop,0,0,3.0
-S265,Matteo,crop,Matei,not crop,disagreed,1,0,2.0
-S266,Marc,crop,Yassin,crop,crop,0,0,3.0
-S267,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S268,Matteo,not crop,Matei,not crop,not crop,0,0,2.0
-S269,Matteo,not crop,Wei,not crop,not crop,0,0,2.0
-S270,Marc,crop,Matei,not crop,disagreed,1,0,3.0
-S271,Marc,not crop,Yassin,not crop,not crop,0,0,2.0
-S272,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S273,Marc,crop,Wei,crop,crop,0,0,1.0
-S274,Yassin,crop,Wei,crop,crop,0,0,3.0
-S275,Matteo,crop,Yassin,crop,crop,0,0,2.0
-S276,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S277,Matteo,crop,Marc,crop,crop,0,0,2.0
-S278,Matteo,crop,Yassin,crop,crop,0,0,2.0
-S279,Matteo,crop,Wei,crop,crop,0,0,2.0
-S280,Wei,crop,Matei,crop,crop,0,0,3.0
-S281,Yassin,not crop,Matei,crop,disagreed,1,0,2.0
-S282,Wei,crop,Matei,not crop,disagreed,1,0,2.0
-S283,Matteo,crop,Matei,crop,crop,0,0,3.0
-S284,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S285,Yassin,not crop,Wei,not crop,not crop,0,0,3.0
-S286,Matteo,not crop,Wei,not crop,not crop,0,0,3.0
-S287,Matteo,crop,Yassin,crop,crop,0,0,1.0
-S288,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S289,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S290,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S291,Matteo,crop,Matei,not crop,disagreed,1,0,2.0
-S292,Yassin,not crop,Wei,not crop,not crop,0,0,3.0
-S293,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S294,Marc,not crop,Yassin,not crop,not crop,0,0,3.0
-S295,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S296,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S297,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S298,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S299,Matteo,not crop,Marc,not crop,not crop,0,0,3.0
-S300,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S301,Matteo,not crop,Yassin,not crop,not crop,0,0,2.0
-S302,Marc,crop,Matei,crop,crop,0,0,2.0
-S303,Marc,crop,Yassin,not crop,disagreed,1,0,2.0
-S304,Yassin,not crop,Wei,not crop,not crop,0,0,3.0
-S305,Matteo,crop,Wei,crop,crop,0,0,3.0
-S306,Matteo,not crop,Wei,not crop,not crop,0,0,3.0
-S307,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S308,Matteo,crop,Yassin,crop,crop,0,0,2.0
-S309,Marc,not crop,Yassin,not crop,not crop,0,0,3.0
-S310,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S311,Marc,crop,Wei,crop,crop,0,0,3.0
-S312,Marc,crop,Matei,crop,crop,0,0,3.0
-S313,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S314,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S315,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S316,Marc,not crop,Yassin,not crop,not crop,0,0,2.0
-S317,Matteo,crop,Wei,crop,crop,0,0,3.0
-S318,Yassin,not crop,Wei,not crop,not crop,0,0,3.0
-S319,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S320,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S321,Wei,not crop,Matei,not crop,not crop,0,0,3.0
-S322,Matteo,crop,Matei,crop,crop,0,0,3.0
-S323,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S324,Yassin,crop,Wei,crop,crop,0,0,3.0
-S325,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S326,Yassin,crop,Wei,crop,crop,0,0,2.0
-S327,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S328,Marc,crop,Yassin,crop,crop,0,0,2.0
-S329,Matteo,not crop,Yassin,not crop,not crop,0,0,2.0
-S330,Marc,unsure,Wei,crop,disagreed,1,0,2.0
-S331,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S332,Matteo,not crop,Wei,not crop,not crop,0,0,2.0
-S333,Marc,crop,Matei,not crop,disagreed,1,0,2.0
-S334,Matteo,not crop,Wei,not crop,not crop,0,0,3.0
-S335,Yassin,not crop,Matei,not crop,not crop,0,0,2.0
-S336,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S337,Marc,not crop,Yassin,not crop,not crop,0,0,3.0
-S338,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S339,Yassin,not crop,Matei,crop,disagreed,1,0,1.0
-S340,Wei,not crop,Matei,not crop,not crop,0,0,3.0
-S341,Matteo,not crop,Wei,not crop,not crop,0,0,2.0
-S342,Matteo,crop,Marc,crop,crop,0,0,2.0
-S343,Matteo,crop,Matei,not crop,disagreed,1,0,3.0
-S344,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S345,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S346,Wei,crop,Matei,crop,crop,0,0,2.0
-S347,Matteo,not crop,Wei,crop,disagreed,1,0,3.0
-S348,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S349,Yassin,crop,Wei,crop,crop,0,0,3.0
-S350,Matteo,crop,Marc,crop,crop,0,0,2.0
-S351,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S352,Yassin,crop,Matei,crop,crop,0,0,3.0
-S353,Marc,crop,Yassin,crop,crop,0,0,2.0
-S354,Wei,crop,Matei,crop,crop,0,0,3.0
-S355,Marc,not crop,Wei,not crop,not crop,0,0,3.0
-S356,Marc,crop,Matei,not crop,disagreed,1,0,2.0
-S357,Matteo,crop,Yassin,fallow,crop/fallow,0,1,1.0
-S358,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S359,Matteo,crop,Wei,crop,crop,0,0,1.0
-S360,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S361,Marc,not crop,Yassin,not crop,not crop,0,0,2.0
-S362,Matteo,crop,Marc,not crop,disagreed,1,0,2.0
-S363,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S364,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S365,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S366,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S367,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S368,Matteo,not crop,Marc,not crop,not crop,0,0,3.0
-S369,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S370,Matteo,crop,Yassin,not crop,disagreed,1,0,2.0
-S371,Marc,crop,Yassin,crop,crop,0,0,2.0
-S372,Matteo,crop,Yassin,crop,crop,0,0,2.0
-S373,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S374,Matteo,not crop,Wei,not crop,not crop,0,0,3.0
-S375,Matteo,crop,Matei,crop,crop,0,0,1.0
-S376,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S377,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S378,Marc,not crop,Yassin,not crop,not crop,0,0,3.0
-S379,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S380,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S381,Marc,not crop,Wei,not crop,not crop,0,0,3.0
-S382,Matteo,crop,Wei,crop,crop,0,0,2.0
-S383,Marc,not crop,Yassin,not crop,not crop,0,0,3.0
-S384,Marc,not crop,Wei,not crop,not crop,0,0,2.0
-S385,Marc,not crop,Matei,not crop,not crop,0,0,3.0
-S386,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S387,Marc,crop,Matei,crop,crop,0,0,2.0
-S388,Matteo,crop,Matei,crop,crop,0,0,3.0
-S389,Marc,crop,Yassin,crop,crop,0,0,3.0
-S390,Yassin,not crop,Wei,not crop,not crop,0,0,3.0
-S391,Marc,not crop,Wei,crop,disagreed,1,0,2.0
-S392,Marc,fallow,Matei,crop,crop/fallow,0,1,2.0
-S393,Matteo,crop,Matei,not crop,disagreed,1,0,2.0
-S394,Yassin,crop,Wei,crop,crop,0,0,3.0
-S395,Yassin,not crop,Wei,not crop,not crop,0,0,3.0
-S396,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S397,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S398,Wei,not crop,Matei,not crop,not crop,0,0,3.0
-S399,Yassin,crop,Matei,crop,crop,0,0,3.0
-S400,Yassin,crop,Matei,crop,crop,0,0,3.0
-S401,Yassin,not crop,Matei,not crop,not crop,0,0,2.0
-S402,Marc,unsure,Yassin,not crop,disagreed,1,0,1.0
-S403,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S404,Yassin,not crop,Wei,not crop,not crop,0,0,2.0
-S405,Yassin,crop,Wei,crop,crop,0,0,2.0
-S406,Wei,crop,Matei,not crop,disagreed,1,0,3.0
-S407,Matteo,not crop,Marc,not crop,not crop,0,0,2.0
-S408,Matteo,crop,Marc,crop,crop,0,0,1.0
-S409,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S410,Matteo,crop,Yassin,crop,crop,0,0,2.0
-S411,Matteo,not crop,Marc,not crop,not crop,0,0,3.0
-S412,Matteo,crop,Wei,crop,crop,0,0,3.0
-S413,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S414,Matteo,not crop,Wei,not crop,not crop,0,0,3.0
-S415,Marc,not crop,Wei,crop,disagreed,1,0,2.0
-S416,Matteo,crop,Matei,crop,crop,0,0,2.0
-S417,Matteo,not crop,Yassin,not crop,not crop,0,0,3.0
-S418,Marc,crop,Yassin,crop,crop,0,0,3.0
-S419,Wei,crop,Matei,crop,crop,0,0,3.0
-S420,Matteo,not crop,Matei,not crop,not crop,0,0,3.0
-S421,Marc,crop,Matei,crop,crop,0,0,2.0
-S422,Matteo,not crop,Wei,not crop,not crop,0,0,1.0
-S423,Marc,fallow,Wei,crop,crop/fallow,0,1,3.0
-S424,Marc,crop,Matei,crop,crop,0,0,3.0
-S425,Matteo,fallow,Matei,not crop,disagreed,1,0,1.0
-S426,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S427,Yassin,crop,Wei,crop,crop,0,0,1.0
-S428,Marc,not crop,Yassin,not crop,not crop,0,0,3.0
-S429,Marc,not crop,Wei,not crop,not crop,0,0,3.0
-S430,Marc,not crop,Yassin,not crop,not crop,0,0,3.0
-S431,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S432,Marc,unsure,Wei,crop,disagreed,1,0,1.0
-S433,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S434,Marc,not crop,Matei,not crop,not crop,0,0,3.0
-S435,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S436,Yassin,not crop,Wei,not crop,not crop,0,0,3.0
-S437,Yassin,crop,Wei,crop,crop,0,0,3.0
-S438,Wei,crop,Matei,crop,crop,0,0,3.0
-S439,Yassin,crop,Matei,not crop,disagreed,1,0,2.0
-S440,Wei,crop,Matei,crop,crop,0,0,3.0
-S441,Marc,not crop,Matei,not crop,not crop,0,0,2.0
-S442,Yassin,crop,Matei,crop,crop,0,0,2.0
-S443,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S444,Wei,not crop,Matei,not crop,not crop,0,0,2.0
-S445,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S446,Yassin,not crop,Wei,not crop,not crop,0,0,3.0
-S447,Wei,crop,Matei,not crop,disagreed,1,0,2.0
-S448,Wei,not crop,Matei,not crop,not crop,0,0,3.0
-S449,Yassin,not crop,Matei,not crop,not crop,0,0,3.0
-S450,Wei,not crop,Matei,not crop,not crop,0,0,2.0
+S001,B,not crop,C,not crop,not crop,0,0,2.0
+S002,B,crop,C,crop,crop,0,0,3.0
+S003,B,crop,C,not crop,disagreed,1,0,2.0
+S004,B,crop,D,crop,crop,0,0,2.0
+S005,B,crop,E,crop,crop,0,0,3.0
+S006,B,not crop,D,not crop,not crop,0,0,3.0
+S007,B,not crop,C,not crop,not crop,0,0,3.0
+S008,B,crop,D,crop,crop,0,0,3.0
+S009,B,not crop,C,not crop,not crop,0,0,3.0
+S010,B,crop,E,crop,crop,0,0,2.0
+S011,B,crop,A,crop,crop,0,0,2.0
+S012,B,not crop,D,not crop,not crop,0,0,3.0
+S013,B,not crop,C,not crop,not crop,0,0,3.0
+S014,B,crop,C,crop,crop,0,0,3.0
+S015,B,crop,C,not crop,disagreed,1,0,1.0
+S016,B,not crop,C,not crop,not crop,0,0,2.0
+S017,B,crop,C,crop,crop,0,0,3.0
+S018,B,not crop,E,not crop,not crop,0,0,2.0
+S019,C,not crop,D,crop,disagreed,1,0,2.0
+S020,B,crop,A,crop,crop,0,0,3.0
+S021,B,crop,D,crop,crop,0,0,2.0
+S022,B,not crop,D,not crop,not crop,0,0,3.0
+S023,B,not crop,E,not crop,not crop,0,0,2.0
+S024,B,not crop,A,not crop,not crop,0,0,3.0
+S025,B,crop,E,crop,crop,0,0,3.0
+S026,B,crop,D,crop,crop,0,0,3.0
+S027,C,crop,D,not crop,disagreed,1,0,1.0
+S028,C,not crop,E,not crop,not crop,0,0,3.0
+S029,B,not crop,D,not crop,not crop,0,0,3.0
+S030,B,crop,A,crop,crop,0,0,3.0
+S031,C,crop,D,crop,crop,0,0,3.0
+S032,C,crop,A,not crop,disagreed,1,0,2.0
+S033,C,not crop,E,not crop,not crop,0,0,2.0
+S034,C,crop,E,crop,crop,0,0,3.0
+S035,B,not crop,E,not crop,not crop,0,0,3.0
+S036,D,not crop,E,not crop,not crop,0,0,3.0
+S037,B,not crop,A,not crop,not crop,0,0,3.0
+S038,D,not crop,A,not crop,not crop,0,0,3.0
+S039,B,crop,E,crop,crop,0,0,3.0
+S040,C,not crop,D,crop,disagreed,1,0,1.0
+S041,B,crop,A,not crop,disagreed,1,0,2.0
+S042,B,crop,E,crop,crop,0,0,3.0
+S043,C,not crop,E,not crop,not crop,0,0,2.0
+S044,C,not crop,A,not crop,not crop,0,0,3.0
+S045,B,not crop,A,not crop,not crop,0,0,3.0
+S046,C,not crop,D,not crop,not crop,0,0,2.0
+S047,E,crop,A,crop,crop,0,0,3.0
+S048,B,not crop,C,not crop,not crop,0,0,3.0
+S049,B,not crop,D,not crop,not crop,0,0,2.0
+S050,B,fallow,D,not crop,disagreed,1,0,2.0
+S051,C,crop,A,crop,crop,0,0,2.0
+S052,C,crop,D,not crop,disagreed,1,0,1.0
+S053,C,crop,A,crop,crop,0,0,3.0
+S054,D,not crop,E,not crop,not crop,0,0,2.0
+S055,D,crop,E,crop,crop,0,0,3.0
+S056,C,not crop,D,crop,disagreed,1,0,2.0
+S057,C,unsure,E,not crop,disagreed,1,0,1.0
+S058,B,not crop,E,not crop,not crop,0,0,3.0
+S059,C,not crop,A,not crop,not crop,0,0,2.0
+S060,B,crop,A,not crop,disagreed,1,0,1.0
+S061,D,crop,A,crop,crop,0,0,3.0
+S062,C,crop,E,not crop,disagreed,1,0,2.0
+S063,C,not crop,D,not crop,not crop,0,0,3.0
+S064,B,not crop,A,not crop,not crop,0,0,3.0
+S065,C,not crop,E,not crop,not crop,0,0,3.0
+S066,C,not crop,A,not crop,not crop,0,0,3.0
+S067,D,crop,A,crop,crop,0,0,3.0
+S068,C,unsure,E,crop,disagreed,1,0,1.0
+S069,C,unsure,A,crop,disagreed,1,0,1.0
+S070,D,crop,E,crop,crop,0,0,3.0
+S071,C,crop,A,crop,crop,0,0,1.0
+S072,B,not crop,D,not crop,not crop,0,0,3.0
+S073,E,crop,A,not crop,disagreed,1,0,2.0
+S074,D,not crop,E,not crop,not crop,0,0,3.0
+S075,B,unsure,E,not crop,disagreed,1,0,2.0
+S076,D,not crop,A,not crop,not crop,0,0,3.0
+S077,E,not crop,A,not crop,not crop,0,0,3.0
+S078,D,crop,A,crop,crop,0,0,3.0
+S079,B,not crop,A,not crop,not crop,0,0,3.0
+S080,E,not crop,A,not crop,not crop,0,0,2.0
+S081,B,crop,C,crop,crop,0,0,3.0
+S082,B,not crop,C,not crop,not crop,0,0,3.0
+S083,B,crop,D,crop,crop,0,0,2.0
+S084,B,not crop,E,not crop,not crop,0,0,1.0
+S085,E,crop,A,not crop,disagreed,1,0,2.0
+S086,B,not crop,D,not crop,not crop,0,0,3.0
+S087,B,not crop,A,not crop,not crop,0,0,2.0
+S088,D,crop,E,crop,crop,0,0,3.0
+S089,B,unsure,E,crop,disagreed,1,0,1.0
+S090,C,not crop,D,not crop,not crop,0,0,2.0
+S091,C,not crop,D,not crop,not crop,0,0,2.0
+S092,B,crop,C,crop,crop,0,0,2.0
+S093,C,not crop,E,not crop,not crop,0,0,2.0
+S094,B,crop,D,not crop,disagreed,1,0,1.0
+S095,B,crop,E,crop,crop,0,0,2.0
+S096,D,not crop,E,not crop,not crop,0,0,3.0
+S097,B,not crop,E,not crop,not crop,0,0,3.0
+S098,C,not crop,A,not crop,not crop,0,0,2.0
+S099,B,not crop,A,not crop,not crop,0,0,2.0
+S100,D,crop,A,not crop,disagreed,1,0,2.0
+S101,C,crop,E,crop,crop,0,0,2.0
+S102,D,not crop,E,not crop,not crop,0,0,2.0
+S103,C,not crop,D,not crop,not crop,0,0,2.0
+S104,D,not crop,E,not crop,not crop,0,0,2.0
+S105,B,crop,C,crop,crop,0,0,1.0
+S106,C,not crop,D,not crop,not crop,0,0,3.0
+S107,D,not crop,A,not crop,not crop,0,0,3.0
+S108,C,not crop,A,not crop,not crop,0,0,2.0
+S109,D,not crop,A,not crop,not crop,0,0,2.0
+S110,C,crop,E,crop,crop,0,0,2.0
+S111,E,not crop,A,not crop,not crop,0,0,2.0
+S112,B,not crop,C,not crop,not crop,0,0,1.0
+S113,C,not crop,E,not crop,not crop,0,0,2.0
+S114,B,crop,D,crop,crop,0,0,2.0
+S115,B,crop,D,not crop,disagreed,1,0,3.0
+S116,D,not crop,A,not crop,not crop,0,0,2.0
+S117,B,crop,E,not crop,disagreed,1,0,1.0
+S118,B,not crop,E,not crop,not crop,0,0,2.0
+S119,C,not crop,A,not crop,not crop,0,0,3.0
+S120,D,not crop,E,not crop,not crop,0,0,2.0
+S121,B,crop,A,not crop,disagreed,1,0,2.0
+S122,B,crop,A,crop,crop,0,0,2.0
+S123,C,crop,D,crop,crop,0,0,2.0
+S124,C,not crop,A,not crop,not crop,0,0,2.0
+S125,D,not crop,E,not crop,not crop,0,0,2.0
+S126,C,crop,E,crop,crop,0,0,2.0
+S127,E,not crop,A,not crop,not crop,0,0,3.0
+S128,B,not crop,C,not crop,not crop,0,0,2.0
+S129,C,crop,D,crop,crop,0,0,3.0
+S130,B,not crop,A,not crop,not crop,0,0,3.0
+S131,C,crop,E,crop,crop,0,0,2.0
+S132,C,unsure,A,crop,disagreed,1,0,1.0
+S133,E,not crop,A,not crop,not crop,0,0,2.0
+S134,C,not crop,D,not crop,not crop,0,0,2.0
+S135,B,not crop,D,not crop,not crop,0,0,3.0
+S136,E,crop,A,not crop,disagreed,1,0,2.0
+S137,D,not crop,A,not crop,not crop,0,0,3.0
+S138,C,crop,A,crop,crop,0,0,3.0
+S139,C,not crop,E,not crop,not crop,0,0,2.0
+S140,C,not crop,A,not crop,not crop,0,0,2.0
+S141,D,crop,E,crop,crop,0,0,3.0
+S142,D,crop,A,crop,crop,0,0,1.0
+S143,E,not crop,A,not crop,not crop,0,0,3.0
+S144,B,crop,C,crop,crop,0,0,3.0
+S145,B,not crop,C,not crop,not crop,0,0,3.0
+S146,D,crop,A,crop,crop,0,0,1.0
+S147,D,not crop,E,not crop,not crop,0,0,2.0
+S148,B,crop,D,crop,crop,0,0,3.0
+S149,D,crop,A,crop,crop,0,0,2.0
+S150,B,not crop,C,not crop,not crop,0,0,2.0
+S151,B,not crop,E,not crop,not crop,0,0,2.0
+S152,B,not crop,D,not crop,not crop,0,0,3.0
+S153,E,crop,A,crop,crop,0,0,2.0
+S154,B,not crop,D,not crop,not crop,0,0,3.0
+S155,E,not crop,A,crop,disagreed,1,0,2.0
+S156,D,not crop,E,not crop,not crop,0,0,2.0
+S157,B,not crop,A,not crop,not crop,0,0,3.0
+S158,C,not crop,D,not crop,not crop,0,0,2.0
+S159,B,crop,C,not crop,disagreed,1,0,2.0
+S160,B,crop,A,crop,crop,0,0,3.0
+S161,B,crop,E,crop,crop,0,0,3.0
+S162,B,not crop,E,not crop,not crop,0,0,3.0
+S163,B,crop,D,crop,crop,0,0,3.0
+S164,C,not crop,E,not crop,not crop,0,0,2.0
+S165,B,not crop,E,not crop,not crop,0,0,3.0
+S166,B,crop,A,crop,crop,0,0,2.0
+S167,B,not crop,A,not crop,not crop,0,0,3.0
+S168,C,not crop,D,not crop,not crop,0,0,2.0
+S169,B,crop,E,crop,crop,0,0,3.0
+S170,B,crop,A,not crop,disagreed,1,0,2.0
+S171,E,not crop,A,not crop,not crop,0,0,2.0
+S172,C,crop,D,crop,crop,0,0,3.0
+S173,C,not crop,A,not crop,not crop,0,0,2.0
+S174,D,not crop,A,not crop,not crop,0,0,3.0
+S175,B,crop,C,crop,crop,0,0,2.0
+S176,D,not crop,E,not crop,not crop,0,0,2.0
+S177,C,crop,E,crop,crop,0,0,2.0
+S178,B,crop,A,not crop,disagreed,1,0,3.0
+S179,C,not crop,D,not crop,not crop,0,0,2.0
+S180,C,not crop,E,not crop,not crop,0,0,2.0
+S181,B,crop,D,crop,crop,0,0,3.0
+S182,B,crop,E,crop,crop,0,0,3.0
+S183,C,not crop,D,not crop,not crop,0,0,3.0
+S184,D,not crop,E,not crop,not crop,0,0,2.0
+S185,C,not crop,E,not crop,not crop,0,0,3.0
+S186,C,crop,A,not crop,disagreed,1,0,2.0
+S187,C,crop,E,not crop,disagreed,1,0,2.0
+S188,D,not crop,E,not crop,not crop,0,0,3.0
+S189,D,not crop,A,not crop,not crop,0,0,2.0
+S190,E,not crop,A,not crop,not crop,0,0,3.0
+S191,B,not crop,C,not crop,not crop,0,0,2.0
+S192,B,crop,A,crop,crop,0,0,2.0
+S193,B,not crop,C,not crop,not crop,0,0,2.0
+S194,C,fallow,A,crop,crop/fallow,0,1,3.0
+S195,C,not crop,A,not crop,not crop,0,0,2.0
+S196,C,crop,D,crop,crop,0,0,2.0
+S197,B,not crop,D,not crop,not crop,0,0,3.0
+S198,B,not crop,E,not crop,not crop,0,0,2.0
+S199,B,not crop,A,not crop,not crop,0,0,2.0
+S200,B,not crop,D,not crop,not crop,0,0,3.0
+S201,D,not crop,A,not crop,not crop,0,0,2.0
+S202,C,crop,A,crop,crop,0,0,3.0
+S203,D,not crop,E,not crop,not crop,0,0,3.0
+S204,D,not crop,A,not crop,not crop,0,0,3.0
+S205,D,crop,E,crop,crop,0,0,2.0
+S206,E,not crop,A,not crop,not crop,0,0,2.0
+S207,D,crop,A,crop,crop,0,0,3.0
+S208,E,not crop,A,not crop,not crop,0,0,2.0
+S209,C,not crop,D,not crop,not crop,0,0,2.0
+S210,C,crop,E,crop,crop,0,0,3.0
+S211,B,not crop,C,not crop,not crop,0,0,1.0
+S212,E,crop,A,crop,crop,0,0,3.0
+S213,B,crop,D,not crop,disagreed,1,0,1.0
+S214,D,crop,E,crop,crop,0,0,3.0
+S215,B,crop,C,crop,crop,0,0,3.0
+S216,B,not crop,C,not crop,not crop,0,0,2.0
+S217,E,not crop,A,not crop,not crop,0,0,2.0
+S218,C,unsure,D,crop,disagreed,1,0,1.0
+S219,B,crop,E,not crop,disagreed,1,0,1.0
+S220,D,crop,A,not crop,disagreed,1,0,2.0
+S221,E,crop,A,crop,crop,0,0,3.0
+S222,C,crop,E,crop,crop,0,0,1.0
+S223,C,not crop,A,not crop,not crop,0,0,2.0
+S224,C,crop,A,crop,crop,0,0,2.0
+S225,B,crop,D,crop,crop,0,0,3.0
+S226,B,crop,A,not crop,disagreed,1,0,2.0
+S227,D,not crop,E,not crop,not crop,0,0,3.0
+S228,C,unsure,E,crop,disagreed,1,0,1.0
+S229,B,crop,E,crop,crop,0,0,3.0
+S230,D,not crop,A,not crop,not crop,0,0,3.0
+S231,B,crop,C,crop,crop,0,0,3.0
+S232,C,not crop,D,not crop,not crop,0,0,2.0
+S233,B,crop,D,crop,crop,0,0,3.0
+S234,D,not crop,A,not crop,not crop,0,0,3.0
+S235,C,not crop,E,not crop,not crop,0,0,2.0
+S236,B,crop,A,not crop,disagreed,1,0,2.0
+S237,B,not crop,C,not crop,not crop,0,0,2.0
+S238,E,not crop,A,not crop,not crop,0,0,3.0
+S239,B,not crop,C,not crop,not crop,0,0,2.0
+S240,E,not crop,A,not crop,not crop,0,0,2.0
+S241,B,not crop,D,not crop,not crop,0,0,3.0
+S242,B,not crop,D,not crop,not crop,0,0,3.0
+S243,C,unsure,A,crop,disagreed,1,0,1.0
+S244,B,not crop,E,not crop,not crop,0,0,2.0
+S245,B,not crop,E,not crop,not crop,0,0,3.0
+S246,D,crop,E,crop,crop,0,0,3.0
+S247,B,not crop,A,not crop,not crop,0,0,3.0
+S248,B,crop,A,crop,crop,0,0,2.0
+S249,C,not crop,D,not crop,not crop,0,0,3.0
+S250,D,not crop,E,not crop,not crop,0,0,2.0
+S251,C,crop,D,crop,crop,0,0,2.0
+S252,D,crop,A,crop,crop,0,0,3.0
+S253,C,not crop,D,not crop,not crop,0,0,2.0
+S254,E,crop,A,crop,crop,0,0,3.0
+S255,B,crop,E,crop,crop,0,0,2.0
+S256,C,crop,E,crop,crop,0,0,3.0
+S257,B,fallow,C,not crop,disagreed,1,0,1.0
+S258,B,not crop,D,not crop,not crop,0,0,2.0
+S259,D,crop,A,not crop,disagreed,1,0,2.0
+S260,C,not crop,A,not crop,not crop,0,0,2.0
+S261,C,not crop,E,not crop,not crop,0,0,3.0
+S262,D,not crop,E,not crop,not crop,0,0,2.0
+S263,B,not crop,E,not crop,not crop,0,0,2.0
+S264,C,crop,A,crop,crop,0,0,3.0
+S265,B,crop,A,not crop,disagreed,1,0,2.0
+S266,C,crop,D,crop,crop,0,0,3.0
+S267,D,not crop,A,not crop,not crop,0,0,3.0
+S268,B,not crop,A,not crop,not crop,0,0,2.0
+S269,B,not crop,E,not crop,not crop,0,0,2.0
+S270,C,crop,A,not crop,disagreed,1,0,3.0
+S271,C,not crop,D,not crop,not crop,0,0,2.0
+S272,E,not crop,A,not crop,not crop,0,0,2.0
+S273,C,crop,E,crop,crop,0,0,1.0
+S274,D,crop,E,crop,crop,0,0,3.0
+S275,B,crop,D,crop,crop,0,0,2.0
+S276,C,not crop,E,not crop,not crop,0,0,2.0
+S277,B,crop,C,crop,crop,0,0,2.0
+S278,B,crop,D,crop,crop,0,0,2.0
+S279,B,crop,E,crop,crop,0,0,2.0
+S280,E,crop,A,crop,crop,0,0,3.0
+S281,D,not crop,A,crop,disagreed,1,0,2.0
+S282,E,crop,A,not crop,disagreed,1,0,2.0
+S283,B,crop,A,crop,crop,0,0,3.0
+S284,B,not crop,C,not crop,not crop,0,0,2.0
+S285,D,not crop,E,not crop,not crop,0,0,3.0
+S286,B,not crop,E,not crop,not crop,0,0,3.0
+S287,B,crop,D,crop,crop,0,0,1.0
+S288,B,not crop,A,not crop,not crop,0,0,3.0
+S289,C,not crop,A,not crop,not crop,0,0,2.0
+S290,B,not crop,C,not crop,not crop,0,0,2.0
+S291,B,crop,A,not crop,disagreed,1,0,2.0
+S292,D,not crop,E,not crop,not crop,0,0,3.0
+S293,D,not crop,A,not crop,not crop,0,0,3.0
+S294,C,not crop,D,not crop,not crop,0,0,3.0
+S295,D,not crop,A,not crop,not crop,0,0,3.0
+S296,E,not crop,A,not crop,not crop,0,0,2.0
+S297,E,not crop,A,not crop,not crop,0,0,2.0
+S298,C,not crop,E,not crop,not crop,0,0,2.0
+S299,B,not crop,C,not crop,not crop,0,0,3.0
+S300,C,not crop,A,not crop,not crop,0,0,2.0
+S301,B,not crop,D,not crop,not crop,0,0,2.0
+S302,C,crop,A,crop,crop,0,0,2.0
+S303,C,crop,D,not crop,disagreed,1,0,2.0
+S304,D,not crop,E,not crop,not crop,0,0,3.0
+S305,B,crop,E,crop,crop,0,0,3.0
+S306,B,not crop,E,not crop,not crop,0,0,3.0
+S307,B,not crop,A,not crop,not crop,0,0,3.0
+S308,B,crop,D,crop,crop,0,0,2.0
+S309,C,not crop,D,not crop,not crop,0,0,3.0
+S310,C,not crop,E,not crop,not crop,0,0,2.0
+S311,C,crop,E,crop,crop,0,0,3.0
+S312,C,crop,A,crop,crop,0,0,3.0
+S313,C,not crop,A,not crop,not crop,0,0,2.0
+S314,B,not crop,C,not crop,not crop,0,0,2.0
+S315,D,not crop,A,not crop,not crop,0,0,3.0
+S316,C,not crop,D,not crop,not crop,0,0,2.0
+S317,B,crop,E,crop,crop,0,0,3.0
+S318,D,not crop,E,not crop,not crop,0,0,3.0
+S319,B,not crop,D,not crop,not crop,0,0,3.0
+S320,B,not crop,C,not crop,not crop,0,0,2.0
+S321,E,not crop,A,not crop,not crop,0,0,3.0
+S322,B,crop,A,crop,crop,0,0,3.0
+S323,C,not crop,E,not crop,not crop,0,0,2.0
+S324,D,crop,E,crop,crop,0,0,3.0
+S325,B,not crop,D,not crop,not crop,0,0,3.0
+S326,D,crop,E,crop,crop,0,0,2.0
+S327,B,not crop,C,not crop,not crop,0,0,2.0
+S328,C,crop,D,crop,crop,0,0,2.0
+S329,B,not crop,D,not crop,not crop,0,0,2.0
+S330,C,unsure,E,crop,disagreed,1,0,2.0
+S331,C,not crop,E,not crop,not crop,0,0,2.0
+S332,B,not crop,E,not crop,not crop,0,0,2.0
+S333,C,crop,A,not crop,disagreed,1,0,2.0
+S334,B,not crop,E,not crop,not crop,0,0,3.0
+S335,D,not crop,A,not crop,not crop,0,0,2.0
+S336,B,not crop,A,not crop,not crop,0,0,3.0
+S337,C,not crop,D,not crop,not crop,0,0,3.0
+S338,C,not crop,A,not crop,not crop,0,0,2.0
+S339,D,not crop,A,crop,disagreed,1,0,1.0
+S340,E,not crop,A,not crop,not crop,0,0,3.0
+S341,B,not crop,E,not crop,not crop,0,0,2.0
+S342,B,crop,C,crop,crop,0,0,2.0
+S343,B,crop,A,not crop,disagreed,1,0,3.0
+S344,D,not crop,E,not crop,not crop,0,0,2.0
+S345,B,not crop,D,not crop,not crop,0,0,3.0
+S346,E,crop,A,crop,crop,0,0,2.0
+S347,B,not crop,E,crop,disagreed,1,0,3.0
+S348,B,not crop,A,not crop,not crop,0,0,3.0
+S349,D,crop,E,crop,crop,0,0,3.0
+S350,B,crop,C,crop,crop,0,0,2.0
+S351,C,not crop,E,not crop,not crop,0,0,2.0
+S352,D,crop,A,crop,crop,0,0,3.0
+S353,C,crop,D,crop,crop,0,0,2.0
+S354,E,crop,A,crop,crop,0,0,3.0
+S355,C,not crop,E,not crop,not crop,0,0,3.0
+S356,C,crop,A,not crop,disagreed,1,0,2.0
+S357,B,crop,D,fallow,crop/fallow,0,1,1.0
+S358,B,not crop,A,not crop,not crop,0,0,3.0
+S359,B,crop,E,crop,crop,0,0,1.0
+S360,D,not crop,A,not crop,not crop,0,0,3.0
+S361,C,not crop,D,not crop,not crop,0,0,2.0
+S362,B,crop,C,not crop,disagreed,1,0,2.0
+S363,D,not crop,E,not crop,not crop,0,0,2.0
+S364,C,not crop,E,not crop,not crop,0,0,2.0
+S365,D,not crop,A,not crop,not crop,0,0,3.0
+S366,E,not crop,A,not crop,not crop,0,0,2.0
+S367,C,not crop,A,not crop,not crop,0,0,2.0
+S368,B,not crop,C,not crop,not crop,0,0,3.0
+S369,C,not crop,A,not crop,not crop,0,0,2.0
+S370,B,crop,D,not crop,disagreed,1,0,2.0
+S371,C,crop,D,crop,crop,0,0,2.0
+S372,B,crop,D,crop,crop,0,0,2.0
+S373,C,not crop,A,not crop,not crop,0,0,2.0
+S374,B,not crop,E,not crop,not crop,0,0,3.0
+S375,B,crop,A,crop,crop,0,0,1.0
+S376,D,not crop,E,not crop,not crop,0,0,2.0
+S377,B,not crop,A,not crop,not crop,0,0,3.0
+S378,C,not crop,D,not crop,not crop,0,0,3.0
+S379,D,not crop,A,not crop,not crop,0,0,3.0
+S380,C,not crop,E,not crop,not crop,0,0,2.0
+S381,C,not crop,E,not crop,not crop,0,0,3.0
+S382,B,crop,E,crop,crop,0,0,2.0
+S383,C,not crop,D,not crop,not crop,0,0,3.0
+S384,C,not crop,E,not crop,not crop,0,0,2.0
+S385,C,not crop,A,not crop,not crop,0,0,3.0
+S386,C,not crop,A,not crop,not crop,0,0,2.0
+S387,C,crop,A,crop,crop,0,0,2.0
+S388,B,crop,A,crop,crop,0,0,3.0
+S389,C,crop,D,crop,crop,0,0,3.0
+S390,D,not crop,E,not crop,not crop,0,0,3.0
+S391,C,not crop,E,crop,disagreed,1,0,2.0
+S392,C,fallow,A,crop,crop/fallow,0,1,2.0
+S393,B,crop,A,not crop,disagreed,1,0,2.0
+S394,D,crop,E,crop,crop,0,0,3.0
+S395,D,not crop,E,not crop,not crop,0,0,3.0
+S396,D,not crop,A,not crop,not crop,0,0,3.0
+S397,D,not crop,E,not crop,not crop,0,0,2.0
+S398,E,not crop,A,not crop,not crop,0,0,3.0
+S399,D,crop,A,crop,crop,0,0,3.0
+S400,D,crop,A,crop,crop,0,0,3.0
+S401,D,not crop,A,not crop,not crop,0,0,2.0
+S402,C,unsure,D,not crop,disagreed,1,0,1.0
+S403,D,not crop,A,not crop,not crop,0,0,3.0
+S404,D,not crop,E,not crop,not crop,0,0,2.0
+S405,D,crop,E,crop,crop,0,0,2.0
+S406,E,crop,A,not crop,disagreed,1,0,3.0
+S407,B,not crop,C,not crop,not crop,0,0,2.0
+S408,B,crop,C,crop,crop,0,0,1.0
+S409,E,not crop,A,not crop,not crop,0,0,2.0
+S410,B,crop,D,crop,crop,0,0,2.0
+S411,B,not crop,C,not crop,not crop,0,0,3.0
+S412,B,crop,E,crop,crop,0,0,3.0
+S413,B,not crop,D,not crop,not crop,0,0,3.0
+S414,B,not crop,E,not crop,not crop,0,0,3.0
+S415,C,not crop,E,crop,disagreed,1,0,2.0
+S416,B,crop,A,crop,crop,0,0,2.0
+S417,B,not crop,D,not crop,not crop,0,0,3.0
+S418,C,crop,D,crop,crop,0,0,3.0
+S419,E,crop,A,crop,crop,0,0,3.0
+S420,B,not crop,A,not crop,not crop,0,0,3.0
+S421,C,crop,A,crop,crop,0,0,2.0
+S422,B,not crop,E,not crop,not crop,0,0,1.0
+S423,C,fallow,E,crop,crop/fallow,0,1,3.0
+S424,C,crop,A,crop,crop,0,0,3.0
+S425,B,fallow,A,not crop,disagreed,1,0,1.0
+S426,E,not crop,A,not crop,not crop,0,0,2.0
+S427,D,crop,E,crop,crop,0,0,1.0
+S428,C,not crop,D,not crop,not crop,0,0,3.0
+S429,C,not crop,E,not crop,not crop,0,0,3.0
+S430,C,not crop,D,not crop,not crop,0,0,3.0
+S431,D,not crop,A,not crop,not crop,0,0,3.0
+S432,C,unsure,E,crop,disagreed,1,0,1.0
+S433,D,not crop,A,not crop,not crop,0,0,3.0
+S434,C,not crop,A,not crop,not crop,0,0,3.0
+S435,E,not crop,A,not crop,not crop,0,0,2.0
+S436,D,not crop,E,not crop,not crop,0,0,3.0
+S437,D,crop,E,crop,crop,0,0,3.0
+S438,E,crop,A,crop,crop,0,0,3.0
+S439,D,crop,A,not crop,disagreed,1,0,2.0
+S440,E,crop,A,crop,crop,0,0,3.0
+S441,C,not crop,A,not crop,not crop,0,0,2.0
+S442,D,crop,A,crop,crop,0,0,2.0
+S443,E,not crop,A,not crop,not crop,0,0,2.0
+S444,E,not crop,A,not crop,not crop,0,0,2.0
+S445,D,not crop,A,not crop,not crop,0,0,3.0
+S446,D,not crop,E,not crop,not crop,0,0,3.0
+S447,E,crop,A,not crop,disagreed,1,0,2.0
+S448,E,not crop,A,not crop,not crop,0,0,3.0
+S449,D,not crop,A,not crop,not crop,0,0,3.0
+S450,E,not crop,A,not crop,not crop,0,0,2.0

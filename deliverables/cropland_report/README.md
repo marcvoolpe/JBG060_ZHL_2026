@@ -29,7 +29,7 @@ Group 1, JBG060. Everything for the methodological report (max 2,000 words, due 
 | Labelling errors | **reported 14 Oct** by the labellers: undated Google imagery, Wayback, extra Sentinel scenes, a few early labels counting crop just outside the box. In the report (Discussion, appendix "Known errors in the data"); guide clarified for the national round. Decision 11 |
 | Own trees (Wei, Matei) | open: `cropland/tree_workbench.ipynb` (calibration points only; retrains Rule 1 exactly; writes nothing until `FREEZE = True`) |
 | Reuse for other areas / countries | **done 12 Oct**: `cropland/config/*.toml`, `cropland/REUSE.md`, `cropland/make_new_area.py` |
-| Code submission | **done 16 Oct**: one notebook, `cropland/pipeline.ipynb`, runs the whole analysis without Earth Engine (it replaces `eda_public_maps.ipynb`, now its part 1); the README the course asks for is `submission/README.md`; `submission/make_submission_zip.py` packs both with the code and data into one zip |
+| Code submission | **done 16 Oct**: one notebook, `cropland/pipeline.ipynb`, runs the whole analysis without Earth Engine (it replaces `eda_public_maps.ipynb`, now its part 1); the README the course asks for is `submission/README.md`; `submission/make_submission_zip.py` packs both with the code, data and outputs into one zip, without the LaTeX report and its scripts |
 
 ## 2. Reading order
 
@@ -127,11 +127,12 @@ Suggested use: report = 17 (method), 15, 18, 12 + table 1 in the text, the rest 
 
 ## 7. How to regenerate everything
 
-Since 16 Oct one notebook does it all: **`cropland/pipeline.ipynb`** runs every step in order without Earth Engine (about 8 minutes): the EDA, the label merge, Rule 1 refitted and checked against the frozen file, the scores and areas, floods, evaluation, robustness checks, all 27 figures, the dashboard, the report's numbers and the tests. The code-submission README, `submission/README.md`, says how (software, input and output folders, the Earth Engine steps).
+Since 16 Oct one notebook does it all: **`cropland/pipeline.ipynb`** runs every step in order without Earth Engine (about 8 minutes): the EDA, the label merge, Rule 1 refitted and checked against the frozen file, the scores and areas, floods, evaluation, robustness checks, all 27 figures, the dashboard, the tests and every number the report quotes (`tables/key_results.csv`, with its source file). The LaTeX report is not part of the code submission, so the notebook leaves it alone: refresh its numbers with `build_report_inputs.py` afterwards (`report/README.md`). The code-submission README, `submission/README.md`, says how (software, input and output folders, the Earth Engine steps).
 
 ```
 python -m pip install -r cropland/requirements-cropland.txt
-# open cropland/pipeline.ipynb and run all cells (writes results/, tables/, figures/, dashboard.html, the report's numbers)
+# open cropland/pipeline.ipynb and run all cells (writes results/, tables/, figures/, maps/, dashboard.html)
+python deliverables/cropland_report/report/build_report_inputs.py         (the report's numbers, tables, Overleaf zip)
 python cropland/test_cropland.py && python cropland/test_evaluation.py      (also part 9 of the notebook)
 python deliverables/cropland_report/submission/make_submission_zip.py      (the code submission as one zip)
 ```

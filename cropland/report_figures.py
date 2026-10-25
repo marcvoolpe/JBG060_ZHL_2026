@@ -61,7 +61,7 @@ def method_diagram():
     """17: one top-down flow; data enter from the left, details on the right; no arrow crosses a box."""
     fig, ax = plt.subplots(figsize=(10, 7.2))
     ax.set_xlim(0, 1), ax.set_ylim(0, 1), ax.axis("off")
-    grey = "#f1f0ec"
+    grey = "#f0f0f0"
     # main column: the three steps of the sample
     steps = [(0.83, "1. Agreement strata from the\n7 public maps (10 m)"),
              (0.645, "2. 450 random points,\nsplit before labelling"),

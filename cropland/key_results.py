@@ -131,6 +131,10 @@ def numbers():
     add("LabKappa", "Cohen's kappa, cropland or not", v, two(v), "", src)
     v = k("Cohen's kappa cropland vs not, Bor South")
     add("LabKappaBs", "Cohen's kappa, cropland or not, Bor South", v, two(v), "", src)
+    v = k("Esri accuracy in Mali, Kerner et al. 2024")
+    add("EsriMaliAcc", "Esri's overall accuracy in Mali (Kerner et al. 2024)", v, two(v), "", src)
+    v = k("Esri F1 in Mali, Kerner et al. 2024")
+    add("EsriMaliFone", "Esri's F1 in Mali (Kerner et al. 2024)", v, two(v), "", src)
     effort = pd.read_csv(TABLES / "label_effort.csv")
     src = "tables/label_effort.csv"
     add("PointsPerLabeller", "points each of us labelled", effort.points.max(), "", whole(effort.points.max()), src)
@@ -224,7 +228,7 @@ def numbers():
         whole(empty.dynamicworld_2025.sum()), "", "results/map_values.csv")
     pb = pd.read_csv(RES / "pixel_count_bias.csv")
     v = pb[(pb.area == "bor_south") & (pb["map"] == "dynamicworld_2025")].ratio_to_sample.iloc[0]
-    add("BsDwTimesSample", "Bor South: Dynamic World's crop pixels, times the sample's cropland", v, f"{v:.0f}", "",
+    add("BsDwTimesSample", "Bor South: Dynamic World's crop pixels, times the sample's cropland", v, "", "",
         "results/pixel_count_bias.csv")
 
     # models, sample size

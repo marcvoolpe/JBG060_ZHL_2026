@@ -19,6 +19,8 @@ LabelsGiven,labels given,900.0,,900,tables/key_numbers.csv
 LabAgree,the two labellers agree on cropland or not,85.55555555555556,85.6%,85.6%,tables/key_numbers.csv
 LabKappa,"Cohen's kappa, cropland or not",0.7040791550321718,0.70,,tables/key_numbers.csv
 LabKappaBs,"Cohen's kappa, cropland or not, Bor South",0.1440798858773188,0.14,,tables/key_numbers.csv
+EsriMaliAcc,Esri's overall accuracy in Mali (Kerner et al. 2024),0.97,0.97,,tables/key_numbers.csv
+EsriMaliFone,Esri's F1 in Mali (Kerner et al. 2024),0.0,0.00,,tables/key_numbers.csv
 PointsPerLabeller,points each of us labelled,180.0,,180,tables/label_effort.csv
 LabHoursMin,"hours one labeller took for them, fastest",2.7276666666666665,,3,tables/label_effort.csv
 LabHoursMax,"hours one labeller took for them, slowest",7.281329999999999,,7,tables/label_effort.csv
@@ -63,7 +65,7 @@ PerfectPrecRecallMin,lowest recall of the maps with precision 1.00,0.03264126143
 PerfectPrecRecallMax,highest recall of the maps with precision 1.00,0.2761056308114303,0.28,,results/accuracy.csv
 BsEmptyTest,Bor South test boxes both labellers saw as empty,74.0,74,,results/map_values.csv
 BsDwFalseCrop,"of them, Dynamic World 2025 calls crop",44.0,44,,results/map_values.csv
-BsDwTimesSample,"Bor South: Dynamic World's crop pixels, times the sample's cropland",23.420400235520965,23,,results/pixel_count_bias.csv
+BsDwTimesSample,"Bor South: Dynamic World's crop pixels, times the sample's cropland",23.420400235520965,,,results/pixel_count_bias.csv
 CvTreeMin,"trees of depth 1-4, cross-validated F1 on the calibration points, lowest",0.8474556213976217,0.85,,results/model_cv.csv
 CvTreeMax,"trees of depth 1-4, cross-validated F1, highest",0.8564818915142514,0.86,,results/model_cv.csv
 CvModelsMin,"every model, cross-validated F1 on the calibration points, lowest",0.8474556213976217,,,results/model_cv.csv

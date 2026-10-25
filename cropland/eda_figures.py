@@ -18,7 +18,7 @@ from matplotlib.colors import BoundaryNorm, ListedColormap
 
 import eda_maps as D
 
-INK, INK2, MUTED, GRID_C, AXIS, SURFACE = "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7", "#fcfcfb"
+INK, INK2, MUTED, GRID_C, AXIS, SURFACE = "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7", "#ffffff"
 SERIES = ["#2a78d6", "#eb6834", "#1baf7a"]                     # categorical slots 1-3, in this order
 BLUES = ["#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#256abf", "#184f95", "#0d366b"]   # sequential, light -> dark
 ORDER = ["gfsad_2015", "glad_2019", "deafrica_2019", "worldcover_2021", "worldcereal_2021",

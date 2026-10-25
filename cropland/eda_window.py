@@ -9,10 +9,11 @@ and the labelled sample points as the reference.
     python cropland/eda_window.py figure    figure 16 + its CSV twin (no Earth Engine)
 
 The window is the 6 x 6 km square around sample point S020, north of Aweil town: the square in Aweil
-that holds the most labelled points (7). Public maps in blue, our map in orange; a dot is a labelled
-point (filled: the labellers saw cropland in its 210 m box; open: none). Each title gives the map's
-crop share of the window and how many of the labelled cropland boxes it finds (any crop pixel in the
-box, the scoring rule of step 09).
+that holds the most labelled points (7). The figure shows the seven public maps in blue, as the poster
+does; Rule 1 is fetched too but not drawn, because its pixels mean "a field lies within this pixel's
+210 m box", a different unit. A dot is a labelled point (filled: the labellers saw cropland in its
+210 m box; open: none). Under each map: its crop share of the window and how many of the labelled
+cropland boxes it finds (any crop pixel in the box, the scoring rule of step 09).
 """
 
 import sys
@@ -72,32 +73,33 @@ def figure():
     n = rgb.shape[0]
     pts = points(z["transform"], n)
     crop = pts.cropland_avg > 0
-    panels = sorted(MAPS, key=lambda k: z[k].mean()) + ["rule1"]
-    fig, axes = plt.subplots(3, 3, figsize=(9.6, 10.2))
+    panels = sorted(MAPS, key=lambda k: z[k].mean())                  # least crop first, as on the poster
+    fig, axes = plt.subplots(2, 4, figsize=(10, 6.1))
     axes = axes.ravel()
     axes[0].imshow(rgb, interpolation="bilinear")
-    axes[0].set_title(f"Sentinel-2, October-December {C.YEAR}\n{len(pts)} labelled points, {int(crop.sum())} with cropland", fontsize=9)
+    axes[0].set_title(f"Sentinel-2, Oct-Dec {C.YEAR}", fontsize=9.5)
+    axes[0].set_xlabel(f"{len(pts)} labelled boxes, {int(crop.sum())} with cropland", fontsize=8.5, color=FG.INK2)
     twin = []
     for ax, k in zip(axes[1:], panels):
-        colour = FG.SERIES[1] if k == "rule1" else FG.SERIES[0]
-        ax.imshow(z[k], cmap=ListedColormap([FG.GRID_C, colour]), vmin=0, vmax=1, interpolation="nearest")
+        ax.imshow(z[k], cmap=ListedColormap([FG.GRID_C, FG.SERIES[0]]), vmin=0, vmax=1, interpolation="nearest")
         hit = int(pts.loc[crop, k].sum()) if k in pts else 0
-        name = "Rule 1 (ours, 210 m box)" if k == "rule1" else FG._name(k)
-        ax.set_title(f"{name}\ncrop = {100 * z[k].mean():.1f}%, finds {hit} of {int(crop.sum())} fields", fontsize=9)
-        twin.append({"map": k, "crop_share_of_window_pct": round(100 * z[k].mean(), 2), "labelled_cropland_points": int(crop.sum()),
+        ax.set_title(FG._name(k), fontsize=9.5)
+        ax.set_xlabel(f"crop {100 * z[k].mean():.1f}% · finds {hit} of {int(crop.sum())}", fontsize=8.5, color=FG.INK2)
+        twin.append({"map": k, "crop_share_of_window_pct": round(100 * z[k].mean(), 4), "labelled_cropland_points": int(crop.sum()),
                      "found": hit})
     for ax in axes:
-        ax.scatter(pts.col[crop], pts.row[crop], s=34, color=FG.INK, edgecolor=FG.SURFACE, linewidth=1.2, zorder=3)
-        ax.scatter(pts.col[~crop], pts.row[~crop], s=34, facecolor=FG.SURFACE, edgecolor=FG.INK, linewidth=1.2, zorder=3)
+        ax.scatter(pts.col[crop], pts.row[crop], s=26, color=FG.INK, edgecolor=FG.SURFACE, linewidth=1.0, zorder=3)
+        ax.scatter(pts.col[~crop], pts.row[~crop], s=26, facecolor=FG.SURFACE, edgecolor=FG.INK, linewidth=1.0, zorder=3)
         ax.set_xticks([]), ax.set_yticks([])
         for sp in ax.spines.values():
             sp.set_color(FG.AXIS)
     axes[0].plot([n - 110, n - 10], [n - 25, n - 25], color="white", linewidth=3)
     axes[0].text(n - 60, n - 45, "1 km", color="white", ha="center", fontsize=8)
-    fig.text(0.01, 0.005, f"The same {KM} x {KM} km window north of Aweil town in every map. Blue: public map says crop; orange: our "
-             "map (a pixel whose 210 m box holds a field). Dots: labelled points (filled: cropland in the box).", fontsize=8, color=FG.INK2)
+    fig.text(0.01, 0.005, f"The same {KM} x {KM} km window north of Aweil town in every map. Blue: the map says crop. Dots: labelled "
+             "boxes (filled: cropland in the box); 'finds' counts the cropland boxes in which the map has any crop.",
+             fontsize=8, color=FG.INK2)
     pd.DataFrame(twin).to_csv(EM.TABLES / f"window_{NAME}.csv", index=False)
-    fig.tight_layout(rect=(0, 0.02, 1, 1))
+    fig.tight_layout(rect=(0, 0.03, 1, 1))
     return FG._save(fig, "16_same_window_every_map")
 
 

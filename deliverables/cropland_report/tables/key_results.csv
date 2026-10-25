@@ -1,25 +1,39 @@
 name,what,value,report,poster,source
 AwCropMin,"Aweil crop share, lowest public map",0.2159160281930726,0.22%,0.2%,tables/key_numbers.csv
 AwCropMax,"Aweil crop share, highest public map",1.9192568108489023,1.92%,1.9%,tables/key_numbers.csv
-BsCropMin,"Bor South crop share, lowest public map",0.0,,0,tables/crop_share_by_county.csv
-BsCropMax,"Bor South crop share, highest public map",8.989977556026059,,9%,tables/crop_share_by_county.csv
+WindowMin,"6 km window north of Aweil town: crop share, lowest public map",0.0058,0.0%,0,tables/window_aweil_s020.csv
+WindowMax,"the same window: crop share, highest public map",21.6842,21.7%,22%,tables/window_aweil_s020.csv
+WindowLabelled,"the same window: labelled boxes, all holding cropland",7.0,seven,,tables/window_aweil_s020.csv
+WindowMissAll,the same window: public maps that find none of them,2.0,two,,tables/window_aweil_s020.csv
+Window_gfsad_2015,"the same window: GFSAD's crop share, and the labelled cropland boxes it finds",0.0058,,0.0% · 0 of 7 fields,tables/window_aweil_s020.csv
+Window_esri_2025,"the same window: Esri's crop share, and the labelled cropland boxes it finds",0.7256,,0.7% · 0 of 7 fields,tables/window_aweil_s020.csv
+Window_dynamicworld_2025,"the same window: Dynamic World's crop share, and the labelled cropland boxes it finds",3.5719,,3.6% · 2 of 7 fields,tables/window_aweil_s020.csv
+Window_glad_2019,"the same window: GLAD's crop share, and the labelled cropland boxes it finds",5.1372,,5.1% · 6 of 7 fields,tables/window_aweil_s020.csv
+Window_deafrica_2019,"the same window: DE Africa's crop share, and the labelled cropland boxes it finds",17.1514,,17.2% · 7 of 7 fields,tables/window_aweil_s020.csv
+Window_worldcereal_2021,"the same window: WorldCereal's crop share, and the labelled cropland boxes it finds",20.1947,,20.2% · 7 of 7 fields,tables/window_aweil_s020.csv
+Window_worldcover_2021,"the same window: WorldCover's crop share, and the labelled cropland boxes it finds",21.6842,,21.7% · 7 of 7 fields,tables/window_aweil_s020.csv
 AwNoMap,Aweil land no map calls crop,94.96556678855433,95.0%,,tables/key_numbers.csv
-AwIoUMax,"Aweil, overlap of two maps' crop (IoU), best pair",0.1614713698676375,0.16,,tables/key_numbers.csv
+AwIoUMax,"Aweil, overlap of two maps' crop (IoU), best pair",0.1614713698676375,,,tables/key_numbers.csv
 LabTwice,points labelled by two of us,450.0,450,450,tables/key_numbers.csv
 LabelsGiven,labels given,900.0,,900,tables/key_numbers.csv
 LabAgree,the two labellers agree on cropland or not,85.55555555555556,85.6%,85.6%,tables/key_numbers.csv
 LabKappa,"Cohen's kappa, cropland or not",0.7040791550321718,0.70,,tables/key_numbers.csv
+LabKappaBs,"Cohen's kappa, cropland or not, Bor South",0.1440798858773188,0.14,,tables/key_numbers.csv
 PointsPerLabeller,points each of us labelled,180.0,,180,tables/label_effort.csv
 LabHoursMin,"hours one labeller took for them, fastest",2.7276666666666665,,3,tables/label_effort.csv
 LabHoursMax,"hours one labeller took for them, slowest",7.281329999999999,,7,tables/label_effort.csv
+LabMinutesPerBox,"minutes per box (median), the slowest of us",0.98,,,tables/label_effort.csv
+PilotPoints,points in the pilot (step 00),30.0,30,,pilot_points.csv
 AwAreaPct,"Aweil cropland, share of the land",3.77749593921665,3.8%,3.8%,results/area_adjusted.csv
 AwAreaLowPct,"Aweil cropland, lower end of the 95% interval",2.48457849404171,2.5%,2.5%,results/area_adjusted.csv
-AwAreaHighPct,"Aweil cropland, upper end of the 95% interval (adjusted)",5.9340836846247305,,5.9%,results/area_adjusted.csv
+AwAreaHighPct,"Aweil cropland, adjusted upper bound (cautious; a heuristic, not a guaranteed 95% bound)",5.9340836846247305,,5.9%,results/area_adjusted.csv
+AwAreaHighUsualPct,"Aweil cropland, upper end of the usual 95% interval",5.07041338439159,,,results/area_adjusted.csv
 AwAreaHa,Aweil cropland (ha),116542.50844952148,"116,500",,results/area_adjusted.csv
 AwAreaLowHa,"Aweil cropland, lower end of the 95% interval (ha)",76653.69196807181,"76,700",,results/area_adjusted.csv
-AwAreaHighHa,"Aweil cropland, upper end of the 95% interval (adjusted, ha)",183077.09897868428,"183,100",,results/area_adjusted.csv
-BsAreaPct,"Bor South cropland, share of the land",0.38385243059984997,0.38%,0.4%,results/area_adjusted.csv
-BsAreaHighHa,"Bor South cropland, upper end of the 95% interval (adjusted, ha)",16491.701113828974,"16,500",,results/area_adjusted.csv
+AwAreaHighHa,"Aweil cropland, adjusted upper bound (ha)",183077.09897868428,"183,100",,results/area_adjusted.csv
+AwAreaHighUsualHa,"Aweil cropland, upper end of the usual 95% interval (ha)",156431.32493097117,,,results/area_adjusted.csv
+BsAreaPct,"Bor South cropland, share of the land",0.38385243059984997,0.38%,,results/area_adjusted.csv
+BsAreaHighHa,"Bor South cropland, adjusted upper bound (ha)",16491.701113828974,"16,500",,results/area_adjusted.csv
 AwCfsamHa,"Aweil cereal harvested area, CFSAM 2025 (ha)",111529.0,"111,500",,reference_statistics.csv
 BsCfsamHa,"Bor South cereal harvested area, CFSAM 2025 (ha)",25953.0,"26,000",,reference_statistics.csv
 AwPoints,sample points in Aweil,330.0,330,,sample.csv
@@ -29,7 +43,7 @@ Features,features computed for every box,18.0,18,,features.py
 PixelAgreeMin,"Aweil: pixels on which two maps agree, lowest pair",96.65584108228124,97%,,tables/pairwise_pixel_agreement_aweil.csv
 PixelAgreeMax,"the same, highest pair",99.450411121564,99%,,tables/pairwise_pixel_agreement_aweil.csv
 CalPoints,calibration points Rule 1 learned from (both labellers agree),125.0,125,125,results/model_cv.csv
-InputsUnused,"of the 18 inputs, the ones Rule 1 does not need",16.0,,16,results/rule_complexity.csv
+InputsUsed,"inputs Rule 1 uses, of the 18",2.0,,2 of the 18,results/rule_complexity.csv
 BuildingThreshold,Rule 1's first question: a building within (m),333.4111,333 m,333 m,results/sensitivity_summary.csv
 AwTestPoints,Aweil test points both labellers agree on,186.0,186,,results/accuracy.csv
 RuleOneFone,"Rule 1, F1",0.7239464075839683,0.72,,results/accuracy.csv
@@ -52,32 +66,32 @@ BsDwFalseCrop,"of them, Dynamic World 2025 calls crop",44.0,44,,results/map_valu
 BsDwTimesSample,"Bor South: Dynamic World's crop pixels, times the sample's cropland",23.420400235520965,23,,results/pixel_count_bias.csv
 CvTreeMin,"trees of depth 1-4, cross-validated F1 on the calibration points, lowest",0.8474556213976217,0.85,,results/model_cv.csv
 CvTreeMax,"trees of depth 1-4, cross-validated F1, highest",0.8564818915142514,0.86,,results/model_cv.csv
-CvModelsMin,"every model, cross-validated F1 on the calibration points, lowest",0.8474556213976217,,0.85,results/model_cv.csv
-CvModelsMax,"every model, cross-validated F1, highest",0.918862064956796,,0.92,results/model_cv.csv
-NoptOurs,"Aweil: points for a 20% coefficient of variation of the area, our strata",123.72866761404948,124,,results/design_efficiency.csv
+CvModelsMin,"every model, cross-validated F1 on the calibration points, lowest",0.8474556213976217,,,results/model_cv.csv
+CvModelsMax,"every model, cross-validated F1, highest",0.918862064956796,,,results/model_cv.csv
+NoptOurs,"Aweil: points for a 20% coefficient of variation of the area, our strata",123.72866761404948,,,results/design_efficiency.csv
 AwFloodPoints,Aweil: sample points in the 2025 flood cells,1.0,1,,results/flooded_cropland_bounds.csv
 BsFloodPoints,Bor South: sample points in the 2025 flood cells,2.0,2,,results/flooded_cropland_bounds.csv
 FloodYears,years of floods laid over today's cropland,26.0,,26,results/flood_history.csv
 HistYearsAw,Aweil flood years 2000-2025 the sample can judge (5+ points on flooded land),9.0,9,,results/flood_history.csv
-HistTimesMin,"those years: the sample's flooded cropland, times the median public map, lowest",3.8405869711443112,,4,results/flood_history.csv
-HistTimesMax,"the same, highest",16.367345578708655,,16,results/flood_history.csv
+FloodClearYears,those years in which the sample's interval clears the median public map,1.0,2008,,results/flood_interval_check.csv
 HistTwentyTwoEst,Aweil 2022 flood on today's cropland: the sample (ha),7262.830782941423,"7,263",,results/flood_history.csv
 HistTwentyTwoLow,"the same, lower end of the 95% interval (ha)",638.7207524356843,639,,results/flood_history.csv
 HistTwentyTwoHigh,"the same, upper end of the 95% interval (ha)",14335.861296584022,"14,336",,results/flood_history.csv
 HistTwentyTwoMapsMin,"Aweil 2022: the public maps, lowest (ha)",330.8730618359099,331,,results/flood_history.csv
 HistTwentyTwoMapsMax,"Aweil 2022: the public maps, highest (ha)",3571.795427859575,"3,572",,results/flood_history.csv
-SilentTwentyTwo,Aweil 2022: public maps under which a 500 ha trigger stays silent,3.0,"Esri, GLAD and WorldCover","Esri, GLAD or WorldCover",results/trigger_hindcast.csv
+SilentTwentyTwo,Aweil 2022: public maps under which a 500 ha trigger stays silent,3.0,"Esri, GLAD and WorldCover","Esri, GLAD and WorldCover",results/trigger_hindcast.csv
+SilentTwentyTwoCount,"the same, how many of the public layers",3.0,,3 of 8,results/trigger_hindcast.csv
 HhTwentyTwoEst,Aweil 2022: the sample's flooded cropland as farming households,9471.850372635037,"9,470",,"results/flood_history.csv, reference_statistics.csv"
-HhTwentyTwoLow,"the same, lower end of the 95% interval",832.9902730457793,830,,"results/flood_history.csv, reference_statistics.csv"
-HhTwentyTwoHigh,"the same, upper end of the 95% interval",18696.171950339754,"18,700",,"results/flood_history.csv, reference_statistics.csv"
+HhTwentyTwoLow,"the same, lower end of the 95% interval",832.9902730457793,,,"results/flood_history.csv, reference_statistics.csv"
+HhTwentyTwoHigh,"the same, upper end of the 95% interval",18696.171950339754,,,"results/flood_history.csv, reference_statistics.csv"
 HhTwentyTwoMapsMin,"Aweil 2022: the public maps, lowest, as farming households",431.5094524033653,430,,"results/flood_history.csv, reference_statistics.csv"
 HhTwentyTwoMapsMax,"Aweil 2022: the public maps, highest, as farming households",4658.171567732186,"4,660",,"results/flood_history.csv, reference_statistics.csv"
-ThreeWaySplits,Aweil test points the two labellers split on,29.0,29,,results/sensitivity_summary.csv
+ThreeWaySplits,Aweil test points the two labellers split on,29.0,,,results/sensitivity_summary.csv
 ShareLowPct,"Aweil cropland, every share class at its lowest value",2.318608676887014,2.3%,,results/sensitivity_summary.csv
 ShareHighPct,"Aweil cropland, every share class at its highest value",5.2363832015462926,5.2%,,results/sensitivity_summary.csv
-RuleOneErrors,Rule 1's errors on the Aweil test points,9.0,9,,results/sensitivity_summary.csv
-RuleOneErrorsAwA,of them in stratum A (no map calls crop),7.0,7,,results/sensitivity_summary.csv
-CalCropAwA,crop boxes among the calibration points of Aweil's stratum A,2.0,2,,results/sensitivity_summary.csv
+RuleOneErrors,Rule 1's errors on the Aweil test points,9.0,,,results/sensitivity_summary.csv
+RuleOneErrorsAwA,of them in stratum A (no map calls crop),7.0,,,results/sensitivity_summary.csv
+CalCropAwA,crop boxes among the calibration points of Aweil's stratum A,2.0,,,results/sensitivity_summary.csv
 HaPerBoxAwA,"hectares one box stands for, Aweil stratum A",19532.787265111343,"19,500",,results/sensitivity_summary.csv
 HaPerBoxAwC,"hectares one box stands for, Aweil stratum C",110.37577480861594,110,,results/sensitivity_summary.csv
 FarBoxesPct,Aweil boxes holding cropland more than 333 m from a building,25.258252007972324,25%,,results/sensitivity_summary.csv

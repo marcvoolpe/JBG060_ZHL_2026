@@ -65,6 +65,23 @@ def test_accuracy_one_stratum():
     assert abs(a["ua"] - 3 / 4) < 1e-12 and abs(a["pa"] - 3 / 4) < 1e-12 and abs(a["oa"] - 6 / 8) < 1e-12
 
 
+def test_area_one_point_stratum():
+    """A stratum with one point still counts in the share; only its variance is unknown (review, 16 Oct)."""
+    est, se = E.area(np.array([1., 0., 0.]), np.array(["A", "B", "B"]), {"A": 0.9, "B": 0.1})
+    assert abs(est - 0.9) < 1e-12 and np.isnan(se)
+    est, se = E.area(np.array([0., 0.]), np.array(["B", "B"]), {"A": 0.9, "B": 0.1})
+    assert np.isnan(est)                                                    # a stratum without points: unknown
+
+
+def test_f1_no_cropland_found():
+    """F1 is 0 when a map finds none of the cropland, undefined only when there is no cropland to find."""
+    s = np.array(["A"] * 6)
+    a = E.accuracy(np.array([1, 1, 0, 0, 0, 0]), np.array([0, 0, 1, 1, 0, 0]), s, {"A": 1.0}, n_boot=50)
+    assert a["f1"] == 0.0
+    a = E.accuracy(np.array([1, 0, 0, 0, 0, 0]), np.array([0, 0, 0, 0, 0, 0]), s, {"A": 1.0}, n_boot=50)
+    assert np.isnan(a["f1"])
+
+
 def fake_ruleset():
     d = pd.read_csv(C.HERE / "features_pilot.csv")
     y = (d.drop_vs_500m > d.drop_vs_500m.median()).astype(int)            # made-up labels, test only
@@ -184,7 +201,8 @@ def test_building_distance():
 
 
 if __name__ == "__main__":
-    tests = [test_area, test_area_share, test_accuracy_one_stratum, test_tree_equals_rules,
+    tests = [test_area, test_area_share, test_accuracy_one_stratum, test_area_one_point_stratum, test_f1_no_cropland_found,
+             test_tree_equals_rules,
              test_sample_pairs_balanced, test_merge_no_tiebreak, test_model_data_splits, test_config,
              test_linear_rules]
     if "--ee" in sys.argv:

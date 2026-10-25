@@ -102,14 +102,25 @@ def numbers():
     add("AwCropMin", "Aweil crop share, lowest public map", v, pct(v, 2), pct(v), src)
     v = k("Aweil crop share, highest map (%)")
     add("AwCropMax", "Aweil crop share, highest public map", v, pct(v, 2), pct(v), src)
-    shares = pd.read_csv(TABLES / "crop_share_by_county.csv")
-    bs = shares[(shares.unit == "Bor South") & shares["map"].isin(PUBLIC)].crop_pct
-    add("BsCropMin", "Bor South crop share, lowest public map", bs.min(), "", f"{bs.min():.0f}", "tables/crop_share_by_county.csv")
-    add("BsCropMax", "Bor South crop share, highest public map", bs.max(), "", pct(bs.max(), 0), "tables/crop_share_by_county.csv")
+    win = pd.read_csv(TABLES / "window_aweil_s020.csv")                 # figure 16 (eda_window.py)
+    win = win[win["map"] != "rule1"]
+    src = "tables/window_aweil_s020.csv"
+    v = win.crop_share_of_window_pct
+    add("WindowMin", "6 km window north of Aweil town: crop share, lowest public map", v.min(), pct(v.min()), f"{v.min():.0f}", src)
+    add("WindowMax", "the same window: crop share, highest public map", v.max(), pct(v.max()), pct(v.max(), 0), src)
+    numbers_word = {2: "two", 7: "seven"}
+    v = int(win.labelled_cropland_points.max())
+    add("WindowLabelled", "the same window: labelled boxes, all holding cropland", v, numbers_word.get(v, whole(v)), "", src)
+    v = int((win.found == 0).sum())
+    add("WindowMissAll", "the same window: public maps that find none of them", v, numbers_word.get(v, whole(v)), "", src)
+    for w_ in win.itertuples():
+        add(f"Window_{w_.map}", f"the same window: {SHORT[w_.map]}'s crop share, and the labelled cropland boxes it finds",
+            w_.crop_share_of_window_pct, "", f"{w_.crop_share_of_window_pct:.1f}% · {w_.found} of {w_.labelled_cropland_points} fields", src)
+    src = "tables/key_numbers.csv"
     v = k("Aweil land no map calls crop (%)")
     add("AwNoMap", "Aweil land no map calls crop", v, pct(v), "", src)
     v = k("Aweil pairwise IoU, best pair")
-    add("AwIoUMax", "Aweil, overlap of two maps' crop (IoU), best pair", v, two(v), "", src)
+    add("AwIoUMax", "Aweil, overlap of two maps' crop (IoU), best pair", v, "", "", src)
     v = k("Labelled twice so far (points)")
     add("LabTwice", "points labelled by two of us", v, whole(v), whole(v), src)
     v = k("Labels given (judgements)")
@@ -118,11 +129,17 @@ def numbers():
     add("LabAgree", "the two labellers agree on cropland or not", v, pct(v), pct(v), src)
     v = k("Cohen's kappa cropland vs not")
     add("LabKappa", "Cohen's kappa, cropland or not", v, two(v), "", src)
+    v = k("Cohen's kappa cropland vs not, Bor South")
+    add("LabKappaBs", "Cohen's kappa, cropland or not, Bor South", v, two(v), "", src)
     effort = pd.read_csv(TABLES / "label_effort.csv")
     src = "tables/label_effort.csv"
     add("PointsPerLabeller", "points each of us labelled", effort.points.max(), "", whole(effort.points.max()), src)
     add("LabHoursMin", "hours one labeller took for them, fastest", effort.total_hours.min(), "", whole(effort.total_hours.min()), src)
     add("LabHoursMax", "hours one labeller took for them, slowest", effort.total_hours.max(), "", whole(effort.total_hours.max()), src)
+    v = effort.median_min.max()
+    add("LabMinutesPerBox", "minutes per box (median), the slowest of us", v, "", "", src)
+    v = len(pd.read_csv(C.HERE / "pilot_points.csv"))
+    add("PilotPoints", "points in the pilot (step 00)", v, whole(v), "", "pilot_points.csv")
 
     # the cropland area (share of box, adjusted upper bound)
     a = pd.read_csv(RES / "area_adjusted.csv")
@@ -130,16 +147,17 @@ def numbers():
     src = "results/area_adjusted.csv"
     add("AwAreaPct", "Aweil cropland, share of the land", 100 * r.estimate, pct(100 * r.estimate), pct(100 * r.estimate), src)
     add("AwAreaLowPct", "Aweil cropland, lower end of the 95% interval", 100 * r.low, pct(100 * r.low), pct(100 * r.low), src)
-    add("AwAreaHighPct", "Aweil cropland, upper end of the 95% interval (adjusted)", 100 * r.high_adjusted, "",
-        pct(100 * r.high_adjusted), src)
+    add("AwAreaHighPct", "Aweil cropland, adjusted upper bound (cautious; a heuristic, not a guaranteed 95% bound)",
+        100 * r.high_adjusted, "", pct(100 * r.high_adjusted), src)
+    add("AwAreaHighUsualPct", "Aweil cropland, upper end of the usual 95% interval", 100 * r.high, "", "", src)
     add("AwAreaHa", "Aweil cropland (ha)", r.ha, ha100(r.ha), "", src)
     add("AwAreaLowHa", "Aweil cropland, lower end of the 95% interval (ha)", r.low_ha, ha100(r.low_ha), "", src)
-    add("AwAreaHighHa", "Aweil cropland, upper end of the 95% interval (adjusted, ha)", r.high_adjusted_ha,
-        ha100(r.high_adjusted_ha), "", src)
+    add("AwAreaHighHa", "Aweil cropland, adjusted upper bound (ha)", r.high_adjusted_ha, ha100(r.high_adjusted_ha), "", src)
+    add("AwAreaHighUsualHa", "Aweil cropland, upper end of the usual 95% interval (ha)", r.high_ha, "", "", src)
     b = a[(a.area == "bor_south") & (a.definition == "cropland") & (a.measure == "share of box")].iloc[0]
     add("BsAreaPct", "Bor South cropland, share of the land", 100 * b.estimate,
-        pct(100 * b.estimate, 1 if b.estimate >= 0.01 else 2), pct(100 * b.estimate), src)
-    add("BsAreaHighHa", "Bor South cropland, upper end of the 95% interval (adjusted, ha)", b.high_adjusted_ha,
+        pct(100 * b.estimate, 1 if b.estimate >= 0.01 else 2), "", src)
+    add("BsAreaHighHa", "Bor South cropland, adjusted upper bound (ha)", b.high_adjusted_ha,
         ha100(b.high_adjusted_ha), "", src)
     cf = pd.read_csv(C.HERE / "reference_statistics.csv")
     cf = cf[(cf.source == "CFSAM") & (cf.year == 2025) & (cf.level == "county")]
@@ -169,8 +187,8 @@ def numbers():
     used = int(pd.read_csv(RES / "rule_complexity.csv").features_used.iloc[0])
     add("CalPoints", "calibration points Rule 1 learned from (both labellers agree)", cv.points.iloc[0],
         whole(cv.points.iloc[0]), whole(cv.points.iloc[0]), "results/model_cv.csv")
-    add("InputsUnused", f"of the {len(F.FEATURES)} inputs, the ones Rule 1 does not need", len(F.FEATURES) - used, "",
-        whole(len(F.FEATURES) - used), "results/rule_complexity.csv")
+    add("InputsUsed", f"inputs Rule 1 uses, of the {len(F.FEATURES)}", used, "", f"{used} of the {len(F.FEATURES)}",
+        "results/rule_complexity.csv")
     sv = pd.read_csv(RES / "sensitivity_summary.csv").set_index("key").value
     v = float(sv["rule1_building_threshold_m"])
     add("BuildingThreshold", "Rule 1's first question: a building within (m)", v, f"{v:.0f} m", f"{v:.0f} m",
@@ -214,12 +232,12 @@ def numbers():
     add("CvTreeMin", "trees of depth 1-4, cross-validated F1 on the calibration points, lowest", trees.min(),
         two(trees.min()), "", "results/model_cv.csv")
     add("CvTreeMax", "trees of depth 1-4, cross-validated F1, highest", trees.max(), two(trees.max()), "", "results/model_cv.csv")
-    add("CvModelsMin", "every model, cross-validated F1 on the calibration points, lowest", cv.f1.min(), "", two(cv.f1.min()),
+    add("CvModelsMin", "every model, cross-validated F1 on the calibration points, lowest", cv.f1.min(), "", "",
         "results/model_cv.csv")
-    add("CvModelsMax", "every model, cross-validated F1, highest", cv.f1.max(), "", two(cv.f1.max()), "results/model_cv.csv")
+    add("CvModelsMax", "every model, cross-validated F1, highest", cv.f1.max(), "", "", "results/model_cv.csv")
     de = pd.read_csv(RES / "design_efficiency.csv")
     v = de[de.area == "aweil"].n_opt.iloc[0]
-    add("NoptOurs", "Aweil: points for a 20% coefficient of variation of the area, our strata", v, whole(v), "",
+    add("NoptOurs", "Aweil: points for a 20% coefficient of variation of the area, our strata", v, "", "",
         "results/design_efficiency.csv")
 
     # floods
@@ -237,10 +255,10 @@ def numbers():
     src = "results/flood_history.csv"
     add("HistYearsAw", "Aweil flood years 2000-2025 the sample can judge (5+ points on flooded land)",
         len(judged.loc["aweil"]), whole(len(judged.loc["aweil"])), "", src)
-    ratio = (judged.flooded_crop_ha / maps.median(axis=1).reindex(judged.index)).loc["aweil"]
-    add("HistTimesMin", "those years: the sample's flooded cropland, times the median public map, lowest", ratio.min(), "",
-        f"{ratio.min():.0f}", src)
-    add("HistTimesMax", "the same, highest", ratio.max(), "", f"{ratio.max():.0f}", src)
+    fic = pd.read_csv(RES / "flood_interval_check.csv")
+    clear = fic[(fic.area == "aweil") & (fic.min_days == 1) & ~fic.median_inside.astype(bool)].year
+    add("FloodClearYears", "those years in which the sample's interval clears the median public map", len(clear),
+        ", ".join(map(str, clear)), "", "results/flood_interval_check.csv")
     r, mp = judged.loc[("aweil", 2022)], maps.loc[("aweil", 2022)]
     add("HistTwentyTwoEst", "Aweil 2022 flood on today's cropland: the sample (ha)", r.flooded_crop_ha, whole(r.flooded_crop_ha), "", src)
     add("HistTwentyTwoLow", "the same, lower end of the 95% interval (ha)", r.low_ha, whole(r.low_ha), "", src)
@@ -253,34 +271,36 @@ def numbers():
     names = sorted(SHORT[m] for m in silent)
     listed = lambda word: ", ".join(names[:-1]) + f" {word} " + names[-1] if len(names) > 1 else "".join(names)
     add("SilentTwentyTwo", f"Aweil 2022: public maps under which a {TRIGGER_HA} ha trigger stays silent", len(names),
-        listed("and"), listed("or"), "results/trigger_hindcast.csv")
+        listed("and"), listed("and"), "results/trigger_hindcast.csv")
+    add("SilentTwentyTwoCount", "the same, how many of the public layers", len(names), "", f"{len(names)} of {len(PUBLIC)}",
+        "results/trigger_hindcast.csv")
     hh = ha_per_household("aweil")
     tens = lambda v: f"{round(v / hh, -1):,.0f}"
     src = "results/flood_history.csv, reference_statistics.csv"
     add("HhTwentyTwoEst", "Aweil 2022: the sample's flooded cropland as farming households", r.flooded_crop_ha / hh,
         tens(r.flooded_crop_ha), "", src)
-    add("HhTwentyTwoLow", "the same, lower end of the 95% interval", r.low_ha / hh, tens(r.low_ha), "", src)
-    add("HhTwentyTwoHigh", "the same, upper end of the 95% interval", r.high_ha / hh, tens(r.high_ha), "", src)
+    add("HhTwentyTwoLow", "the same, lower end of the 95% interval", r.low_ha / hh, "", "", src)
+    add("HhTwentyTwoHigh", "the same, upper end of the 95% interval", r.high_ha / hh, "", "", src)
     add("HhTwentyTwoMapsMin", "Aweil 2022: the public maps, lowest, as farming households", mp.min() / hh, tens(mp.min()), "", src)
     add("HhTwentyTwoMapsMax", "Aweil 2022: the public maps, highest, as farming households", mp.max() / hh, tens(mp.max()), "", src)
 
     # robustness checks (sensitivity.py)
     n = lambda key_: float(sv[key_])
     src = "results/sensitivity_summary.csv"
+    add("ThreeWaySplits", "Aweil test points the two labellers split on", n("three_ways_splits"), "", "", src)
     for name, key_, what, fmt in [
-            ("ThreeWaySplits", "three_ways_splits", "Aweil test points the two labellers split on", lambda v: f"{v:.0f}"),
             ("ShareLowPct", "share_class_lowest_pct", "Aweil cropland, every share class at its lowest value", pct),
             ("ShareHighPct", "share_class_highest_pct", "Aweil cropland, every share class at its highest value", pct),
-            ("RuleOneErrors", "rule1_test_errors", "Rule 1's errors on the Aweil test points", lambda v: f"{v:.0f}"),
-            ("RuleOneErrorsAwA", "rule1_errors_aweil_A", "of them in stratum A (no map calls crop)", lambda v: f"{v:.0f}"),
+            ("RuleOneErrors", "rule1_test_errors", "Rule 1's errors on the Aweil test points", None),
+            ("RuleOneErrorsAwA", "rule1_errors_aweil_A", "of them in stratum A (no map calls crop)", None),
             ("CalCropAwA", "calibration_crop_boxes_aweil_A", "crop boxes among the calibration points of Aweil's stratum A",
-             lambda v: f"{v:.0f}"),
+             None),
             ("HaPerBoxAwA", "ha_per_box_aweil_A", "hectares one box stands for, Aweil stratum A", ha100),
             ("HaPerBoxAwC", "ha_per_box_aweil_C", "hectares one box stands for, Aweil stratum C", whole),
             ("FarBoxesPct", "cropland_boxes_far_pct_aweil", "Aweil boxes holding cropland more than 333 m from a building",
              lambda v: f"{v:.0f}%"),
             ("RecipeFone", "recipe_f1_mean", "Rule 1's recipe refitted 20 x 5 times, mean F1", two)]:
-        add(name, what, n(key_), fmt(n(key_)), "", src)
+        add(name, what, n(key_), fmt(n(key_)) if fmt else "", "", src)        # None: computed, not quoted
     return pd.DataFrame(out)
 
 

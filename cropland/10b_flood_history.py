@@ -1,7 +1,7 @@
 """
 Step 10b - Past floods on today's cropland (2000-2025), and a trigger hindcast.
 
-Added 14 Oct 2026, after the 2025 results (METHODOLOGY change log). It is a scenario, not
+Added 14 Oct 2026, after the 2025 results. It is a scenario, not
 history: our labels and Rule 1 describe cropland in 2025, so every year answers "how much of
 today's cropland would a flood like that one put under water?". The public maps are used as
 they are (each of its own year).

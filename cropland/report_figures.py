@@ -4,7 +4,7 @@ Same palette and style as eda_figures.py; static PNGs, each with a CSV twin wher
 
   17 method diagram                     22 feature distributions, cropland vs not
   18 Rule 1 as a tree, with counts      23 strata and sample points (map)
-  19 Rule 1's decision space            24 what the labellers see (image strips)
+  19 Rule 1's decision space            24 the labelling tool for one box (images, greenness, radar, key)
   20 models: cross-validation vs test   25 interval check by simulation
   21 what the models learned            26 points needed per sampling design
 
@@ -284,27 +284,117 @@ def strata_map():
     return FG._save(fig, "23_strata_and_sample")
 
 
-def labelling_examples():
-    """24: the monthly image strips labellers saw, for three boxes: agreed crop, agreed not crop, disputed."""
-    lab = pd.read_csv(C.HERE / "labels_final.csv").merge(pd.read_csv(C.HERE / "sample.csv")[["id", "area", "stratum"]], on="id")
-    aw = lab[lab.area == "aweil"]
-    picks = [("both labellers: crop (mean share of the box over half)", aw[(aw.final == "crop") & (aw.share_avg >= 0.5)]),
-             ("both labellers: not crop (open grassland)", aw[(aw.final == "not crop") & (aw.stratum == "B")]),
-             ("labellers disagree: crop with field shapes vs not crop", aw[aw.final == "disagreed"])]
-    fig, axes = plt.subplots(3, 1, figsize=(10, 10.2))
-    chosen = []
-    for ax, (title, pool) in zip(axes, picks):
-        pool = pool.sort_values("id")
-        pid = next(i for i in pool.id if (C.HERE / "label_tool" / "img" / f"{i}_2025_tc.webp").exists())
-        im = np.asarray(Image.open(C.HERE / "label_tool" / "img" / f"{pid}_2025_tc.webp").convert("RGB"))
-        ax.imshow(im)
-        ax.set_axis_off()
-        ax.set_title(f"{pid}: {title}", loc="left", fontsize=9.5)
-        chosen.append(pid)
-    fig.text(0.01, 0.005, "Monthly Sentinel-2 composites of 2025 (true colour, 10 m), 510 m across; the yellow square is the "
-             "210 m box that is labelled. Grey tiles: no clear image that month.", fontsize=8, color=INK2)
-    pd.DataFrame({"id": chosen, "shown_as": [p[0] for p in picks]}).to_csv(EM.TABLES / "labelling_examples.csv", index=False)
-    fig.tight_layout(rect=(0, 0.02, 1, 1))
+LABEL_EXAMPLE = "S017"        # a box both labellers called crop (sure, 10-25% of the box); the poster shows the same box
+PART_COLOURS = ["#b98200", "#b4332e", "#2f7d4a"]               # the labelling tool's colours for the parts of a box
+COVER = {"open": "yes, some open land", "water": "no, mostly water", "settlement": "no, mostly buildings or road",
+         "trees": "no, mostly trees or shrub"}
+SHARES = {"0": "none", "<10": "under 10%", "10-25": "10–25%", "25-50": "25–50%", ">50": "over 50%"}
+SURE = {1: "1 (a guess)", 2: "2 (fairly sure)", 3: "3 (sure)"}
+
+
+def labelling_examples(pid=LABEL_EXAMPLE):
+    """24: what the labelling tool shows for one box, and how the box was labelled: the monthly images, the greenness of
+    the box and its parts, radar, and the key's questions (taken from the tool's config) with both labellers' answers
+    and the final label. Data from label_tool/ (step 04), labels/ and labels_final.csv (step 06)."""
+    js = (C.HERE / "label_tool" / "data_sample.js").read_text(encoding="utf-8")
+    p = next(q for q in json.loads(js[js.index("["):js.rindex("]") + 1]) if q["id"] == pid)
+    cfg = (C.HERE / "label_tool" / "config.js").read_text(encoding="utf-8")
+    cfg = json.loads(cfg[cfg.index("{"):cfg.rindex("}") + 1])
+    given = pd.concat([pd.read_csv(f) for f in sorted((C.HERE / "labels").glob("sample_labels_*.csv"))])
+    given = given[given.id == pid].fillna("").sort_values("labeller")
+    final = pd.read_csv(C.HERE / "labels_final.csv").set_index("id").loc[pid]
+    months, initials = np.arange(12), list("JFMAMJJASOND")
+
+    fig = plt.figure(figsize=(10, 11.2))
+    outer = fig.add_gridspec(3, 1, height_ratios=[1.18, 1.0, 1.12], hspace=0.26)
+
+    ax = fig.add_subplot(outer[0])                                   # 1: the twelve monthly images
+    ax.imshow(np.asarray(Image.open(C.HERE / "label_tool" / "img" / f"{pid}_2025_tc.webp").convert("RGB")))
+    ax.set_axis_off()
+    ax.set_title(f"1  Box {pid}: monthly Sentinel-2 images of 2025 (true colour, 510 m across); yellow: the 210 m box",
+                 loc="left", fontsize=10)
+
+    mid = outer[1].subgridspec(1, 3, width_ratios=[1.4, 0.72, 1.0], wspace=0.2)
+    ax = fig.add_subplot(mid[0])                                     # 2: greenness of the box, its parts and the land around
+    for a, b, name, fill in cfg["season_bands"]:
+        ax.axvspan(a - 0.5, b + 0.5, color=fill, zorder=0)
+        ax.text((a + b) / 2, 0.87, name.replace("·", " "), ha="center", fontsize=8, color=INK2)
+    ax.fill_between(months, p["ndvi_p10"], p["ndvi_p90"], color="#5d6b62", alpha=0.18, linewidth=0, label="10–90% of its pixels")
+    for k, part in enumerate(p["patches"]):
+        ax.plot(months, part["ndvi"], color=PART_COLOURS[k], linewidth=1.3, label=f"part {'ABC'[k]}, {part['share']:.0%} of the box")
+    ax.plot(months, p["ndvi_500m"], color="#5d6b62", linewidth=1.2, linestyle=(0, (4, 2)), label="the 500 m around it (grass)")
+    ax.plot(months, p["ndvi"], color="#2b3a30", linewidth=2.2, label="the box (median)")
+    ax.set_xticks(months, initials, fontsize=8)
+    ax.set_ylim(0, 0.95), ax.set_xlim(-0.5, 11.5)
+    ax.set_ylabel("NDVI", fontsize=8)
+    ax.set_title("2  Greenness (NDVI) of the box through 2025", loc="left", fontsize=10)
+    ax.yaxis.grid(True, color=GRID, linewidth=0.6), ax.set_axisbelow(True)
+    handles, names = ax.get_legend_handles_labels()
+
+    side = fig.add_subplot(mid[1])                                   # its legend, and where the parts are
+    side.set_axis_off()
+    side.legend(handles[::-1], names[::-1], frameon=False, fontsize=7.5, loc="upper left", bbox_to_anchor=(-0.02, 1.02),
+                handlelength=1.6, labelspacing=0.55)
+    n = int(round(len(p["patch_map"]) ** 0.5))                       # the parts on the box's 21 x 21 pixels, as the tool draws them
+    grid = np.array([int(c) for c in p["patch_map"]]).reshape(n, n)
+    parts = side.inset_axes([0.08, 0.0, 0.62, 0.42])
+    parts.imshow(np.array([matplotlib.colors.to_rgb(PART_COLOURS[v]) for v in grid.ravel()]).reshape(n, n, 3))
+    parts.set_xticks([]), parts.set_yticks([])
+    parts.set_title("where the parts are", fontsize=7.5, color=INK2, pad=3)
+    for s in parts.spines.values():
+        s.set_color("#e6c200"), s.set_linewidth(1.5)
+
+    ax = fig.add_subplot(mid[2])                                     # 3: radar, which sees through the clouds
+    vh = np.array([np.nan if v is None else v for v in p["vh"]], dtype=float)
+    ax.plot(months, vh, "o-", color="#5b4a8b", markersize=3.5, linewidth=1.6)
+    ax.set_xticks(months, initials, fontsize=8)
+    ax.set_ylim(-30, -5), ax.set_xlim(-0.5, 11.5)
+    ax.set_ylabel("VH backscatter (dB)", fontsize=8)
+    ax.set_title("3  Radar (Sentinel-1), sees through clouds", loc="left", fontsize=10)
+    ax.yaxis.grid(True, color=GRID, linewidth=0.6), ax.set_axisbelow(True)
+    gap = [["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][i] for i in months if np.isnan(vh[i])]
+    ax.text(0.03, 0.96, "rises as the crop grows,\ndrops at harvest" + (f";\nno radar pass {gap[0]}–{gap[-1]}" if gap else ""),
+            transform=ax.transAxes, fontsize=7.5, color=INK2, va="top")
+
+    ax = fig.add_subplot(outer[2])                                   # 4: the key, both labellers' answers, the final label
+    ax.set_axis_off()
+    ax.set_xlim(0, 1), ax.set_ylim(0, 1)
+    ax.set_title("4  The labelling key, answered by two labellers who did not see each other's answers", loc="left", fontsize=10)
+    who = list(given.labeller)
+    x_q, x_a = 0.0, [0.715, 0.865]
+    fs, step = 8, 0.068
+
+    def row(y, label, values, bold=False, line=True):
+        ax.text(x_q, y, label, fontsize=fs, color=INK, va="center", weight="semibold" if bold else "normal")
+        for x, v in zip(x_a, values):
+            ax.text(x, y, v, fontsize=fs, color=INK, va="center", weight="semibold" if bold else "normal")
+        if line:
+            ax.plot([0, 1], [y - step / 2, y - step / 2], color=GRID, linewidth=0.7)
+
+    y = 0.96
+    row(y, "Question in the tool", [f"labeller {w}" for w in who], bold=True)
+    y -= step
+    row(y, f"Is there open land (field or grass) anywhere in the {cfg['box_m']} m box?", [COVER.get(v, v) for v in given.cover])
+    for col in ("cue_a_bare", "cue_b_greenup", "cue_c_harvest", "cue_d_shape", "cue_e_crop2024"):
+        y -= step
+        row(y, cfg["cues"][col], [v if v else "no answer" for v in given[col]])
+    y -= step * 1.25
+    row(y, "The key suggests", list(given.key_suggestion))
+    y -= step
+    row(y, "Label given (the labeller can overrule the key)", list(given.label))
+    y -= step
+    row(y, "Cropland in the box (crop and fallow fields together)", [SHARES.get(str(v), str(v)) for v in given.crop_share])
+    y -= step
+    row(y, "Confidence", [SURE.get(int(v), str(v)) for v in given.confidence], line=False)
+    y -= step * 1.35
+    agree = "the two agree" if final.disagreed == 0 else "the two disagree: it counts as half a cropland box"
+    ax.text(x_q, y, f"Final label (step 06): {final.final}, {agree}. In the area estimate the box holds "
+            f"{100 * final.share_avg:.1f}% cropland, the mid-point of their share class.", fontsize=fs, color=INK,
+            va="center", weight="semibold")
+
+    pd.DataFrame({"month": initials, "ndvi_box": p["ndvi"], "ndvi_p10": p["ndvi_p10"], "ndvi_p90": p["ndvi_p90"],
+                  "ndvi_500m": p["ndvi_500m"], **{f"ndvi_part_{'ABC'[k]}": q["ndvi"] for k, q in enumerate(p["patches"])},
+                  "radar_vh_db": vh}).assign(id=pid).to_csv(EM.TABLES / "labelling_examples.csv", index=False)
     return FG._save(fig, "24_labelling_examples")
 
 

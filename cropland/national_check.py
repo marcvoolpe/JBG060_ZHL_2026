@@ -3,7 +3,7 @@ Random points over South Sudan outside the study areas, with our national map an
 
 These 20,000 uniform random points (equal-area, seed 42) feed `national_map.py compare`: without labels, how our map
 relates to the public maps outside Aweil and Bor South (agreement, not accuracy). A labelled check sample drawn from
-them was planned on 14 Oct and dropped the same day: the group does not label further (METHODOLOGY change log).
+them was planned on 14 Oct and dropped the same day: the group does not label further.
 
     python cropland/national_check.py points cropland/rule1_2026-10-12.json      (Earth Engine, point reads only)
 

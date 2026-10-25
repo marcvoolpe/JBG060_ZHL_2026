@@ -1,4 +1,4 @@
-# Cropland pipeline and EDA notebook: the versions they ran with.
+# The cropland pipeline (pipeline.ipynb and its .py steps): the versions it ran with.
 # Tested: Python 3.12.5, Windows 11, 16 Oct 2026 (pipeline.ipynb end to end, test_cropland.py, test_evaluation.py).
 # Install: python -m pip install -r cropland/requirements-cropland.txt
 # Earth Engine also needs a Google account and a Cloud project registered for Earth Engine (see the README).
@@ -17,7 +17,7 @@ pyproj==3.8.0
 affine==3.0.1
 joblib==1.4.2
 pillow==11.0.0
-# to run the notebook from the command line (python -m nbclient) or in Jupyter / VS Code
+# to run the notebook from the command line (nbclient, see the README) or in Jupyter / VS Code
 nbformat==5.11.1
 nbclient==0.11.0
 ipykernel==6.29.5

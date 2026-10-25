@@ -80,6 +80,7 @@ def compare() -> pd.DataFrame:
     stands for (ha_per_point), as the test scores do. Both are calibration scores: compare models
     with them, do not compare them with test scores.
     """
+    RES.mkdir(exist_ok=True)                       # a clean copy (make_new_area.py) has no results/ yet
     X, y, info, _ = calibration()
     w = info.ha_per_point.to_numpy()
     cv = RepeatedStratifiedKFold(n_splits=5, n_repeats=REPEATS, random_state=C.SEED)
@@ -123,6 +124,7 @@ def compare() -> pd.DataFrame:
 
 
 def freeze(name: str) -> None:
+    RES.mkdir(exist_ok=True)
     out = RES / f"predictions_{name}.csv"
     if out.exists():
         raise SystemExit(f"{out.name} exists: this model is frozen already")

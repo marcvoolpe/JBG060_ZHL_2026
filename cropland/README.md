@@ -2,7 +2,7 @@
 
 **Question.** How much of ZOA's two areas (the five Aweil counties, Bor South) was cropland in 2025, and how accurate are the public cropland maps there? We also make our own rule-based cropland map of the whole country.
 
-This file covers what to do and why. The binding rules of the study are in `METHODOLOGY.md`. It was fixed before labelling, and every change since is listed in its change log. Background and literature: `deliverables/CROPLAND_PLAN.html`.
+This is the team's working guide; links into `deliverables/` point to the group repository and are not part of the code submission. It covers what to do and why. The binding rules of the study are in `METHODOLOGY.md`. It was fixed before labelling, and every change since is listed in its change log. Background and literature: `deliverables/CROPLAND_PLAN.html`.
 
 ---
 

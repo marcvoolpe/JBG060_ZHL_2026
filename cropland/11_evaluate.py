@@ -1,5 +1,5 @@
 """
-Step 11 - The evaluation additions (METHODOLOGY.md change log, 12 Oct 2026), on the
+Step 11 - The evaluation additions (added 12 Oct 2026), on the
 outputs of 09_score.py and 10_flood.py. Writes into cropland/results/:
 
   area_adjusted.csv       area per study area and definition with the usual interval and the

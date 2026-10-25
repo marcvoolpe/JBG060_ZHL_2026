@@ -297,7 +297,7 @@ footer { padding-block: 2rem; color: var(--muted); font-size: var(--step--1); }
   <div class="grid3" id="tools"></div>
   <h3 style="margin-top:2rem">How a next group builds on this</h3>
   <ol class="steps" id="next-steps"></ol>
-  <p class="note">What stays fixed, because it makes the numbers trustworthy: two blind labellers per box, nobody settling their disagreements, the presence rule on the 210 m box, models fitted on calibration points only and frozen before the test labels are read, and stratified estimators with an interval for every number.</p>
+  <p class="note">What stays fixed, because it makes the numbers trustworthy: two blind labellers per box, nobody settling their disagreements, the presence rule on the 210 m box, models fitted and chosen on calibration points only (Rule 1 frozen before any test label was read), and stratified estimators with an interval for every number.</p>
 </section>
 
 <section class="q" id="limits">
@@ -730,7 +730,7 @@ function zoaBoxes() {
   const below = D.public.filter(k => r.maps[k] != null && r.maps[k] < s.low).map(NAME);
   const boxes = [
     ["The trigger", `Which map ZOA picks can flip the decision in the same flood. In 2022 the public maps gave ${ha(Math.min(...p))} to ${ha(Math.max(...p))} ha of flooded cropland in Aweil: below and above any threshold in between.`],
-    ["Who is reached", `A field the map misses is a household outside map-based targeting. In Aweil 95% of the land has no crop in any public map, yet the sample finds cropland there. Recall is the share of farmers a map can see.`],
+    ["Who is reached", `A field the map misses is a household outside map-based targeting. In Aweil 95% of the land has no crop in any public map, yet the sample finds cropland there. Recall is the share of the boxes holding cropland that a map finds.`],
     ["Sizing a request", `Illustrative, 2022 in Aweil: the public maps imply ${nf(Math.min(...p) / hh)} to ${nf(Math.max(...p) / hh)} farming households with a flooded field; the labelled sample ${nf(s.est / hh)} (${nf(s.low / hh)}–${nf(s.high / hh)}). A request sized on ${list(below, "or")} would have been too small even against the lower end of the sample's interval; for the other maps the interval is too wide to tell. Put the sample's interval in the budget.`],
   ];
   $("zoa-boxes").innerHTML = boxes.map(([t, b]) => `<div class="card"><h3>${t}</h3><p class="small" style="margin:0">${b}</p></div>`).join("");
@@ -812,7 +812,7 @@ function pageHandover() {
   const steps = [
     "<b>Label boxes outside our two areas</b> (a stratified sample, same tool and key) before our map is used there: the first accuracy of our map and of every public map elsewhere.",
     "<b>Add a flood-prone stratum</b> (about 100 boxes on land that floods often) so that flooded cropland gets its own estimate instead of \"cannot tell\".",
-    "<b>Fit better models</b> on the larger set of calibration points, for example one per region with a two-season calendar for Greater Equatoria. Freeze each before scoring it, and log it in the change log.",
+    "<b>Fit better models</b> on the larger set of calibration points, for example one per region with a two-season calendar for Greater Equatoria. Freeze each before scoring it, and log it in METHODOLOGY.md.",
     "<b>Repeat each season</b>: about 150 boxes, one working day for two people, gives a fresh area and a fresh check of every map.",
     "<b>Rebuild</b> the dashboard and the report tables from the new results with one command each.",
   ];
@@ -825,7 +825,7 @@ function pageLimits() {
   $("sure").innerHTML = [
     "450 boxes of 210 m, each labelled by two of five people, blind to every map; their answers agree on 85.6% of the boxes (Cohen's kappa 0.70). Disagreements are kept, not settled.",
     "Every area and every score has a 95% interval from the stratified design. Maps whose intervals overlap are not ranked.",
-    `The usual interval is too narrow when crop is rare; we checked it by simulation and give an adjusted upper bound as well (Aweil: ${ha(A.sample.high_adj_ha)} ha).`,
+    `Our simulation of this design shows the usual interval is too narrow when crop is rare, so we add a cautious adjusted upper bound, a heuristic rather than a guaranteed 95% bound (Aweil: ${ha(A.sample.high_adj_ha)} ha).`,
     "Our model was fitted on 125 calibration points and frozen before any of the 260 test labels was read.",
     `The FAO/WFP crop assessment, built from other data, gives ${ha(A.cfsam_ha)} ha for Aweil: inside our interval.`,
   ].map(s => `<li>${s}</li>`).join("");

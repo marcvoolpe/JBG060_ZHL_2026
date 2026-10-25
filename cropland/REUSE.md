@@ -6,7 +6,7 @@ a readable rule fitted on one third of the points and tested on the other two th
 pipeline can be run for another area, another country or another season. This guide says what
 to change, what to keep, and in which order.
 
-You need: Python 3.11 or newer with `requirements-cropland.txt`, an Earth Engine account with a
+You need: Python 3.12 with the versions in `requirements-cropland.txt` (the ones we tested), an Earth Engine account with a
 Cloud project, and 3-6 people to label (each labels 2/5 of the points in our design).
 
 ## What you can change, and what you should keep
@@ -28,7 +28,8 @@ points, never on the test points you used to choose it.
 ## Steps
 
 1. **Make a clean copy** (our sample, labels and results stay where they are):
-   `python cropland/make_new_area.py <folder>`. Work in `<folder>/cropland/` from now on.
+   `python cropland/make_new_area.py <folder>`. From now on, run every command from `<folder>/` (the commands
+   start with `python cropland/...`) and edit the files in `<folder>/cropland/`.
    The scripts refuse to run a new config in a folder that holds another study's `sample.csv`.
 2. **Write the config.** Copy `config/TEMPLATE.toml` to `config/<name>.toml` and fill in every
    line marked CHANGE. Then `set CROPLAND_CONFIG=<name>` (Windows) or `export CROPLAND_CONFIG=<name>`,
@@ -75,5 +76,5 @@ yearly re-check of the same areas needs about 150 points (report notes 06).
 
 ## Where things are explained
 
-`METHODOLOGY.md` (the protocol and its change log), `LABELLING_GUIDE.md` (the key), `README.md`
-(files and columns), `config/south_sudan_2025.toml` (our settings, for comparison).
+`METHODOLOGY.md` (the protocol), `LABELLING_GUIDE.md` (the key)
+and `config/south_sudan_2025.toml` (our settings, for comparison).
